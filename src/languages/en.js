@@ -1,0 +1,89 @@
+export default {
+  SIGN_LOGIN_STR  : "Sign up or Login",
+  LOGOUT: "Log Out",
+  WITH_STR        : "with",
+  OR_STR          : "OR",
+  DONE_STR        : "Done",
+  BLOCKED_STR     : "Block",
+  CANCEL_STR      : "Cancel",
+  OFF_STR         : "Off",
+  NAME_STR        : "Name",
+  PRIVACY_STR     : "Privacy",
+  GENDER_MAILE_STR: "Male",
+  GENDER_FEMALE_STR: "Female",
+  GENDER_NOT_SAY_STR: "I would prefer not to say",
+  INPUT_PHONE_NUMBER: "Please enter your phone number",
+  LOGIN_PHONE_NUMBER_DESCRIPTION1: "By registering, I have read and agree to the",
+  LOGIN_PHONE_NUMBER_DESCRIPTION2: "Terms of Use and the Privacy Policy",
+
+
+  // Drawer String
+
+  DRAWER_ACCOUNT_SETTING: "Account Setting",
+  DRAWER_ACCOUNT_FEED : "Feed",
+  DRAWER_COLLECTION_TITLE: "Collections",
+  DRAWER_FOLLOW_PEOPLE: "Follow People",
+  DRAWER_NEW_PLACE: "New Place",
+  DRAWER_STORIES: "Stories",
+  DRAWER_Tag: "Tag",
+  Drawer_Notifications: "Notifications",
+
+  // Create Profile page
+  CREATE_PROFILE_DESCRIPTION1: "Please enter your details for",
+  CREATE_PROFILE_DESCRIPTION2: "create an account",
+  CREATE_PROFILE_USERNAME : "UserName",
+  CREATE_PROFILE_DISPLAYNAME: "Display name",
+  CREATE_PROFILE_COUNTRY: "Country",
+  CREATE_PROFILE_CITY: "City",
+  CREATE_PROFILE_BIO: "Bio",
+
+  // Profile Page
+  PROFILE_FOLLOWING: "Following",
+  PROFILE_FOLLOWER: "Follower",
+  PROFILE_VISITED: "Visited",
+  PROFILE_COLLECTION_TITLE: "My Collections",
+  PROFILE_STORY_TITLE: "My Stories",
+
+  // Account Setting Page
+  SETTING_EDIT_PROFILE: "Edit Profile",
+  SETTING_STORY_SETTING: "Story Setting",
+  SETTING_BLOCKED_USER: "Blocked User",
+  SETTING_PRIVATE_ACCOUNT: "Private Account",
+  SETTING_PRIVATE_TEXT: "When your account is private, only people you approve can see your photo and video. Your existing follower won't be affedted",
+
+  // Phone Number Page
+  SETTING_PHONE_NUMBER: "Phone Number",
+  SETTING_OLD_PHONE_NUMBER: "Old Phone Number",
+  SETTING_NEW_PHONE_NUMBER: "New Phone Number",
+  SETTING_CONFIRM_NEW_NUMBER: "Confirm New Phone Number",
+  SETTING_PHONE_DESCRIPTION: "You may receive SMS update from One Map  and confirm code to  verify your phone number",
+
+  // Phone Verify Page
+  SETTING_VERIFY_NUMBER: "Verify Your Phone Number",
+  SETTING_VERIFY_DESCRIPTION: "Please enter the 4-digit verify code that was sent to your number.",
+  SETTING_VERIFY_RESEND_QUESTION: "Didn't get the SMS ?",
+  SETTING_VERIFY_RESEND:" Resend Code",
+
+  // Blocked User Page
+  SETTING_BLOCKED_USER_TITLE: "Blocked User",
+  SETTING_BLOCKED_USER_DESCRIPTION: "They won't be able to find your profile, poss or story on One Map. One Map won't let them know you blocked them",
+
+  // Story Setting
+  SETTING_STORY_ALLOW_PLACEHOLDER: "Allow Message Replies",
+  SETTING_STORY_YOUR_FOLLOWER: "Your Follower",
+  SETTING_STORY_FOLLOW_BACK: "Follower you follow back",
+
+  // Feed
+  FEED_FOLLOWER_PROFILE_TITLE: "Following Profile",
+
+  // Follower Profile
+  FEED_FOLLOWER_PROFILE_FOLLOWED: "Followed",
+  FEED_FOLLOWER_PROFILE_FOLLOWERS: "Followers",
+  FEED_FOLLOWER_PROFILE_VISITED: "Visited",
+
+  // Collections
+  COLLECTION_TITLE: "All My Collections",
+  COLLECTION_CREATE_NEW: "Create New Collection",
+  COLLECTION_NAME: "Collection Name",
+  PRIVACY_DESCRIPTION: "Appears in your public profile"
+}
