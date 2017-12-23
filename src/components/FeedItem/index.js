@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import CardView from 'react-native-cardview'
 import ViewMoreText from 'react-native-view-more-text';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -11,21 +11,31 @@ import { RED_COLOR, LIGHT_GRAY_COLOR } from '../../theme/colors';
 import {getDeviceWidth, getDeviceHeight, calculateDuration} from '@global'
 // create a component
 class FeedItem extends Component {
+  constructor (props) {
+    super(props)
+  }
+
+  _onUserInformation() {
+    this.props.onPress(this.props.data.user.name)
+  }
   render() {
     return (
       <CardView style={styles.container} cardElevation={2} cardMaxElevation={2} cornerRadius={5}>
         {/* user information */}
-        <View style={styles.userInfo}>
-          <View style={styles.user}>
-            <CircleImage style={styles.profileImage} uri={this.props.data.user.uri} radius={getDeviceWidth(70)}/>
-            <View style={styles.userDescription}>
-              <Text style={[styles.name,DFonts.DFontFamily]}>{this.props.data.user.name}</Text>
-              <Text style={[styles.update, DFonts.DFontFamily]}>{calculateDuration(this.props.data.user.updated)}</Text>
+        
+          <View style={styles.userInfo}>
+            <TouchableOpacity onPress={this._onUserInformation.bind(this)}>
+            <View style={styles.user}>
+              <CircleImage style={styles.profileImage} uri={this.props.data.user.uri} radius={getDeviceWidth(70)}/>
+              <View style={styles.userDescription}>
+                <Text style={[styles.name,DFonts.DFontFamily]}>{this.props.data.user.name}</Text>
+                <Text style={[styles.update, DFonts.DFontFamily]}>{calculateDuration(this.props.data.user.updated)}</Text>
+              </View>
             </View>
+            </TouchableOpacity>            
+            <MaterialCommunityIcons name={this.props.data.bookmark ? "bookmark" : "bookmark-outline"} size={30} 
+              color={this.props.data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR}/>
           </View>
-          <MaterialCommunityIcons name={this.props.data.bookmark ? "bookmark" : "bookmark-outline"} size={30} 
-            color={this.props.data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR}/>
-        </View>
         {/* Feed Title */}
         <View>
           <Text style={[styles.feedTitle, DFonts.DFontFamily]}>{this.props.data.feedTitle}</Text>

@@ -12,6 +12,7 @@ const Router = TabNavigator({
   }
 },{
   tabBarPosition: 'bottom',
+  swipeEnabled: false,
   animationEnabled: true,
   tabBarOptions: {
     activeTintColor: '#47c6f1',

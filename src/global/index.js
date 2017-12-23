@@ -28,3 +28,14 @@ export function calculateDuration (updateDate) {
   if ( year == 0) return `Updated a Year ago`
   return `Updated ${year} years ago`
 }
+
+export function calculateCount (count) {
+  var ret;
+  if (count > 999) {
+    var c = Math.round( count / 100 ) / 10;
+    ret = `${c} k`
+  } else {
+    ret = `${count}`
+  }
+  return ret;
+}

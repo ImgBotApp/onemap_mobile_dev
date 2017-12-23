@@ -86,9 +86,13 @@ export default {
   FEED_VISIT_PROFILE: "Visit Profile",
   FEED_CAMPAIGN: "Campaign",
   FEED_DO_NOT_MISS: "Don't miss this place",
-  FEED_GET_CLOSE: "get more closer 100 m",
+  FEED_GET_CLOSE: "go more closer 100 m",
   FEED_CHECK_IN: "Check-In",
 
+
+  // Profile page
+
+  PROFILE_PAGE_TITLE: "OneMapper Profile",
   // Collections
   COLLECTION_TITLE: "All My Collections",
   COLLECTION_CREATE_NEW: "Create New Collection",

@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   moreText: {
-    fontSize: NORMAL_FONT_SIZE,
+    fontSize: SMALL_FONT_SIZE,
     color: LIGHT_GRAY_COLOR
   },
   button: {

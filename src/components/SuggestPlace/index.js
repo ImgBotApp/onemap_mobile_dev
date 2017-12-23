@@ -16,7 +16,7 @@ class SuggestPlace extends Component {
             <Text style={[styles.mainText, DFonts.DFontFamily]}>{I18n.t('FEED_DO_NOT_MISS')}</Text>
             <View style={{alignItems: 'center'}}>
               <Text style={[styles.moreText, DFonts.DFontFamily]}>{I18n.t('FEED_GET_CLOSE')}</Text>
-              <TouchableOpacity>
+              <TouchableOpacity style={{marginTop: 2}}>
               <View style={styles.button}>
                 <Text style={[styles.checkIn, DFonts.DFontFamily]}>{I18n.t('FEED_CHECK_IN')}</Text>
               </View>

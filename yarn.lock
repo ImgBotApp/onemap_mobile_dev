@@ -3738,6 +3738,12 @@ react-devtools-core@^2.5.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
+react-native-auto-height-image@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/react-native-auto-height-image/-/react-native-auto-height-image-0.3.4.tgz#8a1bcd8ab6ce91d6cfff03b27a3d1aa4a54fc51e"
+  dependencies:
+    prop-types "^15.5.8"
+
 react-native-cardview@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/react-native-cardview/-/react-native-cardview-1.1.5.tgz#c068fa7bf57c3dcd35af4327cc5173cea51baa62"
