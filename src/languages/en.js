@@ -80,6 +80,14 @@ export default {
   FEED_FOLLOWER_PROFILE_FOLLOWED: "Followed",
   FEED_FOLLOWER_PROFILE_FOLLOWERS: "Followers",
   FEED_FOLLOWER_PROFILE_VISITED: "Visited",
+  FEED_SUGGESTED_BY_ONEMAP: "Suggested by OneMap",
+  FEED_FOLLOW: "Follow",
+  FEED_RECOMMEND_BY_ONEMAP: "Recommended by OneMap",
+  FEED_VISIT_PROFILE: "Visit Profile",
+  FEED_CAMPAIGN: "Campaign",
+  FEED_DO_NOT_MISS: "Don't miss this place",
+  FEED_GET_CLOSE: "get more closer 100 m",
+  FEED_CHECK_IN: "Check-In",
 
   // Collections
   COLLECTION_TITLE: "All My Collections",

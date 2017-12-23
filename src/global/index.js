@@ -12,3 +12,19 @@ export function getDeviceWidth (width) {
 export function getDeviceHeight (height) {
   return Math.round(height * DEVICE_HEIGHT / DESIGN_HEIGHT)
 }
+
+export function calculateDuration (updateDate) {
+  var one_day=1000*60*60*24;
+  var today = new Date().getTime()
+  var updatedTime = updateDate.getTime()
+  var duration = Math.floor((today - updatedTime) / one_day)
+
+  if ( duration == 0) return `Updated yesterday`
+  if ( duration < 31) return `Updated ${duration} Days ago`
+  var months = Math.floor(duration/30)
+  if ( months == 0) return `Updated a Month ago`
+  if ( months < 12) return `Updated ${months} months ago`
+  var year = Math.floor(months/12)
+  if ( year == 0) return `Updated a Year ago`
+  return `Updated ${year} years ago`
+}
