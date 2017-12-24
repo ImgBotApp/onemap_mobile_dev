@@ -9,7 +9,7 @@ import TagInput from 'react-native-tag-input';
 import Foundation from 'react-native-vector-icons/Foundation'
 import ImagePicker from 'react-native-image-picker'
 import CircleImage from '@components/CircleImage'
-
+import ImageSliderComponent from '@components/ImageSliderComponent'
 import styles from './styles'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR } from '../../../theme/colors';
 import { calculateCount, getDeviceWidth, calculateDuration } from '@global'
@@ -128,6 +128,7 @@ class PlaceProfile extends Component {
     this.state={
       tags: ['Steak', 'Cocktails', 'Dinner', 'Food'],
       text: "",
+      sliderShow: false,
       storyImages: [
         {
           type: 'add'
@@ -146,9 +147,11 @@ class PlaceProfile extends Component {
       )
     }
     return (
+      <TouchableOpacity onPress={() => this.setState({sliderShow: true})}>
       <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
         <Image source={{uri: item.uri}} style={styles.imageItem}/>
       </CardView>
+      </TouchableOpacity>
     )
   }
   goMapDetail () {
@@ -156,7 +159,9 @@ class PlaceProfile extends Component {
   }
   render() {
     return (
+      <View style={styles.container}>
       <ScrollView style={styles.container}>
+        
         {/* Title */}
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>{data.title}</Text>
@@ -270,7 +275,16 @@ class PlaceProfile extends Component {
           }
           {/* {this._renderComments()} */}
         </View>
+        
       </ScrollView>
+        {this.state.sliderShow ?
+          (
+          <ImageSliderComponent onPress={() => {
+            this.setState({sliderShow: false})
+          }}/>
+          ) : null
+        }
+      </View>
     );
   }
   _renderCommentStory() {
