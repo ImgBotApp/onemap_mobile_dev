@@ -410,7 +410,7 @@ class FeedPage extends Component {
   _renderFeedItem (data) {
     return (
       <View style={styles.feedItem}>
-        <FeedItem data={data} onPress={this.onPressUserProfile.bind(this)}/>
+        <FeedItem data={data} onPress={this.onPressUserProfile.bind(this)} onPlace={this.onPlace.bind(this)}/>
       </View>
     )
   }
@@ -455,6 +455,10 @@ class FeedPage extends Component {
 
   onPressUserProfile = (id) => {
     this.props.navigation.navigate('ProfilePage',{id: id})
+  }
+
+  onPlace = (title) => {
+    this.props.navigation.navigate('PlaceProfile', {title: title})
   }
   render() {
     return (

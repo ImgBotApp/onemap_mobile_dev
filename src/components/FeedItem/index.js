@@ -18,6 +18,10 @@ class FeedItem extends Component {
   _onUserInformation() {
     this.props.onPress(this.props.data.user.name)
   }
+
+  _onPlaceImagePress() {
+    this.props.onPlace(this.props.data.place)
+  }
   render() {
     return (
       <CardView style={styles.container} cardElevation={2} cardMaxElevation={2} cornerRadius={5}>
@@ -47,7 +51,9 @@ class FeedItem extends Component {
             horizontal
             renderItem={({item}) => (
               <CardView cardElevation={5} cardMaxElevation={5} cornerRadius={5} style={styles.FeedImageItem}>
-                <Image source={{uri: item.uri}} style={styles.feedItemImage}/>
+                <TouchableOpacity onPress={this._onPlaceImagePress.bind(this)}>
+                  <Image source={{uri: item.uri}} style={styles.feedItemImage}/>
+                </TouchableOpacity>
               </CardView>
             )}
           />

@@ -97,5 +97,24 @@ export default {
   COLLECTION_TITLE: "All My Collections",
   COLLECTION_CREATE_NEW: "Create New Collection",
   COLLECTION_NAME: "Collection Name",
-  PRIVACY_DESCRIPTION: "Appears in your public profile"
+  PRIVACY_DESCRIPTION: "Appears in your public profile",
+
+  // Place Profile
+
+  PLACE_TITLE: "Place Profile",
+  PLACE_ADDRESS: "Address",
+  PLACE_NUMBER: "Phone Number",
+  PLACE_WEBSITE: "Website",
+  PLACE_OPENHOUR: "Opening hours",
+  PLACE_HEARTED: "Hearted",
+  PLACE_CHECK_IN: "Check-ins",
+  PLACE_BOOKMARK: "Added to Collection",
+  PLACE_KEYWORDS: "Keywords",
+  PLACE_KEYWORD_DONE: "Done",
+  PLACE_WRITE_STORY: "Write Story",
+  PLACE_TITLE_BOLD:"Title (Bold)",
+
+  // Map View
+
+  MAPVIEW_TITLE: "Map View"
 }

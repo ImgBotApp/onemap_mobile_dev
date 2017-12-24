@@ -11,6 +11,11 @@ import FeedPageConfig from '@mFeed/FeedPage/routeConfig'
 import ProfilePage from '@mFeed/ProfilePage'
 import ProfilePageConfig from '@mFeed/ProfilePage/routeConfig'
 
+import PlaceProfile from '@mFeed/PlaceProfile'
+import PlaceProfileConfig from '@mFeed/ProfilePage/routeConfig'
+
+import MapView from '@mFeed/MapDetailPage'
+import MapViewConfig from '@mFeed/MapDetailPage/routeConfig'
 
 import { ICON_SIZE } from '@theme/fonts'
 
@@ -22,6 +27,14 @@ const FeedRouter = StackNavigator({
   ProfilePage: {
     screen: ProfilePage,
     navigationOptions: ProfilePageConfig
+  },
+  PlaceProfile: {
+    screen: PlaceProfile,
+    navigationOptions: PlaceProfileConfig
+  },
+  MapViewPage: {
+    screen: MapView,
+    navigationOptions: MapViewConfig
   }
 })
 //make this component available to the app

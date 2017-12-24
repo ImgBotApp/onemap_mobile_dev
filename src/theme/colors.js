@@ -11,4 +11,6 @@ export const LIGHT_BLUE = '#007aff'
 
 export const RED_COLOR = '#cb2d4b'
 
+export const GREEN_COLOR = '#acd6a0'
+
 export const BACKGROUNDCOLOR = '#f0efef'
