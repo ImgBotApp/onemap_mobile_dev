@@ -469,6 +469,12 @@ class FeedPage extends Component {
       collectionModal: true
     })
   }
+  onAddCollection = () => {
+    this.setState({
+      collectionModal: false
+    })
+    this.props.navigation.navigate('AllCollection')
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -489,7 +495,7 @@ class FeedPage extends Component {
         > 
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('AllCollection')}>
+            <TouchableOpacity onPress={this.onAddCollection.bind(this)}>
               <Text style={styles.plusButton}>{'+'}</Text>
             </TouchableOpacity>
           </View>

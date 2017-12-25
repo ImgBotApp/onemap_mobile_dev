@@ -5,6 +5,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import CardView from 'react-native-cardview'
 import ViewMoreText from 'react-native-view-more-text';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import Modal from 'react-native-modalbox';
+import TitleImage from '@components/TitledImage'
+
 import TagInput from 'react-native-tag-input';
 import Foundation from 'react-native-vector-icons/Foundation'
 import ImagePicker from 'react-native-image-picker'
@@ -129,12 +132,19 @@ class PlaceProfile extends Component {
       tags: ['Steak', 'Cocktails', 'Dinner', 'Food'],
       text: "",
       sliderShow: false,
+      collectionModal: false,
       storyImages: [
         {
           type: 'add'
         }
       ]
     }
+  }
+  onAddCollection = () => {
+    this.setState({
+      collectionModal: false
+    })
+    this.props.navigation.navigate('AllCollection')
   }
   _renderItem (item) {
     if ( item.type == 'add') {
@@ -165,8 +175,10 @@ class PlaceProfile extends Component {
         {/* Title */}
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>{data.title}</Text>
-          <MaterialCommunityIcons name={data.bookmark ? "bookmark" : "bookmark-outline"} size={30} 
-              color={data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR}/>
+          <TouchableOpacity onPress={() => this.setState({collectionModal: true})}>
+            <MaterialCommunityIcons name={data.bookmark ? "bookmark" : "bookmark-outline"} size={30} 
+                color={data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR}/>
+          </TouchableOpacity>
         </View>
         {/* Images */}
         <View style={styles.imageContainer}>
@@ -284,6 +296,31 @@ class PlaceProfile extends Component {
           }}/>
           ) : null
         }
+        {/* Modal Collection */}
+        <Modal
+          style={styles.collectionModal}
+          isOpen={this.state.collectionModal}
+          backdropPressToClose={true}
+          position={'bottom'}
+          backdrop={true}
+          backdropOpacity={0.5}
+          backdropColor={'lightgray'}
+          onClosed={() => this.setState({collectionModal: false})}
+        > 
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
+            <TouchableOpacity onPress={this.onAddCollection.bind(this)}>
+              <Text style={styles.plusButton}>{'+'}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.separatebar}></View>
+          <View style={styles.Collections}>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+          </View>
+        </Modal>
       </View>
     );
   }

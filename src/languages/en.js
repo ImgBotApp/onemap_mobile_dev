@@ -6,10 +6,11 @@ export default {
   DONE_STR        : "Done",
   BLOCKED_STR     : "Block",
   CANCEL_STR      : "Cancel",
-  OK_STR: "Ok",
+  OK_STR          : "Ok",
   OFF_STR         : "Off",
   NAME_STR        : "Name",
   PRIVACY_STR     : "Privacy",
+  POINTS_STR      : "Points",
   GENDER_MAILE_STR: "Male",
   GENDER_FEMALE_STR: "Female",
   GENDER_NOT_SAY_STR: "I would prefer not to say",
@@ -44,6 +45,8 @@ export default {
   PROFILE_VISITED: "Visited",
   PROFILE_COLLECTION_TITLE: "My Collections",
   PROFILE_STORY_TITLE: "My Stories",
+  PROFILE_VIEW_MORE: "View more",
+  PROFILE_CAMPAIGN: "Campaign",
 
   // Account Setting Page
   SETTING_EDIT_PROFILE: "Edit Profile",

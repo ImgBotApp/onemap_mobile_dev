@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList } from '
 import Entypo from 'react-native-vector-icons/Entypo'
 import AutoHeightImage from 'react-native-auto-height-image';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
+import CampaignList from '@components/CampaignList'
 
 import CircleImage from '@components/CircleImage'
 import TitleImage from '@components/TitledImage'
@@ -25,6 +26,56 @@ const data = {
     {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
     {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
     {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},        
+  ],
+  campaign: [
+    {
+      id: 'a1',
+      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+      name: 'Fun Campaign',
+      description: 'this is campaign description, Fun places and stories ... let\'s connect with this ',
+      points: 234,
+      badges: [
+        {
+          id: 'b1',
+          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+          name: 'fun'
+        },
+        {
+          id: 'b1',
+          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+          name: 'fun'
+        },
+        {
+          id: 'b1',
+          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+          name: 'fun'
+        },
+        {
+          id: 'b1',
+          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+          name: 'fun'
+        }
+      ]
+    },
+    {
+      id: 'a2',
+      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+      name: 'Fun Campaign',
+      description: 'this is campaign description, Fun places and stories ... let\'s connect with this ',
+      points: 123,
+      badges: [
+        {
+          id: 'b1',
+          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+          name: 'fun'
+        },
+        {
+          id: 'b1',
+          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+          name: 'fun'
+        }
+      ]
+    }
   ],
   stories: [
     {
@@ -52,6 +103,9 @@ const data = {
 }
 // create a component
 class ProfilePage extends Component {
+  onCampaignPress(id) {
+    alert(id)
+  }
   _renderStoryItem (item) {
     return (
       <View>
@@ -60,7 +114,6 @@ class ProfilePage extends Component {
           title={'abc'} vAlign={'center'} hAlign={'left'} titleStyle={styles.storyItemTitle}
           style={{marginBottom: 10}}
         />
-        {/* <AutoHeightImage imageURL={item.uri} width={getDeviceWidth(343)} style={{marginBottom: 10}} /> */}
       </View>
     )
   }
@@ -100,6 +153,13 @@ class ProfilePage extends Component {
         </View>
         <View>
           <Text style={styles.about}>{data.user.about}</Text>
+        </View>
+        {/* Campaign list */}
+        <View>
+          <Text style={styles.collectionText}>{I18n.t('PROFILE_CAMPAIGN')}</Text>          
+        </View>
+        <View style={styles.collectionContainer}>
+          <CampaignList data={data.campaign} onViewMore={this.onCampaignPress.bind(this)}/>
         </View>
         <View>
           <Text style={styles.collectionText}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
