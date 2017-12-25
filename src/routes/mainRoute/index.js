@@ -8,6 +8,7 @@ import FeedRouter, { FeedRouterConfig } from './feedRouter'
 import SearchPage from '@mSearch'
 import SearchConfig from '@mSearch/routeConfig'
 
+import ProfileRouter, { ProfileRouterConfig } from './profileRouter'
 const Router = TabNavigator({
   Feed: {
     screen: FeedRouter,
@@ -16,6 +17,10 @@ const Router = TabNavigator({
   Search: {
     screen: SearchPage,
     navigationOptions: SearchConfig
+  },
+  Profile: {
+    screen: ProfileRouter,
+    navigationOptions: ProfileRouterConfig
   }
 },{
   tabBarPosition: 'bottom',
@@ -23,7 +28,7 @@ const Router = TabNavigator({
   animationEnabled: true,
   tabBarOptions: {
     activeTintColor: '#47c6f1',
-    // showLabel: false
+    showLabel: false
   }
 })
 

@@ -22,6 +22,10 @@ class FeedItem extends Component {
   _onPlaceImagePress() {
     this.props.onPlace(this.props.data.place)
   }
+
+  onBookMarker () {
+    this.props.onBookMarker()
+  }
   render() {
     return (
       <CardView style={styles.container} cardElevation={2} cardMaxElevation={2} cornerRadius={5}>
@@ -36,9 +40,11 @@ class FeedItem extends Component {
                 <Text style={[styles.update, DFonts.DFontFamily]}>{calculateDuration(this.props.data.user.updated)}</Text>
               </View>
             </View>
-            </TouchableOpacity>            
-            <MaterialCommunityIcons name={this.props.data.bookmark ? "bookmark" : "bookmark-outline"} size={30} 
-              color={this.props.data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.onBookMarker.bind(this)}>
+              <MaterialCommunityIcons name={this.props.data.bookmark ? "bookmark" : "bookmark-outline"} size={30} 
+                color={this.props.data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR}/>
+            </TouchableOpacity>
           </View>
         {/* Feed Title */}
         <View>

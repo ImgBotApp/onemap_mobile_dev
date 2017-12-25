@@ -43,14 +43,14 @@ export default FeedRouter;
 export const FeedRouterConfig = ({navigation}) => {
   return {
     swipeEnabled: false,
-    tabBarOnPress: () => {
-      const actionToDispatch = NavigationActions.reset({
-        index: 0,
-        key: null,
-        actions: [NavigationActions.navigate({ routeName: 'FeedList' })],
-      });
-      navigation.dispatch(actionToDispatch);
-    },
+    // tabBarOnPress: () => {
+    //   const actionToDispatch = NavigationActions.reset({
+    //     index: 0,
+    //     key: null,
+    //     actions: [NavigationActions.navigate({ routeName: 'FeedList' })],
+    //   });
+    //   navigation.dispatch(actionToDispatch);
+    // },
     tabBarIcon: (option) => (<EntypoIcons name="home" size={ICON_SIZE} color={option.tintColor} />)
   }
 }

@@ -6,6 +6,7 @@ export default {
   DONE_STR        : "Done",
   BLOCKED_STR     : "Block",
   CANCEL_STR      : "Cancel",
+  OK_STR: "Ok",
   OFF_STR         : "Off",
   NAME_STR        : "Name",
   PRIVACY_STR     : "Privacy",
@@ -98,6 +99,9 @@ export default {
   COLLECTION_CREATE_NEW: "Create New Collection",
   COLLECTION_NAME: "Collection Name",
   PRIVACY_DESCRIPTION: "Appears in your public profile",
+  COLLECTION_CHANGE_PRIVACY: "Change Privacy?",
+  COLLECTION_CHANGE_PRIVACY_DES: "Anyone will be able to see your collections and stories you will no longer need to approve followers.",
+
 
   // Place Profile
 
@@ -116,5 +120,8 @@ export default {
 
   // Map View
 
-  MAPVIEW_TITLE: "Map View"
+  MAPVIEW_TITLE: "Map View",
+
+  // User profile
+  USERPROFILE_TITLE: "Profile"
 }

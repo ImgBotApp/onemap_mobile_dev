@@ -6,10 +6,13 @@ import FeedItem from '@components/FeedItem'
 import FeedEvent from '@components/FeedEvent'
 import FeedCampaign from '@components/FeedCampaign'
 import SuggestPlace from '@components/SuggestPlace'
+import TitleImage from '@components/TitledImage'
+
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import styles from './style'
 import I18n from '@language'
 import { LIGHT_GRAY_COLOR } from '../../../theme/colors';
+import Modal from 'react-native-modalbox';
 const data = [
   {
     type: 'users',
@@ -377,7 +380,8 @@ class FeedPage extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      suggestFlag: true
+      suggestFlag: true,
+      collectionModal: false
     }
   }
   closeSuggest() {
@@ -410,7 +414,7 @@ class FeedPage extends Component {
   _renderFeedItem (data) {
     return (
       <View style={styles.feedItem}>
-        <FeedItem data={data} onPress={this.onPressUserProfile.bind(this)} onPlace={this.onPlace.bind(this)}/>
+        <FeedItem data={data} onPress={this.onPressUserProfile.bind(this)} onBookMarker={this.onBookMarker.bind(this)} onPlace={this.onPlace.bind(this)}/>
       </View>
     )
   }
@@ -460,6 +464,11 @@ class FeedPage extends Component {
   onPlace = (title) => {
     this.props.navigation.navigate('PlaceProfile', {title: title})
   }
+  onBookMarker = () => {
+    this.setState({
+      collectionModal: true
+    })
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -468,6 +477,30 @@ class FeedPage extends Component {
           data = {data}
           renderItem={this._renderItem.bind(this)}
         />
+         <Modal
+          style={styles.collectionModal}
+          isOpen={this.state.collectionModal}
+          backdropPressToClose={true}
+          position={'bottom'}
+          backdrop={true}
+          backdropOpacity={0.5}
+          backdropColor={'lightgray'}
+          onClosed={() => this.setState({collectionModal: false})}
+        > 
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('AllCollection')}>
+              <Text style={styles.plusButton}>{'+'}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.separatebar}></View>
+          <View style={styles.Collections}>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+          </View>
+        </Modal>
       </View>
     );
   }
