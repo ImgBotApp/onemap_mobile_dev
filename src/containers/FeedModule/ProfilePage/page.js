@@ -1,11 +1,12 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList, Image } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import AutoHeightImage from 'react-native-auto-height-image';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import CampaignList from '@components/CampaignList'
-
+import Collections from '@components/Collections'
 import CircleImage from '@components/CircleImage'
 import TitleImage from '@components/TitledImage'
 import styles from './styles'
@@ -117,13 +118,32 @@ class ProfilePage extends Component {
       </View>
     )
   }
+
+  onHearted =() => {
+    alert('Hearted')
+  }
+
+  onCheckIns =() => {
+    alert('Check-ins')
+  }
+
+  onWishList =() => {
+    alert('Wish list')
+  }
+
+  onViewAll =() => {
+    alert('View All')
+  }
   render() {
     return (
       <ScrollView style={styles.container}>
         {/* user information */}
         <View style={styles.userInformationContainer}>
           <View style={styles.userInformation}>
-            <CircleImage uri={data.user.photoURL} style={styles.userImage} radius={getDeviceWidth(177)}/>
+            <View style={{flexDirection: 'row'}}>
+              <CircleImage uri={data.user.photoURL} style={styles.userImage} radius={getDeviceWidth(177)}/>
+              <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage}/>
+            </View>
             <View style={styles.userInfo}>
               <View>
                 <Text style={styles.userName}>{data.user.name}</Text>
@@ -161,22 +181,17 @@ class ProfilePage extends Component {
         <View style={styles.collectionContainer}>
           <CampaignList data={data.campaign} onViewMore={this.onCampaignPress.bind(this)}/>
         </View>
+        {/* Collection list */}
         <View>
           <Text style={styles.collectionText}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
         </View>
         <View style={styles.collectionContainer}>
-          <TouchableOpacity>
-            <TitleImage style={styles.collection} uri={data.collections[0].uri} radius={8} title={'Hearted'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <TitleImage style={styles.collection} uri={data.collections[0].uri} radius={8} title={'Check-ins'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <TitleImage style={styles.collection} uri={data.collections[0].uri} radius={8} title={'Wish list'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <TitleImage style={styles.collection} uri={data.collections[0].uri} radius={8} title={'+\nView all\nCollections'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-          </TouchableOpacity>
+          <Collections 
+            onHearted={this.onHearted.bind(this)}
+            onCheckIns={this.onCheckIns.bind(this)}
+            onWishList={this.onWishList.bind(this)}
+            onViewAll={this.onViewAll.bind(this)}
+           />
         </View>
         <View>
           <Text style={styles.StoryText}>{I18n.t('PROFILE_STORY_TITLE')}</Text>

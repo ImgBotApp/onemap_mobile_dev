@@ -11,13 +11,13 @@ class CollectionItem extends Component {
     this.state={
       uri: this.props.uri,
       radius: this.props.radius ? this.props.radius : 8,
-      title: this.props.title,
+      title: this.props.title || '',
     }
   }
   render() {
     return (
       <View style={[styles.cell,this.props.style]}>
-        <TitleImage style={[styles.collection, this.props.insideStyle]} uri={this.props.uri} radius={this.state.radius}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+        <TitleImage style={[styles.collection, this.props.insideStyle]} uri={this.props.uri} radius={this.state.radius}  title={this.state.title} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
       </View>
   );
   }

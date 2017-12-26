@@ -19,6 +19,13 @@ const styles = StyleSheet.create({
   userInformation: {
     flexDirection: 'row'
   },
+  checkImage: {
+    width: getDeviceWidth(98),
+    height: getDeviceWidth(98),
+    resizeMode: 'contain',
+    alignSelf: 'flex-end',
+    marginLeft: -1 * getDeviceWidth(98)
+  },
   userImage: {
     width: getDeviceHeight(355),
     height: getDeviceWidth(355)
