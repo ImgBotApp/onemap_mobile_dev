@@ -7,6 +7,7 @@ import AutoHeightImage from 'react-native-auto-height-image';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import CampaignList from '@components/CampaignList'
 import Collections from '@components/Collections'
+import StoryBoard from '@components/StoryBoard'
 import CircleImage from '@components/CircleImage'
 import TitleImage from '@components/TitledImage'
 import styles from './styles'
@@ -78,28 +79,52 @@ const data = {
       ]
     }
   ],
-  stories: [
+  storyCollecton: [
     {
-      items: [
-        {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg'},
-        {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg'},
-      ]
+      id: 'a1',
+      title: 'a1',
+      uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
     },
     {
-      items: [
-        {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg'},
-        {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg'},
-        {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-      ]
+      id: 'a2',
+      title: 'a2',
+      uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
     },
     {
-      items: [
-        {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg'},
-        {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg'},
-      ]
-    }
+      id: 'a3',
+      title: 'a3',
+      uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
+    },
+    {
+      id: 'a4',
+      title: 'a4',
+      uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
+    },
+    {
+      id: 'a5',
+      title: 'a5',
+      uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
+    },
+    {
+      id: 'a6',
+      title: 'a6',
+      uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
+    },
+    {
+      id: 'a7',
+      title: 'a7',
+      uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
+    },
+    {
+      id: 'a8',
+      title: 'a8',
+      uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
+    },
+    {
+      id: 'a9',
+      title: 'a9',
+      uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
+    },
   ]
 }
 // create a component
@@ -193,31 +218,18 @@ class ProfilePage extends Component {
             onViewAll={this.onViewAll.bind(this)}
            />
         </View>
+        {/* Story board */}
         <View>
           <Text style={styles.StoryText}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
         </View>
-        <View style={styles.StoryContainer}>
-          <View style={styles.StoryList}>
-            <FlatList 
-              data={data.stories[0].items}
-              renderItem={({item}) => { return this._renderStoryItem(item)} }
-            />
-          </View>
-          <View style={styles.StoryList}>
-            <FlatList 
-              data={data.stories[1].items}
-              renderItem={({item}) => { return this._renderStoryItem(item)} }
-            />
-          </View>
-          <View style={styles.StoryList}>
-            <FlatList 
-              data={data.stories[2].items}
-              renderItem={({item}) => { return this._renderStoryItem(item)} }
-            />
-          </View>
-        </View>
+        <StoryBoard style={styles.StoryContainer} subContainer={styles.StoryList} data={data.storyCollecton} width={343} 
+          onPressItem={this.onStoryItem.bind(this)}
+        />
       </ScrollView>
     );
+  }
+  onStoryItem(id) {
+    alert(id)
   }
 }
 

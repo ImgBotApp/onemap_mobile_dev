@@ -6,6 +6,13 @@ import CardView from 'react-native-cardview'
 import styles from './styles'
 import I18n from '@language'
 import DFonts from '@theme/fonts'
+
+/**
+ * Props Event
+ * 
+ * onVisitProfile
+ */
+
 // create a component
 class FeedCampaign extends Component {
   render() {
@@ -19,7 +26,7 @@ class FeedCampaign extends Component {
               <Text style={styles.campaign}>{I18n.t('FEED_CAMPAIGN')}</Text>
             </View>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => this.props.onVisitProfile(this.props.data.id)}>
             <View style={styles.visitProfile}>
               <Text style={styles.visitiText}>{I18n.t('FEED_VISIT_PROFILE')}</Text>
             </View>

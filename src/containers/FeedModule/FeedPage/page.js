@@ -15,6 +15,7 @@ import { LIGHT_GRAY_COLOR } from '../../../theme/colors';
 import Modal from 'react-native-modalbox';
 const data = [
   {
+    id: 'a1',
     type: 'users',
     data: [
       {
@@ -55,6 +56,7 @@ const data = [
     ]
   },
   {
+    id: 'a2',
     type: 'item',
     user: {
       name: 'Alexandra',
@@ -93,10 +95,12 @@ const data = [
     description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on'
   },
   {
+    id: 'a3',
     type: 'place',
     uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
   },
   {
+    id: 'a4',
     type: 'item',
     user: {
       name: 'Alexandra',
@@ -135,6 +139,7 @@ const data = [
     description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on'
   },
   {
+    id: 'a5',
     type: 'campaign',
     title: 'TAT Thailand',
     mark: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
@@ -142,6 +147,7 @@ const data = [
     image: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
   },
   {
+    id: 'a6',
     type: 'item',
     user: {
       name: 'Alexandra',
@@ -179,6 +185,7 @@ const data = [
     description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on'
   },
   {
+    id: 'a7',
     type: 'event',
     user: {
       name: 'Alexandra',
@@ -189,6 +196,7 @@ const data = [
     title: 'Gramercy Tavern'
   },
   {
+    id: 'a8',
     type: 'item',
     user: {
       name: 'Alexandra',
@@ -226,6 +234,7 @@ const data = [
     description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on'
   },
   {
+    id: 'a9',
     type: 'item',
     user: {
       name: 'Alexandra',
@@ -264,6 +273,7 @@ const data = [
     description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on'
   },
   {
+    id: 'a10',
     type: 'item',
     user: {
       name: 'Alexandra',
@@ -301,6 +311,7 @@ const data = [
     description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on'
   },
   {
+    id: 'a11',
     type: 'item',
     user: {
       name: 'Alexandra',
@@ -338,6 +349,7 @@ const data = [
     description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on'
   },
   {
+    id: 'a12',
     type: 'item',
     user: {
       name: 'Alexandra',
@@ -427,10 +439,14 @@ class FeedPage extends Component {
     )
   }
 
+  onVisitProfile = (CampaignId) => {
+    this.props.navigation.navigate('ProfilePage')
+  }
+
   _renderFeedCampaign (data) {
     return (
       <View style={styles.feedItem}>
-        <FeedCampaign data={data} />
+        <FeedCampaign data={data} onVisitProfile={this.onVisitProfile.bind(this)}/>
       </View>
     )
   }
@@ -479,6 +495,7 @@ class FeedPage extends Component {
     return (
       <View style={styles.container}>
         <FlatList 
+          keyExtractor={(item,index) => item.id}
           style={{width: '100%', height: '100%'}}
           data = {data}
           renderItem={this._renderItem.bind(this)}
