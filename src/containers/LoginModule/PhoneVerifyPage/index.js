@@ -9,6 +9,9 @@ import styles from './styles'
 import { getDeviceWidth, getDeviceHeight } from '@global'
 import { DARK_GRAY_COLOR } from '@theme/colors';
 import { ACCOUNT_MODE } from '@global/const'
+import * as SCREEN from '@global/screenName'
+
+import I18n from '@language'
 
 import { verifyCode, requestVerify } from '@apis/phoneVerify'
 // import { setTimeout } from 'timers';
@@ -28,7 +31,7 @@ class PhoneVerifyPage extends Component {
     rightButtons: [
       {
         icon: require('@assets/images/login/rightNav.png'),
-        id: 'goVerify',
+        id: 'goNext',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
       }
@@ -46,13 +49,32 @@ class PhoneVerifyPage extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
 
+  initComponent () {
+    this.setState ({
+      timeout: 40,
+      timeoutVisible: true
+    })
+    this.refs.circularProgress.performLinearAnimation(100, 40* Interval);    
+  }
+
   onNavigatorEvent(event) {
+    if (event.id == 'didAppear') {
+      this.initComponent()
+    }
     if (event.type == 'NavBarButtonPress') {
       if(event.id == 'backButton') {
        this.onBackButtonPress()
       }
-      if(event.id == 'goVerify') {
-        this._onCheckPhoneNumberValidation()
+      if(event.id == 'goNext') {
+        if ( this.props.mode == ACCOUNT_MODE.create ) {
+          this.props.navigator.push({
+            screen: SCREEN.ACCOUNT_CREATE_PAGE,
+            title: I18n.t('CREATE_ACCOUNT'),
+            passProps: {
+              phoneNumber: this.props.phoneNumber
+            }
+          })
+        }
       }
     }
   }
@@ -61,24 +83,16 @@ class PhoneVerifyPage extends Component {
       animated: true
     })
   }
+
   componentWillMount () {
     // this.props.navigation.setParams({complete: false})
     // this.props.navigation.setParams({
       // checkCode: this._checkVerify
     // })
   }
-  timeInterval =() =>{
-    if (this.state.timeout == 0 ) return
-    this.setState({
-      timeout: this.state.timeout -1
-    })
-    
-    setTimeout(() => this.timeInterval(), Interval)
-    
-  }
   componentDidMount =() => {
-    this.refs.circularProgress.performLinearAnimation(100, 40* Interval);
-    setTimeout(() => this.timeInterval(), Interval)
+    // this.refs.circularProgress.performLinearAnimation(100, 40* Interval);
+    // setTimeout(() => this.timeInterval(), Interval)
   }
 
   _checkVerify () {
@@ -102,9 +116,7 @@ class PhoneVerifyPage extends Component {
         timeout: 40,
         timeoutVisible: true
       });
-      setTimeout(() => this.timeInterval(), 1)
       setTimeout(() => this.refs.circularProgress.performLinearAnimation(100,40 * Interval), 1)
-      // this.refs.circularProgress.performLinearAnimation(100, 40 * Interval);    
     } else {
       alert('there is a problem with PhoneVerification')
     }
@@ -126,7 +138,7 @@ class PhoneVerifyPage extends Component {
           {
             (fill) => (
               <Text style={styles.circularPoints}>
-                { this.state.timeout }
+                { Math.round((100 - Math.round(fill)) / 2.5) }
               </Text>
             )
           }

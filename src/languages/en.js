@@ -19,6 +19,7 @@ export default {
   LOGIN_PHONE_NUMBER_DESCRIPTION2: "Terms of Use and the ",
   PRIVACY_PLICY   : "Privacy Policy",
   CREATE_ACCOUNT  : "Create Account",
+  DONE_STR        : "Done",
 
 
   // Drawer String

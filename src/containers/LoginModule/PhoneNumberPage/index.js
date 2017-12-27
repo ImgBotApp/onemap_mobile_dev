@@ -98,7 +98,8 @@ class PhoneNumberPage extends Component {
           title: I18n.t('CREATE_ACCOUNT'),
           passProps: {
             phoneNumber: phoneNumber,
-            countryCode: countryCode
+            countryCode: countryCode,
+            mode: this.props.mode
           },
           animated: true,
           animationType: 'slide-horizontal'
