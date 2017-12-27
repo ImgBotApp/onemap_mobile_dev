@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
-import * as GLOBAL from '@global'
+import { getDeviceWidth, getDeviceHeight } from '@global'
+import { BLUE_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -7,17 +8,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#efeded',
   },
   enterText: {
-    marginTop       : GLOBAL.getDeviceHeight(350),
+    marginTop       : getDeviceHeight(350),
     textAlign       : 'center',
     fontSize        : 13,
     fontFamily      : 'Comfortaa-regular',
-    color           : GLOBAL.GRAY_FONT
+    color           : DARK_GRAY_COLOR
   },
   PhoneInputContainer: {
-    marginTop       : GLOBAL.getDeviceHeight(125),
-    marginLeft      : GLOBAL.getDeviceWidth(330),
-    width           : GLOBAL.getDeviceWidth(779),
-    height          : GLOBAL.getDeviceHeight(79),
+    marginTop       : getDeviceHeight(125),
+    marginLeft      : getDeviceWidth(330),
+    width           : getDeviceWidth(779),
+    height          : getDeviceHeight(79),
     borderBottomWidth: 1,
     borderColor     : '#a7a7a7'
   },
@@ -27,7 +28,10 @@ const styles = StyleSheet.create({
     color           : '#575858'
   },
   belowDistance: {
-    marginTop       : GLOBAL.getDeviceHeight(133)
+    marginTop       : getDeviceHeight(133)
+  },
+  privacyPolicy: {
+    color           : BLUE_COLOR
   }
 });
 

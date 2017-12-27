@@ -63,7 +63,7 @@ export default class App {
       case 'login':
         Navigation.startSingleScreenApp({
           screen: {
-            screen: 'a',
+            screen: SCREEN.LOGIN_SCREEN,
             navigatorStyle: {
               navBarHidden: true
             },

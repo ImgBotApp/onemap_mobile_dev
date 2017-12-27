@@ -16,7 +16,9 @@ export default {
   GENDER_NOT_SAY_STR: "I would prefer not to say",
   INPUT_PHONE_NUMBER: "Please enter your phone number",
   LOGIN_PHONE_NUMBER_DESCRIPTION1: "By registering, I have read and agree to the",
-  LOGIN_PHONE_NUMBER_DESCRIPTION2: "Terms of Use and the Privacy Policy",
+  LOGIN_PHONE_NUMBER_DESCRIPTION2: "Terms of Use and the ",
+  PRIVACY_PLICY   : "Privacy Policy",
+  CREATE_ACCOUNT  : "Create Account",
 
 
   // Drawer String

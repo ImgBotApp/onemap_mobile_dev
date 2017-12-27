@@ -8,6 +8,9 @@ import styles from './styles'
 import RoundButton from '@components/RoundButton'
 import LoadingSpinner from '@components/LoadingSpinner'
 import { UPDATE_FACEBOOK_USER } from '@graphql/users'
+import * as SCREEN from '@global/screenName'
+import { ACCOUNT_MODE } from '@global/const'
+import { DARK_GRAY_COLOR } from '../../../theme/colors';
 
 // const { GraphRequest, GraphRequestManager, AccessToken } = FBSDK
 
@@ -93,6 +96,22 @@ class LoginPage extends Component {
 
   onPhoneNumber () {
     // this.props.navigation.navigate('PhoneNumberPage')
+    this.props.navigator.push({
+      screen: SCREEN.PHONE_NUMBER_PAGE,
+      title: 'Create Account',
+      passProps: {
+        mode: ACCOUNT_MODE.create
+      },
+      animated: true,
+      // animationType: 'fade',
+      navigatorStyle: {
+        // navBarHidden: true
+        navBarTextColor: DARK_GRAY_COLOR,
+        navBarTextFontFamily: 'Comfortaa-Regular',
+        naviBarComponentAlignment: 'center'
+      },
+      // navigatorButtons: {}
+    })
   }
   render() {
     return (
