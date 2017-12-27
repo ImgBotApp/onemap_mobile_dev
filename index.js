@@ -4,6 +4,6 @@
 // AppRegistry.registerComponent('OneMapFinal', () => App);
 
 
-import StartApp from './src/main'
+import App from './src/main'
 
-StartApp()
+const app = new App()
