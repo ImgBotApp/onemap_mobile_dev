@@ -19,7 +19,7 @@ const store = createStoreWithMiddleware(reducer)
 import { ApolloProvider } from 'react-apollo'
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-client-preset'
 
-import * as SCREEN from '@global/screenName'
+import * as SCREEN from './global/screenName'
 
 const httpLink = new HttpLink({ uri: 'https://api.graph.cool/simple/v1/cjb30vkvv434c0146sjjn4d4w' })
 const client = new ApolloClient({
@@ -29,20 +29,15 @@ const client = new ApolloClient({
 
 registerScreens(store, ApolloProvider, {client});
 
-// export default () => {
-//   Navigation.registerComponent('TestScreen', () => TestSceen, store, ApolloProvider, {client});
+import EntypoIcons from 'react-native-vector-icons/Entypo'
+import FeatherIcons from 'react-native-vector-icons/Feather'
 
-//   Navigation.startTabBasedApp({
-//     tabs: [
-//       {
-//         label: 'test',
-//         screen: 'TestScreen'
-//       }
-//     ]
-//   })
-// }
+import { FEED_LIST_SCREEN } from './global/screenName';
+import { DARK_GRAY_COLOR } from './theme/colors';
 
-
+var HomeIcon;
+var UserIcon;
+var SettingIcon;
 
 export default class App {
   constructor () {
@@ -58,6 +53,23 @@ export default class App {
       this.startApp(root);
     }
   }
+
+  _populateIcons = function () {
+    return new Promise(function (resolve, reject) {
+      Promise.all([
+        EntypoIcons.getImageSource('home',26),
+        EntypoIcons.getImageSource('user',26),
+        FeatherIcons.getImageSource('settings',24)
+      ]).then ( (values) => {
+        HomeIcon = values[0];
+        UserIcon = values[1];
+        SettingIcon = values[2];
+        resolve(true)
+      }).catch((error) => {
+        reject(error);
+      }).done();
+    });
+  }
   startApp(root) {
     switch(root) {
       case 'login':
@@ -72,9 +84,41 @@ export default class App {
         })
         return;
       case 'main':
-        break;
+        this._populateIcons().then(() => {
+          Navigation.startTabBasedApp({
+            tabs: [
+              {
+                title: 'FEED',
+                screen: SCREEN.FEED_LIST_SCREEN,
+                icon: HomeIcon,
+                navigatorStyle: {
+                  navBarTextFontFamily: 'Comfortaa-Regular',
+                  navBarTextColor: DARK_GRAY_COLOR
+                }
+              },
+              {
+                title: 'PROFILE',
+                screen: SCREEN.USER_PROFILE_SCREEN,
+                icon: UserIcon,
+                navigatorStyle: {
+                  navBarTextFontFamily: 'Comfortaa-Regular',
+                  navBarTextColor: DARK_GRAY_COLOR
+                }
+              }
+            ]
+          })
+        }).catch((error) => {
+          console.error(error);
+        })
+        return;
       default: 
         alert('unknown app root')
     }
   }
 }
+
+export var Icons = {
+  HomeIcon,
+  UserIcon,
+  SettingIcon
+};

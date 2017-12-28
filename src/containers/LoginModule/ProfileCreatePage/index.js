@@ -15,6 +15,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '@actions'
 
+import * as appActions from '@reducers/app/actions'
+
 import { DARK_GRAY_COLOR } from '@theme/colors'
 
 // create a component
@@ -71,6 +73,7 @@ class ProfileCreatePage extends Component {
           this.setState({
             success: true
           })
+          this.props.dispatch(appActions.login())
         }
       }
     }
@@ -270,4 +273,4 @@ function mapDispatchToProps (dispatch) {
 
 //make this component available to the app
 // export default ProfileCreatePage;
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileCreatePage);
+export default connect(mapStateToProps)(ProfileCreatePage);

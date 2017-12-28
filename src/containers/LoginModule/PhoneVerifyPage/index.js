@@ -76,6 +76,9 @@ class PhoneVerifyPage extends Component {
           })
         }
       }
+      if(event.id == 'updatePhoneNumber') {
+        this.props.navigator.popToRoot({})
+      }
     }
   }
   onBackButtonPress() {

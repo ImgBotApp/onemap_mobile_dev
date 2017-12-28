@@ -15,6 +15,12 @@ export function changeAppRoot(root) {
 
 export function login() {
   return async function(dispatch, getState) {
-    dispatch(changeAppRoot('after-login'));
+    dispatch(changeAppRoot('main'));
+  }
+}
+
+export function logout() {
+  return async function(dispatch, getState) {
+    dispatch(changeAppRoot('login'))
   }
 }

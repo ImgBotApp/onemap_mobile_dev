@@ -7,6 +7,8 @@ import {
   saveProfileInfo 
 } from '@actions/userLogIn'
 
+import * as appActions from '@reducers/app/actions'
+
 import Page from './page'
 
 import { 
@@ -31,6 +33,9 @@ function mapDispatchToProps (dispatch) {
     },
     saveProfileInfo: data => {
       dispatch(saveProfileInfo(data))
+    },
+    login: () => {
+      dispatch(appActions.login())
     }
   }
 }

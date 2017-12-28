@@ -11,6 +11,7 @@ import { UPDATE_FACEBOOK_USER } from '@graphql/users'
 import * as SCREEN from '@global/screenName'
 import { ACCOUNT_MODE } from '@global/const'
 import { DARK_GRAY_COLOR } from '../../../theme/colors';
+import * as appActions from '@reducers/app/actions'
 
 // const { GraphRequest, GraphRequestManager, AccessToken } = FBSDK
 
@@ -85,6 +86,8 @@ class LoginPage extends Component {
     //     $this._responseInfoCallback,
     //   );
     //   new GraphRequestManager().addRequest(infoRequest).start();
+    // this.props.dispatch(appActions.login())
+    this.props.login();
     this._responseInfoCallback(null,{});
     // })
     // .catch((err) => {

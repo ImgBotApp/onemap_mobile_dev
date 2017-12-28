@@ -129,5 +129,7 @@ export default {
   MAPVIEW_TITLE: "Map View",
 
   // User profile
-  USERPROFILE_TITLE: "Profile"
+  USERPROFILE_TITLE: "Profile",
+  USERPROFILE_USER_REQUSET_MODIFICATION: "Request to be modification",
+  USERPROFILE_TERMS: "Terms"
 }
