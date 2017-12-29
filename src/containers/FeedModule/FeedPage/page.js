@@ -440,7 +440,7 @@ class FeedPage extends Component {
   }
 
   onVisitProfile = (CampaignId) => {
-    this.props.navigation.navigate('ProfilePage')
+    // this.props.navigation.navigate('ProfilePage')
   }
 
   _renderFeedCampaign (data) {
@@ -474,11 +474,11 @@ class FeedPage extends Component {
   }
 
   onPressUserProfile = (id) => {
-    this.props.navigation.navigate('ProfilePage',{id: id})
+    // this.props.navigation.navigate('ProfilePage',{id: id})
   }
 
   onPlace = (title) => {
-    this.props.navigation.navigate('PlaceProfile', {title: title})
+    // this.props.navigation.navigate('PlaceProfile', {title: title})
   }
   onBookMarker = () => {
     this.setState({
@@ -489,7 +489,7 @@ class FeedPage extends Component {
     this.setState({
       collectionModal: false
     })
-    this.props.navigation.navigate('AllCollection')
+    // this.props.navigation.navigate('AllCollection')
   }
   render() {
     return (

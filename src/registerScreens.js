@@ -18,6 +18,8 @@ import UserProfile from './containers/UserProfileModule/ProfilePage'
 import AccountSetting from './containers/UserProfileModule/AccountSetting'
 import EditProfile from './containers/UserProfileModule/EditProfile'
 import UserPhoneEditPage from './containers/UserProfileModule/PhoneNumber'
+import FollowPeoplePage from './containers/UserProfileModule/FollowPeoplePage'
+
 
 export function registerScreens(store, Provider, client) {
   Navigation.registerComponent(SCREEN.LOGIN_SCREEN, () => LoginScreen, store, Provider, client)
@@ -34,4 +36,5 @@ export function registerScreens(store, Provider, client) {
   Navigation.registerComponent(SCREEN.USER_ACCOUNT_SETTING, () => AccountSetting, store, Provider, client)
   Navigation.registerComponent(SCREEN.USER_PROFILE_EDIT, () => EditProfile, store, Provider, client)
   Navigation.registerComponent(SCREEN.USER_PHONE_EDIT, () => UserPhoneEditPage, store, Provider, client)
+  Navigation.registerComponent(SCREEN.USER_FOLLOW_PAGE, () =>FollowPeoplePage, store, Provider, client)
 }

@@ -112,7 +112,15 @@ class ProfileComponent extends Component {
   componentWillUpdate () {
   }
   onEditProfile () {
-    this.props.navigation.navigate('AccountSetting')
+    this.props.navigator.push({
+      screen: SCREEN.USER_ACCOUNT_SETTING,
+      title: 'Account Settings',
+      animated: true,
+      navigatorStyle: {
+        navBarTextColor: DARK_GRAY_COLOR,
+        navBarTextFontFamily: 'Comfortaa-Regular'
+      }
+    })
   }
   render() {
     return (

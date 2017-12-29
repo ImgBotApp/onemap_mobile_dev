@@ -33,6 +33,8 @@
     "react-native-phone-input": "git+https://github.com/RoyalDeveloper2015/react-native-phone-input.git",
     "react-native-search-box": "^0.0.13",
     "react-native-side-menu": "^1.1.3",
+    "react-native-swipe-list-view": "^1.0.3",
+    "react-native-swipeable": "^0.6.0",
     "react-native-tabs": "^1.0.9",
     "react-native-tag-input": "^0.0.18",
     "react-native-vector-icons": "^4.4.3",

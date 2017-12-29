@@ -6,6 +6,7 @@ export default {
   DONE_STR        : "Done",
   BLOCKED_STR     : "Block",
   CANCEL_STR      : "Cancel",
+  UNFOLLOW        : "Unfollow",
   OK_STR          : "Ok",
   OFF_STR         : "Off",
   NAME_STR        : "Name",
@@ -74,6 +75,7 @@ export default {
   // Blocked User Page
   SETTING_BLOCKED_USER_TITLE: "Blocked User",
   SETTING_BLOCKED_USER_DESCRIPTION: "They won't be able to find your profile, poss or story on One Map. One Map won't let them know you blocked them",
+  SETTING_UNFOLLOW_USER_DESCRIPTION: "They won’t be able to follow you, see your collections,read your stories or search for you. OneMap will not let them know that you have blocked them.",
 
   // Story Setting
   SETTING_STORY_ALLOW_PLACEHOLDER: "Allow Message Replies",

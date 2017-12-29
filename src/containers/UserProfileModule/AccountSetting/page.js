@@ -66,7 +66,11 @@ class AccountSetting extends Component {
     this.props.logout()
   }
   onFollowSetting=() => {
-
+    this.props.navigator.push({
+      screen: SCREEN.USER_FOLLOW_PAGE,
+      title: 'Follow People',
+      animated: true,
+    })
   }
   onRequestToBeModification=() => {
 
