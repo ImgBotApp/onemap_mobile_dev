@@ -104,7 +104,7 @@ export default {
   PROFILE_PAGE_TITLE: "OneMapper Profile",
   // Collections
   COLLECTION_TITLE: "All My Collections",
-  COLLECTION_CREATE_NEW: "Create New Collection",
+  COLLECTION_CREATE_NEW: "New Collection",
   COLLECTION_NAME: "Collection Name",
   PRIVACY_DESCRIPTION: "Appears in your public profile",
   COLLECTION_CHANGE_PRIVACY: "Change Privacy?",

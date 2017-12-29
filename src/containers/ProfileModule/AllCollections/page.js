@@ -6,7 +6,9 @@ import GridView from 'react-native-gridview'
 import TitleImage from '@components/TitledImage'
 import CollectionItem from '@components/CollectionItem'
 import styles from './styles'
-
+import { DARK_GRAY_COLOR } from '../../../theme/colors';
+import * as SCREEN from '@global/screenName'
+import I18n from '@language'
 const itemsPerRow = 3
 
 const data = [
@@ -69,11 +71,40 @@ const data = [
 var $this 
 // create a component
 class AllCollections extends Component {
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        icon: require('@assets/images/login/leftNav.png'),
+        id: 'backButton',
+        buttonColor: DARK_GRAY_COLOR,
+        disableIconTint: true
+      }
+    ],
+    rightButtons: [
+      {
+        title: '+',
+        id: 'add',
+        buttonColor: DARK_GRAY_COLOR,
+        disableIconTint: true
+      }
+    ]
+  };
   constructor (props) {
     super(props)
-    $this = this
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
-  componentWillMount () {
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'backButton') {
+        this.props.navigator.pop({})
+      }
+      if(event.id == 'add') {
+        this.props.navigator.push({
+          screen: SCREEN.FEED_NEW_COLLECTION,
+          title: I18n.t('COLLECTION_CREATE_NEW')
+        })
+      }
+    }
   }
   render() {
     return (

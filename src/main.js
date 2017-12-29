@@ -38,6 +38,7 @@ import { DARK_GRAY_COLOR } from './theme/colors';
 var HomeIcon;
 var UserIcon;
 var SettingIcon;
+var SearchIcon;
 
 export default class App {
   constructor () {
@@ -59,11 +60,13 @@ export default class App {
       Promise.all([
         EntypoIcons.getImageSource('home',26),
         EntypoIcons.getImageSource('user',26),
-        FeatherIcons.getImageSource('settings',24)
+        FeatherIcons.getImageSource('settings',24),
+        FeatherIcons.getImageSource('search',24)
       ]).then ( (values) => {
         HomeIcon = values[0];
         UserIcon = values[1];
         SettingIcon = values[2];
+        SearchIcon = values[3];
         resolve(true)
       }).catch((error) => {
         reject(error);
@@ -97,6 +100,16 @@ export default class App {
                 }
               },
               {
+                title: 'SEARCH',
+                screen: SCREEN.SEARCH_PAGE,
+                icon: SearchIcon,
+                navigatorStyle: {
+                  navBarTextFontFamily: 'Comfortaa-Regular',
+                  navBarTextColor: DARK_GRAY_COLOR,
+                  navBarHidden: true
+                }
+              },
+              {
                 title: 'PROFILE',
                 screen: SCREEN.USER_PROFILE_SCREEN,
                 icon: UserIcon,
@@ -104,7 +117,7 @@ export default class App {
                   navBarTextFontFamily: 'Comfortaa-Regular',
                   navBarTextColor: DARK_GRAY_COLOR
                 }
-              }
+              },
             ]
           })
         }).catch((error) => {

@@ -192,10 +192,33 @@ class ProfileComponent extends Component {
 
   }
   onViewAll=() => {
-
+    this.props.navigator.push({
+      screen: SCREEN.COLLECTIONS_PAGE,
+      title: I18n.t('DRAWER_COLLECTION_TITLE'),
+      animated: true
+    })
   }
   onStoryItem=(id) => {
-
+    this.props.navigator.push({
+      screen: SCREEN.PLACE_PROFILE_PAGE,
+      title: 'My Stories',
+      navigatorbuttons: {
+        rightButtons: [
+          {
+            icon: require('@assets/images/setting.png'),
+            id: 'Setting',
+            disableIconTint: true
+          }
+        ],
+        leftButtons: [
+          {
+            title: '•••',
+            id: 'detail',
+            disableIconTint: true
+          }
+        ]
+      }
+    })
   }
   _openDrawerMenu () {
     $this.props.navigation.navigate('DrawerOpen')

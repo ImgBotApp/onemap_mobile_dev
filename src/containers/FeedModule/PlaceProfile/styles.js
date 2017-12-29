@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BACKGROUNDCOLOR,
-    paddingTop: getDeviceHeight(95)
+    paddingTop: getDeviceHeight(45)
   },
   titleContainer: {
     flexDirection: 'row',

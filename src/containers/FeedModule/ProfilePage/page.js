@@ -14,7 +14,7 @@ import styles from './styles'
 import I18n  from '@language'
 import { getDeviceWidth, getDeviceHeight, calculateCount } from '@global'
 import DFonts from '@theme/fonts'
-import { BLUE_COLOR } from '../../../theme/colors';
+import { BLUE_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
 const data = {
   user: {
     photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
@@ -129,6 +129,27 @@ const data = {
 }
 // create a component
 class ProfilePage extends Component {
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        icon: require('@assets/images/login/leftNav.png'),
+        id: 'backButton',
+        buttonColor: DARK_GRAY_COLOR,
+        disableIconTint: true
+      }
+    ]
+  };
+  constructor (props) {
+    super(props)
+    this.props.navigator.setOnNavigatorEvent(this.onNavigateEvent.bind(this))
+  }
+  onNavigateEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'backButton') {
+        this.props.navigator.pop({})
+      }
+    }
+  }
   onCampaignPress(id) {
     alert(id)
   }
