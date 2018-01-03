@@ -1,13 +1,16 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, KeyBoard, Keyboard, Picker, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, KeyBoard, Keyboard, Picker, TouchableOpacity, Image, 
+  AsyncStorage} from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Dropdown } from 'react-native-material-dropdown';
 import Toast, { DURATION } from 'react-native-easy-toast'
+import CircleImage from '@components/CircleImage'
 
 import styles from './styles'
 import I18n from '@language'
+import { ACCOUNT_MODE, APP_USER_KEY } from '@global/const'
 
 import { NavigationActions } from 'react-navigation'
 // Redux 
@@ -16,8 +19,14 @@ import { connect } from 'react-redux'
 import * as Actions from '@actions'
 
 import * as appActions from '@reducers/app/actions'
+import { saveUserInfo } from '@reducers/user/actions'
 
 import { DARK_GRAY_COLOR } from '@theme/colors'
+import { graphql } from 'react-apollo'
+import { getDeviceWidth } from '@global'
+import { 
+  UPDATE_USER
+} from '@graphql/users'
 
 // create a component
 class ProfileCreatePage extends Component {
@@ -42,15 +51,18 @@ class ProfileCreatePage extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      username: '',
-      name: '',
-      country: '',
-      city: '',
+      username: this.props.mode == ACCOUNT_MODE.facebook ? this.props.info.id : '',
+      name: this.props.info.first_name + ' ' + this.props.info.last_name || '',
+      photoURL : this.props.info.picture.data.url,
+      country: 'Thailand',
+      city: 'Thailand',
       birthday: new Date(),
-      gender: '',
-      bio: '',
+      gender: this.props.info.gender || '',
+      bio: this.props.info.about || '',
+      loginMethod: this.props.mode == ACCOUNT_MODE.facebook ? 'FACEBOOK' : 'PHONE',
       isDateTimePickerVisible: false,
-      success: false
+      success: false,
+      userId : this.props.info.userId || ''
     }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
@@ -73,6 +85,36 @@ class ProfileCreatePage extends Component {
           this.setState({
             success: true
           })
+          this.props.dispatch(saveUserInfo({
+            id: this.state.userId,
+            createdAt: new Date().toLocaleDateString(),
+            updatedAt: new Date().toLocaleDateString(),
+            loginMethod: this.state.loginMethod,
+            bio: this.state.bio,
+            gender: this.state.gender,
+            city: this.state.city,
+            country: this.state.country,
+            photoURL: this.state.photoURL,
+            firstName: this.props.info.first_name,
+            lastName: this.props.info.last_name,
+            username: this.state.username
+          }))
+          this.props.updateUser({
+            variables: {
+              id: this.state.userId,
+              first_name: this.props.info.first_name,
+              last_name: this.props.info.last_name,
+              gender: this.state.gender.toUpperCase(),
+              photoURL: this.state.photoURL,
+              displayName: this.props.info.first_name + " " + this.props.info.last_name,
+              registrationDate: new Date().toLocaleDateString(),
+              city: this.state.city,
+              country: this.state.country,
+              bio: this.state.bio
+          }})
+          AsyncStorage.setItem(APP_USER_KEY, JSON.stringify({
+            id: this.state.userId
+          }))
           this.props.dispatch(appActions.login())
         }
       }
@@ -169,6 +211,7 @@ class ProfileCreatePage extends Component {
         <View style={styles.textDescription}>
           <Text style={styles.descriptionText}>{I18n.t('CREATE_PROFILE_DESCRIPTION1')}</Text>
           <Text style={styles.descriptionText}>{I18n.t('CREATE_PROFILE_DESCRIPTION2')}</Text>
+          <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(236)}/>
         </View>
         <View style={styles.profile}>
           <Text style={styles.hintText}>*A-Z, a-z, 0-9, Only English</Text>
@@ -189,7 +232,7 @@ class ProfileCreatePage extends Component {
             returnKeyType={'next'}
             onSubmitEditing={() => this.refs.country.focus()}
           />
-          <TextInput style={[styles.infoText]} 
+          {/* <TextInput style={[styles.infoText]} 
             ref="country"
             placeholder={I18n.t('CREATE_PROFILE_COUNTRY')}
             onChangeText={(text) => this.setState({country: text})}
@@ -204,7 +247,7 @@ class ProfileCreatePage extends Component {
             value = {this.state.city}
             returnKeyType={'next'}
             onSubmitEditing={() => this.refs.birthday.focus()}
-          />
+          /> */}
           <TextInput style={[styles.infoText]} 
             ref="birthday"
             onFocus={this._showDatePicker.bind(this)}
@@ -221,6 +264,7 @@ class ProfileCreatePage extends Component {
               ref="gender"
               label='Gender'
               data={Genderdata}
+              value={this.state.gender}
               onChangeText={this._onGenderSelect.bind(this)}
             />
           </View>
@@ -266,11 +310,8 @@ function mapStateToProps (state) {
     user: state.userReducers
   }
 }
-
-function mapDispatchToProps (dispatch) {
-  return bindActionCreators(Actions, dispatch)
-}
+let container = graphql(UPDATE_USER, {name: 'updateUser'})(ProfileCreatePage);
 
 //make this component available to the app
 // export default ProfileCreatePage;
-export default connect(mapStateToProps)(ProfileCreatePage);
+export default connect(mapStateToProps)(container);

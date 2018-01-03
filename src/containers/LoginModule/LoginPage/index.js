@@ -9,11 +9,14 @@ import {
 
 import * as appActions from '@reducers/app/actions'
 
+import { saveUserInfo } from '@reducers/user/actions'
+
 import Page from './page'
 
 import { 
   AUTHENTICATE_FACEBOOK_USER, 
-  UPDATE_FACEBOOK_USER 
+  UPDATE_USER ,
+  EXIST_FACEBOOK_USER
 } from '@graphql/users'
 
 function mapStateToProps (state) {
@@ -36,13 +39,15 @@ function mapDispatchToProps (dispatch) {
     },
     login: () => {
       dispatch(appActions.login())
+    },
+    saveUserInfo: (data) => {
+      dispatch(saveUserInfo(data))
     }
   }
 }
 
-const container = graphql(AUTHENTICATE_FACEBOOK_USER, {name: 'FacebookLogin'})((
-  graphql(UPDATE_FACEBOOK_USER, {name: 'updateFacebookUser'})
-)(Page))
+let container = graphql(AUTHENTICATE_FACEBOOK_USER, {name: 'FacebookLogin'})(Page);
+container = graphql(UPDATE_USER, {name: 'updateFacebookUser'})(container);
 
 //make this component available to the app
 export default connect(mapStateToProps, mapDispatchToProps)(container);

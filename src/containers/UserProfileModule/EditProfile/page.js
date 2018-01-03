@@ -17,6 +17,8 @@ import { getDeviceWidth } from '@global'
 import I18n from '@language'
 import { DARK_GRAY_COLOR } from '../../../theme/colors';
 import * as SCREEN from '@global/screenName'
+import { saveUserInfo } from '@reducers/user/actions'
+
 
 const imagePickerOptions = {
   title: 'Select Avatar',
@@ -48,13 +50,10 @@ class EditProfile extends Component {
   };
   constructor (props) {
     super(props)
+    console.log(props.user)
     this.state = {
-      name: props.user.name || 'Test User',
-      phoneNumber: props.user.phoneNumber || '12057328212',
-      birthday: props.user.birthday || '07/01/1994',
-      gender: props.user.gender || 'male',
-      bio: props.user.bio || 'This is test bio',
-      photoURL: props.user.photoURL || 'https://placeimg.com/640/480/people',
+      ...props.user,
+      displayName: props.user.displayName || props.user.firstName + ' ' + props.user.lastName,
       photoChanged: false,
       isDateTimePickerVisible: false,
     }
@@ -66,7 +65,35 @@ class EditProfile extends Component {
       if(event.id == 'backButton') {
         this.props.navigator.pop({})
       } else if (event.id == 'done' ){
-        this.props.navigator.pop({})        
+        this.props.dispatch(saveUserInfo({
+          id: this.state.id,
+          createdAt: new Date().toLocaleDateString(),
+          updatedAt: new Date().toLocaleDateString(),
+          loginMethod: this.state.loginMethod,
+          bio: this.state.bio,
+          gender: this.state.gender,
+          city: this.state.city,
+          country: this.state.country,
+          photoURL: this.state.photoURL,
+          firstName: this.state.firstName,
+          lastName: this.state.lastName,
+          displayName: this.state.displayName
+        }))
+        this.props.updateUser({
+          variables: {
+            id: this.state.id,
+            first_name: this.state.firstName,
+            last_name: this.state.lastName,
+            gender: this.state.gender.toUpperCase(),
+            photoURL: this.state.photoURL,
+            displayName: this.state.displayName,
+            registrationDate: new Date().toLocaleDateString(),
+            city: this.state.city,
+            country: this.state.country,
+            bio: this.state.bio
+          }
+        })
+        this.props.navigator.pop({})
       }
     }
   }
@@ -131,7 +158,7 @@ class EditProfile extends Component {
       <KeyboardAwareScrollView>
       <View style={styles.container}>
         <TouchableOpacity onPress={this.onProfileImagePick.bind(this)}>
-        <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(236)}/>
+          <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(236)}/>
         </TouchableOpacity>
         
         {/* Name */}
@@ -139,10 +166,10 @@ class EditProfile extends Component {
           <View style={styles.fontAweSome}>
             <EvilIcons name="user" size={24} color="#0a91ed" />
           </View>
-          <TextInput style={styles.textInput} value={this.state.name} onChangeText={(val) => this.setState({name: val})}/>
+          <TextInput style={styles.textInput} value={this.state.displayName} onChangeText={(val) => this.setState({displayName: val})}/>
         </View>
         {/* Phone Number */}
-        <View style={styles.textElement}>
+        {/* <View style={styles.textElement}>
           <TouchableOpacity onPress={this.onPhoneNumberEdit.bind(this)} style={{flexDirection:'row'}}>
           <View style={styles.fontAweSome}>
             <Ionicons name="ios-phone-portrait-outline" size={24} color="#0a91ed" />            
@@ -151,9 +178,9 @@ class EditProfile extends Component {
             <Text>{this.state.phoneNumber} </Text>
           </View>
           </TouchableOpacity>
-        </View>
+        </View> */}
         {/* Calender */}
-        <View style={styles.inputElement}>
+        {/* <View style={styles.inputElement}>
           <TouchableOpacity onPress={() => this.setState({isDateTimePickerVisible : true})}>
           <View style={{flexDirection: 'row'}}>
           <View style={styles.fontAweSome}>
@@ -169,7 +196,7 @@ class EditProfile extends Component {
           />
           </View>
           </TouchableOpacity>
-        </View>
+        </View> */}
         {/* gender */}
         <View style={styles.genderElement}>
           <View style={styles.genderAwesome}>
@@ -185,6 +212,13 @@ class EditProfile extends Component {
               onChangeText={this._onGenderSelect.bind(this)}
             />
           </View>
+        </View>
+        {/* User Name */}
+        <View style={styles.inputElement}>
+          <View style={styles.fontAweSome}>
+            <EvilIcons name="tag" size={24} color="#0a91ed" />
+          </View>
+          <TextInput style={styles.textInput} value={this.state.username} onChangeText={(val) => this.setState({username: val})}/>
         </View>
         {/* bio */}
         <View style={styles.bioInput}>

@@ -57,6 +57,11 @@ class AccountSetting extends Component {
   }
 
   onBlockedUser () {
+    this.props.navigator.push({
+      screen: SCREEN.BLOCKED_USER_PAGE,
+      title: 'Blocked User',
+      animated: true
+    })
   }
 
   onStorySetting () {

@@ -4,7 +4,7 @@ import { saveProfileInfo } from '@actions/userLogIn'
 
 function mapStateToProps (state) {
   return {
-    user: state.userReducers
+    user: state.User
   }
 }
 

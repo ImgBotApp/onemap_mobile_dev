@@ -22,10 +22,11 @@ import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-client-preset'
 import * as SCREEN from './global/screenName'
 
 const httpLink = new HttpLink({ uri: 'https://api.graph.cool/simple/v1/cjb30vkvv434c0146sjjn4d4w' })
-const client = new ApolloClient({
+export const client = new ApolloClient({
   link: httpLink,
   cache: new InMemoryCache()
 })
+
 
 registerScreens(store, ApolloProvider, {client});
 

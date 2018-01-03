@@ -37,6 +37,7 @@ class RoundButton extends Component {
         onPressIn={this.onPressIn.bind(this)}
         onPressOut={this.onPressOut.bind(this)}
         onPress={this.onPress.bind(this)}
+        disabled={this.props.disabled}
         >
         <Text 
           style={{color: this.state.backgroundColor == this.props.pressColor ? '#fff' : this.props.pressColor,

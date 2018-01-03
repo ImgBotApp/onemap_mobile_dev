@@ -14,6 +14,7 @@ export const FEED_NEW_COLLECTION = 'onemap.new_collection_page'
 export const USERS_PROFILE_PAGE = 'onemap.users_profile_page'
 export const PLACE_PROFILE_PAGE = 'onemap.place_profile_page'
 export const MAP_DETAIL_PAGE = 'onemap.map_detail_page'
+export const STORY_LIST_PAGE = 'onemap.story_list_page'
 // Search Module
 
 export const SEARCH_PAGE = 'onemap.search_page'
@@ -25,3 +26,4 @@ export const USER_PROFILE_EDIT = 'onemap.user_profile_edit_page'
 export const USER_PHONE_EDIT = 'onemap.user_phone_edit_page'
 export const USER_FOLLOW_PAGE = 'onemap.user_follower_page'
 export const COLLECTIONS_PAGE = 'onemap.user_collections_page'
+export const BLOCKED_USER_PAGE = 'onemap.blocked_user_page'

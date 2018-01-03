@@ -20,6 +20,7 @@
     "react-native-circular-progress": "^0.1.1",
     "react-native-confirmation-code-input": "^1.0.4",
     "react-native-easy-toast": "^1.0.9",
+    "react-native-fbsdk": "^0.6.3",
     "react-native-gridview": "^0.1.1",
     "react-native-i18n": "^2.0.10",
     "react-native-image-picker": "^0.26.7",

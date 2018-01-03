@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   userId: {
     fontFamily: 'Comfortaa-regular',
-    fontSize: 13,
+    fontSize: SMALL_FONT_SIZE,
     color: '#575858'
   },
   editProfileContainer: {

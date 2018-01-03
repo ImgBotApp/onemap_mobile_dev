@@ -1,6 +1,7 @@
 import { StyleSheet,Platform } from 'react-native'
 
 import * as GLOBAL from '@global'
+import { getDeviceWidth, getDeviceHeight } from '@global'
 // define your styles
 const styles = StyleSheet.create({
   scrollView: {
@@ -31,6 +32,12 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     width             : GLOBAL.getDeviceWidth(971),
     marginLeft        : GLOBAL.getDeviceWidth(226),    
+  },
+  profileImage: {
+    width: getDeviceWidth(473),
+    height: getDeviceHeight(473),
+    marginTop: getDeviceHeight(126),
+    alignSelf: 'center'
   },
   infoText: {
     borderBottomWidth : Platform.OS === 'ios' ? 1:0,

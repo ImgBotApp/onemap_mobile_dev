@@ -8,6 +8,7 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import styles from './styles'
 import { getDeviceWidth, getDeviceHeight } from '@global'
 import { DARK_GRAY_COLOR } from '../../../theme/colors';
+import * as SCREEN from '../../../global/screenName'
 import I18n from '@language'
 const map= {
   latitude: 37.78825,
@@ -64,11 +65,11 @@ class Collections extends Component {
     )
   }
   onCollectionItem (data) {
-    this.props.navigator.push({
-      screen: SCREEN.FEED_ALL_COLLECTION,
-      title: I18n.t('COLLECTION_TITLE'),
-      animated: true
-    })
+    // this.props.navigator.push({
+    //   screen: SCREEN.FEED_ALL_COLLECTION,
+    //   title: I18n.t('COLLECTION_TITLE'),
+    //   animated: true
+    // })
   }
   _renderStoryItem (data, mode) {
     if (data.index % 3 == mode )

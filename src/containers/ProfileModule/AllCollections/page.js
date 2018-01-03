@@ -106,6 +106,16 @@ class AllCollections extends Component {
       }
     }
   }
+  onItemPress (item) {
+    this.props.navigator.push({
+      screen: SCREEN.COLLECTIONS_PAGE,
+      title: I18n.t('DRAWER_STORIES'),
+      animated: true
+    })
+  }
+  onItemRemove (item) {
+    alert('Do you want to remove this ?')
+  }
   render() {
     return (
       <ScrollView style={styles.main}>
@@ -114,7 +124,7 @@ class AllCollections extends Component {
         {
           data.map((item) => {
             return (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => this.onItemPress(item)} onLongPress={() => this.onItemRemove(item)}>
                 <CollectionItem style={styles.cell} insideStyle={styles.collection} uri={'https://placeimg.com/640/480/any/grayscale'} radius={8} />
               </TouchableOpacity>
             )
