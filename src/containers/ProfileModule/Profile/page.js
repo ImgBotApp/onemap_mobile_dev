@@ -145,6 +145,11 @@ class Profile extends Component {
       </ScrollView>
     );
   }
+  componentWillMount () {
+    this.props.navigation.setParams({
+      openDrawerMenu: this._openDrawerMenu
+    })
+  }
 
   _openDrawerMenu () {
     $this.props.navigation.navigate('DrawerOpen')

@@ -14,11 +14,10 @@ import ImagePicker from 'react-native-image-picker'
 import CircleImage from '@components/CircleImage'
 import ImageSliderComponent from '@components/ImageSliderComponent'
 import styles from './styles'
-import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
+import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR } from '../../../theme/colors';
 import { calculateCount, getDeviceWidth, calculateDuration } from '@global'
 import DFonts from '@theme/fonts'
 import I18n from '@language'
-import * as SCREEN  from '@global/screenName'
 
 const ImagePickerOption = {
   title: 'Select Image',
@@ -126,23 +125,6 @@ const inputProps = {
 };
 // create a component
 class PlaceProfile extends Component {
-  static navigatorButtons = {
-    leftButtons: [
-      {
-        icon: require('@assets/images/login/leftNav.png'),
-        id: 'backButton',
-        buttonColor: DARK_GRAY_COLOR,
-        disableIconTint: true
-      }
-    ],
-    rightButtons: [
-      {
-        title: '•••',
-        buttonColor: DARK_GRAY_COLOR,
-        disableIconTint: true
-      }
-    ]
-  };
   constructor (props) {
     super(props)
 
@@ -156,15 +138,6 @@ class PlaceProfile extends Component {
           type: 'add'
         }
       ]
-    }
-
-    this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
-  }
-  onNaviagtorEvent (event) {
-    if (event.type == 'NavBarButtonPress') {
-      if (event.id == 'backButton') {
-        this.props.navigator.pop()
-      }
     }
   }
   onAddCollection = () => {
@@ -192,14 +165,10 @@ class PlaceProfile extends Component {
     )
   }
   goMapDetail () {
-    // this.props.navigation.navigate('MapViewPage')
-    this.props.navigator.push({
-      screen: SCREEN.MAP_DETAIL_PAGE,
-      title: I18n.t('MAPVIEW_TITLE'),
-      animated: true
-    })
+    this.props.navigation.navigate('MapViewPage')
   }
   render() {
+    // console.log(this.props.navigation.state.params);
     return (
       <View style={styles.container}>
       <ScrollView style={styles.container}>

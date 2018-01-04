@@ -8,40 +8,11 @@ import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
 import Modal from 'react-native-modalbox';
 // create a component
 class NewCollection extends Component {
-  static navigatorButtons = {
-    leftButtons: [
-      {
-        icon: require('@assets/images/login/leftNav.png'),
-        id: 'backButton',
-        buttonColor: DARK_GRAY_COLOR,
-        disableIconTint: true
-      }
-    ],
-    rightButtons: [
-      {
-        title: I18n.t('DONE_STR'),
-        id: 'add',
-        buttonColor: DARK_GRAY_COLOR,
-        disableIconTint: true
-      }
-    ]
-  };
   constructor(props) {
     super(props)
     this.state={
       isPublic: false,
       isModal: false,
-    }
-    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
-  }
-  onNavigatorEvent (event) {
-    if (event.type == 'NavBarButtonPress') {
-      if (event.id == 'backButton') {
-        this.props.navigator.pop()
-      }
-      if (event.id == 'add') {
-        this.props.navigator.pop()
-      }
     }
   }
   onValueChange = (val) => {
