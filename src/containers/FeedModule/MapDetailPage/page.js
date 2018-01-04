@@ -4,6 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import styles from './style'
+import { DARK_GRAY_COLOR } from '../../../theme/colors';
 
 const data = {
   map: {
@@ -17,6 +18,28 @@ const data = {
 }
 // create a component
 class MapDetailPage extends Component {
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        icon: require('@assets/images/login/leftNav.png'),
+        id: 'backButton',
+        buttonColor: DARK_GRAY_COLOR,
+        disableIconTint: true
+      }
+    ]
+  };
+  constructor (props) {
+    super(props)
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
+  }
+
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if(event.id == 'backButton') {
+        this.props.navigator.pop()
+      }
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
