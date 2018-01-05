@@ -50,7 +50,6 @@ class LoginPage extends Component {
         var data = user.data.User
         console.log(data)
         if ( data.firstName ) {
-          alert(data.firstName)
           $this.props.saveUserInfo({
             id: data.id,
             createdAt: new Date().toLocaleDateString(),
@@ -131,50 +130,100 @@ class LoginPage extends Component {
     }
   }
   async _fbAuth () {
-
+    $this.setState({loading: true})
     try {
       const value = await AsyncStorage.getItem(APP_USER_KEY);
-      if (value !== null){
+      let val = JSON.parse(value);
+      if (val !== null && val.id !== null){
         // We have data!!
-        console.log(value);
+        let UserExist = await client.query({
+          query: EXIST_FACEBOOK_USER,
+          variables: {
+            id: val.id
+          }
+        }).then((user) => {
+          // alert(JSON.stringify(user))
+          $this.setState({loading: false})
+          var data = user.data.User
+          if ( data.firstName ) {
+            $this.props.saveUserInfo({
+              id: data.id,
+              createdAt: new Date().toLocaleDateString(),
+              updatedAt: new Date().toLocaleDateString(),
+              loginMethod: data.loginMethod,
+              bio: data.bio,
+              gender: data.gender,
+              city: data.city,
+              country: data.country,
+              photoURL: data.photoURL,
+              firstName: data.firstName,
+              lastName: data.lastName,
+              displayName: data.displayName,
+              username: data.facebookUserId
+            })
+            $this.props.login();
+          } 
+          else {
+            $this.props.navigator.push({
+              screen: SCREEN.ACCOUNT_CREATE_PAGE,
+              title: 'Create Account',
+              passProps: {
+                mode: ACCOUNT_MODE.facebook,
+                info: {
+                  ...result,
+                  userId: $this.state.id
+                }
+              },
+              animated: true,
+              navigatorStyle: {
+                navBarTextColor: DARK_GRAY_COLOR,
+                navBarTextFontFamily: 'Comfortaa-Regular',
+                naviBarComponentAlignment: 'center'
+              },
+            })        
+          }
+        })
+      } else {
+        LoginManager.logInWithReadPermissions(['public_profile','email','user_about_me','user_birthday','user_hometown','user_location'])
+        .then((result) => {
+          if (result.isCancelled) {
+            // alert('cancelled')
+          } else {
+            this.setState({loading: true})
+            return AccessToken.getCurrentAccessToken()
+          }
+        }).then((data) => {
+          const token = data.accessToken.toString()
+          return Promise.all([this.props.FacebookLogin({
+              variables: { facebookToken: token }}), 
+            token])
+        }).then((data) => {
+          var gctoken = data[0]
+          var fbtoken = data[1]
+          this.setState({id: gctoken.data.authenticateFBUser.id})
+          this.props.saveUserId(gctoken.data.authenticateFBUser.id, gctoken.data.authenticateFBUser.token)
+          const infoRequest = new GraphRequest(
+            '/me?fields=id,first_name,last_name,picture,email,gender,address,about',
+            null,
+            this._responseInfoCallback,
+          );
+          new GraphRequestManager().addRequest(infoRequest).start();
+        // this.props.dispatch(appActions.login())
+        // this.props.login();
+        // this._responseInfoCallback(null,{});
+        })
+        .catch((err) => {
+          console.log(err)
+          // alert('error')
+          $this.setState({loading: false})   
+        })
       }
+      return;
     } catch (error) {
       // Error retrieving data
+      console.log(error)
+      $this.setState({loading: false})
     }
-
-    LoginManager.logInWithReadPermissions(['public_profile','email','user_about_me','user_birthday','user_hometown','user_location'])
-    .then((result) => {
-      if (result.isCancelled) {
-        // alert('cancelled')
-      } else {
-        this.setState({loading: true})
-        return AccessToken.getCurrentAccessToken()
-      }
-    }).then((data) => {
-      const token = data.accessToken.toString()
-      return Promise.all([this.props.FacebookLogin({
-          variables: { facebookToken: token }}), 
-        token])
-    }).then((data) => {
-      var gctoken = data[0]
-      var fbtoken = data[1]
-      this.setState({id: gctoken.data.authenticateFBUser.id})
-      this.props.saveUserId(gctoken.data.authenticateFBUser.id, gctoken.data.authenticateFBUser.token)
-      const infoRequest = new GraphRequest(
-        '/me?fields=id,first_name,last_name,picture,email,gender,address,about',
-        null,
-        this._responseInfoCallback,
-      );
-      new GraphRequestManager().addRequest(infoRequest).start();
-    // this.props.dispatch(appActions.login())
-    // this.props.login();
-    // this._responseInfoCallback(null,{});
-    })
-    .catch((err) => {
-      console.log(err)
-      // alert('error')
-      $this.setState({loading: false})      
-    })
   }
 
   onPhoneNumber () {

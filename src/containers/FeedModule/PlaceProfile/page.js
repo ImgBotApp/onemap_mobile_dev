@@ -20,6 +20,9 @@ import DFonts from '@theme/fonts'
 import I18n from '@language'
 import * as SCREEN  from '@global/screenName'
 
+import { client } from '@root/main'
+import { GET_PLACE_PROFILE } from '@graphql/places'
+
 const ImagePickerOption = {
   title: 'Select Image',
   storageOptions: {
@@ -147,6 +150,14 @@ class PlaceProfile extends Component {
     super(props)
 
     this.state={
+      placeData: {
+        information: {},
+        image: [],
+        map: {},
+        interests: {},
+        keywords: [],
+        comments: []
+      },
       tags: ['Steak', 'Cocktails', 'Dinner', 'Food'],
       text: "",
       sliderShow: false,
@@ -159,6 +170,50 @@ class PlaceProfile extends Component {
     }
 
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
+  }
+
+  async componentWillMount () {
+    let Place = await client.query({
+      query: GET_PLACE_PROFILE,
+      variables: {
+        id: "cjc0b98k2nsyj0113eizs1e5e"
+      }
+    }).then((place) => {
+      let data = place.data.Place
+      this.setState({
+        placeData: {
+          title: data.placeName,
+          bookmark: true,
+          image: data.pictureURL.map( item => {
+            return {
+              uri: item
+            }
+          }),
+          description: data.description,
+          map: {
+            latitude: data.locationLat,
+            longitude: data.locationLong,
+            latitudeDelta: 0.00922,
+            longitudeDelta: 0.00421
+          },
+          information: {
+            address: data.addressCityTown,
+            phoneNumber: data.phoneNumber,
+            website: data.website,
+            openingHours: [ data.openingHrs ]
+          },
+          interests: {
+            hearted:  data._usersLikeMeta.count,
+            checkIns: data._userCheckedInMeta.count,
+            bookmark: data._collectionsMeta.count
+          },
+          keywords: data.keywords.map((item) => item.name),
+          comments: []
+        }
+      })
+      console.log(place)
+      console.log(this.state.placeData)
+    })
   }
   onNaviagtorEvent (event) {
     if (event.type == 'NavBarButtonPress') {
@@ -196,7 +251,12 @@ class PlaceProfile extends Component {
     this.props.navigator.push({
       screen: SCREEN.MAP_DETAIL_PAGE,
       title: I18n.t('MAPVIEW_TITLE'),
-      animated: true
+      animated: true,
+      passProps: {
+        title: this.state.placeData.title,
+        address: this.state.placeData.information.address,
+        map: this.state.placeData.map
+      }
     })
   }
   render() {
@@ -206,10 +266,10 @@ class PlaceProfile extends Component {
         
         {/* Title */}
         <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>{data.title}</Text>
+          <Text style={styles.titleText}>{this.state.placeData.title}</Text>
           <TouchableOpacity onPress={() => this.setState({collectionModal: true})}>
             <MaterialCommunityIcons name={data.bookmark ? "bookmark" : "bookmark-outline"} size={30} 
-                color={data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR}/>
+                color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR}/>
           </TouchableOpacity>
         </View>
         {/* Images */}
@@ -217,7 +277,7 @@ class PlaceProfile extends Component {
           <FlatList
             style={styles.imageFlatList}
             horizontal
-            data={data.image}
+            data={this.state.placeData.image}
             renderItem={({item}) => { return this._renderItem(item)}} 
           />
         </View>
@@ -225,11 +285,11 @@ class PlaceProfile extends Component {
         <View style={styles.description}>
           <ViewMoreText
             numberOfLines={3}
-            renderViewMore={(onPress) => (<Text onPress={onPress} style={DFonts.additionalText}>read more</Text>)}
-            renderViewLess={(onPress) => (<Text onPress={onPress} style={DFonts.additionalText}>read less</Text>)}
+            renderViewMore={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read more</Text>)}
+            renderViewLess={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read less</Text>)}
             textStyle={styles.descriptionText}>
             <Text style={DFonts.DFontFamily}>
-              {data.description}
+              {this.state.placeData.description}
             </Text>
           </ViewMoreText>
         </View>
@@ -239,24 +299,24 @@ class PlaceProfile extends Component {
             <MapView
               provider={PROVIDER_GOOGLE}
               style={styles.map}
-              initialRegion={data.map}
-              region={data.map}
+              initialRegion={this.state.placeData.map}
+              region={this.state.placeData.map}
             >
               <MapView.Marker
                 style={styles.mapmarker}
-                title={data.title}
+                title={this.state.placeData.title}
                 image={require('@assets/images/marker.png')}
-                coordinate={data.map}
+                coordinate={this.state.placeData.map}
               />
             </MapView>
           </View>
         </TouchableOpacity>
         {/* Information */}
         <View style={styles.informationContainer}>
-          <Text style={styles.informationText}>{I18n.t('PLACE_ADDRESS')}{`\t\t\t: `}{data.information.address}</Text>
-          <Text style={styles.informationText}>{I18n.t('PLACE_NUMBER')}{`\t\t: `}{data.information.phoneNumber}</Text>
-          <Text style={styles.informationText}>{I18n.t('PLACE_WEBSITE')}{`\t\t\t: `}{data.information.website}</Text>
-          <Text style={styles.informationText}>{I18n.t('PLACE_OPENHOUR')}{`\t\t: `}{data.information.openingHours}</Text>
+          <Text style={styles.informationText}>{I18n.t('PLACE_ADDRESS')}{`\t\t\t: `}{this.state.placeData.information.address}</Text>
+          <Text style={styles.informationText}>{I18n.t('PLACE_NUMBER')}{`\t\t: `}{this.state.placeData.information.phoneNumber}</Text>
+          <Text style={styles.informationText}>{I18n.t('PLACE_WEBSITE')}{`\t\t\t: `}{this.state.placeData.information.website}</Text>
+          <Text style={styles.informationText}>{I18n.t('PLACE_OPENHOUR')}{`\t\t: `}{this.state.placeData.information.openingHours}</Text>
         </View>
         {/* Interest */}
         <View style={styles.interestContainer}>
@@ -266,9 +326,9 @@ class PlaceProfile extends Component {
               <Foundation name="marker" size={12} color={BLUE_COLOR} />
               <Foundation name="bookmark" size={12} color={RED_COLOR} />
             </View>
-            <Text style={styles.interestText}>{calculateCount(data.interests.hearted)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
-            <Text style={styles.interestText}>{calculateCount(data.interests.checkIns)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
-            <Text style={styles.interestText}>{calculateCount(data.interests.bookmark)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
+            <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.hearted)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
+            <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.checkIns)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
+            <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.bookmark)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
           </View>
           <View style={styles.serparate}></View>
           <View style={styles.buttonInterest}>
@@ -293,7 +353,7 @@ class PlaceProfile extends Component {
           </View>
           <View style={styles.keywordContainer}>
             <TagInput
-              value={this.state.tags}
+              value={this.state.placeData.keywords}
               onChange={this.onChangeTags}
               labelExtractor={this.labelExtractor}
               text={this.state.text}
@@ -357,7 +417,7 @@ class PlaceProfile extends Component {
     );
   }
   _renderCommentStory() {
-    return data.comments.map(comment => {
+    return this.state.placeData.comments.map(comment => {
       return this._renderComments(comment)
     })
   }
@@ -438,8 +498,16 @@ class PlaceProfile extends Component {
     const parseWhen = [',', ' ', ';', '\n'];
 
     if (parseWhen.indexOf(lastTyped) > -1) {
-      this.setState({
-        tags: [...this.state.tags, this.state.text],
+      this.setState(
+        {
+          placeData: {
+            ...this.state.placeData,
+            keywords: {
+              ...this.state.placeData.keywords,
+              text
+            }
+          },
+        // tags: [...this.state.tags, this.state.text],
         text: "",
       });
     }
@@ -448,7 +516,10 @@ class PlaceProfile extends Component {
   labelExtractor = (tag) => tag;
 
   onChangeTags = (tags) => {
-    this.setState({ tags });
+    this.setState({ placeData: {
+      ...this.state.placeData,
+      keywords: tags
+    } });
   }
 }
 
