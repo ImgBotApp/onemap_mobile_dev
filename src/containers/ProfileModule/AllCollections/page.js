@@ -6,7 +6,9 @@ import GridView from 'react-native-gridview'
 import TitleImage from '@components/TitledImage'
 import CollectionItem from '@components/CollectionItem'
 import styles from './styles'
-
+import { DARK_GRAY_COLOR } from '../../../theme/colors';
+import * as SCREEN from '@global/screenName'
+import I18n from '@language'
 const itemsPerRow = 3
 
 const data = [
@@ -69,11 +71,50 @@ const data = [
 var $this 
 // create a component
 class AllCollections extends Component {
+  static navigatorButtons = {
+    leftButtons: [
+      {
+        icon: require('@assets/images/login/leftNav.png'),
+        id: 'backButton',
+        buttonColor: DARK_GRAY_COLOR,
+        disableIconTint: true
+      }
+    ],
+    rightButtons: [
+      {
+        title: '+',
+        id: 'add',
+        buttonColor: DARK_GRAY_COLOR,
+        disableIconTint: true
+      }
+    ]
+  };
   constructor (props) {
     super(props)
-    $this = this
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
-  componentWillMount () {
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'backButton') {
+        this.props.navigator.pop({})
+      }
+      if(event.id == 'add') {
+        this.props.navigator.push({
+          screen: SCREEN.FEED_NEW_COLLECTION,
+          title: I18n.t('COLLECTION_CREATE_NEW')
+        })
+      }
+    }
+  }
+  onItemPress (item) {
+    this.props.navigator.push({
+      screen: SCREEN.COLLECTIONS_PAGE,
+      title: I18n.t('DRAWER_STORIES'),
+      animated: true
+    })
+  }
+  onItemRemove (item) {
+    alert('Do you want to remove this ?')
   }
   render() {
     return (
@@ -83,7 +124,7 @@ class AllCollections extends Component {
         {
           data.map((item) => {
             return (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => this.onItemPress(item)} onLongPress={() => this.onItemRemove(item)}>
                 <CollectionItem style={styles.cell} insideStyle={styles.collection} uri={'https://placeimg.com/640/480/any/grayscale'} radius={8} />
               </TouchableOpacity>
             )

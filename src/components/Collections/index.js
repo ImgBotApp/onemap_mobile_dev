@@ -29,7 +29,7 @@ class Collections extends Component {
             insideStyle={styles.itemContainer} 
             uri={uri} 
             radius={8}
-            title={'Wish list'} />
+            title={'Default'} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => this.props.onViewAll()}>
           <CollectionItem style={styles.itemContainer} 

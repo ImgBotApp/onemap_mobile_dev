@@ -9,9 +9,9 @@ export const AUTHENTICATE_FACEBOOK_USER = gql`
   }
 `
 
-export const UPDATE_FACEBOOK_USER = gql`
+export const UPDATE_USER = gql`
   mutation ($id: ID!, $first_name: String, $last_name: String, $gender: Gender, 
-    $photoURL: String, $displayName: String, $registrationDate: String){
+    $photoURL: String, $displayName: String, $registrationDate: String, $country: String, $city: String, $bio: String){
     updateUser(
       id: $id,
       firstName: $first_name,
@@ -20,7 +20,11 @@ export const UPDATE_FACEBOOK_USER = gql`
       photoURL: $photoURL,
       displayName: $displayName
       loginMethod: [FACEBOOK],
-      registrationDate: $registrationDate
+      group: [USER],
+      registrationDate: $registrationDate,
+      country: $country,
+      city: $city,
+      bio: $bio
     ) {
       id
       firstName
@@ -29,6 +33,26 @@ export const UPDATE_FACEBOOK_USER = gql`
       photoURL
       displayName
       registrationDate
+      country
+      city
+    }
+  }
+`
+
+export const EXIST_FACEBOOK_USER = gql`
+  query UserQuery($id: ID!) {
+    User(id: $id) {
+      id
+      firstName
+      lastName
+      gender
+      photoURL
+      displayName
+      loginMethod
+      registrationDate
+      country
+      city
+      facebookUserId
     }
   }
 `

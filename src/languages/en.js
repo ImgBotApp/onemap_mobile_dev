@@ -6,17 +6,21 @@ export default {
   DONE_STR        : "Done",
   BLOCKED_STR     : "Block",
   CANCEL_STR      : "Cancel",
+  UNFOLLOW        : "Unfollow",
   OK_STR          : "Ok",
   OFF_STR         : "Off",
   NAME_STR        : "Name",
   PRIVACY_STR     : "Privacy",
   POINTS_STR      : "Points",
-  GENDER_MAILE_STR: "Male",
-  GENDER_FEMALE_STR: "Female",
+  GENDER_MAILE_STR: "male",
+  GENDER_FEMALE_STR: "female",
   GENDER_NOT_SAY_STR: "I would prefer not to say",
   INPUT_PHONE_NUMBER: "Please enter your phone number",
   LOGIN_PHONE_NUMBER_DESCRIPTION1: "By registering, I have read and agree to the",
-  LOGIN_PHONE_NUMBER_DESCRIPTION2: "Terms of Use and the Privacy Policy",
+  LOGIN_PHONE_NUMBER_DESCRIPTION2: "Terms of Use and the ",
+  PRIVACY_PLICY   : "Privacy Policy",
+  CREATE_ACCOUNT  : "Create Account",
+  DONE_STR        : "Done",
 
 
   // Drawer String
@@ -71,6 +75,7 @@ export default {
   // Blocked User Page
   SETTING_BLOCKED_USER_TITLE: "Blocked User",
   SETTING_BLOCKED_USER_DESCRIPTION: "They won't be able to find your profile, poss or story on One Map. One Map won't let them know you blocked them",
+  SETTING_UNFOLLOW_USER_DESCRIPTION: "They won’t be able to follow you, see your collections,read your stories or search for you. OneMap will not let them know that you have blocked them.",
 
   // Story Setting
   SETTING_STORY_ALLOW_PLACEHOLDER: "Allow Message Replies",
@@ -99,7 +104,7 @@ export default {
   PROFILE_PAGE_TITLE: "OneMapper Profile",
   // Collections
   COLLECTION_TITLE: "All My Collections",
-  COLLECTION_CREATE_NEW: "Create New Collection",
+  COLLECTION_CREATE_NEW: "New Collection",
   COLLECTION_NAME: "Collection Name",
   PRIVACY_DESCRIPTION: "Appears in your public profile",
   COLLECTION_CHANGE_PRIVACY: "Change Privacy?",
@@ -126,5 +131,7 @@ export default {
   MAPVIEW_TITLE: "Map View",
 
   // User profile
-  USERPROFILE_TITLE: "Profile"
+  USERPROFILE_TITLE: "Profile",
+  USERPROFILE_USER_REQUSET_MODIFICATION: "Request to be modification",
+  USERPROFILE_TERMS: "Terms"
 }

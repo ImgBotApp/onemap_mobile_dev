@@ -11,8 +11,10 @@ import TitleImage from '@components/TitledImage'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import styles from './style'
 import I18n from '@language'
-import { LIGHT_GRAY_COLOR } from '../../../theme/colors';
+import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
+import * as SCREEN from '@global/screenName'
 import Modal from 'react-native-modalbox';
+import { SMALL_FONT_SIZE } from '../../../theme/fonts';
 const data = [
   {
     id: 'a1',
@@ -440,7 +442,7 @@ class FeedPage extends Component {
   }
 
   onVisitProfile = (CampaignId) => {
-    this.props.navigation.navigate('ProfilePage')
+    // this.props.navigation.navigate('ProfilePage')
   }
 
   _renderFeedCampaign (data) {
@@ -474,11 +476,21 @@ class FeedPage extends Component {
   }
 
   onPressUserProfile = (id) => {
-    this.props.navigation.navigate('ProfilePage',{id: id})
+    this.props.navigator.push({
+      screen: SCREEN.USERS_PROFILE_PAGE,
+      title: I18n.t('PROFILE_PAGE_TITLE'),
+      animated: true
+    })
+    // this.props.navigation.navigate('ProfilePage',{id: id})
   }
 
   onPlace = (title) => {
-    this.props.navigation.navigate('PlaceProfile', {title: title})
+    // this.props.navigation.navigate('PlaceProfile', {title: title})
+    this.props.navigator.push({
+      screen: SCREEN.PLACE_PROFILE_PAGE,
+      title: I18n.t('PLACE_TITLE'),
+      animated: true
+    })
   }
   onBookMarker = () => {
     this.setState({
@@ -489,7 +501,16 @@ class FeedPage extends Component {
     this.setState({
       collectionModal: false
     })
-    this.props.navigation.navigate('AllCollection')
+    // this.props.navigation.navigate('AllCollection')
+    this.props.navigator.push({
+      screen: SCREEN.FEED_ALL_COLLECTION,
+      title: I18n.t('COLLECTION_TITLE'),
+      animated: true,
+      navigatorStyle: {
+        navBarTextColor: DARK_GRAY_COLOR,
+        navBarTextFontSize: SMALL_FONT_SIZE
+      }
+    })
   }
   render() {
     return (
@@ -518,10 +539,10 @@ class FeedPage extends Component {
           </View>
           <View style={styles.separatebar}></View>
           <View style={styles.Collections}>
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'Hearted'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'Check-Ins'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'Wish List'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'Adventure'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
           </View>
         </Modal>
       </View>
