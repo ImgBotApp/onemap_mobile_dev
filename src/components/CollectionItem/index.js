@@ -11,7 +11,7 @@ class CollectionItem extends Component {
     this.state={
       uri: this.props.uri,
       radius: this.props.radius ? this.props.radius : 8,
-      title: this.props.title || 'Collection',
+      title: this.props.title || '',
     }
   }
   render() {

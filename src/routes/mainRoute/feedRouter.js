@@ -17,6 +17,8 @@ import PlaceProfileConfig from '@mFeed/ProfilePage/routeConfig'
 import MapView from '@mFeed/MapDetailPage'
 import MapViewConfig from '@mFeed/MapDetailPage/routeConfig'
 
+import SearchResult from './../../components/SearchResult/index.js'
+
 import { ICON_SIZE } from '@theme/fonts'
 
 const FeedRouter = StackNavigator({
@@ -35,6 +37,9 @@ const FeedRouter = StackNavigator({
   MapViewPage: {
     screen: MapView,
     navigationOptions: MapViewConfig
+  },
+  SearchList:{
+    screen: SearchResult,
   }
 })
 //make this component available to the app
