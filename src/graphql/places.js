@@ -16,8 +16,8 @@ export const GET_ALL_PLACES = gql`
     }
   }
 `
-export const GET_PAGINATED_PLACES = gql`
-  query AllPlacesQuery($first: Int!, $skip: Int!) {
+export const PLACES_PAGINATED = gql`
+  query Places($first: Int!, $skip: Int!) {
     allPlaces(first: $first, skip: $skip) {
       id
       createdAt

@@ -1,6 +1,7 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { graphql } from "react-apollo";
 import SuggestUser from '@components/SuggestUser'
 import FeedItem from '@components/FeedItem'
 import FeedEvent from '@components/FeedEvent'
@@ -14,7 +15,9 @@ import I18n from '@language'
 import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
 import * as SCREEN from '@global/screenName'
 import Modal from 'react-native-modalbox';
+import { PLACES_PAGINATED} from "../../../graphql/places";
 import { SMALL_FONT_SIZE } from '../../../theme/fonts';
+const PLACES_PER_PAGE = 8;
 import { client } from '@root/main'
 import { GET_PAGINATED_PLACES } from '@graphql/places'
 const data = [
@@ -60,87 +63,9 @@ const data = [
     ]
   },
   {
-    id: 'a2',
-    type: 'item',
-    user: {
-      name: 'Alexandra',
-      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-      updated: new Date()
-    },
-    bookmark: true,
-    feedTitle: 'GRAMERCY TAVERN',
-    images: [
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      }
-    ],
-    place: 'American Restaurant',
-    description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on'
-  },
-  {
     id: 'a3',
     type: 'place',
     uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-  },
-  {
-    id: 'a4',
-    type: 'item',
-    user: {
-      name: 'Alexandra',
-      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-      updated: new Date()
-    },
-    bookmark: true,
-    feedTitle: 'GRAMERCY TAVERN',
-    images: [
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      }
-    ],
-    place: 'American Restaurant',
-    description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on'
   },
   {
     id: 'a5',
@@ -149,44 +74,6 @@ const data = [
     mark: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
     description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on',
     image: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-  },
-  {
-    id: 'a6',
-    type: 'item',
-    user: {
-      name: 'Alexandra',
-      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-      updated: new Date()
-    },
-    feedTitle: 'GRAMERCY TAVERN',
-    images: [
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      }
-    ],
-    place: 'American Restaurant',
-    description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on'
   },
   {
     id: 'a7',
@@ -198,208 +85,18 @@ const data = [
     },
     placeUrl: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
     title: 'Gramercy Tavern'
-  },
-  {
-    id: 'a8',
-    type: 'item',
-    user: {
-      name: 'Alexandra',
-      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-      updated: new Date()
-    },
-    feedTitle: 'GRAMERCY TAVERN',
-    images: [
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      }
-    ],
-    place: 'American Restaurant',
-    description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on'
-  },
-  {
-    id: 'a9',
-    type: 'item',
-    user: {
-      name: 'Alexandra',
-      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-      updated: new Date()
-    },
-    bookmark: true,
-    feedTitle: 'GRAMERCY TAVERN',
-    images: [
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      }
-    ],
-    place: 'American Restaurant',
-    description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on'
-  },
-  {
-    id: 'a10',
-    type: 'item',
-    user: {
-      name: 'Alexandra',
-      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-      updated: new Date()
-    },
-    feedTitle: 'GRAMERCY TAVERN',
-    images: [
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      }
-    ],
-    place: 'American Restaurant',
-    description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on'
-  },
-  {
-    id: 'a11',
-    type: 'item',
-    user: {
-      name: 'Alexandra',
-      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-      updated: new Date()
-    },
-    feedTitle: 'GRAMERCY TAVERN',
-    images: [
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      }
-    ],
-    place: 'American Restaurant',
-    description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on'
-  },
-  {
-    id: 'a12',
-    type: 'item',
-    user: {
-      name: 'Alexandra',
-      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-      updated: new Date()
-    },
-    feedTitle: 'GRAMERCY TAVERN',
-    images: [
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      }
-    ],
-    place: 'American Restaurant',
-    description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on'
-  },
-]
+  }
+];
 // create a component
 class FeedPage extends Component {
   constructor (props) {
-    super(props)
+    super(props);
     this.state = {
       suggestFlag: true,
-      collectionModal: false,
-      skip: 0
-    }
+      collectionModal: false
+    };
+    this.onEndReached = this.onEndReached.bind(this)
+    this.onRefresh = this.onRefresh.bind(this)
   }
   async componentWillReceiveProps(nextProps) {
     await client.query({
@@ -415,6 +112,7 @@ class FeedPage extends Component {
       suggestFlag: false
     })
   }
+
   _renderSuggestedList (data) {
     if ( this.state.suggestFlag == false ) return null
     return (
@@ -487,6 +185,28 @@ class FeedPage extends Component {
     }
   }
 
+  onEndReached() {
+    if (!this.props.data.loading) {
+      const { data } = this.props;
+      data.fetchMore({
+        variables: {
+          skip: data.allPlaces.length + PLACES_PER_PAGE,
+          first: PLACES_PER_PAGE
+        },
+        updateQuery: (previousResult, {fetchMoreResult}) => {
+          console.log(fetchMoreResult)
+          console.log(previousResult)
+          if (!fetchMoreResult || fetchMoreResult.allPlaces.length === 0) {
+            return previousResult;
+          }
+          return {
+            allPlaces: previousResult.allPlaces.concat(fetchMoreResult.allPlaces),
+          };
+        }
+      })
+    }
+  }
+
   onPressUserProfile = (id) => {
     this.props.navigator.push({
       screen: SCREEN.USERS_PROFILE_PAGE,
@@ -504,6 +224,16 @@ class FeedPage extends Component {
       animated: true
     })
   }
+
+  onRefresh() {
+    this.props.data.refetch({
+      variables: {
+        skip: 0,
+        first: PLACES_PER_PAGE
+      }
+    });
+  }
+
   onBookMarker = () => {
     this.setState({
       collectionModal: true
@@ -525,15 +255,40 @@ class FeedPage extends Component {
     })
   }
   render() {
+    let graphcoolData = [];
+    if (!this.props.data.loading) {
+      graphcoolData = this.props.data.allPlaces.map((place) => {
+        return {
+          id: place.id,
+          type: 'item',
+          user: {
+            name: place.placeName,
+            uri: place.pictureURL ? place.pictureURL[0] : '',
+            updated: new Date(place.updatedAt)
+          },
+          feedTitle: place.placeName,
+          images: place.pictureURL ? place.pictureURL.map((uri) => {
+            return {uri}
+          }) : [],
+          place: place.placeName,
+          description: place.description
+        }
+      });
+    }
     return (
       <View style={styles.container}>
-        <FlatList 
+        <FlatList
           keyExtractor={(item,index) => item.id}
           style={{width: '100%', height: '100%'}}
-          data = {data}
+          data={[...data, ...graphcoolData]}
+          initialNumToRender={8}
           renderItem={this._renderItem.bind(this)}
+          onEndReachedThreshold={1}
+          onEndReached={this.onEndReached}
+          refreshing={this.props.data.networkStatus === 4}
+          onRefresh={this.onRefresh}
         />
-         <Modal
+        <Modal
           style={styles.collectionModal}
           isOpen={this.state.collectionModal}
           backdropPressToClose={true}
@@ -542,7 +297,7 @@ class FeedPage extends Component {
           backdropOpacity={0.5}
           backdropColor={'lightgray'}
           onClosed={() => this.setState({collectionModal: false})}
-        > 
+        >
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
             <TouchableOpacity onPress={this.onAddCollection.bind(this)}>
@@ -562,7 +317,15 @@ class FeedPage extends Component {
   }
 }
 
-
+const ComponentWithQueries = graphql(PLACES_PAGINATED, {
+  options: {
+    variables: {
+      skip: 0,
+      first: PLACES_PER_PAGE
+    }
+  }
+})
+(FeedPage);
 
 //make this component available to the app
-export default FeedPage;
+export default ComponentWithQueries;
