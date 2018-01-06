@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../../theme/colors';
+import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR } from '../../../theme/colors';
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
 import { BIG_FONT_SIZE, SMALL_FONT_SIZE, SMALLER_FONT_SIZE, NORMAL_FONT_SIZE, BIGGER_FONT_SIZE } from '../../../theme/fonts';
@@ -58,13 +58,17 @@ const styles = StyleSheet.create({
     height:  getDeviceHeight(403)
   },
   description: {
-    height: getDeviceHeight(91),
+    // height: getDeviceHeight(91),
     paddingLeft: getDeviceWidth(76),
     paddingRight: getDeviceWidth(76),
     marginTop: getDeviceHeight(89),
   },
   descriptionText: {
     color: LIGHT_GRAY_COLOR,
+    fontSize: SMALL_FONT_SIZE
+  },
+  additionalText: {
+    color: BLUE_COLOR,
     fontSize: SMALL_FONT_SIZE
   },
   mapView: {
