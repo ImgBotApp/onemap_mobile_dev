@@ -116,7 +116,8 @@ class SearchPage extends Component {
 		  let SearchUser = await client.query({
 			  query: SEARCH_USER,
 			  variables: {
-				  keyword:val
+				  keyword:val,
+				  first:6
 			  }
 		  }).then((data) => {
 			  this.setState({ result: true,allUsers :data.data.allUsers})
@@ -125,7 +126,8 @@ class SearchPage extends Component {
 		  let SearchKeyword = await client.query({
 			  query: LIST_KEYWORD_PLACES,
 			  variables: {
-				  keywordName:val
+				  keywordName:val,
+				  first:6
 			  }
 		  }).then((data) => {
 			  this.setState({ result: true,keywordsData :data.data.allPlaces })

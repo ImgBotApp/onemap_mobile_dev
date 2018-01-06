@@ -94,9 +94,9 @@ class SearchResult extends Component {
         <View style={styles.mainContainer}>
           <Tabs selected={this.state.page} style={styles.tabHeader}
                 selectedStyle={{color:'red'}} onSelect={el=>this.onchnageTab(el)} >
-              {this._renderTabHeader('Keywords')}
+			  {this._renderTabHeader('Places')}
 			  {this._renderTabHeader('People')}
-              {this._renderTabHeader('Places')}
+			  {this._renderTabHeader('Keywords')}
               {/*{this._renderTabHeader('Recent')}*/}
           </Tabs>
         </View>
