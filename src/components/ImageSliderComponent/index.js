@@ -30,7 +30,7 @@ class ImageSlider extends Component {
         </TouchableOpacity>        
         <ImageSliderView
           styles={{width: 100, height: 100}}
-          images={data}
+          images={this.props.data}
           position={this.state.position}
           onPositionChanged={position => this.setState({position})}/>
       </View>

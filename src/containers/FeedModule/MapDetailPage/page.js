@@ -43,20 +43,20 @@ class MapDetailPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.titleText}>{data.title}</Text>
-        <Text style={styles.addressText}>{data.address}</Text>
+        <Text style={styles.titleText}>{this.props.title}</Text>
+        <Text style={styles.addressText}>{this.props.address}</Text>
         <View style={styles.mapView}>
           <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
-            initialRegion={data.map}
-            region={data.map}
+            initialRegion={this.props.map}
+            region={this.props.map}
           >
             <MapView.Marker
               style={styles.mapmarker}
-              title={data.title}
+              title={this.props.title}
               image={require('@assets/images/marker.png')}
-              coordinate={data.map}
+              coordinate={this.props.map}
             />
           </MapView>
         </View>

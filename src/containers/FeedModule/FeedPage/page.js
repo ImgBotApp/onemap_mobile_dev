@@ -18,6 +18,8 @@ import Modal from 'react-native-modalbox';
 import { PLACES_PAGINATED} from "../../../graphql/places";
 import { SMALL_FONT_SIZE } from '../../../theme/fonts';
 const PLACES_PER_PAGE = 8;
+import { client } from '@root/main'
+import { GET_PAGINATED_PLACES } from '@graphql/places'
 const data = [
   {
     id: 'a1',
@@ -96,7 +98,15 @@ class FeedPage extends Component {
     this.onEndReached = this.onEndReached.bind(this)
     this.onRefresh = this.onRefresh.bind(this)
   }
-
+  async componentWillReceiveProps(nextProps) {
+    await client.query({
+      query: GET_PAGINATED_PLACES,
+      variables: {
+        first: 10,
+        skip: this.state.skip 
+      }
+    })
+  }
   closeSuggest() {
     this.setState({
       suggestFlag: false

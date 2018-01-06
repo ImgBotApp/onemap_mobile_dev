@@ -1,11 +1,14 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView,FlatList } from 'react-native';
+import RNPlaces from 'react-native-google-places'
 import Search from 'react-native-search-box';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import SearchResult from '@components/SearchResult'
 import {getDeviceWidth} from '@global'
 import styles from './styles'
+import * as SCREEN from '@global/screenName'
+import I18n from '@language'
 // create a component
 const stories = [
   {
@@ -43,8 +46,10 @@ class SearchPage extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      result: false
+      result: false,
+      keyword: ''
     }
+    console.log(props.user)
   }
   _renderStoryItem (item) {
     return (
@@ -92,12 +97,45 @@ class SearchPage extends Component {
               </View>
             </View>
           </ScrollView>
-          { this.state.result == true ? <SearchResult /> : null }
+          { this.state.result == true ? <SearchResult keyword={this.state.keyword} onPlace={this.onPlaceProfile.bind(this)}/> : null }
         </View>
       </View>
     );
   }
+  onPlaceProfile(placeID) {
+    RNPlaces.lookUpPlaceByID(placeID).then((result) => 
+      this.props.createPlace({
+        variables: {
+        description: '', 
+        sourceId: placeID, 
+        placeName: result.name, 
+        locationLat: result.latitude, 
+        locationLong: result.longitude, 
+        address: result.address, 
+        phoneNumber: result.phoneNumber || '', 
+        website: result.website || '', 
+        facebook: result.facebook || '',
+        addressCountry: result.addressComponents ? result.addressComponents.country : '',
+        addressPostalCode: result.addressComponents ? result.addressComponents.postal_code : '',
+        addressStateProvince: result.addressComponents ? result.addressComponents.administrative_area_level_1 : '',
+        addressCityTown: result.addressComponents ? result.addressComponents.administrative_area_level_2 : ''
+      }
+    })).then((result) => {
+      // console.log(result)
+      this.props.navigator.push({
+        screen: SCREEN.PLACE_PROFILE_PAGE,
+        title: I18n.t('PLACE_TITLE'),
+        animated: true,
+        passProps: {
+          placeID: result.data.createPlace.id
+        }
+      })
+    }).catch((error) => console.log(error));
+  }
   onShowResult(val) {
+    this.setState({
+      keyword: val
+    })
     if ( val.length == 0) return this.setState({result: false})
     else return this.setState({ result: true })
   }

@@ -4,7 +4,7 @@ import page from './page'
 
 function mapStateToProps(state) {
   return {
-    user: state.userReducers
+    user: state.User
   }
 }
 

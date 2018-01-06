@@ -1,12 +1,12 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import Tabs from 'react-native-tabs';
 import CircleImage from '@components/CircleImage'
 
 import styles from './styles'
 import { getDeviceHeight, getDeviceWidth } from '@global'
-
+import RNGooglePlaces from 'react-native-google-places'
 const data=[
   {
     type: 'user',
@@ -45,7 +45,17 @@ const data=[
 class SearchResult extends Component {
   constructor(props){
     super(props);
-    this.state = {page:'Recent'};
+    this.state = {
+      page:'Recent',
+      places: []
+    };
+  }
+  componentWillReceiveProps(nextProps) {
+    RNGooglePlaces.getAutocompletePredictions(nextProps.keyword).then((results) => {
+      this.setState({
+        places: results
+      })
+    }).catch((error) => console.log(error))
   }
   _renderTabHeader(text) {
     return (
@@ -67,13 +77,15 @@ class SearchResult extends Component {
 
   _onPlaceItem(item) {
     return (
-      <View style={styles.item}>
-        <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
-        <View style={styles.infomation}>
-          <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.following}>{item.address}</Text>
+      <TouchableOpacity onPress={() => this.props.onPlace(item.placeID)}>
+        <View style={styles.item}>
+          <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
+          <View style={styles.infomation}>
+            <Text style={styles.name}>{item.primaryText}</Text>
+            <Text style={styles.following}>{item.secondaryText}</Text>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     )
   }
   _onCampaignItem(item) {
@@ -97,6 +109,16 @@ class SearchResult extends Component {
         return this._onCampaignItem(item)
     }
   }
+  _renderPlaces () {
+    return (
+    <View style={styles.scrollView}>
+      <FlatList style={styles.scrollView} 
+        data={this.state.places}
+        renderItem={({item}) => this._onPlaceItem(item)}
+      />
+    </View>
+    )
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -109,12 +131,15 @@ class SearchResult extends Component {
               {this._renderTabHeader('Places')}
           </Tabs>
         </View>
-        <View style={styles.scrollView}>
+        {
+          this.state.page == 'Places' ? this._renderPlaces() : null
+        }
+        {/* <View style={styles.scrollView}>
           <FlatList style={styles.scrollView} 
             data={data}
             renderItem={({item}) => this._onRenderItem(item)}
           />
-        </View>
+        </View> */}
       </View>
     );
   }
