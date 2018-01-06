@@ -15,7 +15,7 @@ import I18n from '@language'
 import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
 import * as SCREEN from '@global/screenName'
 import Modal from 'react-native-modalbox';
-import { PLACES_PAGINATED} from "../../../graphql/places";
+import { PLACES_PAGINATED } from "../../../graphql/places";
 import { SMALL_FONT_SIZE } from '../../../theme/fonts';
 const PLACES_PER_PAGE = 8;
 import { client } from '@root/main'
@@ -89,7 +89,7 @@ const data = [
 ];
 // create a component
 class FeedPage extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       suggestFlag: true,
@@ -103,7 +103,7 @@ class FeedPage extends Component {
       query: GET_PAGINATED_PLACES,
       variables: {
         first: 10,
-        skip: this.state.skip 
+        skip: this.state.skip
       }
     })
   }
@@ -113,8 +113,8 @@ class FeedPage extends Component {
     })
   }
 
-  _renderSuggestedList (data) {
-    if ( this.state.suggestFlag == false ) return null
+  _renderSuggestedList(data) {
+    if (this.state.suggestFlag == false) return null
     return (
       <View style={styles.topItem}>
         {/* Recommend text */}
@@ -125,25 +125,26 @@ class FeedPage extends Component {
           </TouchableOpacity>
         </View>
         {/* User list */}
-        <FlatList 
+        <FlatList
+          keyExtractor={(item, index) => index}
           style={styles.users}
-          data = {data}
+          data={data}
           horizontal
-          renderItem={({item}) => <View style={{marginRight: 15}}><SuggestUser uri={item.uri} name={item.name} id={item.id}/></View>}
+          renderItem={({ item, index }) => <View style={{ marginRight: 15 }}><SuggestUser uri={item.uri} name={item.name} id={item.id} /></View>}
         />
       </View>
     )
   }
 
-  _renderFeedItem (data) {
+  _renderFeedItem(data) {
     return (
       <View style={styles.feedItem}>
-        <FeedItem data={data} onPress={this.onPressUserProfile.bind(this)} onBookMarker={this.onBookMarker.bind(this)} onPlace={this.onPlace.bind(this)}/>
+        <FeedItem data={data} onPress={this.onPressUserProfile.bind(this)} onBookMarker={this.onBookMarker.bind(this)} onPlace={this.onPlace.bind(this)} />
       </View>
     )
   }
 
-  _renderFeedEvent (data) {
+  _renderFeedEvent(data) {
     return (
       <View style={styles.feedItem}>
         <FeedEvent data={data} />
@@ -155,28 +156,28 @@ class FeedPage extends Component {
     // this.props.navigation.navigate('ProfilePage')
   }
 
-  _renderFeedCampaign (data) {
+  _renderFeedCampaign(data) {
     return (
       <View style={styles.feedItem}>
-        <FeedCampaign data={data} onVisitProfile={this.onVisitProfile.bind(this)}/>
+        <FeedCampaign data={data} onVisitProfile={this.onVisitProfile.bind(this)} />
       </View>
     )
   }
 
-  _renderSuggestPlace (data) {
+  _renderSuggestPlace(data) {
     return (
       <View style={styles.feedItem}>
         <SuggestPlace data={data} />
       </View>
     )
   }
-  _renderItem = ({item}) => {
+  _renderItem = ({ item }) => {
     switch (item.type) {
       case 'users':
         return this._renderSuggestedList(item.data)
       case 'item':
         return this._renderFeedItem(item)
-      case 'event' :
+      case 'event':
         return this._renderFeedEvent(item)
       case 'campaign':
         return this._renderFeedCampaign(item)
@@ -193,7 +194,7 @@ class FeedPage extends Component {
           skip: data.allPlaces.length + PLACES_PER_PAGE,
           first: PLACES_PER_PAGE
         },
-        updateQuery: (previousResult, {fetchMoreResult}) => {
+        updateQuery: (previousResult, { fetchMoreResult }) => {
           console.log(fetchMoreResult)
           console.log(previousResult)
           if (!fetchMoreResult || fetchMoreResult.allPlaces.length === 0) {
@@ -268,7 +269,7 @@ class FeedPage extends Component {
           },
           feedTitle: place.placeName,
           images: place.pictureURL ? place.pictureURL.map((uri) => {
-            return {uri}
+            return { uri }
           }) : [],
           place: place.placeName,
           description: place.description
@@ -278,8 +279,8 @@ class FeedPage extends Component {
     return (
       <View style={styles.container}>
         <FlatList
-          keyExtractor={(item,index) => item.id}
-          style={{width: '100%', height: '100%'}}
+          keyExtractor={(item, index) => item.id}
+          style={{ width: '100%', height: '100%' }}
           data={[...data, ...graphcoolData]}
           initialNumToRender={8}
           renderItem={this._renderItem.bind(this)}
@@ -296,7 +297,7 @@ class FeedPage extends Component {
           backdrop={true}
           backdropOpacity={0.5}
           backdropColor={'lightgray'}
-          onClosed={() => this.setState({collectionModal: false})}
+          onClosed={() => this.setState({ collectionModal: false })}
         >
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
@@ -306,10 +307,10 @@ class FeedPage extends Component {
           </View>
           <View style={styles.separatebar}></View>
           <View style={styles.Collections}>
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'Hearted'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'Check-Ins'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'Wish List'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'Adventure'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'Hearted'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'Check-Ins'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'Wish List'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'Adventure'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
           </View>
         </Modal>
       </View>
@@ -325,7 +326,7 @@ const ComponentWithQueries = graphql(PLACES_PAGINATED, {
     }
   }
 })
-(FeedPage);
+  (FeedPage);
 
 //make this component available to the app
 export default ComponentWithQueries;

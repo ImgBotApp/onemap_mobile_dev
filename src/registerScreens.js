@@ -51,7 +51,7 @@ export function registerScreens(store, Provider, client) {
   // Search Module
 
   Navigation.registerComponent(SCREEN.SEARCH_PAGE, () => SearchPage, store, Provider, client)
-  // User Profiel Module
+  // User Profile Module
   Navigation.registerComponent(SCREEN.USER_PROFILE_SCREEN, () => UserProfile, store, Provider, client)
   Navigation.registerComponent(SCREEN.USER_ACCOUNT_SETTING, () => AccountSetting, store, Provider, client)
   Navigation.registerComponent(SCREEN.USER_PROFILE_EDIT, () => EditProfile, store, Provider, client)
