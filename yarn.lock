@@ -3878,9 +3878,9 @@ react-native-animatable@^1.2.3:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-auto-height-image@^0.3.4:
+"react-native-auto-height-image@git+https://gitlab.com/kingDeveloper_21th/react-native-auto-height-image.git":
   version "0.3.4"
-  resolved "https://registry.yarnpkg.com/react-native-auto-height-image/-/react-native-auto-height-image-0.3.4.tgz#8a1bcd8ab6ce91d6cfff03b27a3d1aa4a54fc51e"
+  resolved "git+https://gitlab.com/kingDeveloper_21th/react-native-auto-height-image.git#6c1e3cb29e6ce4c2e75c3655e42aae9134c45613"
   dependencies:
     prop-types "^15.5.8"
 
@@ -3926,9 +3926,9 @@ react-native-easy-toast@^1.0.9:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-fbsdk@^0.6.3:
+"react-native-fbsdk@git+https://gitlab.com/kingDeveloper_21th/react-native-fbsdk.git":
   version "0.6.3"
-  resolved "https://registry.yarnpkg.com/react-native-fbsdk/-/react-native-fbsdk-0.6.3.tgz#ab115264756d4060b8ec2a881194d9775fa8ee11"
+  resolved "git+https://gitlab.com/kingDeveloper_21th/react-native-fbsdk.git#46aa3abfc7621c2b3651c700dc1b749587f1228d"
   dependencies:
     adm-zip "^0.4.7"
     fastfall "^1.5.1"
@@ -4027,9 +4027,9 @@ react-native-navigation@^1.1.322:
   dependencies:
     lodash "4.x.x"
 
-"react-native-phone-input@git+https://github.com/RoyalDeveloper2015/react-native-phone-input.git":
+"react-native-phone-input@git+https://gitlab.com/kingDeveloper_21th/react-native-phone-input.git":
   version "0.1.10"
-  resolved "git+https://github.com/RoyalDeveloper2015/react-native-phone-input.git#9aecf3b1884ae2911636a02655e8b9fc9e48edbb"
+  resolved "git+https://gitlab.com/kingDeveloper_21th/react-native-phone-input.git#52eb5faf20c4d4869a3dae611efbfe5f09e4a0b3"
   dependencies:
     google-libphonenumber "^2.0.9"
     lodash "^4.17.4"
