@@ -60,6 +60,7 @@ class SearchResult extends Component {
 	_onKeywordItem(item) {
 		return (
 			<View style={styles.item}>
+				<Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
 				<View style={styles.infomation}>
 					<Text style={styles.name}>{item.placeName}</Text>
 					<Text style={styles.following}>{item.addressCityTown + " "+item.addressCountry}</Text>
@@ -93,8 +94,8 @@ class SearchResult extends Component {
         <View style={styles.mainContainer}>
           <Tabs selected={this.state.page} style={styles.tabHeader}
                 selectedStyle={{color:'red'}} onSelect={el=>this.onchnageTab(el)} >
-              {this._renderTabHeader('People')}
               {this._renderTabHeader('Keywords')}
+			  {this._renderTabHeader('People')}
               {this._renderTabHeader('Places')}
               {/*{this._renderTabHeader('Recent')}*/}
           </Tabs>
