@@ -55,3 +55,41 @@ export const GET_PLACE_PROFILE = gql`
     }
   }
 `
+
+export const CREATE_PLACE_PROFILE = gql`
+  mutation(
+    $description: String!, 
+    $sourceId: String!, 
+    $placeName: String!, 
+    $locationLat: Float, 
+    $locationLong: Float, 
+    $address: String, 
+    $phoneNumber: String, 
+    $website: String,
+    $addressCountry: String,
+    $addressPostalCode: String,
+    $addressStateProvince: String,
+    $addressCityTown: String,
+    $facebook: String) {
+      createPlace(
+        description: $description, 
+        source: GOOGLE_PLACE,
+        sourceId: $sourceId,
+        createSide: FRONTEND,
+        placeName: $placeName,
+        locationLat: $locationLat,
+        locationLong: $locationLong,
+        address: $address,
+        phoneNumber: $phoneNumber,
+        website: $website,
+        facebook: $facebook,
+        addressCountry: $addressCountry,
+        addressPostalCode: $addressPostalCode,
+        addressStateProvince: $addressStateProvince,
+        addressCityTown: $addressCityTown,
+        status: ENABLE
+      ) {
+        id
+      }
+    }
+`

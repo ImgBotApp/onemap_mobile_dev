@@ -168,23 +168,25 @@ class PlaceProfile extends Component {
         }
       ]
     }
-
+    console.log(this.props.user)
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
   }
 
   async componentWillMount () {
+    console.log(this.props.placeID)
     let Place = await client.query({
       query: GET_PLACE_PROFILE,
       variables: {
-        id: "cjc0b98k2nsyj0113eizs1e5e"
+        id: this.props.placeID || "cjc0b98k2nsyj0113eizs1e5e"
       }
     }).then((place) => {
+      console.log(place)
       let data = place.data.Place
       this.setState({
         placeData: {
           title: data.placeName,
           bookmark: true,
-          image: data.pictureURL.map( item => {
+          image: data.pictureURL && data.pictureURL.map( item => {
             return {
               uri: item
             }
@@ -207,12 +209,10 @@ class PlaceProfile extends Component {
             checkIns: data._userCheckedInMeta.count,
             bookmark: data._collectionsMeta.count
           },
-          keywords: data.keywords.map((item) => item.name),
+          keywords: data.keywords && data.keywords.map((item) => item.name),
           comments: []
         }
       })
-      console.log(place)
-      console.log(this.state.placeData)
     })
   }
   onNaviagtorEvent (event) {
@@ -383,7 +383,9 @@ class PlaceProfile extends Component {
       </ScrollView>
         {this.state.sliderShow ?
           (
-          <ImageSliderComponent onPress={() => {
+          <ImageSliderComponent 
+            data={this.state.placeData.image.map(item => item.uri)}
+            onPress={() => {
             this.setState({sliderShow: false})
           }}/>
           ) : null
@@ -466,8 +468,8 @@ class PlaceProfile extends Component {
     return (
       <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
         <View style={{flexDirection: 'row'}}>
-          <CircleImage style={styles.storyWriterImage} uri={user.photoURL} radius={getDeviceWidth(67)}/>
-          <Text style={styles.storyWriterName}>{user.name}</Text>
+          <CircleImage style={styles.storyWriterImage} uri={this.props.user.photoURL} radius={getDeviceWidth(67)}/>
+          <Text style={styles.storyWriterName}>{this.props.user.displayName}</Text>
         </View>
         <View style={styles.myImagesContainer}>
           {

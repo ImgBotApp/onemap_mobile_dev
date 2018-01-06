@@ -58,6 +58,7 @@
 		A01BBEC11FF3270C001960B6 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A01BBEBC1FF32702001960B6 /* libReactNativeNavigation.a */; };
 		A01BBECB1FF416B3001960B6 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A01BBEC81FF411DB001960B6 /* libART.a */; };
 		A01BBED21FF4CD8F001960B6 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A01BBED11FF4CD87001960B6 /* libRNVectorIcons.a */; };
+		A0535CD620007E1F008BF887 /* libRNGooglePlaces.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0535CD120007E0C008BF887 /* libRNGooglePlaces.a */; };
 		A0998F3D1FFC9E7B007189AB /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0998F0E1FFC9E79007189AB /* Bolts.framework */; };
 		A0998F3E1FFC9E7B007189AB /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0998F3A1FFC9E7A007189AB /* FBSDKCoreKit.framework */; };
 		A0998F3F1FFC9E7B007189AB /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0998F3B1FFC9E7A007189AB /* FBSDKLoginKit.framework */; };
@@ -376,6 +377,13 @@
 			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
 			remoteInfo = RNVectorIcons;
 		};
+		A0535CD020007E0C008BF887 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A0535CA420007E0B008BF887 /* RNGooglePlaces.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNGooglePlaces;
+		};
 		A0998F451FFC9FC7007189AB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A0998F411FFC9FC7007189AB /* RCTFBSDK.xcodeproj */;
@@ -444,6 +452,7 @@
 		A01BBE941FF32702001960B6 /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		A01BBEC21FF411DB001960B6 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		A01BBECC1FF4CD86001960B6 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
+		A0535CA420007E0B008BF887 /* RNGooglePlaces.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNGooglePlaces.xcodeproj; path = "../node_modules/react-native-google-places/ios/RNGooglePlaces.xcodeproj"; sourceTree = "<group>"; };
 		A0998F0E1FFC9E79007189AB /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		A0998F3A1FFC9E7A007189AB /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		A0998F3B1FFC9E7A007189AB /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -467,6 +476,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0535CD620007E1F008BF887 /* libRNGooglePlaces.a in Frameworks */,
 				A0998F471FFC9FD1007189AB /* libRCTFBSDK.a in Frameworks */,
 				A01BBED21FF4CD8F001960B6 /* libRNVectorIcons.a in Frameworks */,
 				A01BBECB1FF416B3001960B6 /* libART.a in Frameworks */,
@@ -671,6 +681,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				A0535CA420007E0B008BF887 /* RNGooglePlaces.xcodeproj */,
 				A0998F411FFC9FC7007189AB /* RCTFBSDK.xcodeproj */,
 				A01BBECC1FF4CD86001960B6 /* RNVectorIcons.xcodeproj */,
 				A01BBEC21FF411DB001960B6 /* ART.xcodeproj */,
@@ -789,6 +800,14 @@
 			isa = PBXGroup;
 			children = (
 				A01BBED11FF4CD87001960B6 /* libRNVectorIcons.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A0535CA520007E0B008BF887 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A0535CD120007E0C008BF887 /* libRNGooglePlaces.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1010,6 +1029,10 @@
 				{
 					ProductGroup = A01BBE0A1FEE42B6001960B6 /* Products */;
 					ProjectRef = A01BBE091FEE42B6001960B6 /* RNCardView.xcodeproj */;
+				},
+				{
+					ProductGroup = A0535CA520007E0B008BF887 /* Products */;
+					ProjectRef = A0535CA420007E0B008BF887 /* RNGooglePlaces.xcodeproj */;
 				},
 				{
 					ProductGroup = A01BBE001FEE1D84001960B6 /* Products */;
@@ -1329,6 +1352,13 @@
 			remoteRef = A01BBED01FF4CD87001960B6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		A0535CD120007E0C008BF887 /* libRNGooglePlaces.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNGooglePlaces.a;
+			remoteRef = A0535CD020007E0C008BF887 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		A0998F461FFC9FC7007189AB /* libRCTFBSDK.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1523,6 +1553,8 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-OneMapFinal/Pods-OneMapFinal-resources.sh",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
