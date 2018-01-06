@@ -11,6 +11,8 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity,StyleSheet } from 'react-native';
 import { getDeviceHeight, getDeviceWidth} from '@global'
 import { NORMAL_FONT_SIZE, BIG_FONT_SIZE } from '../../../theme/fonts';
+import DoneButton from './DoneButton';
+
 export default function (props) {
   const { navigation,screenProps } = props
   const { state } = navigation
@@ -20,17 +22,7 @@ export default function (props) {
     headerTitle: I18n.t('COLLECTION_TITLE'),
     headerTitleStyle: DFont.DFontFamily,
     headerTintColor: HEADER_COLOR,
-    headerRight: (
-      <TouchableOpacity style={styles.rightTouchable} onPress={() => {
-        // params.openNext()
-        // navigation.navigate('AccountSetting')
-        navigation.goBack()
-      }}>
-        <Text style={styles.rightNav}>
-          {I18n.t('PLACE_KEYWORD_DONE')}
-        </Text>
-      </TouchableOpacity>
-    ),
+    headerRight: (<DoneButton/>),
   }
 }
 

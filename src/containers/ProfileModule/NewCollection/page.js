@@ -27,13 +27,13 @@ class NewCollection extends Component {
     ]
   };
   constructor(props) {
-    super(props)
-    this.state={
-      isPublic: false,
-      isModal: false,
-    }
-    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
+      super(props)
+      this.state={
+          isModal: false,
+      }
+      this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
+
   onNavigatorEvent (event) {
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'backButton') {
@@ -44,50 +44,60 @@ class NewCollection extends Component {
       }
     }
   }
+
   onValueChange = (val) => {
-    this.setState({
-      isModal: val ? true : false,
-      isPublic: val
-    })
+      this.setState({
+          isModal: val ? true : false
+      });
+      this.props.onChangeVisibility(val)
   }
+
   onModalClosed = () => {
-    this.setState({
-      isModal: false
-    })
+      this.setState({
+          isModal: false
+      })
   }
+
   render() {
-    return (
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.name}>{I18n.t('NAME_STR')}</Text>
-          <TextInput style={styles.collectionInput} placeholder={I18n.t('COLLECTION_NAME')}/>
-        </View>
-        <View style={styles.privacyContainer}>
-          <Text style={styles.name}>{I18n.t('PRIVACY_STR')}</Text>
-          <View style={styles.privacy}>
-            <Text style={styles.privacyText}>{I18n.t('PRIVACY_DESCRIPTION')}</Text>
-            <Switch value={this.state.isPublic} onValueChange={this.onValueChange.bind(this)} />
-          </View>
-        </View>
-        <View style={styles.separate}></View>
-        <Modal style={styles.modalContainer} backdrop={true}  position={"center"} isOpen={this.state.isModal} onClosed={this.onModalClosed.bind(this)}>
-          <Text style={styles.modalTitle}>{I18n.t('COLLECTION_CHANGE_PRIVACY')}</Text>
-          <Text style={styles.modalDescription}>{I18n.t('COLLECTION_CHANGE_PRIVACY_DES')}</Text>
-          <View style={styles.footer}>
-            <TouchableOpacity onPress={() => this.setState({isModal: false, isPublic: false})}>
-              <View style={[styles.modalButton]}>
-                <Text style={styles.modalButtonText}>{I18n.t('CANCEL_STR')}</Text>
+      return (
+          <View style={styles.container}>
+              <View>
+                  <Text style={styles.name}>{I18n.t('NAME_STR')}</Text>
+                  <TextInput
+                      value={this.props.collection.name}
+                      onChangeText={this.props.onChangeName}
+                      style={styles.collectionInput}
+                      placeholder={I18n.t('COLLECTION_NAME')}/>
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setState({isModal: false})}>
-              <View style={[styles.modalButton,styles.leftBorder]}>
-                <Text style={[styles.modalButtonText]}>{I18n.t('OK_STR')}</Text>
+              <View style={styles.privacyContainer}>
+                  <Text style={styles.name}>{I18n.t('PRIVACY_STR')}</Text>
+                  <View style={styles.privacy}>
+                      <Text style={styles.privacyText}>{I18n.t('PRIVACY_DESCRIPTION')}</Text>
+                      <Switch value={this.props.collection.visibility} onValueChange={this.onValueChange.bind(this)} />
+                  </View>
               </View>
-            </TouchableOpacity>
+              <View style={styles.separate}></View>
+              <Modal style={styles.modalContainer} backdrop={true}  position={"center"} isOpen={this.state.isModal} onClosed={this.onModalClosed.bind(this)}>
+                  <Text style={styles.modalTitle}>{I18n.t('COLLECTION_CHANGE_PRIVACY')}</Text>
+                  <Text style={styles.modalDescription}>{I18n.t('COLLECTION_CHANGE_PRIVACY_DES')}</Text>
+                  <View style={styles.footer}>
+                      <TouchableOpacity onPress={() => {
+                          this.setState({isModal: false})
+                          this.props.onChangeVisibility(false)
+                      }}>
+                          <View style={[styles.modalButton]}>
+                              <Text style={styles.modalButtonText}>{I18n.t('CANCEL_STR')}</Text>
+                          </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => this.setState({isModal: false})}>
+                          <View style={[styles.modalButton,styles.leftBorder]}>
+                              <Text style={[styles.modalButtonText]}>{I18n.t('OK_STR')}</Text>
+                          </View>
+                      </TouchableOpacity>
+                  </View>
+              </Modal>
           </View>
-        </Modal>
-      </View>
-    );
+      );
   }
 }
 

@@ -1,6 +1,8 @@
-import { connect } from 'react-redux' 
+import { connect } from 'react-redux'
+import {graphql} from 'react-apollo';
 
 import page from './page'
+import {GET_COLLECTIONS} from "@graphql/collection";
 
 function mapStateToProps(state) {
   return {
@@ -14,4 +16,6 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(page)
+let container = graphql(GET_COLLECTIONS)(page);
+
+export default connect(mapStateToProps, mapDispatchToProps)(container)

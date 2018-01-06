@@ -13,6 +13,7 @@ import AutoHeightImage from 'react-native-auto-height-image';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 // import TitleImage from 'titledimage'
 import I18n from '@language'
+import Collections from '@components/Collections'
 
 const testImage = 'https://s17.postimg.org/nnar4n263/images3.jpg'
 const testImage1 = 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
@@ -110,12 +111,18 @@ class Profile extends Component {
         <View style={styles.vCollections}>
           <Text style={styles.collectionTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
           <View style={styles.collectionItems}>
-            <TitleImage style={styles.collection} uri={collections[0].uri} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            {/*<TitleImage style={styles.collection} uri={collections[0].uri} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
             <TitleImage style={styles.collection} uri={collections[1].uri} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
             <TitleImage style={styles.collection} uri={collections[2].uri} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
             <TouchableOpacity onPress={this.onViewAllCollections.bind(this)}>
               <TitleImage style={styles.collection} uri={collections[3].uri} radius={8}  title={'+\nView all\nCollections'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-            </TouchableOpacity>
+            </TouchableOpacity>*/}
+            <Collections
+                onHearted={this.props.onHearted}
+                onCheckIns={this.props.onCheckIns}
+                onWishList={this.props.onWishList}
+                onViewAll={this.props.onViewAll}
+            />
           </View>
         </View>
         <View style={styles.vStories}>

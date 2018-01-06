@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 
 import userReducers from '@reducers/userLoginReducers'
+import collectionReducer from '@reducers/collectionReducer'
 import MainRoute from '@routes'
 
 import { createStore, combineReducers } from 'redux'
@@ -22,7 +23,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 })
 
-let store = createStore(combineReducers({userReducers}))
+let store = createStore(combineReducers({userReducers, collectionReducer}))
 
 export default class App extends Component<{}> {
   render() {

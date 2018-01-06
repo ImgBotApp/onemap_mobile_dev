@@ -8,9 +8,23 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, nav) {
   return {
+      onHearted: function () {
+          nav.navigation.navigate('UserCollection', {page: 'Hearted'})
+      },
 
+      onCheckIns: function () {
+          nav.navigation.navigate('UserCollection', {page: 'CheckIns'})
+      },
+
+      onWishList: function () {
+          nav.navigation.navigate('UserCollection', {page: 'WishList'});
+      },
+
+      onViewAll: function () {
+          nav.navigation.navigate('AllCollection')
+      }
   }
 }
 

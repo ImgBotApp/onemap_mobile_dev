@@ -118,20 +118,28 @@ class AllCollections extends Component {
   }
   render() {
     return (
-      <ScrollView style={styles.main}>
-      <View style={styles.container}>
-        
+      this.props.data.loading
+      ? <ActivityIndicator size="large" color="blue" />
+      : <ScrollView style={styles.main}>
+        <View style={styles.container}>
+
         {
-          data.map((item) => {
+          this.props.data.allCollections.map((item) => {
             return (
               <TouchableOpacity onPress={() => this.onItemPress(item)} onLongPress={() => this.onItemRemove(item)}>
-                <CollectionItem style={styles.cell} insideStyle={styles.collection} uri={'https://placeimg.com/640/480/any/grayscale'} radius={8} />
+                <CollectionItem
+                    style={styles.cell}
+                    insideStyle={styles.collection}
+                    uri={item.pictureURL}
+                    radius={8}
+                    title={item.name}
+                />
               </TouchableOpacity>
             )
           })
         }
-        
-      </View>
+
+        </View>
       </ScrollView>
     );
   }
