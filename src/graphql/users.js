@@ -56,3 +56,73 @@ export const EXIST_FACEBOOK_USER = gql`
     }
   }
 `
+export const SEARCH_USER = gql`
+  query searchUser ($keyword: String!, $first: Int, $skip: Int) {
+	  allUsers(
+		skip: $skip, first: $first
+		filter: {
+		  AND: [
+			{ accountStatus: ENABLE },
+			{
+			  OR: [
+				{ displayName_contains: $keyword },
+				{ username_contains: $keyword }
+			  ]
+			}
+		  ]
+		}
+	  ) {
+		email
+		username
+		firstName
+		lastName
+		displayName
+		gender
+		city
+		country
+		photoURL
+		}
+	}`
+
+export const LIST_KEYWORD_PLACES = gql`
+   query getKeywordPlaces(
+    $orderBy: PlaceOrderBy # name_ASC, name_DESC, createdAt_ASC, createdAt_DESC
+    $skip: Int # for pagination, 0 for no skip
+    $first: Int # limit result to number
+   $keywordName: String # keyword.name
+  ) {
+    allPlaces(
+      orderBy: $orderBy, 
+      first: $first, 
+      skip: $skip, 
+      filter:{keywords_some:{name:$keywordName}}
+    ) 
+    {
+      id
+      createdAt
+      updatedAt
+      description
+      source
+      sourceId
+      createSide
+      placeName
+      locationLat
+      locationLong
+      addressAreaDistrict
+      addressCityTown
+      addressStateProvince
+      addressCountry
+      addressPostalCode
+      addressStreet
+      address
+      phoneNumber
+      website
+      facebook
+      line
+      openingHrs
+      pictureURL
+      status
+      placeOwner
+    }
+  }
+`

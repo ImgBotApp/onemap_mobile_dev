@@ -6,6 +6,9 @@ import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import SearchResult from '@components/SearchResult'
 import {getDeviceWidth} from '@global'
 import styles from './styles'
+import { client } from '@root/main'
+import { SEARCH_USER,LIST_KEYWORD_PLACES } from '@graphql/users'
+
 // create a component
 const stories = [
   {
@@ -43,8 +46,10 @@ class SearchPage extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      result: false
+      result: false,
+      selectedTab:'People'
     }
+    this.selectHandleTab.bind(this);
   }
   _renderStoryItem (item) {
     return (
@@ -58,6 +63,13 @@ class SearchPage extends Component {
       </View>
     )
   }
+	selectHandleTab = (selectedTab) => {
+      if(this.state.selectedTab != selectedTab){
+		  this.setState({
+			  selectedTab,
+		  })
+      }
+	}
   render() {
     return (
       <View style={styles.container}>
@@ -92,22 +104,43 @@ class SearchPage extends Component {
               </View>
             </View>
           </ScrollView>
-          { this.state.result == true ? <SearchResult /> : null }
+          { this.state.result == true ? <SearchResult  selectHandleTab={this.selectHandleTab} allUsers={this.state.allUsers} keywordsData={this.state.keywordsData}/> : null }
         </View>
       </View>
     );
   }
-  onShowResult(val) {
+  onShowResult = async (val) =>{
     if ( val.length == 0) return this.setState({result: false})
-    else return this.setState({ result: true })
+    else {
+      if(this.state.selectedTab == 'People'){
+		  let SearchUser = await client.query({
+			  query: SEARCH_USER,
+			  variables: {
+				  keyword:val
+			  }
+		  }).then((data) => {
+			  this.setState({ result: true,allUsers :data.data.allUsers})
+		  })
+      } else if(this.state.selectedTab == 'Keywords'){
+		  let SearchKeyword = await client.query({
+			  query: LIST_KEYWORD_PLACES,
+			  variables: {
+				  keywordName:val
+			  }
+		  }).then((data) => {
+			  this.setState({ result: true,keywordsData :data.data.allPlaces })
+		  })
+      }
+		return
+    }
   }
+
   onDismissResult() {
     this.setState({
-      result: false
+      result: falseval
     })
+
   }
 }
 
-
-//make this component available to the app
 export default SearchPage;
