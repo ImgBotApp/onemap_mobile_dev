@@ -15,7 +15,7 @@ var data=[]
 class SearchResult extends Component {
   constructor(props){
     super(props);
-    this.state = {page:'People'};
+    this.state = {page:'Places'};
   }
   _renderTabHeader(text) {
     return (

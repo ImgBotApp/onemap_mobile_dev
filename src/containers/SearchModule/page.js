@@ -47,7 +47,7 @@ class SearchPage extends Component {
     super(props)
     this.state = {
       result: false,
-      selectedTab:'People'
+      selectedTab:'Places'
     }
     this.selectHandleTab.bind(this);
   }
@@ -132,7 +132,9 @@ class SearchPage extends Component {
 		  }).then((data) => {
 			  this.setState({ result: true,keywordsData :data.data.allPlaces })
 		  })
-      }
+      }else {
+		  this.setState({ result: true,})
+	  }
 		return
     }
   }
