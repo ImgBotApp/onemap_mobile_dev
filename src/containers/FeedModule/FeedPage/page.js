@@ -15,6 +15,8 @@ import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
 import * as SCREEN from '@global/screenName'
 import Modal from 'react-native-modalbox';
 import { SMALL_FONT_SIZE } from '../../../theme/fonts';
+import { client } from '@root/main'
+import { GET_PAGINATED_PLACES } from '@graphql/places'
 const data = [
   {
     id: 'a1',
@@ -395,8 +397,18 @@ class FeedPage extends Component {
     super(props)
     this.state = {
       suggestFlag: true,
-      collectionModal: false
+      collectionModal: false,
+      skip: 0
     }
+  }
+  async componentWillReceiveProps(nextProps) {
+    await client.query({
+      query: GET_PAGINATED_PLACES,
+      variables: {
+        first: 10,
+        skip: this.state.skip 
+      }
+    })
   }
   closeSuggest() {
     this.setState({

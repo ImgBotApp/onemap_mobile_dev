@@ -164,23 +164,52 @@ class LoginPage extends Component {
             $this.props.login();
           } 
           else {
-            $this.props.navigator.push({
-              screen: SCREEN.ACCOUNT_CREATE_PAGE,
-              title: 'Create Account',
-              passProps: {
-                mode: ACCOUNT_MODE.facebook,
-                info: {
-                  ...result,
-                  userId: $this.state.id
-                }
-              },
-              animated: true,
-              navigatorStyle: {
-                navBarTextColor: DARK_GRAY_COLOR,
-                navBarTextFontFamily: 'Comfortaa-Regular',
-                naviBarComponentAlignment: 'center'
-              },
-            })        
+            // $this.props.navigator.push({
+            //   screen: SCREEN.ACCOUNT_CREATE_PAGE,
+            //   title: 'Create Account',
+            //   passProps: {
+            //     mode: ACCOUNT_MODE.facebook,
+            //     info: {
+                  
+            //       userId: $this.state.id
+            //     }
+            //   },
+            //   animated: true,
+            //   navigatorStyle: {
+            //     navBarTextColor: DARK_GRAY_COLOR,
+            //     navBarTextFontFamily: 'Comfortaa-Regular',
+            //     naviBarComponentAlignment: 'center'
+            //   },
+            // })
+            LoginManager.logInWithReadPermissions(['public_profile','email','user_about_me','user_birthday','user_hometown','user_location'])
+            .then((result) => {
+              if (result.isCancelled) {
+                // alert('cancelled')
+              } else {
+                this.setState({loading: true})
+                return AccessToken.getCurrentAccessToken()
+              }
+            }).then((data) => {
+              const token = data.accessToken.toString()
+              return Promise.all([this.props.FacebookLogin({
+                  variables: { facebookToken: token }}), 
+                token])
+            }).then((data) => {
+              var gctoken = data[0]
+              var fbtoken = data[1]
+              this.setState({id: gctoken.data.authenticateFBUser.id})
+              this.props.saveUserId(gctoken.data.authenticateFBUser.id, gctoken.data.authenticateFBUser.token)
+              const infoRequest = new GraphRequest(
+                '/me?fields=id,first_name,last_name,picture,email,gender,address,about',
+                null,
+                this._responseInfoCallback,
+              );
+              new GraphRequestManager().addRequest(infoRequest).start();
+            })
+            .catch((err) => {
+              console.log(err)
+              $this.setState({loading: false})   
+            })
           }
         })
       } else {
@@ -208,13 +237,9 @@ class LoginPage extends Component {
             this._responseInfoCallback,
           );
           new GraphRequestManager().addRequest(infoRequest).start();
-        // this.props.dispatch(appActions.login())
-        // this.props.login();
-        // this._responseInfoCallback(null,{});
         })
         .catch((err) => {
           console.log(err)
-          // alert('error')
           $this.setState({loading: false})   
         })
       }
