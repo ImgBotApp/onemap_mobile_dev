@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
@@ -23,7 +23,7 @@ import styles from './styles'
 class StoryBoard extends Component {
   constructor(props) {
     super(props)
-    this.state={
+    this.state = {
       data: props.data
     }
   }
@@ -33,14 +33,14 @@ class StoryBoard extends Component {
     })
   }
 
-  _renderStoryItem (item) {
+  _renderStoryItem(item) {
     return (
       <View>
         <TouchableOpacity onPress={() => this.props.onPressItem(item.id)}>
           <AutoHeightTitledImage uri={item.uri}
             width={getDeviceWidth(this.props.width)}
             title={item.title} vAlign={'center'} hAlign={'left'} titleStyle={styles.storyItemTitle}
-            style={{marginBottom: 10}}
+            style={{ marginBottom: 10 }}
           />
         </TouchableOpacity>
       </View>
@@ -49,22 +49,25 @@ class StoryBoard extends Component {
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
-        <View style={[styles.subContainer,this.props.subContainer]}>
-          <FlatList 
-              data={this.state.data}
-              renderItem={({item}) => { if (this.state.data.indexOf(item)% 3 == 0 )return this._renderStoryItem(item)} }
+        <View style={[styles.subContainer, this.props.subContainer]}>
+          <FlatList
+            keyExtractor={(item, index) => index}
+            data={this.state.data}
+            renderItem={({ item }) => { if (this.state.data.indexOf(item) % 3 == 0) return this._renderStoryItem(item) }}
           />
         </View>
-        <View style={[styles.subContainer,this.props.subContainer]}>
-          <FlatList 
+        <View style={[styles.subContainer, this.props.subContainer]}>
+          <FlatList
+            keyExtractor={(item, index) => index}
             data={this.state.data}
-            renderItem={({item}) => { if (this.state.data.indexOf(item)% 3 == 1 )return this._renderStoryItem(item)} }
+            renderItem={({ item }) => { if (this.state.data.indexOf(item) % 3 == 1) return this._renderStoryItem(item) }}
           />
         </View>
-        <View style={[styles.subContainer,this.props.subContainer]}>
-          <FlatList 
+        <View style={[styles.subContainer, this.props.subContainer]}>
+          <FlatList
+            keyExtractor={(item, index) => index}
             data={this.state.data}
-            renderItem={({item}) => { if (this.state.data.indexOf(item)% 3 == 2 )return this._renderStoryItem(item)} }
+            renderItem={({ item }) => { if (this.state.data.indexOf(item) % 3 == 2) return this._renderStoryItem(item) }}
           />
         </View>
       </View>

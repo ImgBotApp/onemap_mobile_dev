@@ -8,10 +8,10 @@ import CircleImage from '@components/CircleImage'
 import styles from './styles'
 import DFonts from '@theme/fonts'
 import { RED_COLOR, LIGHT_GRAY_COLOR } from '../../theme/colors';
-import {getDeviceWidth, getDeviceHeight, calculateDuration} from '@global'
+import { getDeviceWidth, getDeviceHeight, calculateDuration } from '@global'
 // create a component
 class FeedItem extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
@@ -23,29 +23,29 @@ class FeedItem extends Component {
     this.props.onPlace(this.props.data.place)
   }
 
-  onBookMarker () {
+  onBookMarker() {
     this.props.onBookMarker()
   }
   render() {
     return (
       <CardView style={styles.container} cardElevation={2} cardMaxElevation={2} cornerRadius={5}>
         {/* user information */}
-        
-          <View style={styles.userInfo}>
-            <TouchableOpacity onPress={this._onUserInformation.bind(this)}>
+
+        <View style={styles.userInfo}>
+          <TouchableOpacity onPress={this._onUserInformation.bind(this)}>
             <View style={styles.user}>
-              <CircleImage style={styles.profileImage} uri={this.props.data.user.uri} radius={getDeviceWidth(70)}/>
+              <CircleImage style={styles.profileImage} uri={this.props.data.user.uri} radius={getDeviceWidth(70)} />
               <View style={styles.userDescription}>
-                <Text style={[styles.name,DFonts.DFontFamily]}>{this.props.data.user.name}</Text>
+                <Text style={[styles.name, DFonts.DFontFamily]}>{this.props.data.user.name}</Text>
                 <Text style={[styles.update, DFonts.DFontFamily]}>{calculateDuration(this.props.data.user.updated)}</Text>
               </View>
             </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.onBookMarker.bind(this)}>
-              <MaterialCommunityIcons name={this.props.data.bookmark ? "bookmark" : "bookmark-outline"} size={30} 
-                color={this.props.data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR}/>
-            </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.onBookMarker.bind(this)}>
+            <MaterialCommunityIcons name={this.props.data.bookmark ? "bookmark" : "bookmark-outline"} size={30}
+              color={this.props.data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} />
+          </TouchableOpacity>
+        </View>
         {/* Feed Title */}
         <View>
           <Text style={[styles.feedTitle, DFonts.DFontFamily]}>{this.props.data.feedTitle}</Text>
@@ -53,12 +53,13 @@ class FeedItem extends Component {
         {/* Place Image */}
         <View style={styles.feedImages}>
           <FlatList
+            keyExtractor={(item, index) => index}
             data={this.props.data.images}
             horizontal
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <CardView cardElevation={5} cardMaxElevation={5} cornerRadius={5} style={styles.FeedImageItem}>
                 <TouchableOpacity onPress={this._onPlaceImagePress.bind(this)}>
-                  <Image source={{uri: item.uri}} style={styles.feedItemImage}/>
+                  <Image source={{ uri: item.uri }} style={styles.feedItemImage} />
                 </TouchableOpacity>
               </CardView>
             )}

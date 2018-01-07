@@ -17,8 +17,11 @@ import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
 import { SMALL_FONT_SIZE } from '../../../theme/fonts';
 
+import { client } from '@root/main'
+import { GET_ALL_COLLECTIONS } from '@graphql/collections'
+
 const data = {
-  id : 'test',
+  id: 'test',
   createdAt: new Date(),
   updatedAt: new Date(),
   facebookUserId: '@testUser',
@@ -36,47 +39,47 @@ const data = {
     {
       id: 'a1',
       title: 'BAKUE',
-      uri : 'https://picsum.photos/200/300'
+      uri: 'https://picsum.photos/200/300'
     },
     {
       id: 'a2',
       title: 'PARIS',
-      uri : 'https://picsum.photos/250/300'
+      uri: 'https://picsum.photos/250/300'
     },
     {
       id: 'a3',
       title: 'BERLIN',
-      uri : 'https://picsum.photos/300/300'
+      uri: 'https://picsum.photos/300/300'
     },
     {
       id: 'a4',
       title: 'MOSCOW',
-      uri : 'https://picsum.photos/350/300'
+      uri: 'https://picsum.photos/350/300'
     },
     {
       id: 'a5',
       title: 'WARSAOW',
-      uri : 'https://picsum.photos/400/300'
+      uri: 'https://picsum.photos/400/300'
     },
     {
       id: 'a6',
       title: 'MADRID',
-      uri : 'https://picsum.photos/150/300'
+      uri: 'https://picsum.photos/150/300'
     },
     {
       id: 'a7',
       title: 'ROMA',
-      uri : 'https://picsum.photos/200/300'
+      uri: 'https://picsum.photos/200/300'
     },
     {
       id: 'a8',
       title: 'NEW YORK',
-      uri : 'https://picsum.photos/250/300'
+      uri: 'https://picsum.photos/250/300'
     },
     {
       id: 'a9',
       title: 'TOKYO',
-      uri : 'https://picsum.photos/300/300'
+      uri: 'https://picsum.photos/300/300'
     },
   ]
 }
@@ -91,14 +94,18 @@ class ProfileComponent extends Component {
       }
     ]
   };
-  constructor (props) {
+  constructor(props) {
     super(props)
     console.log(props.user)
     this.state = {
       ...props.user,
-      displayName: props.user.displayName || props.user.firstName + " " + props.user.lastName
+      displayName: props.user.displayName || props.user.firstName + " " + props.user.lastName,
+      collections: []
     }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
+  }
+  componentWillMount() {
+    this.getUserCollections();
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -106,7 +113,7 @@ class ProfileComponent extends Component {
       displayName: nextProps.user.displayName || nextProps.user.firstName + " " + nextProps.user.lastName
     })
   }
-  onNavigatorEvent =(event) => {
+  onNavigatorEvent = (event) => {
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'Setting') {
         this.props.navigator.push({
@@ -121,9 +128,17 @@ class ProfileComponent extends Component {
       }
     }
   }
-  componentWillUpdate () {
+  getUserCollections = () => {
+    client.query({
+      query: GET_ALL_COLLECTIONS,
+      variables: {
+        // id: this.props.user.id
+      }
+    }).then(collections => {
+      this.setState({ collections: collections.data.allCollections });
+    })
   }
-  onEditProfile () {
+  onEditProfile() {
     this.props.navigator.push({
       screen: SCREEN.USER_ACCOUNT_SETTING,
       title: 'Account Settings',
@@ -134,24 +149,27 @@ class ProfileComponent extends Component {
       }
     })
   }
+  onRefresh = collections => {
+    this.setState({collections});
+  }
   render() {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.infoView}>
-          <View style={{flexDirection:'row'}}>
-            <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(171)}/>
-            <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage}/>
+          <View style={{ flexDirection: 'row' }}>
+            <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(171)} />
+            <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage} />
           </View>
           <View style={styles.infoContainer}>
             <View style={styles.nameView}>
               <View>
                 <Text style={styles.bigName}>{this.state.displayName}</Text>
                 <Text style={styles.userId}>
-                  <EvilIcons name="sc-facebook" size={SMALL_FONT_SIZE}/>
+                  <EvilIcons name="sc-facebook" size={SMALL_FONT_SIZE} />
                   {this.state.username}
                 </Text>
               </View>
-              <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={this.onEditProfile.bind(this)}>
+              <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={this.onEditProfile.bind(this)}>
                 <View style={styles.editProfileContainer}>
                   <Text style={styles.editProfile}>{I18n.t('SETTING_EDIT_PROFILE')}</Text>
                 </View>
@@ -174,12 +192,13 @@ class ProfileComponent extends Component {
         <View style={styles.vCollections}>
           <Text style={styles.collectionTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
           <View style={styles.collectionItems}>
-            <Collections 
+            <Collections
+              collections={this.state.collections}
               onHearted={this.onHearted.bind(this)}
               onCheckIns={this.onCheckIns.bind(this)}
               onWishList={this.onWishList.bind(this)}
               onViewAll={this.onViewAll.bind(this)}
-              />
+            />
           </View>
         </View>
         {/* Stories Part */}
@@ -192,33 +211,28 @@ class ProfileComponent extends Component {
       </ScrollView>
     );
   }
-  componentWillMount () {
-    // this.props.navigation.setParams({
-    //   openDrawerMenu: this._openDrawerMenu
-    // })
-  }
-  onHearted =() => {
+  onHearted = () => {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
       title: I18n.t('DRAWER_STORIES'),
       animated: true
     })
   }
-  onCheckIns=() => {
+  onCheckIns = () => {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
       title: I18n.t('DRAWER_STORIES'),
       animated: true
     })
   }
-  onWishList=() => {
+  onWishList = () => {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
       title: I18n.t('DRAWER_STORIES'),
       animated: true
     })
   }
-  onViewAll=() => {
+  onViewAll = () => {
     // this.props.navigator.push({
     //   screen: SCREEN.COLLECTIONS_PAGE,
     //   title: I18n.t('DRAWER_COLLECTION_TITLE'),
@@ -227,10 +241,14 @@ class ProfileComponent extends Component {
     this.props.navigator.push({
       screen: SCREEN.FEED_ALL_COLLECTION,
       title: I18n.t('COLLECTION_TITLE'),
-      animated: true
+      animated: true,
+      passProps: {
+        collections: this.state.collections,
+        refresh: this.onRefresh
+      }
     })
   }
-  onStoryItem=(id) => {
+  onStoryItem = (id) => {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       title: 'My Stories',
@@ -252,7 +270,7 @@ class ProfileComponent extends Component {
       }
     })
   }
-  _openDrawerMenu () {
+  _openDrawerMenu() {
     $this.props.navigation.navigate('DrawerOpen')
   }
 }

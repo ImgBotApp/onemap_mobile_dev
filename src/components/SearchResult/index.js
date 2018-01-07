@@ -7,7 +7,7 @@ import CircleImage from '@components/CircleImage'
 import styles from './styles'
 import { getDeviceHeight, getDeviceWidth } from '@global'
 import RNGooglePlaces from 'react-native-google-places'
-const data=[
+const data = [
   {
     type: 'user',
     uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg',
@@ -22,12 +22,12 @@ const data=[
   {
     type: 'place',
     name: 'Nai Circus School',
-    address: 'Pai, Thailand'    
+    address: 'Pai, Thailand'
   },
   {
     type: 'place',
     name: 'Nai Circus School',
-    address: 'Pai, Thailand'    
+    address: 'Pai, Thailand'
   },
   {
     type: 'campaign',
@@ -43,10 +43,10 @@ const data=[
 ]
 // create a component
 class SearchResult extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      page:'Recent',
+      page: 'Recent',
       places: []
     };
   }
@@ -59,14 +59,14 @@ class SearchResult extends Component {
   }
   _renderTabHeader(text) {
     return (
-      <Text name={text} style={styles.TabText} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>      
+      <Text name={text} style={styles.TabText} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>
     )
   }
 
   _onUserItem(item) {
     return (
       <View style={styles.item}>
-        <CircleImage style={styles.profileImage} uri={item.uri} radius={getDeviceWidth(70)}/>
+        <CircleImage style={styles.profileImage} uri={item.uri} radius={getDeviceWidth(70)} />
         <View style={styles.infomation}>
           <Text style={styles.name}>{item.name}</Text>
           <Text style={styles.following}>{item.address}</Text>
@@ -100,7 +100,7 @@ class SearchResult extends Component {
     )
   }
   _onRenderItem(item) {
-    switch(item.type) {
+    switch (item.type) {
       case 'user':
         return this._onUserItem(item)
       case 'place':
@@ -109,14 +109,16 @@ class SearchResult extends Component {
         return this._onCampaignItem(item)
     }
   }
-  _renderPlaces () {
+  _renderPlaces() {
     return (
-    <View style={styles.scrollView}>
-      <FlatList style={styles.scrollView} 
-        data={this.state.places}
-        renderItem={({item}) => this._onPlaceItem(item)}
-      />
-    </View>
+      <View style={styles.scrollView}>
+        <FlatList
+          keyExtractor={(item, index) => index}
+          style={styles.scrollView}
+          data={this.state.places}
+          renderItem={({ item }) => this._onPlaceItem(item)}
+        />
+      </View>
     )
   }
   render() {
@@ -124,11 +126,11 @@ class SearchResult extends Component {
       <View style={styles.container}>
         <View style={styles.mainContainer}>
           <Tabs selected={this.state.page} style={styles.tabHeader}
-                selectedStyle={{color:'red'}} onSelect={el=>this.setState({page:el.props.name})}>
-              {this._renderTabHeader('Recent')}
-              {this._renderTabHeader('People')}
-              {this._renderTabHeader('Keywords')}
-              {this._renderTabHeader('Places')}
+            selectedStyle={{ color: 'red' }} onSelect={el => this.setState({ page: el.props.name })}>
+            {this._renderTabHeader('Recent')}
+            {this._renderTabHeader('People')}
+            {this._renderTabHeader('Keywords')}
+            {this._renderTabHeader('Places')}
           </Tabs>
         </View>
         {

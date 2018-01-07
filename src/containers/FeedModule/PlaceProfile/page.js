@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity,ScrollView, Platform, TextInput } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, Platform, TextInput } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CardView from 'react-native-cardview'
 import ViewMoreText from 'react-native-view-more-text';
@@ -18,7 +18,7 @@ import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR }
 import { calculateCount, getDeviceWidth, calculateDuration } from '@global'
 import DFonts from '@theme/fonts'
 import I18n from '@language'
-import * as SCREEN  from '@global/screenName'
+import * as SCREEN from '@global/screenName'
 
 import { client } from '@root/main'
 import { GET_PLACE_PROFILE } from '@graphql/places'
@@ -31,18 +31,18 @@ const ImagePickerOption = {
   }
 }
 const user = {
-  name : 'Minna Hamilton',
+  name: 'Minna Hamilton',
   photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
 }
 const data = {
   title: 'GRAMERCY TAVERN',
   bookmark: true,
   image: [
-    {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-    {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-    {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-    {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-    {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'}
+    { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+    { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+    { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+    { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+    { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' }
   ],
   description: 'The Main Dining Room serves a fixed-price menu for dinner an a la carte menu for lunch. Our Tavern serves an a la menu and welcomes guests on a walk-in basic',
   map: {
@@ -56,7 +56,7 @@ const data = {
     phoneNumber: '+1-212-477-0777',
     website: 'www.gramercytavern.com',
     openingHours: [
-      'Mon - Thu and Sun, 11:30 AM - 11:00 PM'    ]
+      'Mon - Thu and Sun, 11:30 AM - 11:00 PM']
   },
   interests: {
     hearted: 12809,
@@ -74,12 +74,12 @@ const data = {
         update: new Date()
       },
       images: [
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
       ],
       description: 'I came here for RW last night. The reason this review gets 4 stars is because of the everything biscuit. So GOOD. It comes with a vegetable cream cheese and it was the best part of the meal. So good that we ordered seconds and then kind of regretted it because we were so full, Oysters to start. It was okay. Tiny oysters that were baked with cheese. my friend had the bacon and it seemed to be extra crispy'
     },
@@ -90,12 +90,12 @@ const data = {
         update: new Date()
       },
       images: [
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
       ],
       description: 'I came here for RW last night. The reason this review gets 4 stars is because of the everything biscuit. So GOOD. It comes with a vegetable cream cheese and it was the best part of the meal. So good that we ordered seconds and then kind of regretted it because we were so full, Oysters to start. It was okay. Tiny oysters that were baked with cheese. my friend had the bacon and it seemed to be extra crispy'
     },
@@ -106,12 +106,12 @@ const data = {
         update: new Date()
       },
       images: [
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-        {uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
       ],
       description: 'I came here for RW last night. The reason this review gets 4 stars is because of the everything biscuit. So GOOD. It comes with a vegetable cream cheese and it was the best part of the meal. So good that we ordered seconds and then kind of regretted it because we were so full, Oysters to start. It was okay. Tiny oysters that were baked with cheese. my friend had the bacon and it seemed to be extra crispy'
     }
@@ -146,10 +146,10 @@ class PlaceProfile extends Component {
       }
     ]
   };
-  constructor (props) {
+  constructor(props) {
     super(props)
 
-    this.state={
+    this.state = {
       placeData: {
         information: {},
         image: [],
@@ -172,7 +172,7 @@ class PlaceProfile extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
   }
 
-  async componentWillMount () {
+  async componentWillMount() {
     console.log(this.props.placeID)
     let Place = await client.query({
       query: GET_PLACE_PROFILE,
@@ -186,7 +186,7 @@ class PlaceProfile extends Component {
         placeData: {
           title: data.placeName,
           bookmark: true,
-          image: data.pictureURL && data.pictureURL.map( item => {
+          image: data.pictureURL && data.pictureURL.map(item => {
             return {
               uri: item
             }
@@ -202,10 +202,10 @@ class PlaceProfile extends Component {
             address: data.addressCityTown,
             phoneNumber: data.phoneNumber,
             website: data.website,
-            openingHours: [ data.openingHrs ]
+            openingHours: [data.openingHrs]
           },
           interests: {
-            hearted:  data._usersLikeMeta.count,
+            hearted: data._usersLikeMeta.count,
             checkIns: data._userCheckedInMeta.count,
             bookmark: data._collectionsMeta.count
           },
@@ -215,7 +215,7 @@ class PlaceProfile extends Component {
       })
     })
   }
-  onNaviagtorEvent (event) {
+  onNaviagtorEvent(event) {
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'backButton') {
         this.props.navigator.pop()
@@ -228,25 +228,25 @@ class PlaceProfile extends Component {
     })
     this.props.navigation.navigate('AllCollection')
   }
-  _renderItem (item) {
-    if ( item.type == 'add') {
+  _renderItem(item) {
+    if (item.type == 'add') {
       return (
         <TouchableOpacity onPress={this.addImageToStory.bind(this)}>
           <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-            <Image source={require('@assets/images/blankImage.png')} style={styles.imageItem}/>
-          </CardView>  
+            <Image source={require('@assets/images/blankImage.png')} style={styles.imageItem} />
+          </CardView>
         </TouchableOpacity>
       )
     }
     return (
-      <TouchableOpacity onPress={() => this.setState({sliderShow: true})}>
-      <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-        <Image source={{uri: item.uri}} style={styles.imageItem}/>
-      </CardView>
+      <TouchableOpacity onPress={() => this.setState({ sliderShow: true })}>
+        <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
+          <Image source={{ uri: item.uri }} style={styles.imageItem} />
+        </CardView>
       </TouchableOpacity>
     )
   }
-  goMapDetail () {
+  goMapDetail() {
     // this.props.navigation.navigate('MapViewPage')
     this.props.navigator.push({
       screen: SCREEN.MAP_DETAIL_PAGE,
@@ -262,132 +262,133 @@ class PlaceProfile extends Component {
   render() {
     return (
       <View style={styles.container}>
-      <ScrollView style={styles.container}>
-        
-        {/* Title */}
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>{this.state.placeData.title}</Text>
-          <TouchableOpacity onPress={() => this.setState({collectionModal: true})}>
-            <MaterialCommunityIcons name={data.bookmark ? "bookmark" : "bookmark-outline"} size={30} 
-                color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR}/>
-          </TouchableOpacity>
-        </View>
-        {/* Images */}
-        <View style={styles.imageContainer}>
-          <FlatList
-            style={styles.imageFlatList}
-            horizontal
-            data={this.state.placeData.image}
-            renderItem={({item}) => { return this._renderItem(item)}} 
-          />
-        </View>
-        {/* Description */}
-        <View style={styles.description}>
-          <ViewMoreText
-            numberOfLines={3}
-            renderViewMore={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read more</Text>)}
-            renderViewLess={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read less</Text>)}
-            textStyle={styles.descriptionText}>
-            <Text style={DFonts.DFontFamily}>
-              {this.state.placeData.description}
-            </Text>
-          </ViewMoreText>
-        </View>
-        {/* MapView */}
-        <TouchableOpacity onPress={this.goMapDetail.bind(this)}>
-          <View style={styles.mapView}>
-            <MapView
-              provider={PROVIDER_GOOGLE}
-              style={styles.map}
-              initialRegion={this.state.placeData.map}
-              region={this.state.placeData.map}
-            >
-              <MapView.Marker
-                style={styles.mapmarker}
-                title={this.state.placeData.title}
-                image={require('@assets/images/marker.png')}
-                coordinate={this.state.placeData.map}
-              />
-            </MapView>
-          </View>
-        </TouchableOpacity>
-        {/* Information */}
-        <View style={styles.informationContainer}>
-          <Text style={styles.informationText}>{I18n.t('PLACE_ADDRESS')}{`\t\t\t: `}{this.state.placeData.information.address}</Text>
-          <Text style={styles.informationText}>{I18n.t('PLACE_NUMBER')}{`\t\t: `}{this.state.placeData.information.phoneNumber}</Text>
-          <Text style={styles.informationText}>{I18n.t('PLACE_WEBSITE')}{`\t\t\t: `}{this.state.placeData.information.website}</Text>
-          <Text style={styles.informationText}>{I18n.t('PLACE_OPENHOUR')}{`\t\t: `}{this.state.placeData.information.openingHours}</Text>
-        </View>
-        {/* Interest */}
-        <View style={styles.interestContainer}>
-          <View style={styles.interestInformation}>
-            <View style={{flexDirection: 'row'}}>
-              <Foundation name="heart" size={12} color={RED_COLOR} />
-              <Foundation name="marker" size={12} color={BLUE_COLOR} />
-              <Foundation name="bookmark" size={12} color={RED_COLOR} />
-            </View>
-            <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.hearted)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
-            <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.checkIns)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
-            <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.bookmark)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
-          </View>
-          <View style={styles.serparate}></View>
-          <View style={styles.buttonInterest}>
-            <TouchableOpacity>
-              <Foundation name="heart" size={35} color={RED_COLOR} />              
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Foundation name="marker" size={35} color={BLUE_COLOR} />              
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Foundation name="share" size={35} color={GREEN_COLOR} />              
+        <ScrollView style={styles.container}>
+
+          {/* Title */}
+          <View style={styles.titleContainer}>
+            <Text style={styles.titleText}>{this.state.placeData.title}</Text>
+            <TouchableOpacity onPress={() => this.setState({ collectionModal: true })}>
+              <MaterialCommunityIcons name={data.bookmark ? "bookmark" : "bookmark-outline"} size={30}
+                color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} />
             </TouchableOpacity>
           </View>
-        </View>
-        {/* Keywords */}
-        <View style={styles.keyWords}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={styles.keywordTitle}>{I18n.t('PLACE_KEYWORDS')}</Text>
-            <TouchableOpacity>
-              <Text style={styles.keywordDone}>{I18n.t('PLACE_KEYWORD_DONE')}</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.keywordContainer}>
-            <TagInput
-              value={this.state.placeData.keywords}
-              onChange={this.onChangeTags}
-              labelExtractor={this.labelExtractor}
-              text={this.state.text}
-              onChangeText={this.onChangeText}
-              tagContainerStyle={styles.KeywordInput}
-              tagTextStyle={styles.keywordTextStyle}
-              tagColor="#5c5a5a"
-              tagTextColor="#e9e8eb"
-              inputProps={inputProps}
-              maxHeight={150}
+          {/* Images */}
+          <View style={styles.imageContainer}>
+            <FlatList
+              keyExtractor={(item, index) => index}
+              style={styles.imageFlatList}
+              horizontal
+              data={this.state.placeData.image}
+              renderItem={({ item }) => { return this._renderItem(item) }}
             />
           </View>
-        </View>
-        {/* Write Story */}
-        <View style={styles.WriteStory}>
-          <Text style={styles.writeStoryTitle}>{I18n.t('PLACE_WRITE_STORY')}</Text>
-          {this._renderWriteStory()}
-        </View>
-        {/* Story Comments */}
-        <View style={styles.WriteStory}>
-          {
-            this._renderCommentStory()
-          }
-          {/* {this._renderComments()} */}
-        </View>
-        
-      </ScrollView>
+          {/* Description */}
+          <View style={styles.description}>
+            <ViewMoreText
+              numberOfLines={3}
+              renderViewMore={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read more</Text>)}
+              renderViewLess={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read less</Text>)}
+              textStyle={styles.descriptionText}>
+              <Text style={DFonts.DFontFamily}>
+                {this.state.placeData.description}
+              </Text>
+            </ViewMoreText>
+          </View>
+          {/* MapView */}
+          <TouchableOpacity onPress={this.goMapDetail.bind(this)}>
+            <View style={styles.mapView}>
+              <MapView
+                provider={PROVIDER_GOOGLE}
+                style={styles.map}
+                initialRegion={this.state.placeData.map}
+                region={this.state.placeData.map}
+              >
+                <MapView.Marker
+                  style={styles.mapmarker}
+                  title={this.state.placeData.title}
+                  image={require('@assets/images/marker.png')}
+                  coordinate={this.state.placeData.map}
+                />
+              </MapView>
+            </View>
+          </TouchableOpacity>
+          {/* Information */}
+          <View style={styles.informationContainer}>
+            <Text style={styles.informationText}>{I18n.t('PLACE_ADDRESS')}{`\t\t\t: `}{this.state.placeData.information.address}</Text>
+            <Text style={styles.informationText}>{I18n.t('PLACE_NUMBER')}{`\t\t: `}{this.state.placeData.information.phoneNumber}</Text>
+            <Text style={styles.informationText}>{I18n.t('PLACE_WEBSITE')}{`\t\t\t: `}{this.state.placeData.information.website}</Text>
+            <Text style={styles.informationText}>{I18n.t('PLACE_OPENHOUR')}{`\t\t: `}{this.state.placeData.information.openingHours}</Text>
+          </View>
+          {/* Interest */}
+          <View style={styles.interestContainer}>
+            <View style={styles.interestInformation}>
+              <View style={{ flexDirection: 'row' }}>
+                <Foundation name="heart" size={12} color={RED_COLOR} />
+                <Foundation name="marker" size={12} color={BLUE_COLOR} />
+                <Foundation name="bookmark" size={12} color={RED_COLOR} />
+              </View>
+              <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.hearted)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
+              <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.checkIns)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
+              <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.bookmark)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
+            </View>
+            <View style={styles.serparate}></View>
+            <View style={styles.buttonInterest}>
+              <TouchableOpacity>
+                <Foundation name="heart" size={35} color={RED_COLOR} />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Foundation name="marker" size={35} color={BLUE_COLOR} />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Foundation name="share" size={35} color={GREEN_COLOR} />
+              </TouchableOpacity>
+            </View>
+          </View>
+          {/* Keywords */}
+          <View style={styles.keyWords}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={styles.keywordTitle}>{I18n.t('PLACE_KEYWORDS')}</Text>
+              <TouchableOpacity>
+                <Text style={styles.keywordDone}>{I18n.t('PLACE_KEYWORD_DONE')}</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.keywordContainer}>
+              <TagInput
+                value={this.state.placeData.keywords}
+                onChange={this.onChangeTags}
+                labelExtractor={this.labelExtractor}
+                text={this.state.text}
+                onChangeText={this.onChangeText}
+                tagContainerStyle={styles.KeywordInput}
+                tagTextStyle={styles.keywordTextStyle}
+                tagColor="#5c5a5a"
+                tagTextColor="#e9e8eb"
+                inputProps={inputProps}
+                maxHeight={150}
+              />
+            </View>
+          </View>
+          {/* Write Story */}
+          <View style={styles.WriteStory}>
+            <Text style={styles.writeStoryTitle}>{I18n.t('PLACE_WRITE_STORY')}</Text>
+            {this._renderWriteStory()}
+          </View>
+          {/* Story Comments */}
+          <View style={styles.WriteStory}>
+            {
+              this._renderCommentStory()
+            }
+            {/* {this._renderComments()} */}
+          </View>
+
+        </ScrollView>
         {this.state.sliderShow ?
           (
-          <ImageSliderComponent 
-            data={this.state.placeData.image.map(item => item.uri)}
-            onPress={() => {
-            this.setState({sliderShow: false})
-          }}/>
+            <ImageSliderComponent
+              data={this.state.placeData.image.map(item => item.uri)}
+              onPress={() => {
+                this.setState({ sliderShow: false })
+              }} />
           ) : null
         }
         {/* Modal Collection */}
@@ -399,8 +400,8 @@ class PlaceProfile extends Component {
           backdrop={true}
           backdropOpacity={0.5}
           backdropColor={'lightgray'}
-          onClosed={() => this.setState({collectionModal: false})}
-        > 
+          onClosed={() => this.setState({ collectionModal: false })}
+        >
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
             <TouchableOpacity onPress={this.onAddCollection.bind(this)}>
@@ -409,10 +410,10 @@ class PlaceProfile extends Component {
           </View>
           <View style={styles.separatebar}></View>
           <View style={styles.Collections}>
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
           </View>
         </Modal>
       </View>
@@ -423,24 +424,25 @@ class PlaceProfile extends Component {
       return this._renderComments(comment)
     })
   }
-  _renderComments (dataItem) {
+  _renderComments(dataItem) {
     return (
       <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-        <View style={{flexDirection: 'row'}}>
-          <CircleImage style={styles.storyWriterImage} uri={dataItem.user.uri} radius={getDeviceWidth(67)}/>
+        <View style={{ flexDirection: 'row' }}>
+          <CircleImage style={styles.storyWriterImage} uri={dataItem.user.uri} radius={getDeviceWidth(67)} />
           <View>
             <Text style={styles.storyWriterName}>{dataItem.user.name}</Text>
             <Text style={styles.commentDate}>{calculateDuration(dataItem.user.update)}</Text>
           </View>
         </View>
-        <FlatList 
-          style={[styles.imageFlatList, {marginTop: 10}]}
+        <FlatList
+          keyExtractor={(item, index) => index}
+          style={[styles.imageFlatList, { marginTop: 10 }]}
           horizontal
           data={dataItem.images}
-          renderItem={({item}) => this._renderItem(item)}
+          renderItem={({ item }) => this._renderItem(item)}
         />
         <Text style={styles.commentDescription}>{dataItem.description}</Text>
-      </CardView>      
+      </CardView>
     )
   }
   addImageToStory() {
@@ -456,7 +458,7 @@ class PlaceProfile extends Component {
         var cloneObj = JSON.parse(JSON.stringify(this.state.storyImages))
         cloneObj.pop()
         cloneObj.push(source)
-        cloneObj.push({type: 'add'})
+        cloneObj.push({ type: 'add' })
         this.setState({
           storyImages: cloneObj
         });
@@ -467,29 +469,30 @@ class PlaceProfile extends Component {
   _renderWriteStory() {
     return (
       <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-        <View style={{flexDirection: 'row'}}>
-          <CircleImage style={styles.storyWriterImage} uri={this.props.user.photoURL} radius={getDeviceWidth(67)}/>
+        <View style={{ flexDirection: 'row' }}>
+          <CircleImage style={styles.storyWriterImage} uri={this.props.user.photoURL} radius={getDeviceWidth(67)} />
           <Text style={styles.storyWriterName}>{this.props.user.displayName}</Text>
         </View>
         <View style={styles.myImagesContainer}>
           {
-            this.state.storyImages.length < 2 ? 
-            (
-              <TouchableOpacity onPress={this.addImageToStory.bind(this)}>
-                <Image style={styles.myImages} source={require('@assets/images/blankImage.png')}/>
-              </TouchableOpacity>            
-            ) : (
-              <FlatList 
-                horizontal
-                style={styles.myImages}
-                data={this.state.storyImages}
-                renderItem={({item}) => this._renderItem(item)}
-              />
-            )
+            this.state.storyImages.length < 2 ?
+              (
+                <TouchableOpacity onPress={this.addImageToStory.bind(this)}>
+                  <Image style={styles.myImages} source={require('@assets/images/blankImage.png')} />
+                </TouchableOpacity>
+              ) : (
+                <FlatList
+                  keyExtractor={(item, index) => index}
+                  horizontal
+                  style={styles.myImages}
+                  data={this.state.storyImages}
+                  renderItem={({ item }) => this._renderItem(item)}
+                />
+              )
           }
         </View>
-        <TextInput style={{width: '100%', marginTop:30}} placeholder={I18n.t('PLACE_TITLE_BOLD')}/>
-        <TextInput style={{width: '100%', marginTop:10}} placeholder={'What is this story about'}/>
+        <TextInput style={{ width: '100%', marginTop: 30 }} placeholder={I18n.t('PLACE_TITLE_BOLD')} />
+        <TextInput style={{ width: '100%', marginTop: 10 }} placeholder={'What is this story about'} />
       </CardView>
     )
   }
@@ -509,19 +512,21 @@ class PlaceProfile extends Component {
               text
             }
           },
-        // tags: [...this.state.tags, this.state.text],
-        text: "",
-      });
+          // tags: [...this.state.tags, this.state.text],
+          text: "",
+        });
     }
   }
 
   labelExtractor = (tag) => tag;
 
   onChangeTags = (tags) => {
-    this.setState({ placeData: {
-      ...this.state.placeData,
-      keywords: tags
-    } });
+    this.setState({
+      placeData: {
+        ...this.state.placeData,
+        keywords: tags
+      }
+    });
   }
 }
 

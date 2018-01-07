@@ -39,3 +39,12 @@ export function calculateCount (count) {
   }
   return ret;
 }
+
+export function clone(obj) {
+  if (obj === null || typeof obj !== 'object') return obj;
+  let copy = obj.constructor();
+  for (let attr in obj) {
+      if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+  }
+  return copy;
+}

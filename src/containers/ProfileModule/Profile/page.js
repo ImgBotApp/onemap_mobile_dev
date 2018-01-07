@@ -6,7 +6,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import styles from './styles'
 
-import {getDeviceWidth, getDeviceHeight} from '@global'
+import { getDeviceWidth, getDeviceHeight } from '@global'
 import CircleImage from '@components/CircleImage'
 import TitleImage from '@components/TitledImage'
 import AutoHeightImage from 'react-native-auto-height-image';
@@ -18,58 +18,58 @@ const testImage = 'https://s17.postimg.org/nnar4n263/images3.jpg'
 const testImage1 = 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
 
 const collections = [
-  {uri : 'https://placeimg.com/640/480/any'},
-  {uri : 'https://placeimg.com/640/480/any'},
-  {uri : 'https://placeimg.com/640/480/any'},        
-  {uri : 'https://placeimg.com/640/480/any'},        
+  { uri: 'https://placeimg.com/640/480/any' },
+  { uri: 'https://placeimg.com/640/480/any' },
+  { uri: 'https://placeimg.com/640/480/any' },
+  { uri: 'https://placeimg.com/640/480/any' },
 ]
 
-const stories= [
+const stories = [
   {
     items: [
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg'},
+      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
+      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
     ]
   },
   {
     items: [
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
+      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
+      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
+      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
     ]
   },
   {
     items: [
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg'},
+      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
+      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
     ]
   }
 ]
 var $this
 // create a component
 class Profile extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     $this = this
   }
-  componentWillUpdate () {
+  componentWillUpdate() {
     $this = this
   }
-  onEditProfile () {
+  onEditProfile() {
     this.props.navigation.navigate('AccountSetting')
   }
   onViewAllCollections = () => {
     this.props.navigation.navigate('UserCollection')
   }
-  _renderStoryItem (item) {
+  _renderStoryItem(item) {
     return (
       <View>
         <AutoHeightTitledImage uri={item.uri}
           width={getDeviceWidth(343)}
           title={'abc'} vAlign={'center'} hAlign={'left'} titleStyle={styles.storyItemTitle}
-          style={{marginBottom: 10}}
+          style={{ marginBottom: 10 }}
         />
       </View>
     )
@@ -78,7 +78,7 @@ class Profile extends Component {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.infoView}>
-          <CircleImage style={styles.profileImage} uri={testImage} radius={getDeviceWidth(171)}/>
+          <CircleImage style={styles.profileImage} uri={testImage} radius={getDeviceWidth(171)} />
           <Text style={styles.checkIcon}>
             <Ionicons name="ios-checkmark-circle" size={30} />
           </Text>
@@ -88,7 +88,7 @@ class Profile extends Component {
                 <Text style={styles.bigName}>{'Minna Hamilton'}</Text>
                 <Text style={styles.userId}>@userid</Text>
               </View>
-              <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={this.onEditProfile.bind(this)}>
+              <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={this.onEditProfile.bind(this)}>
                 <View style={styles.editProfileContainer}>
                   <Text style={styles.editProfile}>{I18n.t('SETTING_EDIT_PROFILE')}</Text>
                 </View>
@@ -110,11 +110,11 @@ class Profile extends Component {
         <View style={styles.vCollections}>
           <Text style={styles.collectionTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
           <View style={styles.collectionItems}>
-            <TitleImage style={styles.collection} uri={collections[0].uri} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-            <TitleImage style={styles.collection} uri={collections[1].uri} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
-            <TitleImage style={styles.collection} uri={collections[2].uri} radius={8}  title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={collections[0].uri} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
+            <TitleImage style={styles.collection} uri={collections[1].uri} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
+            <TitleImage style={styles.collection} uri={collections[2].uri} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
             <TouchableOpacity onPress={this.onViewAllCollections.bind(this)}>
-              <TitleImage style={styles.collection} uri={collections[3].uri} radius={8}  title={'+\nView all\nCollections'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+              <TitleImage style={styles.collection} uri={collections[3].uri} radius={8} title={'+\nView all\nCollections'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
             </TouchableOpacity>
           </View>
         </View>
@@ -122,23 +122,26 @@ class Profile extends Component {
           <Text style={styles.storyTitle}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
           <View style={styles.Stories}>
             <View style={styles.subStory}>
-              <FlatList 
+              <FlatList
+                keyExtractor={(item, index) => index}
                 data={stories[0].items}
-                renderItem={({item}) => { return this._renderStoryItem(item)} }
-              />          
+                renderItem={({ item }) => { return this._renderStoryItem(item) }}
+              />
             </View>
-            
+
             <View style={styles.subStory}>
-              <FlatList 
+              <FlatList
+                keyExtractor={(item, index) => index}
                 data={stories[1].items}
-                renderItem={({item}) => { return this._renderStoryItem(item)} }
-              />  
+                renderItem={({ item }) => { return this._renderStoryItem(item) }}
+              />
             </View>
             <View style={styles.subStory}>
-              <FlatList 
+              <FlatList
+                keyExtractor={(item, index) => index}
                 data={stories[2].items}
-                renderItem={({item}) => { return this._renderStoryItem(item)} }
-              />  
+                renderItem={({ item }) => { return this._renderStoryItem(item) }}
+              />
             </View>
           </View>
         </View>
@@ -146,7 +149,7 @@ class Profile extends Component {
     );
   }
 
-  _openDrawerMenu () {
+  _openDrawerMenu() {
     $this.props.navigation.navigate('DrawerOpen')
   }
 }
