@@ -122,7 +122,7 @@ class SearchPage extends Component {
 		  }).then((data) => {
 			  this.setState({ result: true,allUsers :data.data.allUsers})
 		  })
-      } else if(this.state.selectedTab == 'Keywords'){
+      } else if(this.state.selectedTab == 'Places'){
 		  let SearchKeyword = await client.query({
 			  query: LIST_KEYWORD_PLACES,
 			  variables: {

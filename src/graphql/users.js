@@ -89,7 +89,7 @@ export const LIST_KEYWORD_PLACES = gql`
     $orderBy: PlaceOrderBy # name_ASC, name_DESC, createdAt_ASC, createdAt_DESC
     $skip: Int # for pagination, 0 for no skip
     $first: Int # limit result to number
-   $keywordName: String # keyword.name
+    $keywordName: String # keyword.name
   ) {
     allPlaces(
       orderBy: $orderBy, 

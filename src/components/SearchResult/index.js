@@ -106,13 +106,13 @@ class SearchResult extends Component {
             renderItem={({item}) => this._onRenderItem(item)}
           />
         </View>}
-        {this.state.page == 'Keywords' && <View style={styles.scrollView}>
+        {this.state.page == 'Places' && <View style={styles.scrollView}>
           <FlatList style={styles.scrollView}
             data={keywordsData}
             renderItem={({item}) => this._onKeywordItem(item)}
           />
         </View>}
-        {this.state.page == 'Places' && <View style={styles.scrollView}>
+        {this.state.page == 'Keywords' && <View style={styles.scrollView}>
           <FlatList style={styles.scrollView}
             data={PlacesData}
             renderItem={({item}) => this._onRenderItem(item)}
