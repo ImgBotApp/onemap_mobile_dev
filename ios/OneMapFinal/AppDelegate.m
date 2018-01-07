@@ -8,10 +8,10 @@
  */
 
 #import "AppDelegate.h"
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import "RCCManager.h"
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import "RCCManager.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 @import GoogleMaps;
 @import GooglePlaces;
 @implementation AppDelegate
@@ -22,6 +22,7 @@
                            didFinishLaunchingWithOptions:launchOptions];
   [GMSServices provideAPIKey:@"AIzaSyBJGLClnfCAfweyr7BLiDtig71MMPOly3w"];
   [GMSPlacesClient provideAPIKey:@"AIzaSyBJGLClnfCAfweyr7BLiDtig71MMPOly3w"];
+  
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
@@ -42,4 +43,5 @@
 //  [self.window makeKeyAndVisible];
   return YES;
 }
+
 @end
