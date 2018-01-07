@@ -19,7 +19,9 @@ import { PLACES_PAGINATED} from "../../../graphql/places";
 import { SMALL_FONT_SIZE } from '../../../theme/fonts';
 const PLACES_PER_PAGE = 8;
 import { client } from '@root/main'
-import { GET_PAGINATED_PLACES } from '@graphql/places'
+import { PAGINATED_PLACES } from '@graphql/places'
+import { SUGGEST_USERS } from '@graphql/users'
+
 const data = [
   {
     id: 'a1',
@@ -61,30 +63,6 @@ const data = [
         uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
       }
     ]
-  },
-  {
-    id: 'a3',
-    type: 'place',
-    uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-  },
-  {
-    id: 'a5',
-    type: 'campaign',
-    title: 'TAT Thailand',
-    mark: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-    description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on',
-    image: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-  },
-  {
-    id: 'a7',
-    type: 'event',
-    user: {
-      name: 'Alexandra',
-      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-      updated: new Date()
-    },
-    placeUrl: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-    title: 'Gramercy Tavern'
   }
 ];
 // create a component
@@ -93,18 +71,78 @@ class FeedPage extends Component {
     super(props);
     this.state = {
       suggestFlag: true,
-      collectionModal: false
+      collectionModal: false,
+      skip: 0,
+      items: [],
+      users: {
+        id: 'a1',
+        type: 'users',
+        data: []
+      },
+      loading: true
     };
     this.onEndReached = this.onEndReached.bind(this)
     this.onRefresh = this.onRefresh.bind(this)
   }
-  async componentWillReceiveProps(nextProps) {
-    await client.query({
-      query: GET_PAGINATED_PLACES,
+  componentWillMount () {
+    client.query({
+      query: SUGGEST_USERS
+    }).then((users) => {
+      this.setState({
+        users: {
+          id: 'a1',
+          type: 'users',
+          data: users.data.allUsers.map((user) => {
+            return {
+              id: user.username,
+              name: user.displayName,
+              uri : user.photoURL,
+              identify: user.id 
+            }
+          })
+        }
+      })
+    })
+    client.query({
+      query: PAGINATED_PLACES,
       variables: {
         first: 10,
         skip: this.state.skip 
       }
+    }).then((places) => {
+      console.log(places)
+      this.setState({
+        items: places.data.allPlaces.map((place) => {
+          return {
+            id: place.id,
+            type: 'item',
+            user: {
+              name: place.createdBy.username,
+              id: place.createdBy.id,
+              uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+              updated: new Date(place.updatedAt)
+            },
+            bookmark: true,
+            feedTitle: place.placeName,
+            images: place.pictureURL.map(item => { return {uri: item}}),
+            place: '',
+            description: place.description || ''
+          }
+        }),
+      skip: 10,
+      loading: false
+      })
+    })
+  }
+  componentWillReceiveProps(nextProps) {
+    client.query({
+      query: PAGINATED_PLACES,
+      variables: {
+        first: 10,
+        skip: this.state.skip 
+      }
+    }).then((places) => {
+      console.log(places)
     })
   }
   closeSuggest() {
@@ -185,53 +223,81 @@ class FeedPage extends Component {
     }
   }
 
-  onEndReached() {
-    if (!this.props.data.loading) {
-      const { data } = this.props;
-      data.fetchMore({
-        variables: {
-          skip: data.allPlaces.length + PLACES_PER_PAGE,
-          first: PLACES_PER_PAGE
-        },
-        updateQuery: (previousResult, {fetchMoreResult}) => {
-          console.log(fetchMoreResult)
-          console.log(previousResult)
-          if (!fetchMoreResult || fetchMoreResult.allPlaces.length === 0) {
-            return previousResult;
-          }
-          return {
-            allPlaces: previousResult.allPlaces.concat(fetchMoreResult.allPlaces),
-          };
-        }
+  onEndReached(distance) {
+    if (distance.distanceFromEnd < -10) return
+    if (this.state.loading == true) return;
+    this.setState({
+      loading: true
+    })
+    client.query({
+      query: PAGINATED_PLACES,
+      variables: {
+        first: 10,
+        skip: this.state.skip 
+      }
+    }).then((places) => {
+      console.log("Added")
+      console.log(places)
+      if (places.data.allPlaces.length == 0) return
+      this.setState({
+        items: [
+          ...this.state.items,
+          ...places.data.allPlaces.map((place) => {
+            return {
+              id: place.id,
+              type: 'item',
+              user: {
+                name: place.createdBy.username,
+                id: place.createdBy.id,
+                uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+                updated: new Date(place.updatedAt)
+              },
+              bookmark: true,
+              feedTitle: place.placeName,
+              images: place.pictureURL.map(item => { return {uri: item}}),
+              place: '',
+              description: place.description || ''
+            }
+          })
+        ],
+        loading: false,
+        skip: this.state.skip + 10
       })
-    }
+    })
   }
 
   onPressUserProfile = (id) => {
     this.props.navigator.push({
       screen: SCREEN.USERS_PROFILE_PAGE,
       title: I18n.t('PROFILE_PAGE_TITLE'),
-      animated: true
+      animated: true,
+      passProps: {
+        placeID: id
+      }
     })
     // this.props.navigation.navigate('ProfilePage',{id: id})
   }
 
-  onPlace = (title) => {
+  onPlace = (id) => {
+    // alert(title)
     // this.props.navigation.navigate('PlaceProfile', {title: title})
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       title: I18n.t('PLACE_TITLE'),
-      animated: true
+      animated: true,
+      passProps: {
+        placeID: id
+      }
     })
   }
 
   onRefresh() {
-    this.props.data.refetch({
-      variables: {
-        skip: 0,
-        first: PLACES_PER_PAGE
-      }
-    });
+    // this.props.data.refetch({
+    //   variables: {
+    //     skip: 0,
+    //     first: PLACES_PER_PAGE
+    //   }
+    // });
   }
 
   onBookMarker = () => {
@@ -255,38 +321,21 @@ class FeedPage extends Component {
     })
   }
   render() {
-    let graphcoolData = [];
-    if (!this.props.data.loading) {
-      graphcoolData = this.props.data.allPlaces.map((place) => {
-        return {
-          id: place.id,
-          type: 'item',
-          user: {
-            name: place.placeName,
-            uri: place.pictureURL ? place.pictureURL[0] : '',
-            updated: new Date(place.updatedAt)
-          },
-          feedTitle: place.placeName,
-          images: place.pictureURL ? place.pictureURL.map((uri) => {
-            return {uri}
-          }) : [],
-          place: place.placeName,
-          description: place.description
-        }
-      });
-    }
     return (
       <View style={styles.container}>
         <FlatList
           keyExtractor={(item,index) => item.id}
           style={{width: '100%', height: '100%'}}
-          data={[...data, ...graphcoolData]}
-          initialNumToRender={8}
+          data={
+            this.state.items.length != 0 ? 
+            [this.state.users, ...this.state.items] :
+            [this.state.users]
+          }
+          initialNumToRender={10}
           renderItem={this._renderItem.bind(this)}
-          onEndReachedThreshold={1}
-          onEndReached={this.onEndReached}
-          refreshing={this.props.data.networkStatus === 4}
-          onRefresh={this.onRefresh}
+          onEndReachedThreshold={0}
+          onEndReached={this.onEndReached.bind(this)}
+          // onRefresh={this.onRefresh.bind(this)}
         />
         <Modal
           style={styles.collectionModal}
@@ -317,15 +366,5 @@ class FeedPage extends Component {
   }
 }
 
-const ComponentWithQueries = graphql(PLACES_PAGINATED, {
-  options: {
-    variables: {
-      skip: 0,
-      first: PLACES_PER_PAGE
-    }
-  }
-})
-(FeedPage);
-
 //make this component available to the app
-export default ComponentWithQueries;
+export default FeedPage;
