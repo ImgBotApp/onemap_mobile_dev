@@ -6,20 +6,31 @@ import TitleImage from '@components/TitledImage'
 import styles from './styles'
 // create a component
 class CollectionItem extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
-    this.state={
+    this.state = {
       uri: this.props.uri,
       radius: this.props.radius ? this.props.radius : 8,
       title: this.props.title || 'Collection',
     }
   }
+  componentWillReceiveProps(nextProps) {
+    this.setState({ uri: nextProps.uri, title: nextProps.title });
+  }
   render() {
     return (
-      <View style={[styles.cell,this.props.style]}>
-        <TitleImage style={[styles.collection, this.props.insideStyle]} uri={this.props.uri} radius={this.state.radius}  title={this.state.title} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+      <View style={[styles.cell, this.props.style]}>
+        <TitleImage
+          style={[styles.collection, this.props.insideStyle]}
+          uri={this.state.uri}
+          radius={this.state.radius}
+          title={this.state.title}
+          vAlign={'center'}
+          hAlign={'center'}
+          titleStyle={styles.collectionItemTitle}
+        />
       </View>
-  );
+    );
   }
 }
 
