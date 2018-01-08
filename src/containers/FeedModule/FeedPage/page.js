@@ -1,7 +1,9 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { graphql } from "react-apollo";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
+import Modal from 'react-native-modalbox';
+
 import SuggestUser from '@components/SuggestUser'
 import FeedItem from '@components/FeedItem'
 import FeedEvent from '@components/FeedEvent'
@@ -9,102 +11,103 @@ import FeedCampaign from '@components/FeedCampaign'
 import SuggestPlace from '@components/SuggestPlace'
 import TitleImage from '@components/TitledImage'
 
-import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import styles from './style'
 import I18n from '@language'
-import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
+import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
+import { SMALL_FONT_SIZE } from '@theme/fonts';
+
 import * as SCREEN from '@global/screenName'
-import Modal from 'react-native-modalbox';
-import { PLACES_PAGINATED } from "../../../graphql/places";
-import { SMALL_FONT_SIZE } from '../../../theme/fonts';
+import { PLACES_PAGINATED, PAGINATED_PLACES} from "@graphql/places";
 const PLACES_PER_PAGE = 8;
 import { client } from '@root/main'
-import { GET_PAGINATED_PLACES } from '@graphql/places'
-const data = [
-  {
-    id: 'a1',
-    type: 'users',
-    data: [
-      {
-        name: 'Rico',
-        id: 'Rico.Halverson',
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        name: 'Rico',
-        id: 'Rico.Halverson',
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        name: 'Rico',
-        id: 'Rico.Halverson',
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        name: 'Rico',
-        id: 'Rico.Halverson',
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        name: 'Rico',
-        id: 'Rico.Halverson',
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        name: 'Rico',
-        id: 'Rico.Halverson',
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      },
-      {
-        name: 'Rico',
-        id: 'Rico.Halverson',
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-      }
-    ]
-  },
-  {
-    id: 'a3',
-    type: 'place',
-    uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-  },
-  {
-    id: 'a5',
-    type: 'campaign',
-    title: 'TAT Thailand',
-    mark: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-    description: 'The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on The Main Dining Room serves a fixed-price menu for dinner an a carte menu for lunch. Our Tavern serves an a lamenu and wecomes guests on a walk and so on',
-    image: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-  },
-  {
-    id: 'a7',
-    type: 'event',
-    user: {
-      name: 'Alexandra',
-      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-      updated: new Date()
-    },
-    placeUrl: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-    title: 'Gramercy Tavern'
-  }
-];
+import { SUGGEST_USERS } from '@graphql/users'
+
+
 // create a component
 class FeedPage extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       suggestFlag: true,
-      collectionModal: false
+      collectionModal: false,
+      skip: 0,
+      items: [],
+      users: {
+        id: 'a1',
+        type: 'users',
+        data: []
+      },
+      loading: false,
+      refreshing: false,
     };
-    this.onEndReached = this.onEndReached.bind(this)
-    this.onRefresh = this.onRefresh.bind(this)
   }
-  async componentWillReceiveProps(nextProps) {
-    await client.query({
-      query: GET_PAGINATED_PLACES,
+  componentWillMount () {
+    // client.query({
+    //   query: SUGGEST_USERS
+    // }).then((users) => {
+    //   this.setState({
+    //     items: [{
+    //       id: 'a1',
+    //       type: 'users',
+    //       data: users.data.allUsers.map((user) => {
+    //         return {
+    //           id: user.username,
+    //           name: user.displayName,
+    //           uri : user.photoURL,
+    //           identify: user.id 
+    //         }
+    //       })
+    //     }]
+    //   })
+    // })
+    // this.fetchFeedItems()
+  }
+  fetchFeedItems = () => {
+    client.query({
+      query: PAGINATED_PLACES,
       variables: {
         first: 10,
         skip: this.state.skip
       }
+    }).then((places) => {
+      console.log(places)
+      items = places.data.allPlaces.map((place) => {
+        return {
+          id: place.id,
+          type: 'item',
+          user: {
+            name: place.createdBy.username,
+            id: place.createdBy.id,
+            uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+            updated: new Date(place.updatedAt)
+          },
+          bookmark: true,
+          feedTitle: place.placeName,
+          images: place.pictureURL.map(item => { return {uri: item}}),
+          place: '',
+          description: place.description || ''
+        }
+      });
+      this.setState({
+        items: [...this.state.items, ...items],
+        loading: false,
+        refreshing: false
+      })
+    }).catch(error => {
+      this.setState({
+        loading: false
+      })
+    })
+  }
+  componentWillReceiveProps(nextProps) {
+    client.query({
+      query: PAGINATED_PLACES,
+      variables: {
+        first: 10,
+        skip: this.state.skip 
+      }
+    }).then((places) => {
+      console.log(places)
     })
   }
   closeSuggest() {
@@ -113,8 +116,8 @@ class FeedPage extends Component {
     })
   }
 
-  _renderSuggestedList(data) {
-    if (this.state.suggestFlag == false) return null
+  _renderSuggestedList (data) {
+    if ( this.state.suggestFlag == false ) return null
     return (
       <View style={styles.topItem}>
         {/* Recommend text */}
@@ -125,26 +128,37 @@ class FeedPage extends Component {
           </TouchableOpacity>
         </View>
         {/* User list */}
-        <FlatList
-          keyExtractor={(item, index) => index}
+        <FlatList 
           style={styles.users}
-          data={data}
+          data = {data}
           horizontal
-          renderItem={({ item, index }) => <View style={{ marginRight: 15 }}><SuggestUser uri={item.uri} name={item.name} id={item.id} /></View>}
+          renderItem={({item}) => <View style={{marginRight: 15}}>
+          <SuggestUser uri={item.uri} name={item.name} id={item.id}
+            onPress={this.onSuggestUser.bind(this)}
+          /></View>}
         />
       </View>
     )
   }
-
-  _renderFeedItem(data) {
+  onSuggestUser(id) {
+    this.props.navigator.push({
+      screen: SCREEN.USERS_PROFILE_PAGE,
+      title: I18n.t('PROFILE_PAGE_TITLE'),
+      animated: true,
+      passProps: {
+        placeID: id
+      }
+    })
+  }
+  _renderFeedItem (data) {
     return (
       <View style={styles.feedItem}>
-        <FeedItem data={data} onPress={this.onPressUserProfile.bind(this)} onBookMarker={this.onBookMarker.bind(this)} onPlace={this.onPlace.bind(this)} />
+        <FeedItem data={data} onPress={this.onPressUserProfile.bind(this)} onBookMarker={this.onBookMarker.bind(this)} onPlace={this.onPlace.bind(this)}/>
       </View>
     )
   }
 
-  _renderFeedEvent(data) {
+  _renderFeedEvent (data) {
     return (
       <View style={styles.feedItem}>
         <FeedEvent data={data} />
@@ -153,31 +167,30 @@ class FeedPage extends Component {
   }
 
   onVisitProfile = (CampaignId) => {
-    // this.props.navigation.navigate('ProfilePage')
   }
 
-  _renderFeedCampaign(data) {
+  _renderFeedCampaign (data) {
     return (
       <View style={styles.feedItem}>
-        <FeedCampaign data={data} onVisitProfile={this.onVisitProfile.bind(this)} />
+        <FeedCampaign data={data} onVisitProfile={this.onVisitProfile.bind(this)}/>
       </View>
     )
   }
 
-  _renderSuggestPlace(data) {
+  _renderSuggestPlace (data) {
     return (
       <View style={styles.feedItem}>
         <SuggestPlace data={data} />
       </View>
     )
   }
-  _renderItem = ({ item }) => {
+  _renderItem = ({item}) => {
     switch (item.type) {
       case 'users':
         return this._renderSuggestedList(item.data)
       case 'item':
         return this._renderFeedItem(item)
-      case 'event':
+      case 'event' :
         return this._renderFeedEvent(item)
       case 'campaign':
         return this._renderFeedCampaign(item)
@@ -186,53 +199,26 @@ class FeedPage extends Component {
     }
   }
 
-  onEndReached() {
-    if (!this.props.data.loading) {
-      const { data } = this.props;
-      data.fetchMore({
-        variables: {
-          skip: data.allPlaces.length + PLACES_PER_PAGE,
-          first: PLACES_PER_PAGE
-        },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          console.log(fetchMoreResult)
-          console.log(previousResult)
-          if (!fetchMoreResult || fetchMoreResult.allPlaces.length === 0) {
-            return previousResult;
-          }
-          return {
-            allPlaces: previousResult.allPlaces.concat(fetchMoreResult.allPlaces),
-          };
-        }
-      })
-    }
-  }
-
   onPressUserProfile = (id) => {
     this.props.navigator.push({
       screen: SCREEN.USERS_PROFILE_PAGE,
       title: I18n.t('PROFILE_PAGE_TITLE'),
-      animated: true
+      animated: true,
+      passProps: {
+        placeID: id
+      }
     })
-    // this.props.navigation.navigate('ProfilePage',{id: id})
   }
 
-  onPlace = (title) => {
-    // this.props.navigation.navigate('PlaceProfile', {title: title})
+  onPlace = (id) => {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       title: I18n.t('PLACE_TITLE'),
-      animated: true
-    })
-  }
-
-  onRefresh() {
-    this.props.data.refetch({
-      variables: {
-        skip: 0,
-        first: PLACES_PER_PAGE
+      animated: true,
+      passProps: {
+        placeID: id
       }
-    });
+    })
   }
 
   onBookMarker = () => {
@@ -244,7 +230,6 @@ class FeedPage extends Component {
     this.setState({
       collectionModal: false
     })
-    // this.props.navigation.navigate('AllCollection')
     this.props.navigator.push({
       screen: SCREEN.FEED_ALL_COLLECTION,
       title: I18n.t('COLLECTION_TITLE'),
@@ -255,39 +240,55 @@ class FeedPage extends Component {
       }
     })
   }
-  render() {
-    let graphcoolData = [];
-    if (!this.props.data.loading) {
-      graphcoolData = this.props.data.allPlaces.map((place) => {
-        return {
-          id: place.id,
-          type: 'item',
-          user: {
-            name: place.placeName,
-            uri: place.pictureURL ? place.pictureURL[0] : '',
-            updated: new Date(place.updatedAt)
-          },
-          feedTitle: place.placeName,
-          images: place.pictureURL ? place.pictureURL.map((uri) => {
-            return { uri }
-          }) : [],
-          place: place.placeName,
-          description: place.description
+  handlerefresh = () => {
+    this.setState({
+      skip: this.state.skip + 10,
+      refreshing: true
+    }, () => {
+      // alert('a')
+      this.setState({
+        refreshing: false
+      })
+    })
         }
-      });
+  renderFooter = () => {
+    // if(!this.state.loading) return null;
+    return (
+      <View
+        style={{
+          paddingVertical:20,
+          borderTopWidth: 1,
+          borderColor: "#CED0CE"
+        }} >
+        <ActivityIndicator animating size="large" />
+      </View>
+    )
+  };
+  handleLoadMore = () => {
+    this.setState({
+      skip: this.state.skip + 10,
+      refreshing: true
+    }, () => {
+      this.fetchFeedItems();
+      this.setState({
+        refreshing: false
+      })
+    })
     }
+  render() {
     return (
       <View style={styles.container}>
         <FlatList
-          keyExtractor={(item, index) => item.id}
-          style={{ width: '100%', height: '100%' }}
-          data={[...data, ...graphcoolData]}
-          initialNumToRender={8}
+          keyExtractor={(item,index) => item.id}
+          style={{width: '100%', height: '100%'}}
+          data={this.state.items}
+          initialNumToRender={10}
           renderItem={this._renderItem.bind(this)}
-          onEndReachedThreshold={1}
-          onEndReached={this.onEndReached}
-          refreshing={this.props.data.networkStatus === 4}
-          onRefresh={this.onRefresh}
+          ListFooterComponent={this.renderFooter}
+          refreshing={this.state.refreshing}
+          onRefresh={this.handlerefresh}
+          // onEndReached={this.handleLoadMore}
+          onEndReachedThreshold={0}
         />
         <Modal
           style={styles.collectionModal}
@@ -297,7 +298,7 @@ class FeedPage extends Component {
           backdrop={true}
           backdropOpacity={0.5}
           backdropColor={'lightgray'}
-          onClosed={() => this.setState({ collectionModal: false })}
+          onClosed={() => this.setState({collectionModal: false})}
         >
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
@@ -307,10 +308,10 @@ class FeedPage extends Component {
           </View>
           <View style={styles.separatebar}></View>
           <View style={styles.Collections}>
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'Hearted'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'Check-Ins'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'Wish List'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'Adventure'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'Hearted'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'Check-Ins'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'Wish List'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
+            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8}  title={'Adventure'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}/>
           </View>
         </Modal>
       </View>
@@ -318,15 +319,5 @@ class FeedPage extends Component {
   }
 }
 
-const ComponentWithQueries = graphql(PLACES_PAGINATED, {
-  options: {
-    variables: {
-      skip: 0,
-      first: PLACES_PER_PAGE
-    }
-  }
-})
-  (FeedPage);
-
 //make this component available to the app
-export default ComponentWithQueries;
+export default FeedPage;
