@@ -19,17 +19,18 @@ class SuggestUser extends Component {
   }
   render() {
     return (
+      
       <CardView style={styles.container} cardElevation={5} cardMaxElevation={2} cornerRadius={10}>
         <CircleImage style={styles.profileImage} uri={this.props.uri} radius={getDeviceWidth(152)}/>
         <View style={styles.info}>
           <View style={{alignItems: 'center'}}>
-            <Text style={[styles.name, fontStyles.DFontFamily]}>{this.props.name}</Text>
-            <Text style={[fontStyles.DFontFamily, styles.id]}>{'@'}{this.props.id}</Text>
+            <Text style={[styles.name, fontStyles.DFontFamily]} numberOfLines={1} ellipsizeMode={'tail'}>{this.props.name}</Text>
+            <Text style={[fontStyles.DFontFamily, styles.id]}>{this.props.id}</Text>
             <View style={styles.separate}></View>
           </View>
           <View style={{alignItems:'center'}}>
             <Text style={styles.suggest}>{I18n.t('FEED_SUGGESTED_BY_ONEMAP')}</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={this._onFollow.bind(this)}>
               <View style={styles.followButton}>
                 <Text style={styles.followText}>{I18n.t('FEED_FOLLOW')}</Text>
               </View>
