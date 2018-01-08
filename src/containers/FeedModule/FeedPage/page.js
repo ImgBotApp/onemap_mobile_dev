@@ -42,25 +42,25 @@ class FeedPage extends Component {
     };
   }
   componentWillMount () {
-    // client.query({
-    //   query: SUGGEST_USERS
-    // }).then((users) => {
-    //   this.setState({
-    //     items: [{
-    //       id: 'a1',
-    //       type: 'users',
-    //       data: users.data.allUsers.map((user) => {
-    //         return {
-    //           id: user.username,
-    //           name: user.displayName,
-    //           uri : user.photoURL,
-    //           identify: user.id 
-    //         }
-    //       })
-    //     }]
-    //   })
-    // })
-    // this.fetchFeedItems()
+    client.query({
+      query: SUGGEST_USERS
+    }).then((users) => {
+      this.setState({
+        items: [{
+          id: 'a1',
+          type: 'users',
+          data: users.data.allUsers.map((user) => {
+            return {
+              id: user.username,
+              name: user.displayName,
+              uri : user.photoURL,
+              identify: user.id 
+            }
+          })
+        }]
+      })
+    })
+    this.fetchFeedItems()
   }
   fetchFeedItems = () => {
     client.query({
@@ -284,9 +284,9 @@ class FeedPage extends Component {
           data={this.state.items}
           initialNumToRender={10}
           renderItem={this._renderItem.bind(this)}
-          ListFooterComponent={this.renderFooter}
-          refreshing={this.state.refreshing}
-          onRefresh={this.handlerefresh}
+          // ListFooterComponent={this.renderFooter}
+          // refreshing={this.state.refreshing}
+          // onRefresh={this.handlerefresh}
           // onEndReached={this.handleLoadMore}
           onEndReachedThreshold={0}
         />
