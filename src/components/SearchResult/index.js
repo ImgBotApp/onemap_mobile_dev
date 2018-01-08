@@ -186,7 +186,6 @@ class SearchResult extends Component {
         <View style={styles.mainContainer}>
           <Tabs selected={this.state.page} style={styles.tabHeader}
                 selectedStyle={{color:'red'}} onSelect={el=>this.setState({page:el.props.name})}>
-            {this._renderTabHeader('Recent')}
             {this._renderTabHeader('People')}
             {this._renderTabHeader('Keywords')}
             {this._renderTabHeader('Places')}
