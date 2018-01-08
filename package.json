@@ -7,20 +7,20 @@
     "test": "jest"
   },
   "dependencies": {
-    "apollo-client": "^2.1.0",
-    "apollo-client-preset": "^1.0.5",
-    "graphql": "^0.11.7",
-    "graphql-tag": "^2.6.0",
+    "apollo-client": "^2.2.0",
+    "apollo-client-preset": "^1.0.6",
+    "graphql": "^0.12.3",
+    "graphql-tag": "^2.6.1",
     "prop-types": "^15.6.0",
     "react": "16.0.0",
     "react-apollo": "^1.4.16",
     "react-native": "0.51.0",
-    "react-native-auto-height-image": "git+https://gitlab.com/kingDeveloper_21th/react-native-auto-height-image.git",
+    "react-native-auto-height-image": "^0.3.4",
     "react-native-cardview": "^1.1.5",
-    "react-native-circular-progress": "^0.1.1",
+    "react-native-circular-progress": "^0.1.2",
     "react-native-confirmation-code-input": "^1.0.4",
     "react-native-easy-toast": "^1.0.9",
-    "react-native-fbsdk": "git+https://gitlab.com/kingDeveloper_21th/react-native-fbsdk.git",
+    "react-native-fbsdk": "^0.7.0",
     "react-native-google-places": "^2.4.2",
     "react-native-gridview": "^0.1.1",
     "react-native-i18n": "^2.0.10",
@@ -31,17 +31,17 @@
     "react-native-material-dropdown": "^0.6.1",
     "react-native-modal-datetime-picker": "^4.13.0",
     "react-native-modalbox": "^1.4.2",
-    "react-native-navigation": "^1.1.322",
-    "react-native-phone-input": "git+https://gitlab.com/kingDeveloper_21th/react-native-phone-input.git",
-    "react-native-search-box": "^0.0.13",
+    "react-native-navigation": "^1.1.334",
+    "react-native-phone-input": "^0.1.10",
+    "react-native-search-box": "0.0.13",
     "react-native-side-menu": "^1.1.3",
     "react-native-swipe-list-view": "^1.0.3",
     "react-native-swipeable": "^0.6.0",
     "react-native-tabs": "^1.0.9",
-    "react-native-tag-input": "^0.0.18",
+    "react-native-tag-input": "0.0.18",
     "react-native-vector-icons": "^4.4.3",
-    "react-native-view-more-text": "^1.3.3",
-    "react-navigation": "^1.0.0-beta.21",
+    "react-native-view-more-text": "^1.4.2",
+    "react-navigation": "^1.0.0-beta.23",
     "react-prop-types": "^0.4.0",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
@@ -57,5 +57,10 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts/"
+    ]
   }
 }
