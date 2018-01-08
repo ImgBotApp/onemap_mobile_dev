@@ -1,10 +1,15 @@
-import { connect } from 'react-redux' 
+import { connect } from 'react-redux'
+import { compose, graphql } from 'react-apollo'
+import { LIST_PLACE_STORIES, CREATE_STORY, UPDATE_STORY } from '@graphql/users'
+import { GET_PLACE } from '@graphql/place'
+
 
 import page from './page'
 
 function mapStateToProps(state) {
+  console.log(state);
   return {
-    user: state.userReducers
+    user: state.User
   }
 }
 
@@ -14,4 +19,19 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(page)
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  graphql(
+   LIST_PLACE_STORIES, {
+  options(props) {
+    return {
+      variables: { placeId: "cjc09rw2dnlqa01138bdk5ozs" },
+    }
+  },
+}),
+graphql(CREATE_STORY, { name: 'createStory' }),
+graphql(UPDATE_STORY, { name: 'updateStory'})
+)(page)

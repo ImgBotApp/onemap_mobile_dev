@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity,ScrollView, Platform, TextInput } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, Button, TouchableOpacity,ScrollView, Platform, TextInput, ActivityIndicator } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CardView from 'react-native-cardview'
 import ViewMoreText from 'react-native-view-more-text';
@@ -27,10 +27,10 @@ const ImagePickerOption = {
     path: 'images'
   }
 }
-const user = {
-  name : 'Minna Hamilton',
-  photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-}
+// const user = {
+//   name : 'Minna Hamilton',
+//   photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
+// }
 const data = {
   title: 'GRAMERCY TAVERN',
   bookmark: true,
@@ -147,19 +147,34 @@ class PlaceProfile extends Component {
     super(props)
 
     this.state={
+      editStory: false,
+      myStory: undefined,
       tags: ['Steak', 'Cocktails', 'Dinner', 'Food'],
       text: "",
       sliderShow: false,
       collectionModal: false,
-      storyImages: [
-        {
-          type: 'add'
-        }
-      ]
+      storyImages: [],
+      story: "",
+      storyTitle: ""
     }
 
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
   }
+  componentDidMount(){
+    const { user, createStory, data: { allStories, loading, error } } = this.props
+    const { hasStory, editStory, myStory } = this.state
+    if(!loading && !error)
+      {
+        const story = allStories.reduce((acc,val) => {
+          if(val.createdBy.id === user.id){
+            console.log('props here ');
+            this.setState({ myStory: val })
+            return val
+          }
+        }, undefined)
+  }
+}
+
   onNaviagtorEvent (event) {
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'backButton') {
@@ -179,7 +194,7 @@ class PlaceProfile extends Component {
         <TouchableOpacity onPress={this.addImageToStory.bind(this)}>
           <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
             <Image source={require('@assets/images/blankImage.png')} style={styles.imageItem}/>
-          </CardView>  
+          </CardView>
         </TouchableOpacity>
       )
     }
@@ -200,15 +215,24 @@ class PlaceProfile extends Component {
     })
   }
   render() {
+    const { data : loading, error } = this.props
+    const { editStory } = this.state
+    console.log('render',this.props);
+    console.log('renderState',this.state);
+    if(!loading && !error){
+      return(
+        <ActivityIndicator />
+      )
+    }
     return (
       <View style={styles.container}>
       <ScrollView style={styles.container}>
-        
+
         {/* Title */}
         <View style={styles.titleContainer}>
           <Text style={styles.titleText}>{data.title}</Text>
           <TouchableOpacity onPress={() => this.setState({collectionModal: true})}>
-            <MaterialCommunityIcons name={data.bookmark ? "bookmark" : "bookmark-outline"} size={30} 
+            <MaterialCommunityIcons name={data.bookmark ? "bookmark" : "bookmark-outline"} size={30}
                 color={data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR}/>
           </TouchableOpacity>
         </View>
@@ -217,8 +241,9 @@ class PlaceProfile extends Component {
           <FlatList
             style={styles.imageFlatList}
             horizontal
+            keyExtractor={(item, index) => index}
             data={data.image}
-            renderItem={({item}) => { return this._renderItem(item)}} 
+            renderItem={({item}) => { return this._renderItem(item)}}
           />
         </View>
         {/* Description */}
@@ -273,45 +298,18 @@ class PlaceProfile extends Component {
           <View style={styles.serparate}></View>
           <View style={styles.buttonInterest}>
             <TouchableOpacity>
-              <Foundation name="heart" size={35} color={RED_COLOR} />              
+              <Foundation name="heart" size={35} color={RED_COLOR} />
             </TouchableOpacity>
             <TouchableOpacity>
-              <Foundation name="marker" size={35} color={BLUE_COLOR} />              
+              <Foundation name="marker" size={35} color={BLUE_COLOR} />
             </TouchableOpacity>
             <TouchableOpacity>
-              <Foundation name="share" size={35} color={GREEN_COLOR} />              
+              <Foundation name="share" size={35} color={GREEN_COLOR} />
             </TouchableOpacity>
           </View>
         </View>
-        {/* Keywords */}
-        <View style={styles.keyWords}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={styles.keywordTitle}>{I18n.t('PLACE_KEYWORDS')}</Text>
-            <TouchableOpacity>
-              <Text style={styles.keywordDone}>{I18n.t('PLACE_KEYWORD_DONE')}</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.keywordContainer}>
-            <TagInput
-              value={this.state.tags}
-              onChange={this.onChangeTags}
-              labelExtractor={this.labelExtractor}
-              text={this.state.text}
-              onChangeText={this.onChangeText}
-              tagContainerStyle={styles.KeywordInput}
-              tagTextStyle={styles.keywordTextStyle}
-              tagColor="#5c5a5a"
-              tagTextColor="#e9e8eb"
-              inputProps={inputProps}
-              maxHeight={150}
-            />
-          </View>
-        </View>
-        {/* Write Story */}
-        <View style={styles.WriteStory}>
-          <Text style={styles.writeStoryTitle}>{I18n.t('PLACE_WRITE_STORY')}</Text>
-          {this._renderWriteStory()}
-        </View>
+        {this._renderWriteStory()}
+
         {/* Story Comments */}
         <View style={styles.WriteStory}>
           {
@@ -319,7 +317,8 @@ class PlaceProfile extends Component {
           }
           {/* {this._renderComments()} */}
         </View>
-        
+
+
       </ScrollView>
         {this.state.sliderShow ?
           (
@@ -338,7 +337,7 @@ class PlaceProfile extends Component {
           backdropOpacity={0.5}
           backdropColor={'lightgray'}
           onClosed={() => this.setState({collectionModal: false})}
-        > 
+        >
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
             <TouchableOpacity onPress={this.onAddCollection.bind(this)}>
@@ -357,28 +356,33 @@ class PlaceProfile extends Component {
     );
   }
   _renderCommentStory() {
-    return data.comments.map(comment => {
-      return this._renderComments(comment)
-    })
+    const { data: { error, loading, allStories }, user } = this.props
+    if(!loading && !error) {
+      return allStories.filter((val)=>val.createdBy.id !== user.id).map(comment => {
+        return this._renderComments(comment)
+      })
+    }
   }
   _renderComments (dataItem) {
+    console.log('here');
     return (
       <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
         <View style={{flexDirection: 'row'}}>
-          <CircleImage style={styles.storyWriterImage} uri={dataItem.user.uri} radius={getDeviceWidth(67)}/>
+          <CircleImage style={styles.storyWriterImage} uri={dataItem.createdBy.photoURL} radius={getDeviceWidth(67)}/>
           <View>
-            <Text style={styles.storyWriterName}>{dataItem.user.name}</Text>
-            <Text style={styles.commentDate}>{calculateDuration(dataItem.user.update)}</Text>
+            <Text style={styles.storyWriterName}>{`${dataItem.createdBy.firstName} ${dataItem.createdBy.lastName}`}</Text>
+            <Text style={styles.commentDate}>{calculateDuration(dataItem.updatedAt)}</Text>
           </View>
         </View>
-        <FlatList 
+        <FlatList
           style={[styles.imageFlatList, {marginTop: 10}]}
           horizontal
-          data={dataItem.images}
+          data={dataItem.pictureURL}
+          keyExtractor={(item, index) => index}
           renderItem={({item}) => this._renderItem(item)}
         />
-        <Text style={styles.commentDescription}>{dataItem.description}</Text>
-      </CardView>      
+        <Text style={styles.commentDescription}>{dataItem.story}</Text>
+      </CardView>
     )
   }
   addImageToStory() {
@@ -390,11 +394,10 @@ class PlaceProfile extends Component {
         console.log('ImagePicker Error: ', response.error);
       }
       else {
-        let source = { uri: response.uri };
+        let source = response.uri ;
         var cloneObj = JSON.parse(JSON.stringify(this.state.storyImages))
         cloneObj.pop()
         cloneObj.push(source)
-        cloneObj.push({type: 'add'})
         this.setState({
           storyImages: cloneObj
         });
@@ -403,33 +406,205 @@ class PlaceProfile extends Component {
     });
   }
   _renderWriteStory() {
-    return (
-      <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-        <View style={{flexDirection: 'row'}}>
-          <CircleImage style={styles.storyWriterImage} uri={user.photoURL} radius={getDeviceWidth(67)}/>
-          <Text style={styles.storyWriterName}>{user.name}</Text>
-        </View>
-        <View style={styles.myImagesContainer}>
-          {
-            this.state.storyImages.length < 2 ? 
-            (
-              <TouchableOpacity onPress={this.addImageToStory.bind(this)}>
-                <Image style={styles.myImages} source={require('@assets/images/blankImage.png')}/>
-              </TouchableOpacity>            
-            ) : (
-              <FlatList 
-                horizontal
-                style={styles.myImages}
-                data={this.state.storyImages}
-                renderItem={({item}) => this._renderItem(item)}
+    const { user, createStory, data: { allStories, loading, error } } = this.props
+    const { hasStory, editStory } = this.state
+    if (!loading && allStories)
+      {
+      const myStory = allStories.reduce((acc, val) => {
+        if (val.createdBy.id === user.id) {
+          return val
+        }
+        return undefined
+      }, undefined)
+      if (myStory && !editStory) {
+        return (
+          <View style={styles.WriteStory}>
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({ editStory: true })
+              }}
+            >
+              <Text style={styles.keywordDone}>{'Edit Story'}</Text>
+            </TouchableOpacity>
+            {this._renderComments(myStory)}
+          </View>
+        )
+      }
+      else if (myStory && editStory) {
+        return this._renderEditStory(myStory)
+      }
+      return (
+        <View>
+          {/* Keywords */}
+          <View style={styles.keyWords}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={styles.keywordTitle}>{I18n.t('PLACE_KEYWORDS')}</Text>
+            </View>
+            <View style={styles.keywordContainer}>
+              <TagInput
+                value={this.state.tags}
+                onChange={this.onChangeTags}
+                labelExtractor={this.labelExtractor}
+                text={this.state.text}
+                onChangeText={this.onChangeText}
+                tagContainerStyle={styles.KeywordInput}
+                tagTextStyle={styles.keywordTextStyle}
+                tagColor="#5c5a5a"
+                tagTextColor="#e9e8eb"
+                inputProps={inputProps}
+                maxHeight={150}
               />
-            )
-          }
+            </View>
+          </View>
+          {/* Write Story */}
+          <View style={styles.WriteStory}>
+            <Text style={styles.writeStoryTitle}>{I18n.t('PLACE_WRITE_STORY')}</Text>
+            <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
+              <View style={{ flexDirection: 'row' }}>
+                <CircleImage style={styles.storyWriterImage} uri={user.photoURL} radius={getDeviceWidth(67)}/>
+                <Text style={styles.storyWriterName}>{user.displayName || user.name}</Text>
+              </View>
+              <View style={styles.myImagesContainer}>
+                {
+                  this.state.storyImages.length < 2 ?
+                  (
+                    <TouchableOpacity onPress={this.addImageToStory.bind(this)}>
+                      <Image style={styles.myImages} source={require('@assets/images/blankImage.png')}/>
+                    </TouchableOpacity>
+                  ) : (
+                    <FlatList
+                      horizontal
+                      style={styles.myImages}
+                      data={this.state.storyImages}
+                      keyExtractor={(item, index) => index}
+                      renderItem={({item}) => this._renderItem(item)}
+                    />
+                  )
+                }
+              </View>
+              <TextInput style={{ width: '100%', marginTop:30}} placeholder={I18n.t('PLACE_TITLE_BOLD')} onChangeText={(text) => this.setState({ storyTitle: text })} />
+              <TextInput style={{ width: '100%', marginTop:10}} placeholder={'What is this story about'} onChangeText={(text) => this.setState({ story: text })} />
+              <Button
+                title={'Create Story'}
+                style={{ borderWidth: 2, borderRadius: 5 }}
+                onPress={() => {
+                  createStory(
+                    { variables: {
+                      title: this.state.storyTitle,
+                      story: this.state.story,
+                      hashtag: this.state.tags,
+                      placeId: "cjc09rw2dnlqa01138bdk5ozs",
+                      createdById: this.props.user.id,
+                      pictureURL: this.state.storyImages,
+                      status: 'PUBLISHED'
+                    }
+                  }
+                  ).then((res) => {
+                    this.setState({ myStory: res.data.createStory})
+                  })
+                }}
+              />
+            </CardView>
+          </View>
         </View>
-        <TextInput style={{width: '100%', marginTop:30}} placeholder={I18n.t('PLACE_TITLE_BOLD')}/>
-        <TextInput style={{width: '100%', marginTop:10}} placeholder={'What is this story about'}/>
-      </CardView>
-    )
+      )
+    }
+    return null
+  }
+
+  _renderEditStory(mystory) {
+    const { updateStory, user } = this.props
+    return (
+      <View>
+        {/* Keywords */}
+        <View style={styles.keyWords}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={styles.keywordTitle}>{I18n.t('PLACE_KEYWORDS')}</Text>
+          </View>
+          <View style={styles.keywordContainer}>
+            <TagInput
+              value={[mystory.hashtag, ...this.state.tags]}
+              onChange={this.onChangeTags}
+              labelExtractor={this.labelExtractor}
+              text={this.state.text}
+              onChangeText={this.onChangeText}
+              tagContainerStyle={styles.KeywordInput}
+              tagTextStyle={styles.keywordTextStyle}
+              tagColor="#5c5a5a"
+              tagTextColor="#e9e8eb"
+              inputProps={inputProps}
+              maxHeight={150}
+            />
+          </View>
+        </View>
+        {/* Write Story */}
+        <View style={styles.WriteStory}>
+          <Text style={styles.writeStoryTitle}>{I18n.t('PLACE_WRITE_STORY')}</Text>
+          <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
+            <View style={{flexDirection: 'row'}}>
+              <CircleImage style={styles.storyWriterImage} uri={user.photoURL} radius={getDeviceWidth(67)}/>
+              <Text style={styles.storyWriterName}>{user.displayName || user.name}</Text>
+            </View>
+            <View style={styles.myImagesContainer}>
+              {
+                this.state.storyImages.length < 2 ?
+                (
+                  <TouchableOpacity onPress={this.addImageToStory.bind(this)}>
+                    <Image style={styles.myImages} source={require('@assets/images/blankImage.png')}/>
+                  </TouchableOpacity>
+                ) : (
+                  <FlatList
+                    horizontal
+                    style={styles.myImages}
+                    data={[this.state.storyImages, ...mystory.pictureURL]}
+                    keyExtractor={(item, index) => index}
+                    renderItem={({item}) => this._renderItem(item)}
+                  />
+                )
+              }
+            </View>
+            <TextInput style={{width: '100%', marginTop:30}} placeholder={I18n.t('PLACE_TITLE_BOLD')} value={this.state.storyTitle || mystory.title}
+              onChangeText={(text) => {
+                if (text) {
+                  this.setState({ storyTitle: text })
+                } else {
+                  this.setState({ storyTitle: mystory.title })
+                }
+              }}
+            />
+            <TextInput style={{width: '100%', marginTop:10}} placeholder={'What is this story about'} value={this.state.story || mystory.story}
+              onChangeText={(text) => {
+                if (text) {
+                  this.setState({ story: text })
+                }
+                else {
+                  this.setState({ story: mystory.story})
+                }
+              }}
+            />
+            <Button
+              title={'Done'}
+              style={{ borderWidth: 2, borderRadius: 5 }}
+              onPress={() => {
+                updateStory(
+                  { variables: {
+                    id: mystory.id,
+                    title: this.state.storyTitle,
+                    story: this.state.story,
+                    hashtag: this.state.tags,
+                    placeId: "cjc09rw2dnlqa01138bdk5ozs",
+                    createdById: this.props.user.id,
+                    pictureURL: this.state.storyImages,
+                    status: 'PUBLISHED'
+                  }}
+                ).then((res) => {
+                  this.setState({ editStory: false, myStory: res.data.updateStory })
+                })
+              }}
+            />
+          </CardView>
+        </View>
+      </View>)
   }
   onChangeText = (text) => {
     this.setState({ text });
