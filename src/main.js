@@ -17,14 +17,36 @@ const store = createStoreWithMiddleware(reducer)
 
 
 import { ApolloProvider } from 'react-apollo'
+import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-client-preset'
+import { WebSocketLink } from 'apollo-link-ws'
+import { split }  from 'apollo-link'
+import { getMainDefinition } from 'apollo-utilities'
 
 import * as SCREEN from './global/screenName'
 
 const httpLink = new HttpLink({ uri: 'https://api.graph.cool/simple/v1/cjb30vkvv434c0146sjjn4d4w' })
+const wsUri = 'wss://subscriptions.ap-northeast-1.graph.cool/v1/cjb30vkvv434c0146sjjn4d4w';
+
+const wsLink = new WebSocketLink({
+  uri: wsUri,
+  options: {
+    reconnect: true
+  }
+})
+
+const link = split(
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query)
+    return kind === 'OperationDefinition' && operation === 'subscription'
+  },
+  wsLink,
+  httpLink,
+);
+
 export const client = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache()
+  link: link,
+  cache: new InMemoryCache().restore(window.__APOLLO_STATE__)
 })
 
 

@@ -125,47 +125,53 @@ class SearchPage extends Component {
     })
   }
   onPlaceProfile(placeID) {
+    console.log(placeID)
     var ret;
     RNPlaces.lookUpPlaceByID(placeID).then((result) => 
       {
         ret = result;
-        return client.query({
-          query: CHECK_EXIST_PLACE,
-          variables: {
-            sourceId: placeID
-          }
-        })
+        return client.resetStore()
       }
-    ).then( place => 
-      {
-        console.log(place)
-        if ( !place.data.Place ) {
-          return this.props.createPlace({
+    ).then(() => {
+      return client.query({
+        query: CHECK_EXIST_PLACE,
         variables: {
-            description: '', 
-            sourceId: placeID, 
-            placeName: ret.name, 
-            locationLat: ret.latitude, 
-            locationLong: ret.longitude, 
-            address: ret.address, 
-            phoneNumber: ret.phoneNumber || '', 
-            website: ret.website || '', 
-            facebook: ret.facebook || '',
-            addressCountry: ret.addressComponents ? ret.addressComponents.country : '',
-            addressPostalCode: ret.addressComponents ? ret.addressComponents.postal_code : '',
-            addressStateProvince: ret.addressComponents ? ret.addressComponents.administrative_area_level_1 : '',
-            addressCityTown: ret.addressComponents ? ret.addressComponents.administrative_area_level_2 : ''
+          sourceId: placeID
         }
-        })
-      } else {
-        return {
-          data: {
-            createPlace: {
-              id: place.data.Place.id
+      })
+    }).then( place => 
+      {
+        console.log("check exist", place)
+        console.log(this.props.user.id)
+        if ( !place.data.Place || !place.data.Place.id ) {
+          return this.props.createPlace({
+          variables: {
+              description: '', 
+              sourceId: placeID, 
+              placeName: ret.name, 
+              locationLat: ret.latitude, 
+              locationLong: ret.longitude, 
+              address: ret.address, 
+              phoneNumber: ret.phoneNumber || '', 
+              website: ret.website || '', 
+              facebook: ret.facebook || '',
+              addressCountry: ret.addressComponents ? ret.addressComponents.country : '',
+              addressPostalCode: ret.addressComponents ? ret.addressComponents.postal_code : '',
+              addressStateProvince: ret.addressComponents ? ret.addressComponents.administrative_area_level_1 : '',
+              addressCityTown: ret.addressComponents ? ret.addressComponents.administrative_area_level_2 : '',
+              createdById: this.props.user.id
+          }
+          })
+        } else {
+          console.log("move with not create")
+          return {
+            data: {
+              createPlace: {
+                id: place.data.Place.id
+              }
             }
           }
         }
-      }
     }
     ).then((result) => {
       console.log(result)

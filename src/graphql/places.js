@@ -122,6 +122,7 @@ export const CREATE_PLACE_PROFILE = gql`
     $addressPostalCode: String,
     $addressStateProvince: String,
     $addressCityTown: String,
+    $createdById: ID,
     $facebook: String) {
       createPlace(
         description: $description, 
@@ -139,6 +140,7 @@ export const CREATE_PLACE_PROFILE = gql`
         addressPostalCode: $addressPostalCode,
         addressStateProvince: $addressStateProvince,
         addressCityTown: $addressCityTown,
+        createdById: $createdById
         status: ENABLE
       ) {
         id
