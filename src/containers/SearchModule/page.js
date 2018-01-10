@@ -125,10 +125,11 @@ class SearchPage extends Component {
     })
   }
   onPlaceProfile(placeID) {
-    console.log(placeID)
+    // console.log(placeID)
     var ret;
     RNPlaces.lookUpPlaceByID(placeID).then((result) => 
       {
+        console.log(result)
         ret = result;
         return client.resetStore()
       }
@@ -141,8 +142,8 @@ class SearchPage extends Component {
       })
     }).then( place => 
       {
-        console.log("check exist", place)
-        console.log(this.props.user.id)
+        // console.log("check exist", place)
+        // console.log(this.props.user.id)
         if ( !place.data.Place || !place.data.Place.id ) {
           return this.props.createPlace({
           variables: {
