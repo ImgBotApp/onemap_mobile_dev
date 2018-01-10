@@ -215,6 +215,16 @@ const styles = StyleSheet.create({
     fontSize: BIGGER_FONT_SIZE,
     marginLeft: getDeviceWidth(346)
   },
+  overlayContainer:{
+    position: 'absolute',
+    justifyContent: 'center',
+    flex: 1,
+    backgroundColor: 'rgba(153,153,153,0)',
+    padding:0,
+  },
+  overlayWrapper:{
+    
+  },
 });
 
 export default styles

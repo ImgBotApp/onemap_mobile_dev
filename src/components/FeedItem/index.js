@@ -20,7 +20,7 @@ class FeedItem extends Component {
   }
 
   _onPlaceImagePress() {
-    this.props.onPlace(this.props.data.id)
+    this.props.onPlace(this.props.data.place)
   }
 
   onBookMarker() {

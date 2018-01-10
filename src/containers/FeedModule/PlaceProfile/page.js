@@ -22,6 +22,7 @@ import * as SCREEN from '@global/screenName'
 
 import { client } from '@root/main'
 import { GET_PLACE_PROFILE } from '@graphql/places'
+import Overlay from 'react-native-modal-overlay';
 
 const ImagePickerOption = {
   title: 'Select Image',
@@ -382,15 +383,18 @@ class PlaceProfile extends Component {
           </View>
 
         </ScrollView>
-        {this.state.sliderShow ?
-          (
+        
+        <Overlay visible={this.state.sliderShow} closeOnTouchOutside animationType="zoomIn"
+              containerStyle={{backgroundColor: 'rgba(0, 0, 0, 0.9)',padding:0,flex:1,justifyContent: 'center',alignItems:"center"}}
+              childrenWrapperStyle={{backgroundColor: 'rgba(0, 0, 0, 0)',padding:0,justifyContent: 'center'}}
+              onClose = {() => this.setState({ sliderShow: false })}
+              supportedOrientations={['portrait', 'landscape']}>
             <ImageSliderComponent
-              data={this.state.placeData.image.map(item => item.uri)}
-              onPress={() => {
-                this.setState({ sliderShow: false })
-              }} />
-          ) : null
-        }
+            data={this.state.placeData.image}
+            onPress = {() => this.setState({ sliderShow: false })}
+            />
+        </Overlay>
+          
         {/* Modal Collection */}
         <Modal
           style={styles.collectionModal}

@@ -16,24 +16,6 @@ export const GET_ALL_PLACES = gql`
     }
   }
 `
-
-export const PAGINATED_PLACES = gql`
-  query Places($first: Int!, $skip: Int!) {
-    allPlaces(first: $first, skip: $skip) {
-      id
-      updatedAt,
-      description
-      placeName
-      pictureURL
-      createdBy {
-        id
-        username
-        photoURL
-      }
-    }
-  }
-`;
-
 export const PLACES_PAGINATED = gql`
   query Places($first: Int!, $skip: Int!) {
     allPlaces(first: $first, skip: $skip) {
@@ -144,12 +126,4 @@ export const CREATE_PLACE_PROFILE = gql`
         id
       }
     }
-`;
-
-export const CHECK_EXIST_PLACE = gql`
-  query ($sourceId: String) {
-    Place(sourceId: $sourceId) {
-      id
-    } 
-  }
-`;
+`
