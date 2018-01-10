@@ -81,7 +81,7 @@ class FeedPage extends Component {
             uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
             updated: new Date(place.updatedAt)
           },
-          bookmark: true,
+          bookmark: false,
           feedTitle: place.placeName,
           images: place.pictureURL.map(item => { return {uri: item}}),
           place: '',
