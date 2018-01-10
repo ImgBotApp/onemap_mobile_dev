@@ -167,7 +167,6 @@ class PlaceProfile extends Component {
       {
         const story = allStories.reduce((acc,val) => {
           if(val.createdBy.id === user.id){
-            console.log('props here ');
             this.setState({ myStory: val })
             return val
           }
@@ -217,8 +216,6 @@ class PlaceProfile extends Component {
   render() {
     const { data : loading, error } = this.props
     const { editStory } = this.state
-    console.log('render',this.props);
-    console.log('renderState',this.state);
     if(!loading && !error){
       return(
         <ActivityIndicator />
@@ -364,7 +361,6 @@ class PlaceProfile extends Component {
     }
   }
   _renderComments (dataItem) {
-    console.log('here');
     return (
       <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
         <View style={{flexDirection: 'row'}}>
@@ -408,13 +404,14 @@ class PlaceProfile extends Component {
   _renderWriteStory() {
     const { user, createStory, data: { allStories, loading, error } } = this.props
     const { hasStory, editStory } = this.state
-    if (!loading && allStories)
+    if (!loading)
       {
       const myStory = allStories.reduce((acc, val) => {
         if (val.createdBy.id === user.id) {
-          return val
+          acc = val
         }
-        return undefined
+        return acc
+
       }, undefined)
       if (myStory && !editStory) {
         return (
