@@ -8,7 +8,7 @@ import styles from './styles'
 
 /**
  * Array Item
- * 
+ *
  * id
  * title
  * uri
@@ -16,7 +16,7 @@ import styles from './styles'
 
 /**
  * Props event
- * 
+ *
  * onPressItem
  */
 // create a component
@@ -37,9 +37,9 @@ class StoryBoard extends Component {
     return (
       <View>
         <TouchableOpacity onPress={() => this.props.onPressItem(item.id)}>
-          <AutoHeightTitledImage uri={item.uri}
+          <AutoHeightTitledImage uri={item.pictureURL[0]}
             width={getDeviceWidth(this.props.width)}
-            title={item.title} vAlign={'center'} hAlign={'left'} titleStyle={styles.storyItemTitle}
+            title={item.placeName} vAlign={'center'} hAlign={'left'} titleStyle={styles.storyItemTitle}
             style={{marginBottom: 10}}
           />
         </TouchableOpacity>
@@ -50,21 +50,21 @@ class StoryBoard extends Component {
     return (
       <View style={[styles.container, this.props.style]}>
         <View style={[styles.subContainer,this.props.subContainer]}>
-          <FlatList 
+          <FlatList
               data={this.state.data}
-              renderItem={({item}) => { if (this.state.data.indexOf(item)% 3 == 0 )return this._renderStoryItem(item)} }
+              renderItem={({item}) => { if (this.state.data.indexOf(item)% 3 == 0 )return this._renderStoryItem(item.place)} }
           />
         </View>
         <View style={[styles.subContainer,this.props.subContainer]}>
-          <FlatList 
+          <FlatList
             data={this.state.data}
-            renderItem={({item}) => { if (this.state.data.indexOf(item)% 3 == 1 )return this._renderStoryItem(item)} }
+            renderItem={({item}) => { if (this.state.data.indexOf(item)% 3 == 1 )return this._renderStoryItem(item.place)} }
           />
         </View>
         <View style={[styles.subContainer,this.props.subContainer]}>
-          <FlatList 
+          <FlatList
             data={this.state.data}
-            renderItem={({item}) => { if (this.state.data.indexOf(item)% 3 == 2 )return this._renderStoryItem(item)} }
+            renderItem={({item}) => { if (this.state.data.indexOf(item)% 3 == 2 )return this._renderStoryItem(item.place)} }
           />
         </View>
       </View>
