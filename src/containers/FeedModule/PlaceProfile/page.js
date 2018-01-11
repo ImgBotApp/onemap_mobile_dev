@@ -377,6 +377,7 @@ class PlaceProfile extends Component {
           keyExtractor={(item, index) => index}
           renderItem={({item}) => this._renderItem(item)}
         />
+        <Text style={{ fontSize: 12, color: 'grey', marginVertical: 5, fontWeight: 'bold' }}>{dataItem.title}</Text>
         <Text style={styles.commentDescription}>{dataItem.story}</Text>
       </CardView>
     )
