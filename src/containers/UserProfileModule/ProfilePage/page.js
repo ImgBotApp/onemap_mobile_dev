@@ -15,10 +15,10 @@ import StoryBoard from '@components/StoryBoard'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
-import { SMALL_FONT_SIZE } from '../../../theme/fonts';
+import { SMALL_FONT_SIZE } from '@theme/fonts';
 
 import { client } from '@root/main'
-import { GET_ALL_COLLECTIONS } from '@graphql/collections'
+import { GET_MY_COLLECTIONS } from '@graphql/collections'
 
 const data = {
   id: 'test',
@@ -105,7 +105,7 @@ class ProfileComponent extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
   componentWillMount() {
-    this.getUserCollections();
+    this.getMyCollections();
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -128,11 +128,11 @@ class ProfileComponent extends Component {
       }
     }
   }
-  getUserCollections = () => {
+  getMyCollections = () => {
     client.query({
-      query: GET_ALL_COLLECTIONS,
+      query: GET_MY_COLLECTIONS,
       variables: {
-        // id: this.props.user.id
+        id: this.props.user.id
       }
     }).then(collections => {
       this.setState({ collections: collections.data.allCollections });
@@ -194,10 +194,10 @@ class ProfileComponent extends Component {
           <View style={styles.collectionItems}>
             <Collections
               collections={this.state.collections}
-              onHearted={this.onHearted.bind(this)}
-              onCheckIns={this.onCheckIns.bind(this)}
-              onWishList={this.onWishList.bind(this)}
-              onViewAll={this.onViewAll.bind(this)}
+              onHearted={this.onColletionView}
+              onCheckIns={this.onColletionView}
+              onWishList={this.onColletionView}
+              onViewAll={this.onViewAll}
             />
           </View>
         </View>
@@ -211,25 +211,13 @@ class ProfileComponent extends Component {
       </ScrollView>
     );
   }
-  onHearted = () => {
+  onColletionView = (collection) => {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
-      animated: true
-    })
-  }
-  onCheckIns = () => {
-    this.props.navigator.push({
-      screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
-      animated: true
-    })
-  }
-  onWishList = () => {
-    this.props.navigator.push({
-      screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
-      animated: true
+      animated: true,
+      passProps: {
+        collection
+      }
     })
   }
   onViewAll = () => {

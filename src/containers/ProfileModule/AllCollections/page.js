@@ -61,8 +61,10 @@ class AllCollections extends Component {
   onItemPress(item) {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
-      animated: true
+      animated: true,
+      passProps: {
+        collection: item
+      }
     })
   }
   onItemRemove(item) {
@@ -83,7 +85,11 @@ class AllCollections extends Component {
       }
     }).then(collection => {
       let collections = clone(this.state.collections);
-      collections.push({ id: collection.data.createCollection.id, ...data });
+      collections.push({
+        id: collection.data.createCollection.id,
+        type: 'USER',
+        ...data
+      });
       this.setState({ collections });
       this.props.refresh(collections);
     })
@@ -105,23 +111,22 @@ class AllCollections extends Component {
         <View style={styles.container}>
 
           {
-            this.state.collections.map((item, index) => {
-              return (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => this.onItemPress(item)}
-                  onLongPress={() => this.onItemRemove(item)}
-                >
+            this.state.collections
+              // .filter(collection => collection.type === 'USER')
+              .map((item, index) => {
+                return (
                   <CollectionItem
+                    key={index}
                     style={styles.cell}
                     insideStyle={styles.collection}
                     uri={item.pictureURL ? item.pictureURL : imagePlaceholder}
                     title={item.name}
                     radius={8}
+                    onPress={() => this.onItemPress(item)}
+                    onLongPress={() => item.type === 'USER' && this.onItemRemove(item)}
                   />
-                </TouchableOpacity>
-              )
-            })
+                )
+              })
           }
 
         </View>

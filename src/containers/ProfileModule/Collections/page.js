@@ -10,28 +10,32 @@ import { getDeviceWidth, getDeviceHeight } from '@global'
 import { DARK_GRAY_COLOR } from '../../../theme/colors';
 import * as SCREEN from '../../../global/screenName'
 import I18n from '@language'
-const map= {
+
+import { client } from '@root/main'
+import { GET_COLLECTION_WITH_PLACES } from '@graphql/collections'
+
+const map = {
   latitude: 37.78825,
   longitude: -122.4324,
   latitudeDelta: 0.00922,
   longitudeDelta: 0.00421,
 }
-const stories= [
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-      {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg'},
+const stories = [
+  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
+  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
+  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
+  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
+  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
+  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
+  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
+  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
+  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
+  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
+  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
+  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
 ]
 // create a component
 class Collections extends Component {
@@ -48,9 +52,14 @@ class Collections extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      page: 'Hearted View'
+      page: 'Hearted View',
+      places: []
     }
-    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
+    this.props.navigator.setTitle({ title: props.collection.name });
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+  componentWillMount() {
+    this.getCollectionPlaces();
   }
   onNavigatorEvent(event) {
     if (event.type == 'NavBarButtonPress') {
@@ -59,27 +68,45 @@ class Collections extends Component {
       }
     }
   }
+  getCollectionPlaces() {
+    client.query({
+      query: GET_COLLECTION_WITH_PLACES,
+      variables: {
+        id: this.props.collection.id
+      }
+    }).then(collections => {
+      this.setState({ places: collections.data.allCollections[0].places });
+    })
+  }
   _renderTabHeader(text) {
     return (
-      <Text name={text} style={styles.TabText} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>      
+      <Text name={text} style={styles.TabText} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>
     )
   }
-  onCollectionItem (data) {
+  onCollectionItem(data) {
     // this.props.navigator.push({
     //   screen: SCREEN.FEED_ALL_COLLECTION,
     //   title: I18n.t('COLLECTION_TITLE'),
     //   animated: true
     // })
   }
-  _renderStoryItem (data, mode) {
-    if (data.index % 3 == mode )
+  _renderStoryItem(data, mode) {
+    const { item, index } = data;
+    if (index % 3 == mode)
       return (
         <View>
-          <TouchableOpacity onPress={() => this.onCollectionItem(data)}>
-            <AutoHeightTitledImage uri={data.item.uri}
+          <TouchableOpacity
+            onPress={() => this.onCollectionItem(item)}
+          >
+            <AutoHeightTitledImage
+              uri={item.pictureURL ? item.pictureURL[0] : null}
               width={getDeviceWidth(343)}
-              title={'abcd'} vAlign={'center'} radius={8} hAlign={'left'} titleStyle={styles.storyItemTitle}
-              style={{marginBottom: 10}}
+              title={item.address}
+              vAlign={'center'}
+              radius={8}
+              hAlign={'left'}
+              titleStyle={styles.storyItemTitle}
+              style={{ marginBottom: 10 }}
             />
           </TouchableOpacity>
         </View>
@@ -87,42 +114,42 @@ class Collections extends Component {
   }
   _keyExtractor = (item, index) => index;
 
-  _renderHeartedView () {
+  _renderHeartedView() {
     return (
       <View style={styles.Stories}>
         <View style={styles.subStory}>
-          <FlatList 
-            data={stories}
+          <FlatList
+            data={this.state.places}
             keyExtractor={this._keyExtractor}
-            renderItem={(data) => { 
+            renderItem={data => {
               return this._renderStoryItem(data, 0)
             }}
-          />          
+          />
         </View>
-        
+
         <View style={styles.subStory}>
-        <FlatList 
-            data={stories}
+          <FlatList
+            data={this.state.places}
             keyExtractor={this._keyExtractor}
-            renderItem={(data) => { 
+            renderItem={data => {
               return this._renderStoryItem(data, 1)
             }}
-          />  
+          />
         </View>
         <View style={styles.subStory}>
-        <FlatList 
-            data={stories}
+          <FlatList
+            data={this.state.places}
             keyExtractor={this._keyExtractor}
-            renderItem={(data) => { 
+            renderItem={data => {
               return this._renderStoryItem(data, 2)
             }}
-          />  
+          />
         </View>
       </View>
     )
   }
 
-  _renderMapView () {
+  _renderMapView() {
     return (
       <View style={styles.mapView}>
         <MapView
@@ -131,10 +158,13 @@ class Collections extends Component {
           initialRegion={map}
           region={map}
         >
-          <MapView.Marker
-            image={require('@assets/images/marker.png')}
-            coordinate={map}
-          />
+          {this.state.places.map((item, index) =>
+            <MapView.Marker
+              key={index}
+              image={require('@assets/images/marker.png')}
+              coordinate={{ ...map, latitude: item.locationLat, longitude: item.locationLong }}
+            />
+          )}
         </MapView>
       </View>
     )
@@ -144,15 +174,15 @@ class Collections extends Component {
       <View style={styles.container}>
         <View style={styles.mainContainer}>
           <Tabs selected={this.state.page} style={styles.tabHeader}
-                selectedStyle={{color:'red'}} onSelect={el=>this.setState({page:el.props.name})}>
-              {this._renderTabHeader('Hearted View')}
-              {this._renderTabHeader('Map View')}
+            selectedStyle={{ color: 'red' }} onSelect={el => this.setState({ page: el.props.name })}>
+            {this._renderTabHeader('Hearted View')}
+            {this._renderTabHeader('Map View')}
           </Tabs>
         </View>
         <ScrollView style={styles.CollectionContainer}>
-        {
-          this.state.page == 'Hearted View' ? this._renderHeartedView() : this._renderMapView()
-        }
+          {
+            this.state.page == 'Hearted View' ? this._renderHeartedView() : this._renderMapView()
+          }
         </ScrollView>
       </View>
     );
