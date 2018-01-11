@@ -202,3 +202,58 @@ export const UPDATE_STORY = gql`
     }
   }
 `
+
+export const GET_USER_STORIES = gql`
+query getUserStories(
+    $userId: ID! # user
+    $orderBy: StoryOrderBy # title_ASC, title_DESC, createdAt_ASC, createdAt_DESC
+    $skip: Int # for pagination, 0 for no skip
+    $first: Int # limit result to number
+  ) {
+    allStories(orderBy: $orderBy, first: $first, skip: $skip, filter: {createdBy: {id: $userId}}) {
+      id
+      createdAt
+      updatedAt
+      title
+      story
+      hashtag
+      place {
+        id
+        updatedAt
+        description
+        source
+        sourceId
+        createSide
+        placeName
+        locationLat
+        locationLong
+        addressAreaDistrict
+        addressCityTown
+        addressStateProvince
+        addressCountry
+        addressPostalCode
+        addressStreet
+        address
+        phoneNumber
+        website
+        facebook
+        line
+        openingHrs
+        pictureURL
+        status
+        placeOwner
+      }
+      usersLike {
+        id
+      }
+      createdBy {
+        id
+        username
+        lastName
+        firstName
+      }
+      status
+      pictureURL
+    }
+}
+`
