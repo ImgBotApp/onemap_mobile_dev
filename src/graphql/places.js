@@ -162,13 +162,24 @@ export const CHECK_EXIST_PLACE = gql`
 
 export const ADD_COLLECTION_TO_PLACE = gql`
   mutation ($id: ID!,
-    $collectionId: ID!
+    $collectionIds: [ID!]
   ) {
     updatePlace(
       id: $id,
-      collectionsIds: [
-        $collectionId
-      ]
+      collectionsIds: $collectionIds
+    ) {
+      id
+    }
+  }
+`
+
+export const REMOVE_COLLECTION_FROM_PLACE = gql`
+  mutation ($id: ID!,
+    $collectionIds: [ID!]
+  ) {
+    updatePlace(
+      id: $id,
+      collectionsIds: $collectionIds
     ) {
       id
     }

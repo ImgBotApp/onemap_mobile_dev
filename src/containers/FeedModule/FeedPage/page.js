@@ -17,6 +17,7 @@ import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import { SMALL_FONT_SIZE } from '@theme/fonts';
 
 import * as SCREEN from '@global/screenName'
+import { clone } from '@global';
 const PLACES_PER_PAGE = 8;
 
 import { client } from '@root/main'
@@ -95,11 +96,12 @@ class FeedPage extends Component {
             uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
             updated: new Date(place.updatedAt)
           },
-          bookmark: this.isBookmarked(place),
           feedTitle: place.placeName,
           images: place.pictureURL.map(item => { return { uri: item } }),
           place: '',
-          description: place.description || ''
+          description: place.description || '',
+          bookmark: this.isBookmarked(place),
+          collectionIds: place.collections.map(collection => collection.id)//will be removed later
         }
       });
       this.setState({
@@ -123,15 +125,36 @@ class FeedPage extends Component {
     return marked;
   }
   addBookmark(collection) {
+    let collectionIds = clone(this.state.selectedPlace.collectionIds);
+    collectionIds.push(collection.id);
     this.props.addCollectionToPlace({
       variables: {
         id: this.state.selectedPlace.id,
-        collectionId: collection.id
+        collectionIds
       }
     }).then(places => {
-      alert(JSON.stringify(places))
-      // this.setState({ collections: collections.data.allCollections });
-    })
+      let tmpPlace = this.state.selectedPlace;
+      tmpPlace.bookmark = true;
+      tmpPlace.collectionIds = collectionIds;
+      let items = clone(this.state.items);
+      items[this.state.selectedPlaceIndex] = tmpPlace;
+      this.setState({ items, collectionModal: false });
+    });
+  }
+  removeBookmark(index) {
+    let collectionIds = clone(this.state.items[index].collectionIds);
+    collectionIds = collectionIds.filter(id => !this.state.collections.map(collection => collection.id).includes(id));
+    this.props.removeCollectionFromPlace({
+      variables: {
+        id: this.state.items[index].id,
+        collectionIds
+      }
+    }).then(places => {
+      let items = clone(this.state.items);
+      items[index].bookmark = false;
+      items[index].collectionIds = collectionIds;
+      this.setState({ items, collectionModal: false });
+    });
   }
   getUserCollections = () => {
     client.query({
@@ -189,18 +212,18 @@ class FeedPage extends Component {
       title: I18n.t('PROFILE_PAGE_TITLE'),
       animated: true,
       passProps: {
-        placeID: id
+        placeID: id,
       }
     })
   }
-  _renderFeedItem(data) {
+  _renderFeedItem(data, index) {
     return (
       <View style={styles.feedItem}>
         <FeedItem
           data={data}
           onPress={this.onPressUserProfile}
-          onBookMarker={() => this.onBookMarker(data)}
-          onPlace={this.onPlace}
+          onBookMarker={() => this.onBookMarker(data, index)}
+          onPlace={() => this.onPlace(data, index)}
         />
       </View>
     )
@@ -232,12 +255,12 @@ class FeedPage extends Component {
       </View>
     )
   }
-  _renderItem = ({ item }) => {
+  _renderItem = ({ item, index }) => {
     switch (item.type) {
       case 'users':
         return this._renderSuggestedList(item.data)
       case 'item':
-        return this._renderFeedItem(item)
+        return this._renderFeedItem(item, index)
       case 'event':
         return this._renderFeedEvent(item)
       case 'campaign':
@@ -258,22 +281,36 @@ class FeedPage extends Component {
     })
   }
 
-  onPlace = (id) => {
+  onPlace(data, index) {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       title: I18n.t('PLACE_TITLE'),
       animated: true,
       passProps: {
-        placeID: id
+        place: data,
+        collections: this.state.collections,
+        onPlaceUpdate: place => this.onPlaceUpdate(place, index),
+        onCollectionsUpdate: collections => this.setState({ collections })
       }
     })
   }
 
-  onBookMarker(place) {
-    this.setState({
-      collectionModal: true,
-      selectedPlace: place
-    })
+  onPlaceUpdate = (place, index) => {
+    let items = clone(this.state.items);
+    items[index] = place;
+    this.setState({ items });
+  }
+
+  onBookMarker(place, index) {
+    if (place.bookmark) {
+      this.removeBookmark(index);
+    } else {
+      this.setState({
+        selectedPlace: place,
+        selectedPlaceIndex: index,
+        collectionModal: true,
+      });
+    }
   }
   onAddCollection = () => {
     this.setState({
@@ -339,7 +376,7 @@ class FeedPage extends Component {
           style={{ width: '100%', height: '100%' }}
           data={this.state.items}
           initialNumToRender={10}
-          renderItem={this._renderItem.bind(this)}
+          renderItem={this._renderItem}
           // ListFooterComponent={this.renderFooter}
           // refreshing={this.state.refreshing}
           // onRefresh={this.handlerefresh}
