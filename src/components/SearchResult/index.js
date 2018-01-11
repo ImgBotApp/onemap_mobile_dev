@@ -50,7 +50,7 @@ class SearchResult extends Component {
   constructor(props){
     super(props);
     this.state = {
-      page:'Recent',
+      page:'Places',
       places: [],
       keywords: [],
       users: []
