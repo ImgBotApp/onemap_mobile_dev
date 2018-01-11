@@ -111,7 +111,8 @@ class FollowerPeople extends Component {
         <Search />
         {
           this.state.page == 'followers' ? 
-          <FollowerList onItemPress={this.onFollowerBlock.bind(this)}/> : <FollowingList onFollowing={this.onFollowingItem.bind(this)}/>
+          <FollowerList onItemPress={this.onFollowerBlock.bind(this)} userid={this.props.user.id}/> : <FollowingList onFollowing={this.onFollowingItem.bind(this)}
+          userid={this.props.user.id}/>
         }
         </View>
         {

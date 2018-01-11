@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ListView, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal'
+import { graphql } from "react-apollo";
 
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
 import CircleImage from '@components/CircleImage'
@@ -10,38 +11,9 @@ import styles from './style'
 import I18n from '@language'
 import { getDeviceWidth, getDeviceHeight } from '@global'
 import { DARK_GRAY_COLOR } from '../../../theme/colors';
-const data = [
-  {
-    photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-    name: 'test',
-    bio:'I am tester'
-  },
-  {
-    photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-    name: 'test',
-    bio:'I am tester'
-  },
-  {
-    photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-    name: 'test',
-    bio:'I am tester'
-  },
-  {
-    photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-    name: 'test',
-    bio:'I am tester'
-  },
-  {
-    photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-    name: 'test',
-    bio:'I am tester'
-  },
-  {
-    photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-    name: 'test',
-    bio:'I am tester'
-  }
-]
+
+import { GET_BLOCKUSRS } from "@graphql/userprofile";
+const BLOCKUSERS_PER_PAGE = 20;
 
 // create a component
 class BlockedUser extends Component {
@@ -58,7 +30,6 @@ class BlockedUser extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      data,
       modalVisible: false
     }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
@@ -99,20 +70,33 @@ class BlockedUser extends Component {
   }
   _keyExtractor = (item, index) => index;
   render() {
+    
+    let blockUsers = [];
+    if (!this.props.data.loading) {
+      blockUsers = this.props.data.User.blockUsers.map((user) => {
+        return {
+          id:user.id,
+          displayName:user.displayName,
+          email:user.email,
+          bio:user.bio?user.bio:"",
+          photoURL:user.photoURL ? user.photoURL:'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+        }
+      });
+    }
     return (
       <View style={styles.container}>
         <SwipeListView 
           keyExtractor={this._keyExtractor}
           useFlatList
           style={styles.userList}
-          data = {data}
+          data = {blockUsers}
           renderItem={ (data,rowMap) => (
             <View style={styles.userRow}>
               <View style={styles.mainItem}>
                 <View style={{flexDirection: 'row'}}>
                 <CircleImage style={styles.itemImage} uri={data.item.photoURL} radius={getDeviceWidth(88)}/>
                 <View style={styles.itemInfo}>
-                  <Text style={styles.username}>{data.item.name}</Text>
+                  <Text style={styles.username}>{data.item.displayName}</Text>
                   <Text style={styles.bio}>{data.item.bio}</Text>
                 </View>
                 </View>
@@ -146,8 +130,16 @@ class BlockedUser extends Component {
     );
   }
 }
-
-
-
+  
+const ComponentWithQueries = graphql(GET_BLOCKUSRS, {
+  options: (props) => ({
+    variables: { 
+      userId: props.user.id,
+      skip: 0,
+      first: BLOCKUSERS_PER_PAGE
+   },
+  }),
+})
+  (BlockedUser);
 //make this component available to the app
-export default BlockedUser;
+export default ComponentWithQueries;
