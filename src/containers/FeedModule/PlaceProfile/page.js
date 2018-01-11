@@ -214,12 +214,12 @@ class PlaceProfile extends Component {
     })
   }
   render() {
+    console.log('inside place pprofile', this.props);
     const { data : loading, error } = this.props
     const { editStory } = this.state
-    if(!loading && !error){
-      return(
-        <ActivityIndicator />
-      )
+    console.log(this.props);
+    if (!loading && error) {
+      return <Text>{error}</Text>
     }
     return (
       <View style={styles.container}>
@@ -405,7 +405,7 @@ class PlaceProfile extends Component {
   _renderWriteStory() {
     const { user, createStory, data: { allStories, loading, error } } = this.props
     const { hasStory, editStory } = this.state
-    if (!loading)
+    if (!loading && !error)
       {
       const myStory = allStories.reduce((acc, val) => {
         if (val.createdBy.id === user.id) {
@@ -511,7 +511,7 @@ class PlaceProfile extends Component {
   }
 
   _renderEditStory(mystory) {
-    const { updateStory, user } = this.props
+    const { updateStory, user, placeId } = this.props
     return (
       <View>
         {/* Keywords */}
@@ -590,7 +590,7 @@ class PlaceProfile extends Component {
                     title: this.state.storyTitle,
                     story: this.state.story,
                     hashtag: this.state.tags,
-                    placeId: "cjc09rw2dnlqa01138bdk5ozs",
+                    placeId: placeId,
                     createdById: this.props.user.id,
                     pictureURL: this.state.storyImages,
                     status: 'PUBLISHED'

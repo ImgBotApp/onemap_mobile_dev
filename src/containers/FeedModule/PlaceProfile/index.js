@@ -27,8 +27,9 @@ export default compose(
   graphql(
    LIST_PLACE_STORIES, {
   options(props) {
+    console.log('here recieving props', props);
     return {
-      variables: { placeId: "cjc09rw2dnlqa01138bdk5ozs" },
+      variables: { placeId: props.placeId },
     }
   },
 }),
