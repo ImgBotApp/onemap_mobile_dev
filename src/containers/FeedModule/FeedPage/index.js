@@ -1,10 +1,11 @@
-import { connect } from 'react-redux' 
-
+import { connect } from 'react-redux'
+import { graphql } from 'react-apollo'
+import { ADD_COLLECTION_TO_PLACE } from "@graphql/places";
 import page from './page'
 
 function mapStateToProps(state) {
   return {
-    User: state.User
+    user: state.User
   }
 }
 
@@ -14,4 +15,6 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(page)
+let container = graphql(ADD_COLLECTION_TO_PLACE, { name: 'addCollectionToPlace' })(page);
+
+export default connect(mapStateToProps, mapDispatchToProps)(container)
