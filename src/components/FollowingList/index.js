@@ -6,16 +6,16 @@ import { getDeviceWidth, getDeviceHeight } from '@global'
 import styles from './styles'
 
 import { graphql } from "react-apollo";
-import { GET_SUGGEST_USERS } from "@graphql/userprofile";
+import { GET_FOLLOWS } from "@graphql/userprofile";
 const FOLLOWINGS_PER_PAGE = 20;
 
 // create a component
 class FollowingList extends Component {
-  _keyExtractor = (item, index) => item.id;
+  _keyExtractor = (item, index) => index;
   render() {
     let followingUsers = [];
     if (!this.props.data.loading) {
-      followingUsers = this.props.data.allUsers.map((user) => {
+      followingUsers = this.props.data.User.follows.map((user) => {
         return {
           id:user.id,
           displayName:user.displayName,
@@ -58,14 +58,12 @@ class FollowingList extends Component {
     );
   }
 }
-const ComponentWithQueries = graphql(GET_SUGGEST_USERS, {
+const ComponentWithQueries = graphql(GET_FOLLOWS, {
   options: (props) => ({
     variables: {
-      currentUserId: props.userid,
+      userId: props.userid,
       skip: 0,
       first: FOLLOWINGS_PER_PAGE,
-      currentUserFollowsIds:[],
-      currentUserBlockByUsersIds:[],
     }
   })
 })

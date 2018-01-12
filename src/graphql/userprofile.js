@@ -32,7 +32,21 @@ export const GET_FOLLOWERS = gql`
     }
   }
 `
-
+/**
+ * List follows and blocked Ids, before ListSuggestUser
+ */
+export const GET_FOLLOWS_AND_BLOCKED_IDS = gql`
+  query GetFollowersAndBlockedIds ($currentUserId: ID!) {
+    User(id: $currentUserId) {
+        follows {
+          id
+        }
+        blockByUsers {
+          id
+        }
+      }
+  }
+`
 /**
  * List Users, skip self and current follows users
  * exmaple params: {"currentUserId": "cjc0e32mvo10a0113jdx7g0qo", "currentUserFollowsIds": ["cjc02c13zmbig01130q1tj6dt", "cjc04z5q3mo610113h7hmofgn"], "currentUserBlockByUsersIds": []}
@@ -77,7 +91,42 @@ export const GET_SUGGEST_USERS = gql`
     }
   }
 `
-
+/**
+ * Get followers incloud counter
+ */
+export const GET_FOLLOWS = gql`
+  query GetFollows (
+      $userId: ID!, 
+      $skip: Int, 
+      $first: Int
+    ) {
+    User(id: $userId) {
+      id
+      _followsMeta {
+        count
+      }
+      follows( skip: $skip, first: $first) {
+        email
+        username
+        firstName
+        lastName
+        displayName
+        bio
+        gender
+        birthdate
+        mobile
+        mobileVerification
+        city
+        country
+        photoURL
+        loginMethod
+        registrationDate
+        group
+        accountStatus
+      }
+    }
+  }
+`
 /**
  * Get Blocked Users
  */
