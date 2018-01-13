@@ -1,7 +1,7 @@
 import page from './page'
 import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
-import { GET_USER_STORIES } from '@graphql/users'
+import { GET_USER_STORIES, GET_FOLLOWERS, GET_FOLLOW_USERS } from '@graphql/users'
 import { saveProfileInfo } from '@actions/userLogIn'
 
 function mapStateToProps (state) {
@@ -32,4 +32,29 @@ export default compose(
        }
     },
   }),
+  graphql(
+    GET_FOLLOWERS, {
+      name: 'GetFollowersList',
+      options(props) {
+        const { user: { id } } = props
+        return {
+          variables: { userId: id },
+        }
+      },
+    }
+  ),
+  graphql(
+    GET_FOLLOW_USERS, {
+      name: 'GetFollowingList',
+      options(props) {
+        const { user: { id } } = props
+        return {
+          variables: {
+            userId: id,
+            blockUsersIds: [],
+          },
+        }
+      },
+    }
+  )
 )(page)

@@ -257,3 +257,67 @@ query getUserStories(
     }
 }
 `
+
+export const GET_FOLLOW_USERS = gql`
+query ListFollowUser($first: Int, $skip: Int, $userId: ID!, $blockUsersIds: [ID!]!) {
+  User(id: $userId) {
+    id
+    follows(first: $first, skip: $skip, filter: {id_not_in: $blockUsersIds}) {
+      id
+      email
+      username
+      firstName
+      lastName
+      displayName
+      bio
+      gender
+      birthdate
+      mobile
+      mobileVerification
+      city
+      country
+      photoURL
+      loginMethod
+      registrationDate
+      group
+      accountStatus
+      isSuggest
+    }
+  }
+}
+`
+
+export const GET_FOLLOWERS = gql`
+  query GetFollowers (
+      $userId: ID!,
+      $orderBy: UserOrderBy, #createdAt_ASC, createdAt_DESC, #firstName_ASC ,#firstName_DESC ...
+      $skip: Int,
+      $first: Int
+    ) {
+    User(id: $userId) {
+      id
+      _followersMeta {
+        count
+      }
+      followers(orderBy: $orderBy, skip: $skip, first: $first) {
+        email
+        username
+        firstName
+        lastName
+        displayName
+        bio
+        gender
+        birthdate
+        mobile
+        mobileVerification
+        city
+        country
+        photoURL
+        loginMethod
+        registrationDate
+        group
+        accountStatus
+      }
+    }
+  }
+`

@@ -135,7 +135,7 @@ class ProfileComponent extends Component {
     })
   }
   render() {
-    const { data: { loading, error, allStories }} = this.props
+    const { data: { loading, error, allStories }, GetFollowingList, GetFollowersList } = this.props
     if (loading) {
       return(
         <ActivityIndicator />
@@ -168,9 +168,9 @@ class ProfileComponent extends Component {
               </View>
               <View style={styles.spec}>
                 <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWING')}</Text>
-                <Text style={styles.specFont}>290</Text>
+                <Text style={styles.specFont}>{GetFollowingList.User.follows.length}</Text>
                 <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWER')}</Text>
-                <Text style={styles.specFont}>54.2 K</Text>
+                <Text style={styles.specFont}>{GetFollowersList.User.followers.length}</Text>
                 <Text style={styles.specFont}>{I18n.t('PROFILE_VISITED')}</Text>
                 <Text style={styles.specFont}>636</Text>
               </View>
