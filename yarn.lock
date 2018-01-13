@@ -1798,7 +1798,7 @@ fbjs-scripts@^0.8.1:
     semver "^5.1.0"
     through2 "^2.0.0"
 
-fbjs@^0.8.14, fbjs@^0.8.16, fbjs@^0.8.9:
+fbjs@^0.8.14, fbjs@^0.8.16, fbjs@^0.8.4, fbjs@^0.8.9:
   version "0.8.16"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
   dependencies:
@@ -2902,6 +2902,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
+keymirror@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/keymirror/-/keymirror-0.1.1.tgz#918889ea13f8d0a42e7c557250eee713adc95c35"
+
 kind-of@^3.0.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
@@ -3844,6 +3848,13 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-addons-shallow-compare@15.6.2:
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.6.2.tgz#198a00b91fc37623db64a28fd17b596ba362702f"
+  dependencies:
+    fbjs "^0.8.4"
+    object-assign "^4.1.0"
+
 react-apollo@^1.4.16:
   version "1.4.16"
   resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-1.4.16.tgz#62a623458b67a174ff8ef25f64e7b42531518e19"
@@ -3872,7 +3883,7 @@ react-devtools-core@^2.5.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
-react-native-animatable@^1.2.3:
+react-native-animatable@^1.2.3, react-native-animatable@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.2.4.tgz#b5fb7657e8f6edadbc26697057a327fb920b3039"
   dependencies:
@@ -3926,9 +3937,9 @@ react-native-easy-toast@^1.0.9:
   dependencies:
     prop-types "^15.5.10"
 
-"react-native-fbsdk@git+https://gitlab.com/kingDeveloper_21th/react-native-fbsdk.git":
-  version "0.6.3"
-  resolved "git+https://gitlab.com/kingDeveloper_21th/react-native-fbsdk.git#46aa3abfc7621c2b3651c700dc1b749587f1228d"
+react-native-fbsdk@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-fbsdk/-/react-native-fbsdk-0.7.0.tgz#263dfe5845205de7b80efb0f18ed5c1ded025291"
   dependencies:
     adm-zip "^0.4.7"
     fastfall "^1.5.1"
@@ -4011,6 +4022,12 @@ react-native-modal-datetime-picker@^4.13.0:
     prop-types "15.5.10"
     react-native-modal "3.1.0"
 
+react-native-modal-overlay@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-modal-overlay/-/react-native-modal-overlay-1.2.2.tgz#b1a387ec68e6692687d788cef6bf5278c5672455"
+  dependencies:
+    react-native-animatable "^1.2.4"
+
 react-native-modal@3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-3.1.0.tgz#3e6911152e9dcd6e15457cf0c24d7fd833c4a57a"
@@ -4025,11 +4042,15 @@ react-native-modalbox@^1.4.2:
     create-react-class "^15.6.0"
     prop-types "^15.5.10"
 
-react-native-navigation@^1.1.322:
-  version "1.1.322"
-  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-1.1.322.tgz#037b31bb980f72ee437b99250dd97da404704897"
+react-native-navigation@^1.1.334:
+  version "1.1.335"
+  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-1.1.335.tgz#672099808b974bee2a8ac2ef5f04068548fa2627"
   dependencies:
     lodash "4.x.x"
+
+react-native-orientation@^3.1.3:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-orientation/-/react-native-orientation-3.1.3.tgz#d45803841fe94b6cce9acbe904fd5ca191a3711e"
 
 "react-native-phone-input@git+https://gitlab.com/kingDeveloper_21th/react-native-phone-input.git":
   version "0.1.10"
@@ -4050,6 +4071,13 @@ react-native-side-menu@^1.1.3:
   resolved "https://registry.yarnpkg.com/react-native-side-menu/-/react-native-side-menu-1.1.3.tgz#6ef5d2232ecf718312df6cedef019148bac3073a"
   dependencies:
     prop-types "^15.5.10"
+
+react-native-snap-carousel@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-snap-carousel/-/react-native-snap-carousel-3.5.0.tgz#40c7373111699e3c2ad80ac2bc1aae62958b3e97"
+  dependencies:
+    prop-types "^15.6.0"
+    react-addons-shallow-compare "15.6.2"
 
 react-native-swipe-list-view@^1.0.3:
   version "1.0.3"
@@ -4085,6 +4113,13 @@ react-native-vector-icons@^4.4.3:
     lodash "^4.0.0"
     prop-types "^15.5.10"
     yargs "^8.0.2"
+
+react-native-video@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-video/-/react-native-video-2.0.0.tgz#f33fa6fb7e7e3c93ab5787944cefd58bf7355867"
+  dependencies:
+    keymirror "0.1.1"
+    prop-types "^15.5.10"
 
 react-native-view-more-text@^1.3.3:
   version "1.3.3"

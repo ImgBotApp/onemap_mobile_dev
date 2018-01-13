@@ -36,8 +36,7 @@ const styles = StyleSheet.create({
   },
   name: {
     color: color.DARK_GRAY_COLOR,
-    fontSize: font.BIGGER_FONT_SIZE,
-    
+    fontSize: font.BIGGER_FONT_SIZE
   },
   id: {
     marginTop: 4,

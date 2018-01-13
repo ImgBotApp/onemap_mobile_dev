@@ -58,3 +58,45 @@ export const DELETE_USER_COLLECTION = gql`
       }
     }
 `
+
+/*
+Get a collection by id with related places
+*/
+export const GET_COLLECTION_WITH_PLACES = gql`
+query GetCollectionWithPlaces($collectionId: ID!, $first: Int, $skip: Int) {
+  Collection(id: $collectionId) {
+    id
+    name
+    privacy
+    pictureURL
+    type
+    places(first: $first, skip: $skip) {
+        id
+        createdAt
+        updatedAt
+        description
+        source
+        sourceId
+        createSide
+        placeName
+        locationLat
+        locationLong
+        addressAreaDistrict
+        addressCityTown
+        addressStateProvince
+        addressCountry
+        addressPostalCode
+        addressStreet
+        address
+        phoneNumber
+        website
+        facebook
+        line
+        openingHrs
+        pictureURL
+        status
+        placeOwner
+  	}
+  }
+}
+`

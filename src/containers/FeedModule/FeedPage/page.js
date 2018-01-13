@@ -15,7 +15,7 @@ import I18n from '@language'
 import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
 import * as SCREEN from '@global/screenName'
 import Modal from 'react-native-modalbox';
-import { PLACES_PAGINATED } from "../../../graphql/places";
+import { PLACES_PAGINATED } from "@graphql/places";
 import { SMALL_FONT_SIZE } from '../../../theme/fonts';
 const PLACES_PER_PAGE = 8;
 import { client } from '@root/main'
@@ -99,6 +99,7 @@ class FeedPage extends Component {
     this.onRefresh = this.onRefresh.bind(this)
   }
   async componentWillReceiveProps(nextProps) {
+    /*
     await client.query({
       query: GET_PAGINATED_PLACES,
       variables: {
@@ -106,6 +107,7 @@ class FeedPage extends Component {
         skip: this.state.skip
       }
     })
+    */
   }
   closeSuggest() {
     this.setState({

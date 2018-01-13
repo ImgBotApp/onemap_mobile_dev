@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import AutoHeightImage from 'react-native-auto-height-image';
 import styles from './styles'
+import { EMPTY_IMG } from '@global/const';
 
 function getVAlign(align) {
   switch(align) {
@@ -43,8 +44,8 @@ class AutoHeightTitledImage extends Component {
   render() {
     return (
       <View style={[this.props.style, styles.container,{justifyContent: this.state.vAlign, alignItems:this.state.hAlign}]}>
-        <AutoHeightImage imageURL={this.state.uri} width={this.props.width} style={{borderWidth: 1, borderColor: 'transparent', borderRadius: this.props.radius ? this.props.radius : 8}}/>
-        <Text style={[styles.text, this.props.titleStyle]}>{this.props.title}</Text>
+        <AutoHeightImage imageURL={this.state.uri?this.state.uri:EMPTY_IMG} width={this.props.width} style={{borderWidth: 1, borderColor: 'transparent', borderRadius: this.props.radius ? this.props.radius : 8}}/>
+        <Text numberOfLines={3} ellipsizeMode ={'tail'} style={[styles.text, this.props.titleStyle]}>{this.props.title}</Text>
       </View>
     );
   }

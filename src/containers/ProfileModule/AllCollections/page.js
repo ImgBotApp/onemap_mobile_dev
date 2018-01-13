@@ -62,7 +62,10 @@ class AllCollections extends Component {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
       title: I18n.t('DRAWER_STORIES'),
-      animated: true
+      animated: true,
+      passProps: {
+        collection: item
+      }
     })
   }
   onItemRemove(item) {
@@ -103,14 +106,13 @@ class AllCollections extends Component {
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
-
           {
             this.state.collections.map((item, index) => {
               return (
                 <TouchableOpacity
                   key={index}
                   onPress={() => this.onItemPress(item)}
-                  onLongPress={() => this.onItemRemove(item)}
+                  onLongPress={() => item.type === 'USER' && this.onItemRemove(item)}
                 >
                   <CollectionItem
                     style={styles.cell}

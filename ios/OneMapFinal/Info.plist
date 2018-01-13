@@ -64,7 +64,7 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -76,27 +76,25 @@
 			</dict>
 		</dict>
 	</dict>
-  
-  <key>CFBundleURLTypes</key>
-  <array>
-    <dict>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>fb519021981830054</string>
-      </array>
-    </dict>
-  </array>
-  <key>FacebookAppID</key>
-  <string>519021981830054</string>
-  <key>FacebookDisplayName</key>
-  <string>malakOneMap</string>
-  
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-    <string>fbapi</string>
-    <string>fb-messenger-share-api</string>
-    <string>fbauth2</string>
-    <string>fbshareextension</string>
-  </array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb519021981830054</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>519021981830054</string>
+	<key>FacebookDisplayName</key>
+	<string>malakOneMap</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 </dict>
 </plist>

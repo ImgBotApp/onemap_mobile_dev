@@ -3,8 +3,10 @@ package com.onemapfinal;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.brentvatne.react.ReactVideoPackage;
+import com.github.yamill.orientation.OrientationPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.reactnativenavigation.NavigationReactPackage;
+import com.reactnativenavigation.NavigationApplication;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
@@ -19,7 +21,44 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
+import com.facebook.FacebookSdk;
+import com.facebook.CallbackManager;
+import com.facebook.appevents.AppEventsLogger;
+
+public class MainApplication extends NavigationApplication implements ReactApplication {
+  private static CallbackManager mCallbackManager = CallbackManager.Factory.create();
+
+  protected static CallbackManager getCallbackManager() {
+    return mCallbackManager;
+  }
+
+  @Override
+  public boolean isDebug() {
+    // Make sure you are using BuildConfig from your own application
+    return BuildConfig.DEBUG;
+  }
+
+  protected List<ReactPackage> getPackages() {
+    // Add additional packages you require here
+    // No need to add RnnPackage and MainReactPackage
+    return Arrays.<ReactPackage>asList(
+            new MainReactPackage(),
+            new ReactVideoPackage(),
+            new OrientationPackage(),
+            new VectorIconsPackage(),
+            new MapsPackage(),
+            new ImagePickerPackage(),
+            new RNI18nPackage(),
+            new RNGooglePlacesPackage(),
+            new FBSDKPackage(mCallbackManager),
+            new RNCardViewPackage()
+    );
+  }
+
+  @Override
+  public List<ReactPackage> createAdditionalReactPackages() {
+    return getPackages();
+  }
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -31,17 +70,17 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactVideoPackage(),
+            new OrientationPackage(),
             new VectorIconsPackage(),
-            new NavigationReactPackage(),
             new MapsPackage(),
             new ImagePickerPackage(),
             new RNI18nPackage(),
             new RNGooglePlacesPackage(),
-            new FBSDKPackage(),
+            new FBSDKPackage(mCallbackManager),
             new RNCardViewPackage()
       );
     }
-
     @Override
     protected String getJSMainModuleName() {
       return "index";

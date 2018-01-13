@@ -66,6 +66,8 @@
 		A0998F471FFC9FD1007189AB /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0998F461FFC9FC7007189AB /* libRCTFBSDK.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B715E3425D7D9DD0A2C0E193 /* libPods-OneMapFinal-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B312411CCB27BD9322BE8FA /* libPods-OneMapFinal-tvOSTests.a */; };
+		D20A390C2006492A0001B383 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D20A38F0200648FC0001B383 /* libRCTVideo.a */; };
+		D2D2074B200616AC0058E273 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2D2072C2006168E0058E273 /* libRCTOrientation.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -398,6 +400,27 @@
 			remoteGlobalIDString = 358F4ED71D1E81A9004DF814;
 			remoteInfo = RCTBlob;
 		};
+		D20A38EF200648FC0001B383 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D20A38D5200648FC0001B383 /* RCTVideo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTVideo;
+		};
+		D20A38F1200648FC0001B383 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D20A38D5200648FC0001B383 /* RCTVideo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 641E28441F0EEC8500443AF6;
+			remoteInfo = "RCTVideo-tvOS";
+		};
+		D2D2072B2006168E0058E273 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D2D207182006168E0058E273 /* RCTOrientation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTOrientation;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -461,6 +484,8 @@
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B1181E27B52AFAEB2D45BAA8 /* Pods-OneMapFinal-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneMapFinal-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneMapFinal-tvOSTests/Pods-OneMapFinal-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4893D4266ADA15046A1F614 /* Pods-OneMapFinal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneMapFinal.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneMapFinal/Pods-OneMapFinal.debug.xcconfig"; sourceTree = "<group>"; };
+		D20A38D5200648FC0001B383 /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
+		D2D207182006168E0058E273 /* RCTOrientation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTOrientation.xcodeproj; path = "../node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -476,6 +501,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D20A390C2006492A0001B383 /* libRCTVideo.a in Frameworks */,
+				D2D2074B200616AC0058E273 /* libRCTOrientation.a in Frameworks */,
 				A0535CD620007E1F008BF887 /* libRNGooglePlaces.a in Frameworks */,
 				A0998F471FFC9FD1007189AB /* libRCTFBSDK.a in Frameworks */,
 				A01BBED21FF4CD8F001960B6 /* libRNVectorIcons.a in Frameworks */,
@@ -681,6 +708,8 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				D20A38D5200648FC0001B383 /* RCTVideo.xcodeproj */,
+				D2D207182006168E0058E273 /* RCTOrientation.xcodeproj */,
 				A0535CA420007E0B008BF887 /* RNGooglePlaces.xcodeproj */,
 				A0998F411FFC9FC7007189AB /* RCTFBSDK.xcodeproj */,
 				A01BBECC1FF4CD86001960B6 /* RNVectorIcons.xcodeproj */,
@@ -723,6 +752,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				B7150E3CF328ABBC1C44249B /* Pods */,
 				8AA08693B9852A510557527E /* Frameworks */,
+				FD60DB98DFEA42878E690AA0 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -842,6 +872,30 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		D20A38D6200648FC0001B383 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D20A38F0200648FC0001B383 /* libRCTVideo.a */,
+				D20A38F2200648FC0001B383 /* libRCTVideo.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D2D207192006168E0058E273 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2D2072C2006168E0058E273 /* libRCTOrientation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FD60DB98DFEA42878E690AA0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -932,7 +986,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 610;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -941,7 +995,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = E7J65AP6DQ;
+						ProvisioningStyle = Manual;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1003,6 +1057,10 @@
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
 				},
 				{
+					ProductGroup = D2D207192006168E0058E273 /* Products */;
+					ProjectRef = D2D207182006168E0058E273 /* RCTOrientation.xcodeproj */;
+				},
+				{
 					ProductGroup = 139105B71AF99BAD00B5F7CC /* Products */;
 					ProjectRef = 139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */;
 				},
@@ -1013,6 +1071,10 @@
 				{
 					ProductGroup = 00C302E01ABCB9EE00DB3ED1 /* Products */;
 					ProjectRef = 00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */;
+				},
+				{
+					ProductGroup = D20A38D6200648FC0001B383 /* Products */;
+					ProjectRef = D20A38D5200648FC0001B383 /* RCTVideo.xcodeproj */;
 				},
 				{
 					ProductGroup = 139FDEE71B06529A00C62182 /* Products */;
@@ -1373,6 +1435,27 @@
 			remoteRef = ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		D20A38F0200648FC0001B383 /* libRCTVideo.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTVideo.a;
+			remoteRef = D20A38EF200648FC0001B383 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D20A38F2200648FC0001B383 /* libRCTVideo.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTVideo.a;
+			remoteRef = D20A38F1200648FC0001B383 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D2D2072C2006168E0058E273 /* libRCTOrientation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTOrientation.a;
+			remoteRef = D2D2072B2006168E0058E273 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1710,9 +1793,10 @@
 			baseConfigurationReference = C4893D4266ADA15046A1F614 /* Pods-OneMapFinal.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = E7J65AP6DQ;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1726,6 +1810,7 @@
 					"\"${PODS_ROOT}/Headers/Public/react-native-maps\"",
 					"\"${PODS_ROOT}/Headers/Public/yoga\"",
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1735,6 +1820,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = OneMapFinal;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1744,8 +1830,9 @@
 			baseConfigurationReference = 8ED2466BC9CAB1BF026806A7 /* Pods-OneMapFinal.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = E7J65AP6DQ;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1759,6 +1846,7 @@
 					"\"${PODS_ROOT}/Headers/Public/react-native-maps\"",
 					"\"${PODS_ROOT}/Headers/Public/yoga\"",
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1768,6 +1856,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = OneMapFinal;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
