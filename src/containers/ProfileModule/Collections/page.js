@@ -45,7 +45,7 @@ class Collections extends Component {
       places: [],
       loading:false
     }
-    this.props.navigator.setTitle({ title: props.collection.name });
+    this.props.navigator.setTitle({ title: props.collection?props.collection.name:"Collection" });
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
   componentWillMount() {
@@ -60,19 +60,22 @@ class Collections extends Component {
   }
   
   getCollectionPlaces() {
-    client.query({
-      query: GET_COLLECTION_WITH_PLACES,
-      variables: {
-        collectionId: this.props.collection.id,
-        first: 50,
-        skip:0
-      }
-    }).then(collections => {
-      this.setState({ 
-        places: collections.data.Collection.places,
-        loading:true 
-      });
-    })
+    if(this.props.collection)
+    {
+      client.query({
+        query: GET_COLLECTION_WITH_PLACES,
+        variables: {
+          collectionId: this.props.collection.id,
+          first: 50,
+          skip:0
+        }
+      }).then(collections => {
+        this.setState({ 
+          places: collections.data.Collection.places,
+          loading:true 
+        });
+      })
+    }
   }
   
   _renderTabHeader(text) {

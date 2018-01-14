@@ -48,7 +48,6 @@ class LoginPage extends Component {
         }
       }).then((user) => {
         var data = user.data.User
-        console.log(data)
         if ( data.firstName ) {
           $this.props.saveUserInfo({
             id: data.id,

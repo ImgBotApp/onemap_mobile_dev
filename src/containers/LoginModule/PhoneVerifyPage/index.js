@@ -195,7 +195,6 @@ class PhoneVerifyPage extends Component {
       verify_code : code
     })
     this.refs.confirmCode.clear()
-    console.log(ret)
     if (true || ret.success == true) {
       // $this.props.navigation.navigate('CreateProfile')
     } else {

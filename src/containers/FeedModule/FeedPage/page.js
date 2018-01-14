@@ -197,8 +197,6 @@ class FeedPage extends Component {
           first: PLACES_PER_PAGE
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
-          console.log(fetchMoreResult)
-          console.log(previousResult)
           if (!fetchMoreResult || fetchMoreResult.allPlaces.length === 0) {
             return previousResult;
           }

@@ -49,7 +49,7 @@ class SearchPage extends Component {
       result: false,
       keyword: ''
     }
-    console.log(props.user)
+   
   }
   _renderStoryItem(item) {
     return (

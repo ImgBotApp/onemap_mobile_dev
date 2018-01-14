@@ -50,7 +50,6 @@ class EditProfile extends Component {
   };
   constructor (props) {
     super(props)
-    console.log(props.user)
     this.state = {
       ...props.user,
       displayName: props.user.displayName || props.user.firstName + ' ' + props.user.lastName,

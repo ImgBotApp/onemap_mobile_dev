@@ -67,51 +67,6 @@
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B715E3425D7D9DD0A2C0E193 /* libPods-OneMapFinal-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B312411CCB27BD9322BE8FA /* libPods-OneMapFinal-tvOSTests.a */; };
 		D20A390C2006492A0001B383 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D20A38F0200648FC0001B383 /* libRCTVideo.a */; };
-		D2302513200A8039009FEC74 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		D2302514200A8039009FEC74 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		D2302516200A8039009FEC74 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D20A38F0200648FC0001B383 /* libRCTVideo.a */; };
-		D2302517200A8039009FEC74 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2D2072C2006168E0058E273 /* libRCTOrientation.a */; };
-		D2302518200A8039009FEC74 /* libRNGooglePlaces.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0535CD120007E0C008BF887 /* libRNGooglePlaces.a */; };
-		D2302519200A8039009FEC74 /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0998F461FFC9FC7007189AB /* libRCTFBSDK.a */; };
-		D230251A200A8039009FEC74 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A01BBED11FF4CD87001960B6 /* libRNVectorIcons.a */; };
-		D230251B200A8039009FEC74 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A01BBEC81FF411DB001960B6 /* libART.a */; };
-		D230251C200A8039009FEC74 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A01BBEBC1FF32702001960B6 /* libReactNativeNavigation.a */; };
-		D230251D200A8039009FEC74 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0998F3A1FFC9E7A007189AB /* FBSDKCoreKit.framework */; };
-		D230251E200A8039009FEC74 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A01BBE551FEF9594001960B6 /* libRNImagePicker.a */; };
-		D230251F200A8039009FEC74 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0998F3B1FFC9E7A007189AB /* FBSDKLoginKit.framework */; };
-		D2302520200A8039009FEC74 /* libRNCardView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A01BBE0E1FEE42B7001960B6 /* libRNCardView.a */; };
-		D2302521200A8039009FEC74 /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A01BBE051FEE1D84001960B6 /* libRNI18n.a */; };
-		D2302522200A8039009FEC74 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0998F3C1FFC9E7A007189AB /* FBSDKShareKit.framework */; };
-		D2302523200A8039009FEC74 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0998F0E1FFC9E79007189AB /* Bolts.framework */; };
-		D2302524200A8039009FEC74 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
-		D2302525200A8039009FEC74 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		D2302526200A8039009FEC74 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		D2302527200A8039009FEC74 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
-		D2302528200A8039009FEC74 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
-		D2302529200A8039009FEC74 /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
-		D230252A200A8039009FEC74 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
-		D230252B200A8039009FEC74 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
-		D230252C200A8039009FEC74 /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
-		D230252D200A8039009FEC74 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		D230252E200A8039009FEC74 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
-		D230252F200A8039009FEC74 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
-		D2302530200A8039009FEC74 /* libPods-OneMapFinal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BA5FEEA99673AC9D97BB494 /* libPods-OneMapFinal.a */; };
-		D2302532200A8039009FEC74 /* Comfortaa-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01BBDFA1FEE179D001960B6 /* Comfortaa-Bold.ttf */; };
-		D2302533200A8039009FEC74 /* Comfortaa-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01BBDFB1FEE179E001960B6 /* Comfortaa-Light.ttf */; };
-		D2302534200A8039009FEC74 /* Comfortaa-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01BBDF91FEE179D001960B6 /* Comfortaa-Regular.ttf */; };
-		D2302535200A8039009FEC74 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01BBDE71FEE1789001960B6 /* Entypo.ttf */; };
-		D2302536200A8039009FEC74 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01BBDE61FEE1789001960B6 /* EvilIcons.ttf */; };
-		D2302537200A8039009FEC74 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01BBDEA1FEE1789001960B6 /* Feather.ttf */; };
-		D2302538200A8039009FEC74 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01BBDE81FEE1789001960B6 /* FontAwesome.ttf */; };
-		D2302539200A8039009FEC74 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01BBDED1FEE1789001960B6 /* Foundation.ttf */; };
-		D230253A200A8039009FEC74 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01BBDE91FEE1789001960B6 /* Ionicons.ttf */; };
-		D230253B200A8039009FEC74 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01BBDEB1FEE1789001960B6 /* MaterialCommunityIcons.ttf */; };
-		D230253C200A8039009FEC74 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01BBDEC1FEE1789001960B6 /* MaterialIcons.ttf */; };
-		D230253D200A8039009FEC74 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01BBDE31FEE1788001960B6 /* Octicons.ttf */; };
-		D230253E200A8039009FEC74 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01BBDE51FEE1789001960B6 /* SimpleLineIcons.ttf */; };
-		D230253F200A8039009FEC74 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A01BBDE41FEE1788001960B6 /* Zocial.ttf */; };
-		D2302540200A8039009FEC74 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		D2302541200A8039009FEC74 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		D230257B200A826C009FEC74 /* Info_AppStore.plist in Resources */ = {isa = PBXBuildFile; fileRef = D230257A200A826C009FEC74 /* Info_AppStore.plist */; };
 		D2D2074B200616AC0058E273 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2D2072C2006168E0058E273 /* libRCTOrientation.a */; };
 /* End PBXBuildFile section */
@@ -531,8 +486,8 @@
 		B1181E27B52AFAEB2D45BAA8 /* Pods-OneMapFinal-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneMapFinal-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneMapFinal-tvOSTests/Pods-OneMapFinal-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4893D4266ADA15046A1F614 /* Pods-OneMapFinal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneMapFinal.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneMapFinal/Pods-OneMapFinal.debug.xcconfig"; sourceTree = "<group>"; };
 		D20A38D5200648FC0001B383 /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
-		D2302548200A8039009FEC74 /* OneMapFinal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneMapFinal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D230257A200A826C009FEC74 /* Info_AppStore.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info_AppStore.plist; path = OneMapFinal/Info_AppStore.plist; sourceTree = "<group>"; };
+		D23026AA200B213D009FEC74 /* OneMapFinal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = OneMapFinal.entitlements; path = OneMapFinal/OneMapFinal.entitlements; sourceTree = "<group>"; };
 		D2D207182006168E0058E273 /* RCTOrientation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTOrientation.xcodeproj; path = "../node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -601,41 +556,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B715E3425D7D9DD0A2C0E193 /* libPods-OneMapFinal-tvOSTests.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D2302515200A8039009FEC74 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D2302516200A8039009FEC74 /* libRCTVideo.a in Frameworks */,
-				D2302517200A8039009FEC74 /* libRCTOrientation.a in Frameworks */,
-				D2302518200A8039009FEC74 /* libRNGooglePlaces.a in Frameworks */,
-				D2302519200A8039009FEC74 /* libRCTFBSDK.a in Frameworks */,
-				D230251A200A8039009FEC74 /* libRNVectorIcons.a in Frameworks */,
-				D230251B200A8039009FEC74 /* libART.a in Frameworks */,
-				D230251C200A8039009FEC74 /* libReactNativeNavigation.a in Frameworks */,
-				D230251D200A8039009FEC74 /* FBSDKCoreKit.framework in Frameworks */,
-				D230251E200A8039009FEC74 /* libRNImagePicker.a in Frameworks */,
-				D230251F200A8039009FEC74 /* FBSDKLoginKit.framework in Frameworks */,
-				D2302520200A8039009FEC74 /* libRNCardView.a in Frameworks */,
-				D2302521200A8039009FEC74 /* libRNI18n.a in Frameworks */,
-				D2302522200A8039009FEC74 /* FBSDKShareKit.framework in Frameworks */,
-				D2302523200A8039009FEC74 /* Bolts.framework in Frameworks */,
-				D2302524200A8039009FEC74 /* libRCTBlob.a in Frameworks */,
-				D2302525200A8039009FEC74 /* libRCTAnimation.a in Frameworks */,
-				D2302526200A8039009FEC74 /* libReact.a in Frameworks */,
-				D2302525200A8039009FEC74 /* libRCTAnimation.a in Frameworks */,
-				D2302527200A8039009FEC74 /* libRCTActionSheet.a in Frameworks */,
-				D2302528200A8039009FEC74 /* libRCTGeolocation.a in Frameworks */,
-				D2302529200A8039009FEC74 /* libRCTImage.a in Frameworks */,
-				D230252A200A8039009FEC74 /* libRCTLinking.a in Frameworks */,
-				D230252B200A8039009FEC74 /* libRCTNetwork.a in Frameworks */,
-				D230252C200A8039009FEC74 /* libRCTSettings.a in Frameworks */,
-				D230252D200A8039009FEC74 /* libRCTText.a in Frameworks */,
-				D230252E200A8039009FEC74 /* libRCTVibration.a in Frameworks */,
-				D230252F200A8039009FEC74 /* libRCTWebSocket.a in Frameworks */,
-				D2302530200A8039009FEC74 /* libPods-OneMapFinal.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -724,6 +644,7 @@
 		13B07FAE1A68108700A75B9A /* OneMapFinal */ = {
 			isa = PBXGroup;
 			children = (
+				D23026AA200B213D009FEC74 /* OneMapFinal.entitlements */,
 				A01BBDFA1FEE179D001960B6 /* Comfortaa-Bold.ttf */,
 				A01BBDFB1FEE179E001960B6 /* Comfortaa-Light.ttf */,
 				A01BBDF91FEE179D001960B6 /* Comfortaa-Regular.ttf */,
@@ -850,7 +771,6 @@
 				00E356EE1AD99517003FC87E /* OneMapFinalTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* OneMapFinal-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* OneMapFinal-tvOSTests.xctest */,
-				D2302548200A8039009FEC74 /* OneMapFinal.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1065,27 +985,6 @@
 			productReference = 2D02E4901E0B4A5D006451C7 /* OneMapFinal-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		D2302510200A8039009FEC74 /* OneMapFinal_AppStore */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D2302545200A8039009FEC74 /* Build configuration list for PBXNativeTarget "OneMapFinal_AppStore" */;
-			buildPhases = (
-				D2302511200A8039009FEC74 /* [CP] Check Pods Manifest.lock */,
-				D2302512200A8039009FEC74 /* Sources */,
-				D2302515200A8039009FEC74 /* Frameworks */,
-				D2302531200A8039009FEC74 /* Resources */,
-				D2302542200A8039009FEC74 /* Bundle React Native code and images */,
-				D2302543200A8039009FEC74 /* [CP] Embed Pods Frameworks */,
-				D2302544200A8039009FEC74 /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = OneMapFinal_AppStore;
-			productName = "Hello World";
-			productReference = D2302548200A8039009FEC74 /* OneMapFinal.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1112,10 +1011,6 @@
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 2D02E47A1E0B4A5D006451C7;
-					};
-					D2302510200A8039009FEC74 = {
-						DevelopmentTeam = GVXQ56F8Z7;
-						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -1223,7 +1118,6 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* OneMapFinal */,
-				D2302510200A8039009FEC74 /* OneMapFinal_AppStore */,
 				00E356ED1AD99517003FC87E /* OneMapFinalTests */,
 				2D02E47A1E0B4A5D006451C7 /* OneMapFinal-tvOS */,
 				2D02E48F1E0B4A5D006451C7 /* OneMapFinal-tvOSTests */,
@@ -1617,29 +1511,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D2302531200A8039009FEC74 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D2302532200A8039009FEC74 /* Comfortaa-Bold.ttf in Resources */,
-				D2302533200A8039009FEC74 /* Comfortaa-Light.ttf in Resources */,
-				D2302534200A8039009FEC74 /* Comfortaa-Regular.ttf in Resources */,
-				D2302535200A8039009FEC74 /* Entypo.ttf in Resources */,
-				D2302536200A8039009FEC74 /* EvilIcons.ttf in Resources */,
-				D2302537200A8039009FEC74 /* Feather.ttf in Resources */,
-				D2302538200A8039009FEC74 /* FontAwesome.ttf in Resources */,
-				D2302539200A8039009FEC74 /* Foundation.ttf in Resources */,
-				D230253A200A8039009FEC74 /* Ionicons.ttf in Resources */,
-				D230253B200A8039009FEC74 /* MaterialCommunityIcons.ttf in Resources */,
-				D230253C200A8039009FEC74 /* MaterialIcons.ttf in Resources */,
-				D230253D200A8039009FEC74 /* Octicons.ttf in Resources */,
-				D230253E200A8039009FEC74 /* SimpleLineIcons.ttf in Resources */,
-				D230253F200A8039009FEC74 /* Zocial.ttf in Resources */,
-				D2302540200A8039009FEC74 /* Images.xcassets in Resources */,
-				D2302541200A8039009FEC74 /* LaunchScreen.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1784,73 +1655,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OneMapFinal/Pods-OneMapFinal-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D2302511200A8039009FEC74 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-OneMapFinal-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		D2302542200A8039009FEC74 /* Bundle React Native code and images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bundle React Native code and images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
-		};
-		D2302543200A8039009FEC74 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OneMapFinal/Pods-OneMapFinal-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D2302544200A8039009FEC74 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-OneMapFinal/Pods-OneMapFinal-resources.sh",
-				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
-				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
-				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OneMapFinal/Pods-OneMapFinal-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		EF8DB0653BF6C4EA3DAFEAA3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1921,15 +1725,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DCD954D1E0B4F2C00145EB5 /* OneMapFinalTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D2302512200A8039009FEC74 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D2302513200A8039009FEC74 /* AppDelegate.m in Sources */,
-				D2302514200A8039009FEC74 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2005,6 +1800,7 @@
 			baseConfigurationReference = C4893D4266ADA15046A1F614 /* Pods-OneMapFinal.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = OneMapFinal/OneMapFinal.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -2027,6 +1823,7 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2046,8 +1843,9 @@
 			baseConfigurationReference = 8ED2466BC9CAB1BF026806A7 /* Pods-OneMapFinal.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_ENTITLEMENTS = OneMapFinal/OneMapFinal.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GVXQ56F8Z7;
@@ -2067,6 +1865,7 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2255,87 +2054,6 @@
 			};
 			name = Release;
 		};
-		D2302546200A8039009FEC74 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C4893D4266ADA15046A1F614 /* Pods-OneMapFinal.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = GVXQ56F8Z7;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleMaps\"",
-					"\"${PODS_ROOT}/Headers/Public/React\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-google-maps\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-maps\"",
-					"\"${PODS_ROOT}/Headers/Public/yoga\"",
-					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/",
-				);
-				INFOPLIST_FILE = "$(SRCROOT)/OneMapFinal/Info_AppStore.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-lc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.writingfuture.onemap;
-				PRODUCT_NAME = OneMapFinal;
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Debug;
-		};
-		D2302547200A8039009FEC74 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8ED2466BC9CAB1BF026806A7 /* Pods-OneMapFinal.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = GVXQ56F8Z7;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/GoogleMaps\"",
-					"\"${PODS_ROOT}/Headers/Public/React\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-google-maps\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-maps\"",
-					"\"${PODS_ROOT}/Headers/Public/yoga\"",
-					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/",
-				);
-				INFOPLIST_FILE = "$(SRCROOT)/OneMapFinal/Info_AppStore.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-lc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.writingfuture.onemap;
-				PRODUCT_NAME = OneMapFinal;
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2380,15 +2098,6 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D2302545200A8039009FEC74 /* Build configuration list for PBXNativeTarget "OneMapFinal_AppStore" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D2302546200A8039009FEC74 /* Debug */,
-				D2302547200A8039009FEC74 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
