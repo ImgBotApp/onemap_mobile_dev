@@ -9,6 +9,8 @@ import { getDeviceWidth } from '@global'
 import styles from './styles'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
+import { GET_PLACES_FROM_GOOGLEId } from '@graphql/places'
+import { client } from '@root/main'
 // create a component
 const stories = [
   {
@@ -49,7 +51,7 @@ class SearchPage extends Component {
       result: false,
       keyword: ''
     }
-   
+    console.log(props.user)
   }
   _renderStoryItem(item) {
     return (
@@ -100,31 +102,85 @@ class SearchPage extends Component {
               </View>
             </View>
           </ScrollView>
-          {this.state.result == true ? <SearchResult keyword={this.state.keyword} onPlace={this.onPlaceProfile.bind(this)} /> : null}
+          { this.state.result == true ? <SearchResult keyword={this.state.keyword} 
+            onUser={this.onUserItem.bind(this)}
+            onKeywordItem={this.onKeywordItem.bind(this)}
+            onPlace={this.onPlaceProfile.bind(this)}/> : null }
         </View>
       </View>
     );
   }
+  onUserItem(id) {
+    this.props.navigator.push({
+      screen: SCREEN.USERS_PROFILE_PAGE,
+      title: I18n.t('USERPROFILE_TITLE'),
+      animated: true
+    })
+  }
+  onKeywordItem(id) {
+    this.props.navigator.push({
+      screen: SCREEN.PLACE_PROFILE_PAGE,
+      title: I18n.t('PLACE_TITLE'),
+      animated: true,
+      passProps: {
+        placeID: id
+      }
+    })
+  }
   onPlaceProfile(placeID) {
-    RNPlaces.lookUpPlaceByID(placeID).then((result) =>
-      this.props.createPlace({
-        variables: {
-          description: '',
-          sourceId: placeID,
-          placeName: result.name,
-          locationLat: result.latitude,
-          locationLong: result.longitude,
-          address: result.address,
-          phoneNumber: result.phoneNumber || '',
-          website: result.website || '',
-          facebook: result.facebook || '',
-          addressCountry: result.addressComponents ? result.addressComponents.country : '',
-          addressPostalCode: result.addressComponents ? result.addressComponents.postal_code : '',
-          addressStateProvince: result.addressComponents ? result.addressComponents.administrative_area_level_1 : '',
-          addressCityTown: result.addressComponents ? result.addressComponents.administrative_area_level_2 : ''
-        }
-      })).then((result) => {
-        // console.log(result)
+    var ret;
+    RNPlaces.lookUpPlaceByID(placeID).then((result) => 
+      {
+        ret = result;
+        return client.query({
+          query: GET_PLACES_FROM_GOOGLEId,
+          variables: {
+            sourceId: placeID
+          },
+        })
+      }
+    ).then( place => 
+      {
+        if ( !place.data.allPlaces || place.data.allPlaces.length <= 0 ) {
+          return this.props.createPlace({
+            variables: {
+                createdById: this.props.user.id,
+                source: 'GOOGLE_PLACE',// # GOOGLE_PLACE or ONEMAP
+                status: 'ENABLE',// # ENABLE or DISABLE
+                createSide: 'FRONTEND',// # FRONTEND or BACKEND
+                description: '',
+                sourceId: placeID,// # GOOGLE place id if source is GOOGLE_PLACE
+                placeName: ret.name, 
+                locationLat: ret.latitude, 
+                locationLong: ret.longitude, 
+                //addressAreaDistrict: String
+                addressCityTown: ret.addressComponents ? ret.addressComponents.administrative_area_level_2 : '',
+                //addressStateProvince: String
+                addressCountry: ret.addressComponents ? ret.addressComponents.country : '',
+                addressPostalCode: ret.addressComponents ? ret.addressComponents.postal_code : '',
+                //addressStreet: String
+                address: ret.address, 
+                phoneNumber: ret.phoneNumber || '', 
+                website: ret.website || '',
+                facebook: ret.facebook || '',
+                //line: String
+                //openingHrs: String
+                pictureURL: [],// # leave blank [] if no picture
+                //placeOwner: String
+            },
+            })
+          } else {
+            return {
+              data: {
+                createPlace: {
+                  id: place.data.allPlaces[0]
+                }
+              }
+            }
+      }
+    }
+    ).then((result) => {
+      client.resetStore();
         this.props.navigator.push({
           screen: SCREEN.PLACE_PROFILE_PAGE,
           title: I18n.t('PLACE_TITLE'),
@@ -139,7 +195,7 @@ class SearchPage extends Component {
     this.setState({
       keyword: val
     })
-    if (val.length == 0) return this.setState({ result: false })
+    if ( val.length == 0) return this.setState({result: false})
     else return this.setState({ result: true })
   }
   onDismissResult() {

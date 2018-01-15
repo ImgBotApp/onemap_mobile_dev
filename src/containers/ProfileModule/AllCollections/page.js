@@ -125,7 +125,6 @@ class AllCollections extends Component {
               )
             })
           }
-
         </View>
       </ScrollView>
     );

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux' 
 import { graphql } from 'react-apollo'
 
-import { CREATE_PLACE_PROFILE } from '@graphql/places'
+import { CREATE_PLACE } from '@graphql/places'
 
 import page from './page'
 
@@ -17,6 +17,5 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-let container = graphql(CREATE_PLACE_PROFILE, {name: 'createPlace'})(page);
-
+let container = graphql(CREATE_PLACE, {name: 'createPlace'})(page);
 export default connect(mapStateToProps, mapDispatchToProps)(container)

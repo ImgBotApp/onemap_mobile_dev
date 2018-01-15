@@ -31,3 +31,4 @@ export const GET_PLACE = gql`
     }
   }
   `
+  

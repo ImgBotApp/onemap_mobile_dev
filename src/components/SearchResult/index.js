@@ -7,7 +7,11 @@ import CircleImage from '@components/CircleImage'
 import styles from './styles'
 import { getDeviceHeight, getDeviceWidth } from '@global'
 import RNGooglePlaces from 'react-native-google-places'
-const data = [
+
+import { client } from '@root/main'
+import { GET_FILTER_KEYWORDS } from '@graphql/keywords'
+import { FILER_USERS } from '@graphql/users'
+const data=[
   {
     type: 'user',
     uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg',
@@ -22,12 +26,12 @@ const data = [
   {
     type: 'place',
     name: 'Nai Circus School',
-    address: 'Pai, Thailand'
+    address: 'Pai, Thailand'    
   },
   {
     type: 'place',
     name: 'Nai Circus School',
-    address: 'Pai, Thailand'
+    address: 'Pai, Thailand'    
   },
   {
     type: 'campaign',
@@ -43,11 +47,13 @@ const data = [
 ]
 // create a component
 class SearchResult extends Component {
-  constructor(props) {
+  constructor(props){
     super(props);
     this.state = {
-      page: 'Recent',
-      places: []
+      page:'Places',
+      places: [],
+      keywords: [],
+      users: []
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -56,22 +62,44 @@ class SearchResult extends Component {
         places: results
       })
     }).catch((error) => console.log(error))
+    client.query({
+      query: GET_FILTER_KEYWORDS,
+      variables: {
+        keyword: nextProps.keyword
+      }
+    }).then((users) => {
+      this.setState({
+        keywords: users.data.allKeywords
+      })
+    })
+    client.query({
+      query: FILER_USERS,
+      variables: {
+        keyword: nextProps.keyword
+      }
+    }).then((users) => {
+      this.setState({
+        users: users.data.allUsers
+      })
+    })
   }
   _renderTabHeader(text) {
     return (
-      <Text name={text} style={styles.TabText} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>
+      <Text name={text} style={styles.TabText} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>      
     )
   }
 
   _onUserItem(item) {
     return (
+      <TouchableOpacity onPress={() => this.props.onUser(item.id)} >
       <View style={styles.item}>
-        <CircleImage style={styles.profileImage} uri={item.uri} radius={getDeviceWidth(70)} />
+        <CircleImage style={styles.profileImage} uri={item.photoURL} radius={getDeviceWidth(70)}/>
         <View style={styles.infomation}>
-          <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.following}>{item.address}</Text>
+          <Text style={styles.name}>{item.username}</Text>
+          <Text style={styles.following}>{item.displayName}</Text>
         </View>
       </View>
+      </TouchableOpacity>
     )
   }
 
@@ -99,8 +127,21 @@ class SearchResult extends Component {
       </View>
     )
   }
+  _onKeywordItem(item) {
+    return (
+      <TouchableOpacity onPress={() => this.props.onKeywordItem(item.id)}>
+      <View style={styles.item}>
+        <Image source={require('@assets/images/bookmarker.png')} style={styles.placeImage} />
+        <View style={styles.infomation}>
+          <Text style={styles.name}>{item.name}</Text>
+          <Text style={styles.following}>{item.following ? 'Follower' : null}</Text>
+        </View>
+      </View>
+      </TouchableOpacity>
+    )
+  }
   _onRenderItem(item) {
-    switch (item.type) {
+    switch(item.type) {
       case 'user':
         return this._onUserItem(item)
       case 'place':
@@ -109,14 +150,32 @@ class SearchResult extends Component {
         return this._onCampaignItem(item)
     }
   }
-  _renderPlaces() {
+  _renderPlaces () {
     return (
       <View style={styles.scrollView}>
-        <FlatList
-          keyExtractor={(item, index) => index}
-          style={styles.scrollView}
+      <FlatList style={styles.scrollView} 
           data={this.state.places}
-          renderItem={({ item }) => this._onPlaceItem(item)}
+        renderItem={({item}) => this._onPlaceItem(item)}
+      />
+    </View>
+    )
+  }
+  _renderKeywords () {
+    return (
+      <View style={styles.scrollView}>
+        <FlatList style={styles.scrollView} 
+          data={this.state.keywords}
+          renderItem={({item}) => this._onKeywordItem(item)}
+        />
+      </View>
+      )
+  }
+  _renderUsers () {
+    return (
+      <View style={styles.scrollView}>
+        <FlatList style={styles.scrollView} 
+          data={this.state.users}
+          renderItem={({item}) => this._onUserItem(item)}
         />
       </View>
     )
@@ -126,8 +185,7 @@ class SearchResult extends Component {
       <View style={styles.container}>
         <View style={styles.mainContainer}>
           <Tabs selected={this.state.page} style={styles.tabHeader}
-            selectedStyle={{ color: 'red' }} onSelect={el => this.setState({ page: el.props.name })}>
-            {this._renderTabHeader('Recent')}
+                selectedStyle={{color:'red'}} onSelect={el=>this.setState({page:el.props.name})}>
             {this._renderTabHeader('People')}
             {this._renderTabHeader('Keywords')}
             {this._renderTabHeader('Places')}
@@ -135,6 +193,12 @@ class SearchResult extends Component {
         </View>
         {
           this.state.page == 'Places' ? this._renderPlaces() : null
+        }
+        {
+          this.state.page == 'Keywords' ? this._renderKeywords() : null
+        }
+        {
+          this.state.page == 'People' ? this._renderUsers() : null
         }
         {/* <View style={styles.scrollView}>
           <FlatList style={styles.scrollView} 
