@@ -120,21 +120,4 @@ query GetCollectionWithPlaces($collectionId: ID!, $first: Int, $skip: Int) {
   }
 }
 `
-export const GET_COLLECTION_WITH_PLACES = gql`
-  query CollectionsPlacesQuery($id: ID!) {
-    allCollections(filter: {
-      id: $id
-    }) {
-      places {
-        id
-        address
-        createdAt
-        description
-        locationLat
-        locationLong
-        pictureURL
-        placeName
-      }
-    }
-  }
-`
+

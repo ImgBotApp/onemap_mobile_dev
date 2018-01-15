@@ -175,11 +175,11 @@ class PlaceProfile extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
   }
 
-  async componentWillMount() {
-    let Place = await client.query({
+  componentWillMount() {
+    let Place = client.query({
       query: GET_PLACE_PROFILE,
       variables: {
-        id: this.props.place.id || "cjc0b98k2nsyj0113eizs1e5e"
+        id: this.props.place?this.props.place.id :"cjc0b98k2nsyj0113eizs1e5e"
       }
     }).then((place) => {
       console.log(place)
@@ -212,8 +212,8 @@ class PlaceProfile extends Component {
           },
           keywords: data.keywords && data.keywords.map((item) => item.name),
           comments: [],
-          bookmark: this.props.place.bookmark,
-          collectionIds: this.props.place.collectionIds
+          bookmark: this.props.place?this.props.place.bookmark:false,
+          collectionIds: this.props.place?this.props.place.collectionIds:null
         }
       })
     })
@@ -228,48 +228,54 @@ class PlaceProfile extends Component {
     }
   }
   addBookmark(collection) {
-    let collectionIds = clone(this.state.placeData.collectionIds);
-    collectionIds.push(collection.id);
-    this.props.addCollectionToPlace({
-      variables: {
-        id: this.props.place.id,
-        collectionIds
-      }
-    }).then(places => {
-      let placeData = clone(this.state.placeData);
-      placeData.bookmark = true;
-      placeData.collectionIds = collectionIds;
-      this.setState({ placeData, collectionModal: false });
+    if(this.props.place)
+    {
+      let collectionIds = clone(this.state.placeData.collectionIds);
+      collectionIds.push(collection.id);
+      this.props.addCollectionToPlace({
+        variables: {
+          id: this.props.place.id,
+          collectionIds
+        }
+      }).then(places => {
+        let placeData = clone(this.state.placeData);
+        placeData.bookmark = true;
+        placeData.collectionIds = collectionIds;
+        this.setState({ placeData, collectionModal: false });
 
-      if (this.props.onPlaceUpdate) {
-        let place = clone(this.props.place);
-        place.bookmark = true;
-        place.collectionIds = collectionIds;
-        this.props.onPlaceUpdate(place);
-      }
-    });
+        if (this.props.onPlaceUpdate) {
+          let place = clone(this.props.place);
+          place.bookmark = true;
+          place.collectionIds = collectionIds;
+          this.props.onPlaceUpdate(place);
+        }
+      });
+    }
   }
   removeBookmark() {
-    let collectionIds = clone(this.state.placeData.collectionIds);
-    collectionIds = collectionIds.filter(id => !this.state.collections.map(collection => collection.id).includes(id));
-    this.props.removeCollectionFromPlace({
-      variables: {
-        id: this.props.place.id,
-        collectionIds
-      }
-    }).then(places => {
-      let placeData = clone(this.state.placeData);
-      placeData.bookmark = false;
-      placeData.collectionIds = collectionIds;
-      this.setState({ placeData, collectionModal: false });
+    if(this.props.place)
+    {
+      let collectionIds = clone(this.state.placeData.collectionIds);
+      collectionIds = collectionIds.filter(id => !this.state.collections.map(collection => collection.id).includes(id));
+      this.props.removeCollectionFromPlace({
+        variables: {
+          id: this.props.place.id,
+          collectionIds
+        }
+      }).then(places => {
+        let placeData = clone(this.state.placeData);
+        placeData.bookmark = false;
+        placeData.collectionIds = collectionIds;
+        this.setState({ placeData, collectionModal: false });
 
-      if (this.props.onPlaceUpdate) {
-        let place = clone(this.props.place);
-        place.bookmark = false;
-        place.collectionIds = collectionIds;
-        this.props.onPlaceUpdate(place);
-      }
-    });
+        if (this.props.onPlaceUpdate) {
+          let place = clone(this.props.place);
+          place.bookmark = false;
+          place.collectionIds = collectionIds;
+          this.props.onPlaceUpdate(place);
+        }
+      });
+    }
   }
   onNaviagtorEvent(event) {
     if (event.type == 'NavBarButtonPress') {
@@ -293,8 +299,11 @@ class PlaceProfile extends Component {
     });
   }
   onRefresh = collections => {
-    this.setState({ collections: collections.filter(collection => collection.type === 'USER') });
-    if (this.props.onCollectionUpdate) this.props.onCollectionsUpdate(collections);
+    if(this.props.place)
+    {
+      this.setState({ collections: collections.filter(collection => collection.type === 'USER') });
+      if (this.props.onCollectionUpdate) this.props.onCollectionsUpdate(collections);
+    }
   }
   _renderItem(item) {
     if (item.type == 'add') {
@@ -330,6 +339,7 @@ class PlaceProfile extends Component {
   render() {
     return (
       <View style={styles.container}>
+      
         <ScrollView style={styles.container}>
 
           {/* Title */}
@@ -461,7 +471,6 @@ class PlaceProfile extends Component {
             onPress = {() => this.setState({ sliderShow: false })}
             />
         </Overlay>
-          
         {/* Modal Collection */}
         <Modal
           style={styles.collectionModal}
@@ -480,23 +489,38 @@ class PlaceProfile extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.separatebar}></View>
-          <View style={styles.Collections}>
-            {this.state.collections
-              .filter(collection => collection.type === 'USER')
-              .map((collection, index) => (
-                <TitleImage
-                  key={index}
-                  style={styles.collection}
-                  uri={collection.pictureURL ? collection.pictureURL : 'https://placeimg.com/640/480/any'}
-                  title={collection.name}
-                  radius={8}
-                  vAlign={'center'}
-                  hAlign={'center'}
-                  titleStyle={styles.collectionItemTitle}
-                  onPress={() => this.addBookmark(collection)}
-                />
-              ))}
-          </View>
+          {
+            this.state.collections ?
+            (
+              <View style={styles.Collections}>
+              {
+                this.state.collections
+                .filter(collection => collection.type === 'USER')
+                .map((collection, index) => (
+                  <TitleImage
+                    key={index}
+                    style={styles.collection}
+                    uri={collection.pictureURL ? collection.pictureURL : 'https://placeimg.com/640/480/any'}
+                    title={collection.name}
+                    radius={8}
+                    vAlign={'center'}
+                    hAlign={'center'}
+                    titleStyle={styles.collectionItemTitle}
+                    onPress={() => this.addBookmark(collection)}
+                  />
+                ))
+              }
+              </View>
+            ):(
+              <View style={styles.Collections}>
+                <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
+                <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
+                <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
+                <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
+              </View>
+            )
+          }
+          
         </Modal>
       </View>
     );

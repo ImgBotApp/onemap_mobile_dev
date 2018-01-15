@@ -9,6 +9,8 @@ import styles from './styles'
 import DFonts from '@theme/fonts'
 import { RED_COLOR, LIGHT_GRAY_COLOR } from '../../theme/colors';
 import { getDeviceWidth, getDeviceHeight, calculateDuration } from '@global'
+import { EMPTY_IMG } from '@global/const';
+
 // create a component
 class FeedItem extends Component {
   constructor(props) {
@@ -16,7 +18,7 @@ class FeedItem extends Component {
   }
 
   _onUserInformation() {
-    this.props.onPress(this.props.data.user.name);
+    this.props.onPress(this.props.data);
   }
 
   _onPlaceImagePress() {
@@ -34,7 +36,7 @@ class FeedItem extends Component {
         <View style={styles.userInfo}>
           <TouchableOpacity onPress={this._onUserInformation.bind(this)}>
             <View style={styles.user}>
-              <CircleImage style={styles.profileImage} uri={this.props.data.user.uri} radius={getDeviceWidth(70)} />
+              <CircleImage style={styles.profileImage} uri={this.props.data.user.uri?this.props.data.user.uri:EMPTY_IMG} radius={getDeviceWidth(70)} />
               <View style={styles.userDescription}>
                 <Text style={[styles.name, DFonts.DFontFamily]}>{this.props.data.user.name}</Text>
                 <Text style={[styles.update, DFonts.DFontFamily]}>{calculateDuration(this.props.data.user.updated)}</Text>

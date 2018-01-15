@@ -153,7 +153,9 @@ class SearchResult extends Component {
   _renderPlaces () {
     return (
       <View style={styles.scrollView}>
-      <FlatList style={styles.scrollView} 
+      <FlatList 
+        keyExtractor={(item, index) => index}
+        style={styles.scrollView} 
           data={this.state.places}
         renderItem={({item}) => this._onPlaceItem(item)}
       />
@@ -163,7 +165,9 @@ class SearchResult extends Component {
   _renderKeywords () {
     return (
       <View style={styles.scrollView}>
-        <FlatList style={styles.scrollView} 
+        <FlatList 
+          keyExtractor={(item, index) => index}
+          style={styles.scrollView} 
           data={this.state.keywords}
           renderItem={({item}) => this._onKeywordItem(item)}
         />
@@ -173,7 +177,9 @@ class SearchResult extends Component {
   _renderUsers () {
     return (
       <View style={styles.scrollView}>
-        <FlatList style={styles.scrollView} 
+        <FlatList 
+          keyExtractor={(item, index) => index}
+          style={styles.scrollView} 
           data={this.state.users}
           renderItem={({item}) => this._onUserItem(item)}
         />

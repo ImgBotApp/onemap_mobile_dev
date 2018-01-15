@@ -291,6 +291,7 @@ class ProfileComponent extends Component {
     })
   }
   onStoryItem = (id) => {
+    
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       title: 'My Stories',
@@ -312,6 +313,7 @@ class ProfileComponent extends Component {
         ]
       },
     })
+    
   }
   _openDrawerMenu() {
     $this.props.navigation.navigate('DrawerOpen')

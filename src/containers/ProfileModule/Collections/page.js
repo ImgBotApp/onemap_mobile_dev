@@ -179,6 +179,7 @@ class Collections extends Component {
     )
   }
   openPlaceProfile(id){
+    /*
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       title: I18n.t('PLACE_TITLE'),
@@ -187,6 +188,7 @@ class Collections extends Component {
         placeID: id
       }
     });
+    */
   }
   render() {
     /*

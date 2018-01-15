@@ -23,7 +23,7 @@ class SuggestUser extends Component {
         <CircleImage style={styles.profileImage} uri={this.props.uri} radius={getDeviceWidth(152)}/>
         <View style={styles.info}>
           <View style={{alignItems: 'center'}}>
-            <Text style={[styles.name, fontStyles.DFontFamily]}>{this.props.name}</Text>
+            <Text numberOfLines={1} ellipsizeMode ={'tail'} style={[styles.name, fontStyles.DFontFamily]}>{this.props.name}</Text>
             <Text style={[fontStyles.DFontFamily, styles.id]}>{'@'}{this.props.id}</Text>
             <View style={styles.separate}></View>
           </View>
