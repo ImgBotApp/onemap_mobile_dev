@@ -16,15 +16,15 @@ class FeedItem extends Component {
   }
 
   _onUserInformation() {
-    this.props.onPress(this.props.data.user.name)
+    this.props.onPress(this.props.data.user.name);
   }
 
   _onPlaceImagePress() {
-    this.props.onPlace(this.props.data.place)
+    this.props.onPlace();
   }
 
   onBookMarker() {
-    this.props.onBookMarker()
+    this.props.onBookMarker();
   }
   render() {
     return (

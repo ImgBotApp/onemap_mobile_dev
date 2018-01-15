@@ -86,7 +86,11 @@ class AllCollections extends Component {
       }
     }).then(collection => {
       let collections = clone(this.state.collections);
-      collections.push({ id: collection.data.createCollection.id, ...data });
+      collections.push({
+        id: collection.data.createCollection.id,
+        type: 'USER',
+        ...data
+      });
       this.setState({ collections });
       this.props.refresh(collections);
     })
@@ -115,15 +119,18 @@ class AllCollections extends Component {
                   onLongPress={() => item.type === 'USER' && this.onItemRemove(item)}
                 >
                   <CollectionItem
+                    key={index}
                     style={styles.cell}
                     insideStyle={styles.collection}
                     uri={item.pictureURL ? item.pictureURL : imagePlaceholder}
                     title={item.name}
                     radius={8}
+                    onPress={() => this.onItemPress(item)}
+                    onLongPress={() => item.type === 'USER' && this.onItemRemove(item)}
                   />
                 </TouchableOpacity>
-              )
-            })
+                )
+              })
           }
         </View>
       </ScrollView>

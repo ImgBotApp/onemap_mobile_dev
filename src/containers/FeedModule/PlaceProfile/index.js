@@ -1,9 +1,6 @@
-import { connect } from 'react-redux'
-import { compose, graphql } from 'react-apollo'
-import { LIST_PLACE_STORIES, CREATE_STORY, UPDATE_STORY } from '@graphql/users'
-import { GET_PLACE } from '@graphql/place'
-
-
+import { connect } from 'react-redux' 
+import { graphql } from 'react-apollo'
+import { ADD_COLLECTION_TO_PLACE, REMOVE_COLLECTION_FROM_PLACE } from "@graphql/places";
 import page from './page'
 
 function mapStateToProps(state) {
@@ -17,22 +14,8 @@ function mapDispatchToProps(dispatch) {
 
   }
 }
-/*
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  graphql(
-   LIST_PLACE_STORIES, {
-  options(props) {
-    return {
-      variables: { placeId: props.placeId || "cjc0b98k2nsyj0113eizs1e5e" },
-    }
-  },
-}),
-graphql(CREATE_STORY, { name: 'createStory' }),
-graphql(UPDATE_STORY, { name: 'updateStory'})
-)(page)
-*/
-export default connect(mapStateToProps, mapDispatchToProps)(page)
+
+let container = graphql(ADD_COLLECTION_TO_PLACE, { name: 'addCollectionToPlace' })(page);
+container = graphql(REMOVE_COLLECTION_FROM_PLACE, { name: 'removeCollectionFromPlace' })(container);
+
+export default connect(mapStateToProps, mapDispatchToProps)(container)

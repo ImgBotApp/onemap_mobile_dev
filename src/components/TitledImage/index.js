@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 
 import styles from './styles'
 //  Props 
@@ -15,7 +15,7 @@ import styles from './styles'
  */
 
 function getVAlign(align) {
-  switch(align) {
+  switch (align) {
     case 'center':
       return 'center'
     case 'top':
@@ -25,7 +25,7 @@ function getVAlign(align) {
   }
 }
 function getHAlign(align) {
-  switch(align) {
+  switch (align) {
     case 'center':
       return 'center'
     case 'left':
@@ -37,24 +37,29 @@ function getHAlign(align) {
 
 // create a component
 class TitledImage extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       uri: props.uri || '',
+      title: props.title,
       vAlign: getVAlign(props.vAlign),
       hAlign: getHAlign(props.hAlign)
     }
   }
-  
-  componentWillReceiveProps (props) {
-    this.setState({uri: props.uri})
+
+  componentWillReceiveProps(props) {
+    this.setState({ uri: props.uri, title: props.title })
   }
   render() {
     return (
-      <View style={[this.props.style, styles.container,{justifyContent: this.state.vAlign, alignItems:this.state.hAlign}]}>
-        <Image source={{uri: this.state.uri}} style={[styles.image, {borderRadius: this.props.radius}]}></Image>
-        <Text style={[styles.text, this.props.titleStyle]}>{this.props.title}</Text>
-      </View>
+      <TouchableOpacity
+        style={[this.props.style, styles.container, { justifyContent: this.state.vAlign, alignItems: this.state.hAlign }]}
+        onPress={this.props.onPress ? this.props.onPress : null}
+        onLongPress={this.props.onLongPress ? this.props.onLongPress : null}
+      >
+        <Image source={{ uri: this.state.uri }} style={[styles.image, { borderRadius: this.props.radius }]}></Image>
+        <Text style={[styles.text, this.props.titleStyle]}>{this.state.title}</Text>
+      </TouchableOpacity>
     );
   }
 }

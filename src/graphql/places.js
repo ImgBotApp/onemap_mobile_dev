@@ -153,3 +153,29 @@ export const GET_PLACES_FROM_GOOGLEId = gql`
     }
  }
  `
+
+ export const ADD_COLLECTION_TO_PLACE = gql`
+  mutation ($id: ID!,
+    $collectionIds: [ID!]
+  ) {
+    updatePlace(
+      id: $id,
+      collectionsIds: $collectionIds
+    ) {
+      id
+    }
+  }
+`
+
+export const REMOVE_COLLECTION_FROM_PLACE = gql`
+  mutation ($id: ID!,
+    $collectionIds: [ID!]
+  ) {
+    updatePlace(
+      id: $id,
+      collectionsIds: $collectionIds
+    ) {
+      id
+    }
+  }
+`

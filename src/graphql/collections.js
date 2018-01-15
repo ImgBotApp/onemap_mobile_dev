@@ -15,7 +15,27 @@ export const GET_ALL_COLLECTIONS = gql`
 `
 
 export const GET_USER_COLLECTIONS = gql`
-  query AllCollectionsQuery($id: ID!) {
+  query UserCollectionsQuery($id: ID!) {
+    allCollections(filter: {
+      AND: [{
+        user: {id: $id}
+      }, {
+        type: USER
+      }]
+    }) {
+      id
+      createdAt
+      name
+      pictureURL
+      privacy
+      type
+      updatedAt
+    }
+  }
+`
+
+export const GET_MY_COLLECTIONS = gql`
+  query MyCollectionsQuery($id: ID!) {
     allCollections(filter: {user: {id: $id}}) {
       id
       createdAt
@@ -99,4 +119,22 @@ query GetCollectionWithPlaces($collectionId: ID!, $first: Int, $skip: Int) {
   	}
   }
 }
+`
+export const GET_COLLECTION_WITH_PLACES = gql`
+  query CollectionsPlacesQuery($id: ID!) {
+    allCollections(filter: {
+      id: $id
+    }) {
+      places {
+        id
+        address
+        createdAt
+        description
+        locationLat
+        locationLong
+        pictureURL
+        placeName
+      }
+    }
+  }
 `

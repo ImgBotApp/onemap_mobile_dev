@@ -113,9 +113,9 @@ class Profile extends Component {
             <TitleImage style={styles.collection} uri={collections[0].uri} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
             <TitleImage style={styles.collection} uri={collections[1].uri} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
             <TitleImage style={styles.collection} uri={collections[2].uri} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
-            <TouchableOpacity onPress={this.onViewAllCollections.bind(this)}>
-              <TitleImage style={styles.collection} uri={collections[3].uri} radius={8} title={'+\nView all\nCollections'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
-            </TouchableOpacity>
+            <TitleImage style={styles.collection} uri={collections[3].uri} radius={8} title={'+\nView all\nCollections'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle}
+              onPress={this.onViewAllCollections}
+            />
           </View>
         </View>
         <View style={styles.vStories}>
