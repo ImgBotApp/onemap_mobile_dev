@@ -68,7 +68,7 @@ class FeedPage extends Component {
   componentWillReceiveProps(nextProps) {
     if (!this.props.placeUpdated && nextProps.placeUpdated) {
       this.fetchFeedItems();
-      this.props.placeUpdated = false;
+      this.props.placeUpdate(false);
     }
     // client.query({
     //   query: PAGINATED_PLACES,
