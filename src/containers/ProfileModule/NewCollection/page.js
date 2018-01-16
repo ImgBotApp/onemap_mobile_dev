@@ -65,7 +65,7 @@ class NewCollection extends Component {
         type: 'USER',
         ...data
       });
-      if (this.props.refresh) this.props.refresh(collections);
+      this.props.saveCollections(collections);
       this.props.navigator.pop();
     })
   }

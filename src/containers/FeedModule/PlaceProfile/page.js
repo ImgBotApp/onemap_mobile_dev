@@ -169,7 +169,6 @@ class PlaceProfile extends Component {
           type: 'add'
         }
       ],
-      collections: props.collections ? props.collections : [],
       selectedCollections: []
     }
     console.log(this.props.user)
@@ -260,7 +259,7 @@ class PlaceProfile extends Component {
   }
   removeBookmark() {
     let collectionIds = clone(this.state.placeData.collectionIds);
-    collectionIds = collectionIds.filter(id => !this.state.collections.map(collection => collection.id).includes(id));
+    collectionIds = collectionIds.filter(id => !this.props.collections.map(collection => collection.id).includes(id));
     this.props.removeCollectionFromPlace({
       variables: {
         id: this.props.place.id,
@@ -295,15 +294,7 @@ class PlaceProfile extends Component {
       screen: SCREEN.FEED_ALL_COLLECTION,
       title: I18n.t('COLLECTION_TITLE'),
       animated: true,
-      passProps: {
-        collections: this.state.collections,
-        refresh: this.onRefresh
-      }
     });
-  }
-  onRefresh = collections => {
-    this.setState({ collections: collections.filter(collection => collection.type === 'USER') });
-    if (this.props.onCollectionUpdate) this.props.onCollectionsUpdate(collections);
   }
   _renderItem(item) {
     if (item.type == 'add') {
@@ -484,13 +475,13 @@ class PlaceProfile extends Component {
               <Text style={styles.plusButton}>{'+'}</Text>
             </TouchableOpacity>
             <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
-            <TouchableOpacity onPress={() => this.addBookmarks()}>
+            <TouchableOpacity disabled={!this.state.selectedCollections.length} onPress={() => this.addBookmarks()}>
               <Text style={styles.plusButton}>{'Done'}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.separatebar}></View>
           <ScrollView horizontal={true} style={styles.Collections}>
-            {this.state.collections
+            {this.props.collections
               .filter(collection => collection.type === 'USER')
               .map((collection, index) => (
                 <TouchableOpacity key={index} style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>

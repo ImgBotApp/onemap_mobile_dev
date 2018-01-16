@@ -77,6 +77,7 @@ class Collections extends Component {
       }
     }).then(collections => {
       this.setState({ places: collections.data.allCollections[0].places });
+      client.resetStore();
     })
   }
   _renderTabHeader(text) {
@@ -111,6 +112,7 @@ class Collections extends Component {
       }
     }).then(collections => {
       this.setState({ places });
+      this.props.placeUpdated(true);
     })
   }
   _renderStoryItem(data, mode) {

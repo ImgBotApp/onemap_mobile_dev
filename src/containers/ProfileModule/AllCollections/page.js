@@ -37,9 +37,7 @@ class AllCollections extends Component {
   };
   constructor(props) {
     super(props)
-    this.state = {
-      collections: props.collections
-    }
+    
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
   onNavigatorEvent(event) {
@@ -51,10 +49,6 @@ class AllCollections extends Component {
         this.props.navigator.push({
           screen: SCREEN.FEED_NEW_COLLECTION,
           title: I18n.t('COLLECTION_CREATE_NEW'),
-          passProps: {
-            refresh: this.onRefresh,
-            collections: this.state.collections
-          }
         })
       }
     }
@@ -78,18 +72,14 @@ class AllCollections extends Component {
       ]
     )
   }
-  onRefresh = (collections) => {
-    this.setState({ collections });
-    if (this.props.refresh) this.props.refresh(collections);
-  }
   deleteUserCollection(id) {
     this.props.deleteUserCollection({
       variables: {
         id
       }
     }).then(collection => {
-      let collections = this.state.collections.filter(item => item.id !== id);
-      this.onRefresh(collections);
+      let collections = this.props.collections.filter(item => item.id !== id);
+      this.props.saveCollections(collections);
     })
   }
   render() {
@@ -98,7 +88,7 @@ class AllCollections extends Component {
         <View style={styles.container}>
 
           {
-            this.state.collections
+            this.props.collections
               // .filter(collection => collection.type === 'USER')
               .map((item, index) => {
                 return (

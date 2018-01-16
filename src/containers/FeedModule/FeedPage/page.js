@@ -42,7 +42,6 @@ class FeedPage extends Component {
       },
       loading: false,
       refreshing: false,
-      collections: [],
       selectedCollections: []
     };
   }
@@ -50,25 +49,27 @@ class FeedPage extends Component {
     client.query({
       query: SUGGEST_USERS
     }).then((users) => {
-      this.setState({
-        items: [{
-          id: 'a1',
-          type: 'users',
-          data: users.data.allUsers.map((user) => {
-            return {
-              id: user.username,
-              name: user.displayName,
-              uri: user.photoURL,
-              identify: user.id
-            }
-          })
-        }]
-      })
+      this.suggestUsers = {
+        id: 'a1',
+        type: 'users',
+        data: users.data.allUsers.map((user) => {
+          return {
+            id: user.username,
+            name: user.displayName,
+            uri: user.photoURL,
+            identify: user.id
+          }
+        })
+      };
     })
     this.fetchFeedItems();
     this.getMyCollections();
   }
   componentWillReceiveProps(nextProps) {
+    if (!this.props.placeUpdated && nextProps.placeUpdated) {
+      this.fetchFeedItems();
+      this.props.placeUpdated = false;
+    }
     // client.query({
     //   query: PAGINATED_PLACES,
     //   variables: {
@@ -107,7 +108,7 @@ class FeedPage extends Component {
         }
       });
       this.setState({
-        items: [...this.state.items, ...items],
+        items: [this.suggestUsers, ...items],
         loading: false,
         refreshing: false
       })
@@ -148,11 +149,12 @@ class FeedPage extends Component {
       let items = clone(this.state.items);
       items[this.state.selectedPlaceIndex] = tmpPlace;
       this.setState({ items, collectionModal: false });
+      client.resetStore();
     });
   }
   removeBookmark(index) {
     let collectionIds = clone(this.state.items[index].collectionIds);
-    collectionIds = collectionIds.filter(id => !this.state.collections.map(collection => collection.id).includes(id));
+    collectionIds = collectionIds.filter(id => !this.props.collections.map(collection => collection.id).includes(id));
     this.props.removeCollectionFromPlace({
       variables: {
         id: this.state.items[index].id,
@@ -163,17 +165,8 @@ class FeedPage extends Component {
       items[index].bookmark = false;
       items[index].collectionIds = collectionIds;
       this.setState({ items, collectionModal: false, selectedCollections: [] });
+      client.resetStore();
     });
-  }
-  getUserCollections = () => {
-    client.query({
-      query: GET_USER_COLLECTIONS,
-      variables: {
-        id: this.props.user.id
-      }
-    }).then(collections => {
-      this.setState({ collections: collections.data.allCollections });
-    })
   }
   getMyCollections = () => {
     client.query({
@@ -182,7 +175,7 @@ class FeedPage extends Component {
         id: this.props.user.id
       }
     }).then(collections => {
-      this.setState({ collections: collections.data.allCollections });
+      this.props.saveCollections(collections.data.allCollections);
     })
   }
   closeSuggest() {
@@ -297,9 +290,7 @@ class FeedPage extends Component {
       animated: true,
       passProps: {
         place: data,
-        collections: this.state.collections,
         onPlaceUpdate: place => this.onPlaceUpdate(place, index),
-        onCollectionsUpdate: collections => this.setState({ collections })
       }
     })
   }
@@ -329,10 +320,6 @@ class FeedPage extends Component {
     this.props.navigator.push({
       screen: SCREEN.FEED_NEW_COLLECTION,
       title: I18n.t('COLLECTION_CREATE_NEW'),
-      passProps: {
-        refresh: this.onRefresh,
-        collections: this.state.collections
-      }
     })
   }
   handlerefresh = () => {
@@ -345,9 +332,6 @@ class FeedPage extends Component {
         refreshing: false
       })
     })
-  }
-  onRefresh = collections => {
-    this.setState({ collections: collections.filter(collection => collection.type === 'USER') });
   }
   renderFooter = () => {
     // if(!this.state.loading) return null;
@@ -403,13 +387,13 @@ class FeedPage extends Component {
               <Text style={styles.plusButton}>{'+'}</Text>
             </TouchableOpacity>
             <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
-            <TouchableOpacity onPress={() => this.addBookmarks()}>
+            <TouchableOpacity disabled={!this.state.selectedCollections.length} onPress={() => this.addBookmarks()}>
               <Text style={styles.plusButton}>{'Done'}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.separatebar}></View>
           <ScrollView horizontal={true} style={styles.Collections}>
-            {this.state.collections
+            {this.props.collections
               .filter(collection => collection.type === 'USER')
               .map((collection, index) => (
                 <TouchableOpacity key={index} style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>
