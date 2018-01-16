@@ -291,10 +291,9 @@ class PlaceProfile extends Component {
       collectionModal: false
     })
     this.props.navigator.push({
-      screen: SCREEN.FEED_ALL_COLLECTION,
-      title: I18n.t('COLLECTION_TITLE'),
-      animated: true,
-    });
+      screen: SCREEN.FEED_NEW_COLLECTION,
+      title: I18n.t('COLLECTION_CREATE_NEW'),
+    })
   }
   _renderItem(item) {
     if (item.type == 'add') {
