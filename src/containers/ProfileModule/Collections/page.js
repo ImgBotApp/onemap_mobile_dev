@@ -86,11 +86,15 @@ class Collections extends Component {
     )
   }
   onCollectionItem(data) {
-    // this.props.navigator.push({
-    //   screen: SCREEN.FEED_ALL_COLLECTION,
-    //   title: I18n.t('COLLECTION_TITLE'),
-    //   animated: true
-    // })
+    this.props.navigator.push({
+      screen: SCREEN.PLACE_PROFILE_PAGE,
+      title: I18n.t('PLACE_TITLE'),
+      animated: true,
+      passProps: {
+        place: data,
+        // onPlaceUpdate: place => this.onPlaceUpdate(place, index),
+      }
+    })
   }
   onRemovePlace(data) {
     Alert.alert(
