@@ -15,10 +15,7 @@ import StoryBoard from '@components/StoryBoard'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
-import { SMALL_FONT_SIZE } from '../../../theme/fonts';
-
-import { client } from '@root/main'
-import { GET_ALL_COLLECTIONS } from '@graphql/collections'
+import { SMALL_FONT_SIZE } from '@theme/fonts';
 
 const data = {
   id: 'test',
@@ -100,12 +97,8 @@ class ProfileComponent extends Component {
     this.state = {
       ...props.user,
       displayName: props.user.displayName || props.user.firstName + " " + props.user.lastName,
-      collections: []
     }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
-  }
-  componentWillMount() {
-    this.getUserCollections();
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -128,16 +121,6 @@ class ProfileComponent extends Component {
       }
     }
   }
-  getUserCollections = () => {
-    client.query({
-      query: GET_ALL_COLLECTIONS,
-      variables: {
-        // id: this.props.user.id
-      }
-    }).then(collections => {
-      this.setState({ collections: collections.data.allCollections });
-    })
-  }
   onEditProfile() {
     this.props.navigator.push({
       screen: SCREEN.USER_ACCOUNT_SETTING,
@@ -148,9 +131,6 @@ class ProfileComponent extends Component {
         navBarTextFontFamily: 'Comfortaa-Regular'
       }
     })
-  }
-  onRefresh = collections => {
-    this.setState({collections});
   }
   render() {
     return (
@@ -193,11 +173,11 @@ class ProfileComponent extends Component {
           <Text style={styles.collectionTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
           <View style={styles.collectionItems}>
             <Collections
-              collections={this.state.collections}
-              onHearted={this.onHearted.bind(this)}
-              onCheckIns={this.onCheckIns.bind(this)}
-              onWishList={this.onWishList.bind(this)}
-              onViewAll={this.onViewAll.bind(this)}
+              collections={this.props.collections}
+              onHearted={this.onColletionView}
+              onCheckIns={this.onColletionView}
+              onWishList={this.onColletionView}
+              onViewAll={this.onViewAll}
             />
           </View>
         </View>
@@ -211,25 +191,13 @@ class ProfileComponent extends Component {
       </ScrollView>
     );
   }
-  onHearted = () => {
+  onColletionView = (collection) => {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
-      animated: true
-    })
-  }
-  onCheckIns = () => {
-    this.props.navigator.push({
-      screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
-      animated: true
-    })
-  }
-  onWishList = () => {
-    this.props.navigator.push({
-      screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
-      animated: true
+      animated: true,
+      passProps: {
+        collection
+      }
     })
   }
   onViewAll = () => {
@@ -242,10 +210,6 @@ class ProfileComponent extends Component {
       screen: SCREEN.FEED_ALL_COLLECTION,
       title: I18n.t('COLLECTION_TITLE'),
       animated: true,
-      passProps: {
-        collections: this.state.collections,
-        refresh: this.onRefresh
-      }
     })
   }
   onStoryItem = (id) => {

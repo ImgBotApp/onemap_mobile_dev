@@ -34,14 +34,14 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   modalTitle: {
+    flex: 1,
+    textAlign: 'center',
     color: DARK_GRAY_COLOR,
     fontSize: BIG_FONT_SIZE,
-    marginLeft: getDeviceWidth(492)
   },
   plusButton: {
     color: DARK_GRAY_COLOR,
     fontSize: BIGGER_FONT_SIZE,
-    marginLeft: getDeviceWidth(346)
   },
   collectionModal: {
     height: getDeviceHeight(704),
@@ -58,16 +58,23 @@ const styles = StyleSheet.create({
   Collections: {
     marginTop: getDeviceHeight(66),
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     width: getDeviceWidth(1338)
   },
   collectionItemTitle: {
     color: 'white',
     fontSize: SMALL_FONT_SIZE
   },
+  collectionContainer: {
+    width: getDeviceHeight(303),
+    height: getDeviceHeight(303),
+    marginHorizontal: getDeviceWidth(30),
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   collection: {
-    width: getDeviceWidth(303),
-    height: getDeviceHeight(303)
+    width: '100%',
+    height: '100%'
   }
 });
 

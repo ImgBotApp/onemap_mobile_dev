@@ -102,10 +102,10 @@ class SearchPage extends Component {
               </View>
             </View>
           </ScrollView>
-          { this.state.result == true ? <SearchResult keyword={this.state.keyword} 
+          {this.state.result == true ? <SearchResult keyword={this.state.keyword}
             onUser={this.onUserItem.bind(this)}
             onKeywordItem={this.onKeywordItem.bind(this)}
-            onPlace={this.onPlaceProfile.bind(this)}/> : null }
+            onPlace={this.onPlaceProfile.bind(this)} /> : null}
         </View>
       </View>
     );
@@ -126,36 +126,34 @@ class SearchPage extends Component {
   }
   onPlaceProfile(placeID) {
     var ret;
-    RNPlaces.lookUpPlaceByID(placeID).then((result) => 
-      {
-        ret = result;
-        return client.query({
-          query: CHECK_EXIST_PLACE,
-          variables: {
-            sourceId: placeID
-          }
-        })
-      }
-    ).then( place => 
-      {
-        console.log(place)
-        if ( !place.data.Place ) {
-          return this.props.createPlace({
+    RNPlaces.lookUpPlaceByID(placeID).then((result) => {
+      ret = result;
+      return client.query({
+        query: CHECK_EXIST_PLACE,
         variables: {
-            description: '', 
-            sourceId: placeID, 
-            placeName: ret.name, 
-            locationLat: ret.latitude, 
-            locationLong: ret.longitude, 
-            address: ret.address, 
-            phoneNumber: ret.phoneNumber || '', 
-            website: ret.website || '', 
+          sourceId: placeID
+        }
+      })
+    }
+    ).then(place => {
+      console.log(place)
+      if (!place.data.Place) {
+        return this.props.createPlace({
+          variables: {
+            description: '',
+            sourceId: placeID,
+            placeName: ret.name,
+            locationLat: ret.latitude,
+            locationLong: ret.longitude,
+            address: ret.address,
+            phoneNumber: ret.phoneNumber || '',
+            website: ret.website || '',
             facebook: ret.facebook || '',
             addressCountry: ret.addressComponents ? ret.addressComponents.country : '',
             addressPostalCode: ret.addressComponents ? ret.addressComponents.postal_code : '',
             addressStateProvince: ret.addressComponents ? ret.addressComponents.administrative_area_level_1 : '',
             addressCityTown: ret.addressComponents ? ret.addressComponents.administrative_area_level_2 : ''
-        }
+          }
         })
       } else {
         return {
@@ -167,14 +165,14 @@ class SearchPage extends Component {
         }
       }
     }
-    ).then((result) => {
-      console.log(result)
+      ).then((result) => {
+        console.log(result)
         this.props.navigator.push({
           screen: SCREEN.PLACE_PROFILE_PAGE,
           title: I18n.t('PLACE_TITLE'),
           animated: true,
           passProps: {
-            placeID: result.data.createPlace.id
+            place: result.data.createPlace
           }
         })
       }).catch((error) => console.log(error));
@@ -183,7 +181,7 @@ class SearchPage extends Component {
     this.setState({
       keyword: val
     })
-    if ( val.length == 0) return this.setState({result: false})
+    if (val.length == 0) return this.setState({ result: false })
     else return this.setState({ result: true })
   }
   onDismissResult() {

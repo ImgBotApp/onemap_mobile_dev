@@ -26,36 +26,43 @@ const styles = StyleSheet.create({
   },
   separatebar: {
     width: getDeviceWidth(1335),
-    borderWidth:1,
+    borderWidth: 1,
     borderColor: LIGHT_GRAY_COLOR
   },
   Collections: {
     marginTop: getDeviceHeight(66),
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     width: getDeviceWidth(1338)
   },
+  collectionContainer: {
+    width: getDeviceHeight(303),
+    height: getDeviceHeight(303),
+    marginHorizontal: getDeviceWidth(30),
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   collection: {
-    width: getDeviceWidth(303),
-    height: getDeviceHeight(303)
+    width: '100%',
+    height: '100%'
   },
   imageItem: {
     width: getDeviceWidth(520),
-    height:  getDeviceHeight(373),
+    height: getDeviceHeight(373),
     borderWidth: 1,
     borderColor: 'transparent',
     borderRadius: 6
   },
   imageItemContainer: {
     width: getDeviceWidth(520),
-    height:  getDeviceHeight(373),
+    height: getDeviceHeight(373),
     borderWidth: 1,
     borderColor: 'transparent',
     borderRadius: 6,
     marginRight: getDeviceWidth(30)
   },
   imageFlatList: {
-    height:  getDeviceHeight(403)
+    height: getDeviceHeight(403)
   },
   description: {
     // height: getDeviceHeight(91),
@@ -113,7 +120,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderWidth: 1,
     borderColor: LIGHT_GRAY_COLOR,
-    marginTop: getDeviceHeight(89)    
+    marginTop: getDeviceHeight(89)
   },
   buttonInterest: {
     marginTop: getDeviceHeight(89),
@@ -137,7 +144,7 @@ const styles = StyleSheet.create({
   keywordContainer: {
     marginTop: getDeviceHeight(50),
     height: getDeviceHeight(200),
-    paddingLeft: 15,    
+    paddingLeft: 15,
     backgroundColor: '#e9e8ea',
     justifyContent: 'center'
   },
@@ -175,18 +182,18 @@ const styles = StyleSheet.create({
     fontSize: BIG_FONT_SIZE
   },
   myImagesContainer: {
-    marginTop: getDeviceHeight(89),    
+    marginTop: getDeviceHeight(89),
     width: getDeviceWidth(1118),
     height: getDeviceHeight(393)
   },
   myImages: {
-    width:  '100%',
+    width: '100%',
     height: '100%'
   },
   commentDate: {
     fontSize: NORMAL_FONT_SIZE,
     color: LIGHT_GRAY_COLOR,
-    marginLeft: getDeviceWidth(40), 
+    marginLeft: getDeviceWidth(40),
   },
   commentDescription: {
     fontSize: SMALL_FONT_SIZE,
@@ -206,14 +213,14 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   modalTitle: {
+    flex: 1,
+    textAlign: 'center',
     color: DARK_GRAY_COLOR,
     fontSize: BIG_FONT_SIZE,
-    marginLeft: getDeviceWidth(492)
   },
   plusButton: {
     color: DARK_GRAY_COLOR,
     fontSize: BIGGER_FONT_SIZE,
-    marginLeft: getDeviceWidth(346)
   },
 });
 

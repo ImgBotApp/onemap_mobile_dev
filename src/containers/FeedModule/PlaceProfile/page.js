@@ -10,6 +10,7 @@ import TitleImage from '@components/TitledImage'
 
 import TagInput from 'react-native-tag-input';
 import Foundation from 'react-native-vector-icons/Foundation'
+import IonIcons from 'react-native-vector-icons/Ionicons'
 import ImagePicker from 'react-native-image-picker'
 import CircleImage from '@components/CircleImage'
 import ImageSliderComponent from '@components/ImageSliderComponent'
@@ -19,6 +20,7 @@ import { calculateCount, getDeviceWidth, calculateDuration } from '@global'
 import DFonts from '@theme/fonts'
 import I18n from '@language'
 import * as SCREEN from '@global/screenName'
+import { clone } from '@global';
 
 import { client } from '@root/main'
 import { GET_PLACE_PROFILE } from '@graphql/places'
@@ -166,18 +168,18 @@ class PlaceProfile extends Component {
         {
           type: 'add'
         }
-      ]
+      ],
+      selectedCollections: []
     }
     console.log(this.props.user)
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
   }
 
   async componentWillMount() {
-    console.log(this.props.placeID)
     let Place = await client.query({
       query: GET_PLACE_PROFILE,
       variables: {
-        id: this.props.placeID || "cjc0b98k2nsyj0113eizs1e5e"
+        id: this.props.place.id || "cjc0b98k2nsyj0113eizs1e5e"
       }
     }).then((place) => {
       console.log(place)
@@ -185,7 +187,6 @@ class PlaceProfile extends Component {
       this.setState({
         placeData: {
           title: data.placeName,
-          bookmark: true,
           image: data.pictureURL && data.pictureURL.map(item => {
             return {
               uri: item
@@ -210,10 +211,73 @@ class PlaceProfile extends Component {
             bookmark: data._collectionsMeta.count
           },
           keywords: data.keywords && data.keywords.map((item) => item.name),
-          comments: []
+          comments: [],
+          bookmark: this.props.place.bookmark,
+          collectionIds: this.props.place.collectionIds
         }
       })
     })
+  }
+  onBookMarker = () => {
+    if (this.state.placeData.bookmark) {
+      this.removeBookmark();
+    } else {
+      this.setState({
+        collectionModal: true,
+        selectedCollections: [],
+      });
+    }
+  }
+  addBookmark(id) {
+    let tmp = this.state.selectedCollections;
+    if (this.state.selectedCollections.includes(id)) {
+      tmp.splice(tmp.indexOf(id), 1);
+    } else {
+      tmp.push(id);
+    }
+    this.setState({ selectedCollections: tmp });
+  }
+  addBookmarks() {
+    this.props.addCollectionToPlace({
+      variables: {
+        id: this.props.place.id,
+        collectionIds: this.state.selectedCollections
+      }
+    }).then(places => {
+      let placeData = clone(this.state.placeData);
+      placeData.bookmark = true;
+      placeData.collectionIds = this.state.selectedCollections;
+      this.setState({ placeData, collectionModal: false, selectedCollections: [] });
+
+      if (this.props.onPlaceUpdate) {
+        let place = clone(this.props.place);
+        place.bookmark = true;
+        place.collectionIds = this.state.selectedCollections;
+        this.props.onPlaceUpdate(place);
+      }
+    });
+  }
+  removeBookmark() {
+    let collectionIds = clone(this.state.placeData.collectionIds);
+    collectionIds = collectionIds.filter(id => !this.props.collections.map(collection => collection.id).includes(id));
+    this.props.removeCollectionFromPlace({
+      variables: {
+        id: this.props.place.id,
+        collectionIds
+      }
+    }).then(places => {
+      let placeData = clone(this.state.placeData);
+      placeData.bookmark = false;
+      placeData.collectionIds = collectionIds;
+      this.setState({ placeData, collectionModal: false, selectedCollections: [] });
+
+      if (this.props.onPlaceUpdate) {
+        let place = clone(this.props.place);
+        place.bookmark = false;
+        place.collectionIds = collectionIds;
+        this.props.onPlaceUpdate(place);
+      }
+    });
   }
   onNaviagtorEvent(event) {
     if (event.type == 'NavBarButtonPress') {
@@ -226,7 +290,10 @@ class PlaceProfile extends Component {
     this.setState({
       collectionModal: false
     })
-    this.props.navigation.navigate('AllCollection')
+    this.props.navigator.push({
+      screen: SCREEN.FEED_NEW_COLLECTION,
+      title: I18n.t('COLLECTION_CREATE_NEW'),
+    })
   }
   _renderItem(item) {
     if (item.type == 'add') {
@@ -267,7 +334,7 @@ class PlaceProfile extends Component {
           {/* Title */}
           <View style={styles.titleContainer}>
             <Text style={styles.titleText}>{this.state.placeData.title}</Text>
-            <TouchableOpacity onPress={() => this.setState({ collectionModal: true })}>
+            <TouchableOpacity onPress={this.onBookMarker}>
               <MaterialCommunityIcons name={data.bookmark ? "bookmark" : "bookmark-outline"} size={30}
                 color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} />
             </TouchableOpacity>
@@ -391,7 +458,7 @@ class PlaceProfile extends Component {
               }} />
           ) : null
         }
-        {/* Modal Collection */}
+        {/* Modal Collection */}{/* TODO: Make this Modal as component */}
         <Modal
           style={styles.collectionModal}
           isOpen={this.state.collectionModal}
@@ -403,18 +470,40 @@ class PlaceProfile extends Component {
           onClosed={() => this.setState({ collectionModal: false })}
         >
           <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
-            <TouchableOpacity onPress={this.onAddCollection.bind(this)}>
+          <TouchableOpacity onPress={this.onAddCollection}>
               <Text style={styles.plusButton}>{'+'}</Text>
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
+            <TouchableOpacity disabled={!this.state.selectedCollections.length} onPress={() => this.addBookmarks()}>
+              <Text style={styles.plusButton}>{'Done'}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.separatebar}></View>
-          <View style={styles.Collections}>
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
-            <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
-          </View>
+          <ScrollView horizontal={true} style={styles.Collections}>
+            {this.props.collections
+              .filter(collection => collection.type === 'USER')
+              .map((collection, index) => (
+                <TouchableOpacity key={index} style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>
+                  <TitleImage
+                    style={styles.collection}
+                    uri={collection.pictureURL ? collection.pictureURL : 'https://placeimg.com/640/480/any'}
+                    title={collection.name}
+                    radius={8}
+                    vAlign={'center'}
+                    hAlign={'center'}
+                    titleStyle={styles.collectionItemTitle}
+                    disabled={true}
+                  />
+                  {this.state.selectedCollections.includes(collection.id) &&
+                    <IonIcons
+                      name='ios-checkmark-circle'
+                      size={30}
+                      style={{ position: 'absolute', backgroundColor: 'transparent' }}
+                    />
+                  }
+                </TouchableOpacity>
+              ))}
+          </ScrollView>
         </Modal>
       </View>
     );

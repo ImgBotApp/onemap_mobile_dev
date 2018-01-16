@@ -24,3 +24,17 @@ export function logout() {
     dispatch(changeAppRoot('login'))
   }
 }
+
+export function saveCollections(collections) {
+  return {
+    type: types.STORE_COLLECTIONS,
+    collections
+  }
+}
+
+export function placeUpdated(updated) {
+  return {
+    type: types.PLACE_UPDATED,
+    placeUpdated: updated
+  }
+}

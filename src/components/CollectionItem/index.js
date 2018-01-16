@@ -4,7 +4,9 @@ import { View, Text, StyleSheet } from 'react-native';
 import TitleImage from '@components/TitledImage'
 
 import styles from './styles'
-// create a component
+
+const imagePlaceholder = 'https://placeimg.com/640/480/nature/grayscale'
+
 class CollectionItem extends Component {
   constructor(props) {
     super(props)
@@ -22,12 +24,14 @@ class CollectionItem extends Component {
       <View style={[styles.cell, this.props.style]}>
         <TitleImage
           style={[styles.collection, this.props.insideStyle]}
-          uri={this.state.uri}
+          uri={this.state.uri ? this.state.uri : imagePlaceholder}
           radius={this.state.radius}
           title={this.state.title}
           vAlign={'center'}
           hAlign={'center'}
           titleStyle={styles.collectionItemTitle}
+          onPress={this.props.onPress ? this.props.onPress : null}
+          onLongPress={this.props.onLongPress ? this.props.onLongPress : null}
         />
       </View>
     );

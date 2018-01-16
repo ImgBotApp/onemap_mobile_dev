@@ -5,59 +5,59 @@ import CollectionItem from '@components/CollectionItem'
 
 import styles from './styles'
 // create a component
-const uri = 'https://placeimg.com/640/480/nature/grayscale'
+
 class Collections extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      collections: []
+      collections: {}
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.collections.length > 2 && nextProps.collections !== this.props.collections) {
-      let collections = [];
-      collections.push(nextProps.collections.filter(item => item.name == 'Hearted')[0]);
-      collections.push(nextProps.collections.filter(item => item.name == 'Checked-In')[0]);
-      collections.push(nextProps.collections.filter(item => item.name == 'Default')[0]);
-      this.setState({collections});
+      let collections = {};
+      collections.hearted = nextProps.collections.filter(item => item.type === 'HEARTED')[0];
+      collections.checkedin = nextProps.collections.filter(item => item.type == 'CHECKED_IN')[0];
+      collections.default = nextProps.collections.filter(item => item.type == 'DEFAULT')[0];
+      this.setState({ collections });
     }
   }
 
   render() {
-
+    const { collections } = this.state;
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => this.props.onHearted()}>
-          <CollectionItem style={styles.itemContainer}
-            insideStyle={styles.itemContainer}
-            uri={this.state.collections.length > 2 ? this.state.collections[0].pictureURL : uri}
-            radius={8}
-            title={'Hearted'} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.props.onCheckIns()}>
-          <CollectionItem style={styles.itemContainer}
-            insideStyle={styles.itemContainer}
-            uri={this.state.collections.length > 2 ? this.state.collections[1].pictureURL : uri}
-            radius={8}
-            title={'Check-Ins'} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.props.onWishList()}>
-          <CollectionItem style={styles.itemContainer}
-            insideStyle={styles.itemContainer}
-            uri={this.state.collections.length > 2 ? this.state.collections[2].pictureURL : uri}
-            radius={8}
-            title={'Default'} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.props.onViewAll()}>
-          <CollectionItem style={styles.itemContainer}
-            insideStyle={styles.itemContainer}
-            uri={uri}
-            radius={8}
-            title={'+\nView all\nCollections'} />
-        </TouchableOpacity>
+        <CollectionItem style={styles.itemContainer}
+          insideStyle={styles.itemContainer}
+          uri={collections.hearted ? collections.hearted.pictureURL : null}
+          radius={8}
+          title={'Hearted'}
+          onPress={() => collections.hearted && this.props.onHearted(collections.hearted)}
+        />
+        <CollectionItem style={styles.itemContainer}
+          insideStyle={styles.itemContainer}
+          uri={collections.checkedin ? collections.checkedin.pictureURL : null}
+          radius={8}
+          title={'Check-Ins'}
+          onPress={() => collections.checkedin && this.props.onCheckIns(collections.checkedin)}
+        />
+        <CollectionItem style={styles.itemContainer}
+          insideStyle={styles.itemContainer}
+          uri={collections.default > 2 ? collections.default.pictureURL : null}
+          radius={8}
+          title={'Default'}
+          onPress={() => collections.default && this.props.onWishList(collections.default)}
+        />
+        <CollectionItem style={styles.itemContainer}
+          insideStyle={styles.itemContainer}
+          uri={''}
+          radius={8}
+          title={'+\nView all\nCollections'}
+          onPress={() => this.props.onViewAll()}
+        />
       </View>
     );
   }

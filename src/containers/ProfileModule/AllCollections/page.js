@@ -37,9 +37,7 @@ class AllCollections extends Component {
   };
   constructor(props) {
     super(props)
-    this.state = {
-      collections: props.collections
-    }
+    
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
   onNavigatorEvent(event) {
@@ -51,9 +49,6 @@ class AllCollections extends Component {
         this.props.navigator.push({
           screen: SCREEN.FEED_NEW_COLLECTION,
           title: I18n.t('COLLECTION_CREATE_NEW'),
-          passProps: {
-            add: this.createUserCollection
-          }
         })
       }
     }
@@ -61,8 +56,10 @@ class AllCollections extends Component {
   onItemPress(item) {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
-      animated: true
+      animated: true,
+      passProps: {
+        collection: item
+      }
     })
   }
   onItemRemove(item) {
@@ -75,28 +72,14 @@ class AllCollections extends Component {
       ]
     )
   }
-  createUserCollection = (data) => {
-    this.props.createUserCollection({
-      variables: {
-        ...data,
-        userId: this.props.user.id,
-      }
-    }).then(collection => {
-      let collections = clone(this.state.collections);
-      collections.push({ id: collection.data.createCollection.id, ...data });
-      this.setState({ collections });
-      this.props.refresh(collections);
-    })
-  }
   deleteUserCollection(id) {
     this.props.deleteUserCollection({
       variables: {
         id
       }
     }).then(collection => {
-      let collections = this.state.collections.filter(item => item.id !== id);
-      this.setState({ collections });
-      this.props.refresh(collections);
+      let collections = this.props.collections.filter(item => item.id !== id);
+      this.props.saveCollections(collections);
     })
   }
   render() {
@@ -105,23 +88,22 @@ class AllCollections extends Component {
         <View style={styles.container}>
 
           {
-            this.state.collections.map((item, index) => {
-              return (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => this.onItemPress(item)}
-                  onLongPress={() => this.onItemRemove(item)}
-                >
+            this.props.collections
+              // .filter(collection => collection.type === 'USER')
+              .map((item, index) => {
+                return (
                   <CollectionItem
+                    key={index}
                     style={styles.cell}
                     insideStyle={styles.collection}
                     uri={item.pictureURL ? item.pictureURL : imagePlaceholder}
                     title={item.name}
                     radius={8}
+                    onPress={() => this.onItemPress(item)}
+                    onLongPress={() => item.type === 'USER' && this.onItemRemove(item)}
                   />
-                </TouchableOpacity>
-              )
-            })
+                )
+              })
           }
 
         </View>

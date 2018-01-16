@@ -19,7 +19,6 @@ import { saveUserInfo } from '@reducers/user/actions'
 
 const { GraphRequest, GraphRequestManager, AccessToken } = FBSDK
 
-var $this
 // create a component
 class LoginPage extends Component {
   constructor (props) {
@@ -28,12 +27,11 @@ class LoginPage extends Component {
       id: '',
       loading: false
     }
-    $this = this
   }
   async _responseInfoCallback(error, result) {
     if (error) {
       // alert('Error fetching data: ' + error.toString());
-      $this.setState({loading: false})
+      this.setState({loading: false})
       alert('error, please try again')  
     } else {
       var gender = 'NOT_SPECIFIC'
@@ -44,13 +42,13 @@ class LoginPage extends Component {
       let UserExist = await client.query({
         query: EXIST_FACEBOOK_USER,
         variables: {
-          id: $this.state.id
+          id: this.state.id
         }
       }).then((user) => {
         var data = user.data.User
         console.log(data)
         if ( data.firstName ) {
-          $this.props.saveUserInfo({
+          this.props.saveUserInfo({
             id: data.id,
             createdAt: new Date().toLocaleDateString(),
             updatedAt: new Date().toLocaleDateString(),
@@ -65,17 +63,17 @@ class LoginPage extends Component {
             displayName: data.displayName,
             username: data.facebookUserId
           })
-          // $this.props.dispatch(appActions.login())
-          $this.props.login();
+          // this.props.dispatch(appActions.login())
+          this.props.login();
         } else {
-          $this.props.navigator.push({
+          this.props.navigator.push({
             screen: SCREEN.ACCOUNT_CREATE_PAGE,
             title: 'Create Account',
             passProps: {
               mode: ACCOUNT_MODE.facebook,
               info: {
                 ...result,
-                userId: $this.state.id
+                userId: this.state.id
               }
             },
             animated: true,
@@ -87,9 +85,9 @@ class LoginPage extends Component {
           })        
         }
       })
-      // var user = await $this.props.updateFacebookUser({
+      // var user = await this.props.updateFacebookUser({
       //   variables: {
-      //     id: $this.state.id,
+      //     id: this.state.id,
       //     first_name: result.first_name,
       //     last_name: result.last_name,
       //     gender: gender,
@@ -98,7 +96,7 @@ class LoginPage extends Component {
       //     registrationDate: new Date().toLocaleDateString()
       //   }
       // })
-      // $this.props.navigator.push({
+      // this.props.navigator.push({
       //   screen: SCREEN.ACCOUNT_CREATE_PAGE,
       //   title: 'Create Account',
       //   passProps: {
@@ -115,7 +113,7 @@ class LoginPage extends Component {
       //   // navigatorButtons: {}
       // })
       // var userInfo = user.data.updateUser
-      // $this.props.saveProfileInfo({
+      // this.props.saveProfileInfo({
       //   username: userInfo.id,
       //   name: userInfo.displayName,
       //   gender: userInfo.gender,
@@ -124,13 +122,13 @@ class LoginPage extends Component {
       //   last_name: result.last_name,
       //   registrationDate: userInfo.registrationDate
       // })
-      $this.setState({loading: false})
+      this.setState({loading: false})
       // alert('success')
-    //   $this.props.navigation.navigate('Drawer',$this.props.user)
+    //   this.props.navigation.navigate('Drawer',this.props.user)
     }
   }
   async _fbAuth () {
-    $this.setState({loading: true})
+    this.setState({loading: true})
     try {
       const value = await AsyncStorage.getItem(APP_USER_KEY);
       let val = JSON.parse(value);
@@ -143,10 +141,10 @@ class LoginPage extends Component {
           }
         }).then((user) => {
           // alert(JSON.stringify(user))
-          $this.setState({loading: false})
+          this.setState({loading: false})
           var data = user.data.User
           if ( data.firstName ) {
-            $this.props.saveUserInfo({
+            this.props.saveUserInfo({
               id: data.id,
               createdAt: new Date().toLocaleDateString(),
               updatedAt: new Date().toLocaleDateString(),
@@ -161,17 +159,17 @@ class LoginPage extends Component {
               displayName: data.displayName,
               username: data.facebookUserId
             })
-            $this.props.login();
+            this.props.login();
           } 
           else {
-            // $this.props.navigator.push({
+            // this.props.navigator.push({
             //   screen: SCREEN.ACCOUNT_CREATE_PAGE,
             //   title: 'Create Account',
             //   passProps: {
             //     mode: ACCOUNT_MODE.facebook,
             //     info: {
                   
-            //       userId: $this.state.id
+            //       userId: this.state.id
             //     }
             //   },
             //   animated: true,
@@ -202,13 +200,13 @@ class LoginPage extends Component {
               const infoRequest = new GraphRequest(
                 '/me?fields=id,first_name,last_name,picture,email,gender,address,about',
                 null,
-                this._responseInfoCallback,
+                (error, result) => this._responseInfoCallback(error, result),
               );
               new GraphRequestManager().addRequest(infoRequest).start();
             })
             .catch((err) => {
               console.log(err)
-              $this.setState({loading: false})   
+              this.setState({loading: false})   
             })
           }
         })
@@ -234,20 +232,20 @@ class LoginPage extends Component {
           const infoRequest = new GraphRequest(
             '/me?fields=id,first_name,last_name,picture,email,gender,address,about',
             null,
-            this._responseInfoCallback,
+            (error, result) => this._responseInfoCallback(error, result),
           );
           new GraphRequestManager().addRequest(infoRequest).start();
         })
-        .catch((err) => {
+        .catch((err) => {alert(JSON.stringify(err))
           console.log(err)
-          $this.setState({loading: false})   
+          this.setState({loading: false})   
         })
       }
       return;
     } catch (error) {
       // Error retrieving data
       console.log(error)
-      $this.setState({loading: false})
+      this.setState({loading: false})
     }
   }
 

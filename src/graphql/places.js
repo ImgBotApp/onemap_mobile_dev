@@ -30,9 +30,15 @@ export const PAGINATED_PLACES = gql`
         username
         photoURL
       }
+      collections {
+        id
+        user {
+          id
+        }
+      }
     }
   }
-`;
+`
 
 export const PLACES_PAGINATED = gql`
   query Places($first: Int!, $skip: Int!) {
@@ -144,7 +150,7 @@ export const CREATE_PLACE_PROFILE = gql`
         id
       }
     }
-`;
+`
 
 export const CHECK_EXIST_PLACE = gql`
   query ($sourceId: String) {
@@ -152,4 +158,30 @@ export const CHECK_EXIST_PLACE = gql`
       id
     } 
   }
-`;
+`
+
+export const ADD_COLLECTION_TO_PLACE = gql`
+  mutation ($id: ID!,
+    $collectionIds: [ID!]
+  ) {
+    updatePlace(
+      id: $id,
+      collectionsIds: $collectionIds
+    ) {
+      id
+    }
+  }
+`
+
+export const REMOVE_COLLECTION_FROM_PLACE = gql`
+  mutation ($id: ID!,
+    $collectionIds: [ID!]
+  ) {
+    updatePlace(
+      id: $id,
+      collectionsIds: $collectionIds
+    ) {
+      id
+    }
+  }
+`
