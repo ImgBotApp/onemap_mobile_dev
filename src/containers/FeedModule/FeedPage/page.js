@@ -98,7 +98,6 @@ class FeedPage extends Component {
             uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
             updated: new Date(place.updatedAt)
           },
-          bookmark: false,
           feedTitle: place.placeName,
           images: place.pictureURL.map(item => { return { uri: item } }),
           place: '',
@@ -418,9 +417,8 @@ class FeedPage extends Component {
             {this.state.collections
               .filter(collection => collection.type === 'USER')
               .map((collection, index) => (
-                <TouchableOpacity style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>
+                <TouchableOpacity key={index} style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>
                   <TitleImage
-                    key={index}
                     style={styles.collection}
                     uri={collection.pictureURL ? collection.pictureURL : 'https://placeimg.com/640/480/any'}
                     title={collection.name}

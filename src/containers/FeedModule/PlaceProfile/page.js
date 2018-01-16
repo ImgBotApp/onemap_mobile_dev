@@ -10,6 +10,7 @@ import TitleImage from '@components/TitledImage'
 
 import TagInput from 'react-native-tag-input';
 import Foundation from 'react-native-vector-icons/Foundation'
+import IonIcons from 'react-native-vector-icons/Ionicons'
 import ImagePicker from 'react-native-image-picker'
 import CircleImage from '@components/CircleImage'
 import ImageSliderComponent from '@components/ImageSliderComponent'
@@ -168,7 +169,8 @@ class PlaceProfile extends Component {
           type: 'add'
         }
       ],
-      collections: props.collections
+      collections: props.collections,
+      selectedCollections: []
     }
     console.log(this.props.user)
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
@@ -223,27 +225,35 @@ class PlaceProfile extends Component {
     } else {
       this.setState({
         collectionModal: true,
+        selectedCollections: [],
       });
     }
   }
-  addBookmark(collection) {
-    let collectionIds = clone(this.state.placeData.collectionIds);
-    collectionIds.push(collection.id);
+  addBookmark(id) {
+    let tmp = this.state.selectedCollections;
+    if (this.state.selectedCollections.includes(id)) {
+      tmp.splice(tmp.indexOf(id), 1);
+    } else {
+      tmp.push(id);
+    }
+    this.setState({ selectedCollections: tmp });
+  }
+  addBookmarks() {
     this.props.addCollectionToPlace({
       variables: {
         id: this.props.place.id,
-        collectionIds
+        collectionIds: this.state.selectedCollections
       }
     }).then(places => {
       let placeData = clone(this.state.placeData);
       placeData.bookmark = true;
-      placeData.collectionIds = collectionIds;
-      this.setState({ placeData, collectionModal: false });
+      placeData.collectionIds = this.state.selectedCollections;
+      this.setState({ placeData, collectionModal: false, selectedCollections: [] });
 
       if (this.props.onPlaceUpdate) {
         let place = clone(this.props.place);
         place.bookmark = true;
-        place.collectionIds = collectionIds;
+        place.collectionIds = this.state.selectedCollections;
         this.props.onPlaceUpdate(place);
       }
     });
@@ -260,7 +270,7 @@ class PlaceProfile extends Component {
       let placeData = clone(this.state.placeData);
       placeData.bookmark = false;
       placeData.collectionIds = collectionIds;
-      this.setState({ placeData, collectionModal: false });
+      this.setState({ placeData, collectionModal: false, selectedCollections: [] });
 
       if (this.props.onPlaceUpdate) {
         let place = clone(this.props.place);
@@ -470,29 +480,40 @@ class PlaceProfile extends Component {
           onClosed={() => this.setState({ collectionModal: false })}
         >
           <View style={styles.modalContainer}>
+            <TouchableOpacity onPress={() => this.addBookmarks()}>
+              <Text style={styles.plusButton}>{'Done'}</Text>
+            </TouchableOpacity>
             <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
             <TouchableOpacity onPress={this.onAddCollection}>
               <Text style={styles.plusButton}>{'+'}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.separatebar}></View>
-          <View style={styles.Collections}>
+          <ScrollView horizontal={true} style={styles.Collections}>
             {this.state.collections
               .filter(collection => collection.type === 'USER')
               .map((collection, index) => (
-                <TitleImage
-                  key={index}
-                  style={styles.collection}
-                  uri={collection.pictureURL ? collection.pictureURL : 'https://placeimg.com/640/480/any'}
-                  title={collection.name}
-                  radius={8}
-                  vAlign={'center'}
-                  hAlign={'center'}
-                  titleStyle={styles.collectionItemTitle}
-                  onPress={() => this.addBookmark(collection)}
-                />
+                <TouchableOpacity key={index} style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>
+                  <TitleImage
+                    style={styles.collection}
+                    uri={collection.pictureURL ? collection.pictureURL : 'https://placeimg.com/640/480/any'}
+                    title={collection.name}
+                    radius={8}
+                    vAlign={'center'}
+                    hAlign={'center'}
+                    titleStyle={styles.collectionItemTitle}
+                    disabled={true}
+                  />
+                  {this.state.selectedCollections.includes(collection.id) &&
+                    <IonIcons
+                      name='ios-checkmark-circle'
+                      size={30}
+                      style={{ position: 'absolute', backgroundColor: 'transparent' }}
+                    />
+                  }
+                </TouchableOpacity>
               ))}
-          </View>
+          </ScrollView>
         </Modal>
       </View>
     );
