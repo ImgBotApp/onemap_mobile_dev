@@ -173,7 +173,7 @@ class SearchPage extends Component {
             return {
               data: {
                 createPlace: {
-                  id: place.data.allPlaces[0]
+                  id: place.data.allPlaces[0].id
                 }
               }
             }

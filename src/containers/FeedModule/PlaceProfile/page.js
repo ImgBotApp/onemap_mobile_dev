@@ -24,6 +24,7 @@ import { clone } from '@global';
 import { client } from '@root/main'
 import { GET_PLACE_PROFILE } from '@graphql/places'
 import Overlay from 'react-native-modal-overlay';
+import { GET_USER_COLLECTIONS, GET_MY_COLLECTIONS } from '@graphql/collections'
 
 const ImagePickerOption = {
   title: 'Select Image',
@@ -150,8 +151,8 @@ class PlaceProfile extends Component {
   };
   constructor(props) {
     super(props)
-
     this.state = {
+      currentPlaceID:props.placeID?props.placeID:props.place.id,
       placeData: {
         information: {},
         image: [],
@@ -179,10 +180,9 @@ class PlaceProfile extends Component {
     let Place = client.query({
       query: GET_PLACE_PROFILE,
       variables: {
-        id: this.props.place?this.props.place.id :"cjc0b98k2nsyj0113eizs1e5e"
+        id: this.state.currentPlaceID
       }
     }).then((place) => {
-      console.log(place)
       let data = place.data.Place
       this.setState({
         placeData: {
@@ -216,8 +216,35 @@ class PlaceProfile extends Component {
           collectionIds: this.props.place?this.props.place.collectionIds:null
         }
       })
+    });
+    if(this.state.collections == null)
+    {
+      //this.getUserCollections();
+      this.getMyCollections();
+    }
+  }
+
+  getUserCollections = () => {
+    client.query({
+      query: GET_USER_COLLECTIONS,
+      variables: {
+        id: this.props.user.id
+      }
+    }).then(collections => {
+      this.setState({ collections: collections.data.allCollections });
     })
   }
+  getMyCollections = () => {
+    client.query({
+      query: GET_MY_COLLECTIONS,
+      variables: {
+        id: this.props.user.id
+      }
+    }).then(collections => {
+      this.setState({ collections: collections.data.allCollections });
+    })
+  }
+
   onBookMarker = () => {
     if (this.state.placeData.bookmark) {
       this.removeBookmark();
@@ -228,54 +255,48 @@ class PlaceProfile extends Component {
     }
   }
   addBookmark(collection) {
-    if(this.props.place)
-    {
-      let collectionIds = clone(this.state.placeData.collectionIds);
-      collectionIds.push(collection.id);
-      this.props.addCollectionToPlace({
-        variables: {
-          id: this.props.place.id,
-          collectionIds
-        }
-      }).then(places => {
-        let placeData = clone(this.state.placeData);
-        placeData.bookmark = true;
-        placeData.collectionIds = collectionIds;
-        this.setState({ placeData, collectionModal: false });
+    let collectionIds = clone(this.state.placeData.collectionIds);
+    collectionIds.push(collection.id);
+    this.props.addCollectionToPlace({
+      variables: {
+        id: this.state.currentPlaceID,
+        collectionIds
+      }
+    }).then(places => {
+      let placeData = clone(this.state.placeData);
+      placeData.bookmark = true;
+      placeData.collectionIds = collectionIds;
+      this.setState({ placeData, collectionModal: false });
 
-        if (this.props.onPlaceUpdate) {
-          let place = clone(this.props.place);
-          place.bookmark = true;
-          place.collectionIds = collectionIds;
-          this.props.onPlaceUpdate(place);
-        }
-      });
-    }
+      if (this.props.onPlaceUpdate) {
+        let place = clone(this.props.place);
+        place.bookmark = true;
+        place.collectionIds = collectionIds;
+        this.props.onPlaceUpdate(place);
+      }
+    });
   }
   removeBookmark() {
-    if(this.props.place)
-    {
-      let collectionIds = clone(this.state.placeData.collectionIds);
-      collectionIds = collectionIds.filter(id => !this.state.collections.map(collection => collection.id).includes(id));
-      this.props.removeCollectionFromPlace({
-        variables: {
-          id: this.props.place.id,
-          collectionIds
-        }
-      }).then(places => {
-        let placeData = clone(this.state.placeData);
-        placeData.bookmark = false;
-        placeData.collectionIds = collectionIds;
-        this.setState({ placeData, collectionModal: false });
+    let collectionIds = clone(this.state.placeData.collectionIds);
+    collectionIds = collectionIds.filter(id => !this.state.collections.map(collection => collection.id).includes(id));
+    this.props.removeCollectionFromPlace({
+      variables: {
+        id: this.state.currentPlaceID,
+        collectionIds
+      }
+    }).then(places => {
+      let placeData = clone(this.state.placeData);
+      placeData.bookmark = false;
+      placeData.collectionIds = collectionIds;
+      this.setState({ placeData, collectionModal: false });
 
-        if (this.props.onPlaceUpdate) {
-          let place = clone(this.props.place);
-          place.bookmark = false;
-          place.collectionIds = collectionIds;
-          this.props.onPlaceUpdate(place);
-        }
-      });
-    }
+      if (this.props.onPlaceUpdate) {
+        let place = clone(this.props.place);
+        place.bookmark = false;
+        place.collectionIds = collectionIds;
+        this.props.onPlaceUpdate(place);
+      }
+    });
   }
   onNaviagtorEvent(event) {
     if (event.type == 'NavBarButtonPress') {
@@ -299,10 +320,10 @@ class PlaceProfile extends Component {
     });
   }
   onRefresh = collections => {
-    if(this.props.place)
+    if(collections)
     {
       this.setState({ collections: collections.filter(collection => collection.type === 'USER') });
-      if (this.props.onCollectionUpdate) this.props.onCollectionsUpdate(collections);
+      if (this.props.onCollectionsUpdate) this.props.onCollectionsUpdate(collections);
     }
   }
   _renderItem(item) {
@@ -511,14 +532,7 @@ class PlaceProfile extends Component {
                 ))
               }
               </View>
-            ):(
-              <View style={styles.Collections}>
-                <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
-                <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
-                <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
-                <TitleImage style={styles.collection} uri={'https://placeimg.com/640/480/any'} radius={8} title={'abc'} vAlign={'center'} hAlign={'center'} titleStyle={styles.collectionItemTitle} />
-              </View>
-            )
+            ):null
           }
           
         </Modal>

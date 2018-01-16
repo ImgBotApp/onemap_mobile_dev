@@ -66,9 +66,8 @@
 		A0998F471FFC9FD1007189AB /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0998F461FFC9FC7007189AB /* libRCTFBSDK.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B715E3425D7D9DD0A2C0E193 /* libPods-OneMapFinal-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B312411CCB27BD9322BE8FA /* libPods-OneMapFinal-tvOSTests.a */; };
-		D20A390C2006492A0001B383 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D20A38F0200648FC0001B383 /* libRCTVideo.a */; };
 		D230257B200A826C009FEC74 /* Info_AppStore.plist in Resources */ = {isa = PBXBuildFile; fileRef = D230257A200A826C009FEC74 /* Info_AppStore.plist */; };
-		D2D2074B200616AC0058E273 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2D2072C2006168E0058E273 /* libRCTOrientation.a */; };
+		D2EAD118200DAECC00C2C950 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2D2072C2006168E0058E273 /* libRCTOrientation.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -504,8 +503,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D20A390C2006492A0001B383 /* libRCTVideo.a in Frameworks */,
-				D2D2074B200616AC0058E273 /* libRCTOrientation.a in Frameworks */,
+				D2EAD118200DAECC00C2C950 /* libRCTOrientation.a in Frameworks */,
 				A0535CD620007E1F008BF887 /* libRNGooglePlaces.a in Frameworks */,
 				A0998F471FFC9FD1007189AB /* libRCTFBSDK.a in Frameworks */,
 				A01BBED21FF4CD8F001960B6 /* libRNVectorIcons.a in Frameworks */,
@@ -1806,7 +1804,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = E7J65AP6DQ;
+				DEVELOPMENT_TEAM = GVXQ56F8Z7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1848,7 +1846,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = E7J65AP6DQ;
+				DEVELOPMENT_TEAM = GVXQ56F8Z7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

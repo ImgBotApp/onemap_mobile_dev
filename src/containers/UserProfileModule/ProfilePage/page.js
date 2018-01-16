@@ -291,11 +291,10 @@ class ProfileComponent extends Component {
     })
   }
   onStoryItem = (id) => {
-    
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       title: 'My Stories',
-      passProps: { placeId: id },
+      passProps: { placeID: id },
       navigatorbuttons: {
         rightButtons: [
           {
