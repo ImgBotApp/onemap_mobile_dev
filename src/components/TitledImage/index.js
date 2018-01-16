@@ -54,6 +54,7 @@ class TitledImage extends Component {
     return (
       <TouchableOpacity
         style={[this.props.style, styles.container, { justifyContent: this.state.vAlign, alignItems: this.state.hAlign }]}
+        disabled={this.props.disabled}
         onPress={this.props.onPress ? this.props.onPress : null}
         onLongPress={this.props.onLongPress ? this.props.onLongPress : null}
       >
