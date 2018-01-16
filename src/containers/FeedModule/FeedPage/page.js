@@ -327,16 +327,11 @@ class FeedPage extends Component {
       collectionModal: false
     })
     this.props.navigator.push({
-      screen: SCREEN.FEED_ALL_COLLECTION,
-      title: I18n.t('COLLECTION_TITLE'),
-      animated: true,
-      navigatorStyle: {
-        navBarTextColor: DARK_GRAY_COLOR,
-        navBarTextFontSize: SMALL_FONT_SIZE
-      },
+      screen: SCREEN.FEED_NEW_COLLECTION,
+      title: I18n.t('COLLECTION_CREATE_NEW'),
       passProps: {
-        collections: this.state.collections,
-        refresh: this.onRefresh
+        refresh: this.onRefresh,
+        collections: this.state.collections
       }
     })
   }
@@ -404,12 +399,12 @@ class FeedPage extends Component {
           onClosed={() => this.setState({ collectionModal: false })}
         >
           <View style={styles.modalContainer}>
-            <TouchableOpacity onPress={() => this.addBookmarks()}>
-              <Text style={styles.plusButton}>{'Done'}</Text>
-            </TouchableOpacity>
-            <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
             <TouchableOpacity onPress={this.onAddCollection}>
               <Text style={styles.plusButton}>{'+'}</Text>
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
+            <TouchableOpacity onPress={() => this.addBookmarks()}>
+              <Text style={styles.plusButton}>{'Done'}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.separatebar}></View>

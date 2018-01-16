@@ -97,3 +97,17 @@ export const GET_COLLECTION_WITH_PLACES = gql`
     }
   }
 `
+
+export const REMOVE_PLACE_FROM_COLLECTION = gql`
+  mutation(
+    $id: ID!,
+    $placeIds: [ID!]
+  ) {
+      updateCollection(
+        id: $id,
+        placesIds: $placeIds
+      ) {
+        id
+      }
+    }
+`

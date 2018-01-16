@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TextInput, Switch, TouchableOpacity } from 'react-native';
 import I18n from '@language'
 import styles from './styles'
-import { getDeviceWidth, getDeviceHeight } from '@global'
+import { clone, getDeviceWidth, getDeviceHeight } from '@global'
 import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
 import Modal from 'react-native-modalbox';
 // create a component
@@ -41,17 +41,33 @@ class NewCollection extends Component {
       }
       if (event.id == 'add') {
         if (this.state.name) {
-          this.props.add({
+          this.createUserCollection({
             name: this.state.name,
             privacy: this.state.isPublic,
             pictureURL: ''
           });
-          this.props.navigator.pop();
         } else {
           alert('Please input collection name!')
         }
       }
     }
+  }
+  createUserCollection(data) {
+    this.props.createUserCollection({
+      variables: {
+        ...data,
+        userId: this.props.user.id,
+      }
+    }).then(collection => {
+      let collections = clone(this.props.collections);
+      collections.push({
+        id: collection.data.createCollection.id,
+        type: 'USER',
+        ...data
+      });
+      if (this.props.refresh) this.props.refresh(collections);
+      this.props.navigator.pop();
+    })
   }
   onValueChange = (val) => {
     this.setState({

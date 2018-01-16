@@ -52,7 +52,8 @@ class AllCollections extends Component {
           screen: SCREEN.FEED_NEW_COLLECTION,
           title: I18n.t('COLLECTION_CREATE_NEW'),
           passProps: {
-            add: this.createUserCollection
+            refresh: this.onRefresh,
+            collections: this.state.collections
           }
         })
       }
@@ -77,22 +78,9 @@ class AllCollections extends Component {
       ]
     )
   }
-  createUserCollection = (data) => {
-    this.props.createUserCollection({
-      variables: {
-        ...data,
-        userId: this.props.user.id,
-      }
-    }).then(collection => {
-      let collections = clone(this.state.collections);
-      collections.push({
-        id: collection.data.createCollection.id,
-        type: 'USER',
-        ...data
-      });
-      this.setState({ collections });
-      this.props.refresh(collections);
-    })
+  onRefresh = (collections) => {
+    this.setState({ collections });
+    if (this.props.refresh) this.props.refresh(collections);
   }
   deleteUserCollection(id) {
     this.props.deleteUserCollection({
@@ -101,8 +89,7 @@ class AllCollections extends Component {
       }
     }).then(collection => {
       let collections = this.state.collections.filter(item => item.id !== id);
-      this.setState({ collections });
-      this.props.refresh(collections);
+      this.onRefresh(collections);
     })
   }
   render() {

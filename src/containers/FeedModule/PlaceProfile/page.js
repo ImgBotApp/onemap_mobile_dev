@@ -169,7 +169,7 @@ class PlaceProfile extends Component {
           type: 'add'
         }
       ],
-      collections: props.collections,
+      collections: props.collections ? props.collections : [],
       selectedCollections: []
     }
     console.log(this.props.user)
@@ -480,12 +480,12 @@ class PlaceProfile extends Component {
           onClosed={() => this.setState({ collectionModal: false })}
         >
           <View style={styles.modalContainer}>
-            <TouchableOpacity onPress={() => this.addBookmarks()}>
-              <Text style={styles.plusButton}>{'Done'}</Text>
+          <TouchableOpacity onPress={this.onAddCollection}>
+              <Text style={styles.plusButton}>{'+'}</Text>
             </TouchableOpacity>
             <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
-            <TouchableOpacity onPress={this.onAddCollection}>
-              <Text style={styles.plusButton}>{'+'}</Text>
+            <TouchableOpacity onPress={() => this.addBookmarks()}>
+              <Text style={styles.plusButton}>{'Done'}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.separatebar}></View>

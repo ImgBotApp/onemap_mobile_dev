@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import Tabs from 'react-native-tabs';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
@@ -9,6 +9,7 @@ import styles from './styles'
 import { getDeviceWidth, getDeviceHeight } from '@global'
 import { DARK_GRAY_COLOR } from '../../../theme/colors';
 import * as SCREEN from '../../../global/screenName'
+import { clone } from '@global';
 import I18n from '@language'
 
 import { client } from '@root/main'
@@ -90,26 +91,47 @@ class Collections extends Component {
     //   animated: true
     // })
   }
+  onRemovePlace(data) {
+    Alert.alert(
+      data.item.address,
+      'Do you want to remove this place?',
+      [
+        { text: 'OK', onPress: () => this.deletePlace(data) },
+        { text: 'Cancel', style: 'cancel' }
+      ]
+    )
+  }
+  deletePlace(data) {
+    let places = clone(this.state.places);
+    places.splice(data.index, 1);
+    this.props.removePlace({
+      variables: {
+        id: this.props.collection.id,
+        placeIds: places.map((item) => item.id)
+      }
+    }).then(collections => {
+      this.setState({ places });
+    })
+  }
   _renderStoryItem(data, mode) {
     const { item, index } = data;
     if (index % 3 == mode)
       return (
-        <View>
-          <TouchableOpacity
-            onPress={() => this.onCollectionItem(item)}
-          >
-            <AutoHeightTitledImage
-              uri={item.pictureURL ? item.pictureURL[0] : null}
-              width={getDeviceWidth(343)}
-              title={item.address}
-              vAlign={'center'}
-              radius={8}
-              hAlign={'left'}
-              titleStyle={styles.storyItemTitle}
-              style={{ marginBottom: 10 }}
-            />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          onPress={() => this.onCollectionItem(item)}
+          onLongPress={() => this.onRemovePlace(data)}
+        >
+          <AutoHeightTitledImage
+            uri={item.pictureURL ? item.pictureURL[0] : null}
+            width={getDeviceWidth(343)}
+            title={item.address}
+            vAlign={'center'}
+            radius={8}
+            hAlign={'left'}
+            titleStyle={styles.storyItemTitle}
+            style={{ marginBottom: 10 }}
+          />
+        </TouchableOpacity>
       )
   }
   _keyExtractor = (item, index) => index;
@@ -121,9 +143,7 @@ class Collections extends Component {
           <FlatList
             data={this.state.places}
             keyExtractor={this._keyExtractor}
-            renderItem={data => {
-              return this._renderStoryItem(data, 0)
-            }}
+            renderItem={data => this._renderStoryItem(data, 0)}
           />
         </View>
 
@@ -131,18 +151,14 @@ class Collections extends Component {
           <FlatList
             data={this.state.places}
             keyExtractor={this._keyExtractor}
-            renderItem={data => {
-              return this._renderStoryItem(data, 1)
-            }}
+            renderItem={data => this._renderStoryItem(data, 1)}
           />
         </View>
         <View style={styles.subStory}>
           <FlatList
             data={this.state.places}
             keyExtractor={this._keyExtractor}
-            renderItem={data => {
-              return this._renderStoryItem(data, 2)
-            }}
+            renderItem={data => this._renderStoryItem(data, 2)}
           />
         </View>
       </View>
