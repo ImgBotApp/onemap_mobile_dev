@@ -85,7 +85,7 @@ class FeedPage extends Component {
             updated: new Date(place.updatedAt)
           },
           feedTitle: place.placeName,
-          images: place.pictureURL.map(uri => { return { uri } }),
+          images: place.pictureURL ? place.pictureURL.map(uri => { return { uri } }) : [],
           description: place.description || '',
           bookmark: this.isBookmarked(place),
           collectionIds: place.collections.map(collection => collection.id)//will be removed later
