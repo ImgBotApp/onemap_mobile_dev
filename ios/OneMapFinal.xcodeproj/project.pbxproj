@@ -53,7 +53,7 @@
 		8426B87120029C6000C7E6EA /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B86D20029C5F00C7E6EA /* FBSDKShareKit.framework */; };
 		847F2A1FFDA04766B5F68678 /* Comfortaa-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4A8C48302E5C4968BC89C4FC /* Comfortaa-Light.ttf */; };
 		84A88222200FCAC200D809ED /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84925E5B200F82F7001FC858 /* libRCTVideo.a */; };
-		84F71638200F7DA5003B5A10 /* Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F71637200F7DA5003B5A10 /* Orientation.m */; };
+		84A8824F200FD0A200D809ED /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F71617200F7D7C003B5A10 /* libRCTOrientation.a */; };
 		8FC5025D5788448A88BCAD8C /* libRNGooglePlaces.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5B69B160AF840CFB6567F52 /* libRNGooglePlaces.a */; };
 		90947AB518734F07A6F98233 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF0AE75313849B7BA7284F5 /* libAirMaps.a */; };
 		90A333F21A3C49748C9983A8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22790D010FC445B89202A198 /* FontAwesome.ttf */; };
@@ -481,8 +481,6 @@
 		8481345D66BD4268B44E6FBA /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		84925E55200F82F6001FC858 /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
 		84F71604200F7D7C003B5A10 /* RCTOrientation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTOrientation.xcodeproj; path = "../node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj"; sourceTree = "<group>"; };
-		84F71636200F7DA5003B5A10 /* Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Orientation.h; path = "../node_modules/react-native-orientation/iOS/RCTOrientation/Orientation.h"; sourceTree = "<group>"; };
-		84F71637200F7DA5003B5A10 /* Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Orientation.m; path = "../node_modules/react-native-orientation/iOS/RCTOrientation/Orientation.m"; sourceTree = "<group>"; };
 		90AF79317F26460BA96C455C /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		91A21A0C319F4291AEDA13BA /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		96D7535801464E0B823537E1 /* libRNCardView.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCardView.a; sourceTree = "<group>"; };
@@ -553,6 +551,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84A8824F200FD0A200D809ED /* libRCTOrientation.a in Frameworks */,
 				84A88222200FCAC200D809ED /* libRCTVideo.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
@@ -699,8 +698,6 @@
 		13B07FAE1A68108700A75B9A /* OneMapFinal */ = {
 			isa = PBXGroup;
 			children = (
-				84F71636200F7DA5003B5A10 /* Orientation.h */,
-				84F71637200F7DA5003B5A10 /* Orientation.m */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -1713,7 +1710,6 @@
 				A07DFE982003C13900B6657D /* RCTConvert+GMSMapViewType.m in Sources */,
 				A07DFE972003C13900B6657D /* AIRGoogleMapPolygonManager.m in Sources */,
 				A07DFE962003C13900B6657D /* DummyView.m in Sources */,
-				84F71638200F7DA5003B5A10 /* Orientation.m in Sources */,
 				A07DFE8C2003C13900B6657D /* AIRGoogleMapCalloutManager.m in Sources */,
 				A07DFE992003C13900B6657D /* AIRGMSMarker.m in Sources */,
 				A07DFE902003C13900B6657D /* AIRGMSPolygon.m in Sources */,
@@ -1878,6 +1874,7 @@
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1920,6 +1917,7 @@
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
