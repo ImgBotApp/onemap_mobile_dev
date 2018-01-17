@@ -184,7 +184,7 @@ class PlaceProfile extends Component {
         id: this.state.currentPlaceID
       }
     }).then((place) => {
-      let data = place.data.Place
+      let data = place.data.Place;
       this.setState({
         placeData: {
           title: data.placeName,
@@ -213,13 +213,12 @@ class PlaceProfile extends Component {
           },
           keywords: data.keywords && data.keywords.map((item) => item.name),
           comments: [],
-          bookmark: this.props.place?this.props.place.bookmark:false,
-          collectionIds: this.props.place?this.props.place.collectionIds:null
+          bookmark: this.props.place ? this.props.place.bookmark : false,
+          collectionIds: this.props.place ? this.props.place.collectionIds : null
         }
       })
     });
-    if(this.state.collections == null)
-    {
+    if (this.state.collections == null) {
       //this.getUserCollections();
       this.getMyCollections();
     }
@@ -357,7 +356,7 @@ class PlaceProfile extends Component {
   render() {
     return (
       <View style={styles.container}>
-      
+
         <ScrollView style={styles.container}>
 
           {/* Title */}
@@ -478,16 +477,16 @@ class PlaceProfile extends Component {
           </View>
 
         </ScrollView>
-        
+
         <Overlay visible={this.state.sliderShow} closeOnTouchOutside animationType="zoomIn"
-              containerStyle={{backgroundColor: 'rgba(0, 0, 0, 0.9)',padding:0,flex:1,justifyContent: 'center',alignItems:"center"}}
-              childrenWrapperStyle={{backgroundColor: 'rgba(0, 0, 0, 0)',padding:0,justifyContent: 'center'}}
-              onClose = {() => this.setState({ sliderShow: false })}
-              supportedOrientations={['portrait', 'landscape']}>
-            <ImageSliderComponent
+          containerStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.9)', padding: 0, flex: 1, justifyContent: 'center', alignItems: "center" }}
+          childrenWrapperStyle={{ backgroundColor: 'rgba(0, 0, 0, 0)', padding: 0, justifyContent: 'center' }}
+          onClose={() => this.setState({ sliderShow: false })}
+          supportedOrientations={['portrait', 'landscape']}>
+          <ImageSliderComponent
             data={this.state.placeData.image}
-            onPress = {() => this.setState({ sliderShow: false })}
-            />
+            onPress={() => this.setState({ sliderShow: false })}
+          />
         </Overlay>
         {/* Modal Collection */}
         <Modal
@@ -501,7 +500,7 @@ class PlaceProfile extends Component {
           onClosed={() => this.setState({ collectionModal: false })}
         >
           <View style={styles.modalContainer}>
-          <TouchableOpacity onPress={this.onAddCollection}>
+            <TouchableOpacity onPress={this.onAddCollection}>
               <Text style={styles.plusButton}>{'+'}</Text>
             </TouchableOpacity>
             <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>

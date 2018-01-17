@@ -129,58 +129,56 @@ class SearchPage extends Component {
   }
   onPlaceProfile(placeID) {
     var ret;
-    RNPlaces.lookUpPlaceByID(placeID).then((result) => 
-      {
-        ret = result;
-        return client.query({
-          query: GET_PLACES_FROM_GOOGLEId,
+    RNPlaces.lookUpPlaceByID(placeID).then((result) => {
+      ret = result;
+      return client.query({
+        query: GET_PLACES_FROM_GOOGLEId,
+        variables: {
+          sourceId: placeID
+        },
+      })
+    }
+    ).then(place => {
+      if (!place.data.allPlaces || place.data.allPlaces.length <= 0) {
+        return this.props.createPlace({
           variables: {
-            sourceId: placeID
+            createdById: this.props.user.id,
+            source: 'GOOGLE_PLACE',// # GOOGLE_PLACE or ONEMAP
+            status: 'ENABLE',// # ENABLE or DISABLE
+            createSide: 'FRONTEND',// # FRONTEND or BACKEND
+            description: '',
+            sourceId: placeID,// # GOOGLE place id if source is GOOGLE_PLACE
+            placeName: ret.name,
+            locationLat: ret.latitude,
+            locationLong: ret.longitude,
+            //addressAreaDistrict: String
+            addressCityTown: ret.addressComponents ? ret.addressComponents.administrative_area_level_2 : '',
+            //addressStateProvince: String
+            addressCountry: ret.addressComponents ? ret.addressComponents.country : '',
+            addressPostalCode: ret.addressComponents ? ret.addressComponents.postal_code : '',
+            //addressStreet: String
+            address: ret.address,
+            phoneNumber: ret.phoneNumber || '',
+            website: ret.website || '',
+            facebook: ret.facebook || '',
+            //line: String
+            //openingHrs: String
+            pictureURL: [],// # leave blank [] if no picture
+            //placeOwner: String
           },
         })
-      }
-    ).then( place => 
-      {
-        if ( !place.data.allPlaces || place.data.allPlaces.length <= 0 ) {
-          return this.props.createPlace({
-            variables: {
-                createdById: this.props.user.id,
-                source: 'GOOGLE_PLACE',// # GOOGLE_PLACE or ONEMAP
-                status: 'ENABLE',// # ENABLE or DISABLE
-                createSide: 'FRONTEND',// # FRONTEND or BACKEND
-                description: '',
-                sourceId: placeID,// # GOOGLE place id if source is GOOGLE_PLACE
-                placeName: ret.name, 
-                locationLat: ret.latitude, 
-                locationLong: ret.longitude, 
-                //addressAreaDistrict: String
-                addressCityTown: ret.addressComponents ? ret.addressComponents.administrative_area_level_2 : '',
-                //addressStateProvince: String
-                addressCountry: ret.addressComponents ? ret.addressComponents.country : '',
-                addressPostalCode: ret.addressComponents ? ret.addressComponents.postal_code : '',
-                //addressStreet: String
-                address: ret.address, 
-                phoneNumber: ret.phoneNumber || '', 
-                website: ret.website || '',
-                facebook: ret.facebook || '',
-                //line: String
-                //openingHrs: String
-                pictureURL: [],// # leave blank [] if no picture
-                //placeOwner: String
-            },
-            })
-          } else {
-            return {
-              data: {
-                createPlace: {
-                  id: place.data.allPlaces[0].id
-                }
-              }
+      } else {
+        return {
+          data: {
+            createPlace: {
+              id: place.data.allPlaces[0].id
             }
+          }
+        }
       }
     }
-    ).then((result) => {
-      client.resetStore();
+      ).then((result) => {
+        client.resetStore();
         this.props.navigator.push({
           screen: SCREEN.PLACE_PROFILE_PAGE,
           title: I18n.t('PLACE_TITLE'),
