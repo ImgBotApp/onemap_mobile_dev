@@ -47,6 +47,12 @@ export const PLACES_PAGINATED = gql`
         username
         photoURL
       }
+      collections {
+        id
+        user {
+          id
+        }
+      }
     }
   }
 `

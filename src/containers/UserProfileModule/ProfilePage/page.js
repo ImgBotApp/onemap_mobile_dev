@@ -17,9 +17,6 @@ import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
 import { SMALL_FONT_SIZE } from '@theme/fonts';
 
-import { client } from '@root/main'
-import { GET_MY_COLLECTIONS } from '@graphql/collections'
-
 const data = {
   id: 'test',
   createdAt: new Date(),
@@ -99,12 +96,8 @@ class ProfileComponent extends Component {
     this.state = {
       ...props.user,
       displayName: props.user.displayName || props.user.firstName + " " + props.user.lastName,
-      collections: []
     }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
-  }
-  componentWillMount() {
-    this.getMyCollections();
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -127,16 +120,6 @@ class ProfileComponent extends Component {
       }
     }
   }
-  getMyCollections = () => {
-    client.query({
-      query: GET_MY_COLLECTIONS,
-      variables: {
-        id: this.props.user.id
-      }
-    }).then(collections => {
-      this.setState({ collections: collections.data.allCollections });
-    })
-  }
   onEditProfile() {
     this.props.navigator.push({
       screen: SCREEN.USER_ACCOUNT_SETTING,
@@ -147,9 +130,6 @@ class ProfileComponent extends Component {
         navBarTextFontFamily: 'Comfortaa-Regular'
       }
     })
-  }
-  onRefresh = collections => {
-    this.setState({collections});
   }
   render() {
     const { data: { loading, error, allStories }, GetFollowingList, GetFollowersList } = this.props
@@ -284,10 +264,6 @@ class ProfileComponent extends Component {
       screen: SCREEN.FEED_ALL_COLLECTION,
       title: I18n.t('COLLECTION_TITLE'),
       animated: true,
-      passProps: {
-        collections: this.state.collections,
-        refresh: this.onRefresh
-      }
     })
   }
   onStoryItem = (id) => {

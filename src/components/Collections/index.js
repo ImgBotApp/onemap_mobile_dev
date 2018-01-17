@@ -17,7 +17,7 @@ class Collections extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.collections.length > 2 && nextProps.collections !== this.props.collections) {
+    if (nextProps.collections && nextProps.collections.length > 2 && nextProps.collections !== this.props.collections) {
       let collections = {};
       collections.hearted = nextProps.collections.filter(item => item.type === 'HEARTED')[0];
       collections.checkedin = nextProps.collections.filter(item => item.type == 'CHECKED_IN')[0];

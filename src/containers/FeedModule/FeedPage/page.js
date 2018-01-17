@@ -1,7 +1,8 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-import EvilIcons from 'react-native-vector-icons/EvilIcons'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import IonIcons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modalbox';
 
 import SuggestUser from '@components/SuggestUser'
@@ -43,7 +44,7 @@ class FeedPage extends Component {
       },
       loading: false,
       refreshing: false,
-      collections: []
+      selectedCollections: []
     };
     this.onEndReached = this.onEndReached.bind(this)
     this.onRefresh = this.onRefresh.bind(this)
@@ -52,36 +53,48 @@ class FeedPage extends Component {
     client.query({
       query: SUGGEST_USERS
     }).then((users) => {
-      this.setState({
-        items: [{
-          id: 'a1',
-          type: 'users',
-          data: users.data.allUsers.map((user) => {
-            return {
-              id: user.username,
-              name: user.displayName,
-              uri: user.photoURL,
-              identify: user.id
-            }
-          })
-        }]
-      })
+      this.suggestUsers = {
+        id: 'a1',
+        type: 'users',
+        data: users.data.allUsers.map((user) => {
+          return {
+            id: user.username,
+            name: user.displayName,
+            uri: user.photoURL,
+            identify: user.id
+          }
+        })
+      };
     })
-    //this.fetchFeedItems();
     this.getMyCollections();
   }
   componentWillReceiveProps(nextProps) {
-    // client.query({
-    //   query: PAGINATED_PLACES,
-    //   variables: {
-    //     first: 10,
-    //     skip: this.state.skip
-    //   }
-    // }).then((places) => {
-    //   console.log(places)
-    // })
+    if (!this.props.placeUpdated && nextProps.placeUpdated) {
+      this.onRefresh();
+      // this.fetchFeedItems();
+      this.props.placeUpdate(false);
+    } else if (nextProps.data.allPlaces != this.props.data.allPlaces) {
+      let graphcoolData = nextProps.data.allPlaces.map((place) => {
+        return {
+          id: place.id,
+          type: 'item',
+          user: {
+            name: place.createdBy.username,
+            id: place.createdBy.id,
+            uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+            updated: new Date(place.updatedAt)
+          },
+          feedTitle: place.placeName,
+          images: place.pictureURL.map(uri => { return { uri } }),
+          description: place.description || '',
+          bookmark: this.isBookmarked(place),
+          collectionIds: place.collections.map(collection => collection.id)//will be removed later
+        }
+      });
+      this.setState({ items: [this.suggestUsers, ...graphcoolData] });
+    }
   }
-  fetchFeedItems = () => {
+  fetchFeedItems = () => {//unused
     client.query({
       query: PLACES_PAGINATED,
       variables: {
@@ -89,7 +102,6 @@ class FeedPage extends Component {
         skip: this.state.skip
       }
     }).then((places) => {
-      console.log(places)
       items = places.data.allPlaces.map((place) => {
         return {
           id: place.id,
@@ -104,12 +116,12 @@ class FeedPage extends Component {
           images: place.pictureURL.map(item => { return { uri: item } }),
           place: '',
           description: place.description || '',
-          bookmark: false,
+          bookmark: this.isBookmarked(place),
           collectionIds: place.collections.map(collection => collection.id)//will be removed later
         }
       });
       this.setState({
-        items: [...this.state.items, ...items],
+        items: [this.suggestUsers, ...items],
         loading: false,
         refreshing: false
       })
@@ -128,26 +140,34 @@ class FeedPage extends Component {
     });
     return marked;
   }
-  addBookmark(collection) {
-    let collectionIds = clone(this.state.selectedPlace.collectionIds);
-    collectionIds.push(collection.id);
+  addBookmark(id) {
+    let tmp = this.state.selectedCollections;
+    if (this.state.selectedCollections.includes(id)) {
+      tmp.splice(tmp.indexOf(id), 1);
+    } else {
+      tmp.push(id);
+    }
+    this.setState({ selectedCollections: tmp });
+  }
+  addBookmarks() {
     this.props.addCollectionToPlace({
       variables: {
         id: this.state.selectedPlace.id,
-        collectionIds
+        collectionIds: this.state.selectedCollections
       }
     }).then(places => {
       let tmpPlace = this.state.selectedPlace;
       tmpPlace.bookmark = true;
-      tmpPlace.collectionIds = collectionIds;
+      tmpPlace.collectionIds = this.state.selectedCollections;
       let items = clone(this.state.items);
       items[this.state.selectedPlaceIndex] = tmpPlace;
       this.setState({ items, collectionModal: false });
+      client.resetStore();
     });
   }
   removeBookmark(index) {
     let collectionIds = clone(this.state.items[index].collectionIds);
-    collectionIds = collectionIds.filter(id => !this.state.collections.map(collection => collection.id).includes(id));
+    collectionIds = collectionIds.filter(id => !this.props.collections.map(collection => collection.id).includes(id));
     this.props.removeCollectionFromPlace({
       variables: {
         id: this.state.items[index].id,
@@ -157,18 +177,9 @@ class FeedPage extends Component {
       let items = clone(this.state.items);
       items[index].bookmark = false;
       items[index].collectionIds = collectionIds;
-      this.setState({ items, collectionModal: false });
+      this.setState({ items, collectionModal: false, selectedCollections: [] });
+      client.resetStore();
     });
-  }
-  getUserCollections = () => {
-    client.query({
-      query: GET_USER_COLLECTIONS,
-      variables: {
-        id: this.props.user.id
-      }
-    }).then(collections => {
-      this.setState({ collections: collections.data.allCollections });
-    })
   }
   getMyCollections = () => {
     client.query({
@@ -177,7 +188,7 @@ class FeedPage extends Component {
         id: this.props.user.id
       }
     }).then(collections => {
-      this.setState({ collections: collections.data.allCollections });
+      this.props.saveCollections(collections.data.allCollections);
     })
   }
   closeSuggest() {
@@ -321,9 +332,7 @@ class FeedPage extends Component {
       animated: true,
       passProps: {
         place: data,
-        collections: this.state.collections,
         onPlaceUpdate: place => this.onPlaceUpdate(place, index),
-        onCollectionsUpdate: collections => this.setState({ collections })
       }
     })
   }
@@ -341,6 +350,7 @@ class FeedPage extends Component {
       this.setState({
         selectedPlace: place,
         selectedPlaceIndex: index,
+        selectedCollections: [],
         collectionModal: true,
       });
     }
@@ -350,17 +360,8 @@ class FeedPage extends Component {
       collectionModal: false
     })
     this.props.navigator.push({
-      screen: SCREEN.FEED_ALL_COLLECTION,
-      title: I18n.t('COLLECTION_TITLE'),
-      animated: true,
-      navigatorStyle: {
-        navBarTextColor: DARK_GRAY_COLOR,
-        navBarTextFontSize: SMALL_FONT_SIZE
-      },
-      passProps: {
-        collections: this.state.collections,
-        refresh: this.onRefreshCollection
-      }
+      screen: SCREEN.FEED_NEW_COLLECTION,
+      title: I18n.t('COLLECTION_CREATE_NEW'),
     })
   }
   handlerefresh = () => {
@@ -373,9 +374,6 @@ class FeedPage extends Component {
         refreshing: false
       })
     })
-  }
-  onRefreshCollection = collections => {
-    this.setState({ collections: collections.filter(collection => collection.type === 'USER') });
   }
   renderFooter = () => {
     // if(!this.state.loading) return null;
@@ -390,7 +388,7 @@ class FeedPage extends Component {
       </View>
     )
   };
-  handleLoadMore = () => {
+  handleLoadMore = () => {//unused
     this.setState({
       skip: this.state.skip + 10,
       refreshing: true
@@ -402,32 +400,12 @@ class FeedPage extends Component {
     })
   }
   render() {
-    let graphcoolData = [];
-    if (!this.props.data.loading) {
-      graphcoolData = this.props.data.allPlaces.map((place) => {
-        return {
-          id: place.id,
-          type: 'item',
-          user: {
-            name: place.placeName,
-            uri: place.pictureURL ? place.pictureURL[0] : '',
-            updated: new Date(place.updatedAt)
-          },
-          feedTitle: place.placeName,
-          images: place.pictureURL ? place.pictureURL.map((uri) => {
-            return { uri }
-          }) : [],
-          place: place.placeName,
-          description: place.description
-        }
-      });
-    }
     return (
       <View style={styles.container}>
         <FlatList
-          keyExtractor={(item, index) => item.id}
+          keyExtractor={(item, index) => index}
           style={{ width: '100%', height: '100%' }}
-          data={[...this.state.items, ...graphcoolData]}
+          data={this.state.items}
           initialNumToRender={8}
           renderItem={this._renderItem.bind(this)}
           onEndReachedThreshold={1}
@@ -446,29 +424,39 @@ class FeedPage extends Component {
           onClosed={() => this.setState({ collectionModal: false })}
         >
           <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
             <TouchableOpacity onPress={this.onAddCollection}>
               <Text style={styles.plusButton}>{'+'}</Text>
             </TouchableOpacity>
+            <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
+            <TouchableOpacity disabled={!this.state.selectedCollections.length} onPress={() => this.addBookmarks()}>
+              <Text style={styles.plusButton}>{'Done'}</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.separatebar}></View>
-          <View style={styles.Collections}>
-            {this.state.collections
+          <ScrollView horizontal={true} style={styles.Collections}>
+            {this.props.collections
               .filter(collection => collection.type === 'USER')
               .map((collection, index) => (
-                <TitleImage
-                  key={index}
-                  style={styles.collection}
-                  uri={collection.pictureURL ? collection.pictureURL : 'https://placeimg.com/640/480/any'}
-                  title={collection.name}
-                  radius={8}
-                  vAlign={'center'}
-                  hAlign={'center'}
-                  titleStyle={styles.collectionItemTitle}
-                  onPress={() => this.addBookmark(collection)}
-                />
+                <TouchableOpacity key={index} style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>
+                  <TitleImage
+                    style={styles.collection}
+                    uri={collection.pictureURL ? collection.pictureURL : 'https://placeimg.com/640/480/any'}
+                    title={collection.name}
+                    radius={8}
+                    vAlign={'center'}
+                    hAlign={'center'}
+                    titleStyle={styles.collectionItemTitle}
+                    disabled={true}
+                  />
+                  {this.state.selectedCollections.includes(collection.id) &&
+                    <IonIcons
+                      name='ios-checkmark-circle'
+                      size={30}
+                      style={{ position: 'absolute', backgroundColor: 'transparent' }}
+                    />}
+                </TouchableOpacity>
               ))}
-          </View>
+          </ScrollView>
         </Modal>
       </View>
     );

@@ -83,8 +83,8 @@ export const DELETE_USER_COLLECTION = gql`
 Get a collection by id with related places
 */
 export const GET_COLLECTION_WITH_PLACES = gql`
-query GetCollectionWithPlaces($collectionId: ID!, $first: Int, $skip: Int) {
-  Collection(id: $collectionId) {
+query GetCollectionWithPlaces($id: ID!, $first: Int, $skip: Int) {
+  Collection(id: $id) {
     id
     name
     privacy
@@ -121,3 +121,16 @@ query GetCollectionWithPlaces($collectionId: ID!, $first: Int, $skip: Int) {
 }
 `
 
+export const REMOVE_PLACE_FROM_COLLECTION = gql`
+  mutation(
+    $id: ID!,
+    $placeIds: [ID!]
+  ) {
+      updateCollection(
+        id: $id,
+        placesIds: $placeIds
+      ) {
+        id
+      }
+    }
+`

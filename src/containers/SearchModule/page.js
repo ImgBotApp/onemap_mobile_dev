@@ -102,10 +102,10 @@ class SearchPage extends Component {
               </View>
             </View>
           </ScrollView>
-          { this.state.result == true ? <SearchResult keyword={this.state.keyword} 
+          {this.state.result == true ? <SearchResult keyword={this.state.keyword}
             onUser={this.onUserItem.bind(this)}
             onKeywordItem={this.onKeywordItem.bind(this)}
-            onPlace={this.onPlaceProfile.bind(this)}/> : null }
+            onPlace={this.onPlaceProfile.bind(this)} /> : null}
         </View>
       </View>
     );
@@ -186,7 +186,7 @@ class SearchPage extends Component {
           title: I18n.t('PLACE_TITLE'),
           animated: true,
           passProps: {
-            placeID: result.data.createPlace.id
+            place: result.data.createPlace
           }
         })
       }).catch((error) => console.log(error));
@@ -195,7 +195,7 @@ class SearchPage extends Component {
     this.setState({
       keyword: val
     })
-    if ( val.length == 0) return this.setState({result: false})
+    if (val.length == 0) return this.setState({ result: false })
     else return this.setState({ result: true })
   }
   onDismissResult() {

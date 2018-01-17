@@ -1,2 +1,4 @@
 export const INITIALIZED = 'app.INITIALIZED'
 export const ROOT_CHANGED = 'app.ROOT_CHANGED'
+export const STORE_COLLECTIONS = 'app.STORE_COLLECTIONS'
+export const PLACE_UPDATED = 'app.PLACE_UPDATED'

@@ -1,5 +1,7 @@
 import { connect } from 'react-redux' 
-
+import { graphql } from 'react-apollo'
+import { REMOVE_PLACE_FROM_COLLECTION } from '@graphql/collections'
+import { placeUpdated } from '@reducers/app/actions'
 import page from './page'
 
 function mapStateToProps(state) {
@@ -10,8 +12,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-
+    placeUpdated: data => {
+      dispatch(placeUpdated(data))
+    }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(page)
+let container = graphql(REMOVE_PLACE_FROM_COLLECTION, {name: 'removePlace'})(page);
+
+export default connect(mapStateToProps, mapDispatchToProps)(container)
