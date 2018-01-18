@@ -1,1 +1,0 @@
-export const STORE_USER_INFO = 'app.user.store.info'

@@ -1,9 +1,4 @@
-// import { AppRegistry } from 'react-native';
-// import App from './App';
+import { AppRegistry } from 'react-native';
+import App from './app/app';
 
-// AppRegistry.registerComponent('OneMapFinal', () => App);
-
-
-import App from './src/main'
-
-const app = new App()
+AppRegistry.registerComponent('onemap_mobile_dev', () => App);

@@ -45,12 +45,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.onemapfinal",
+    package = "com.onemap_mobile_dev",
 )
 
 android_resource(
     name = "res",
-    package = "com.onemapfinal",
+    package = "com.onemap_mobile_dev",
     res = "src/main/res",
 )
 
