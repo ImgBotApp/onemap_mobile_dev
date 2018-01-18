@@ -14,10 +14,12 @@ export const styles = StyleSheet.create({
   tabContainer: {
     backgroundColor: commonStyles.tabColor,
     height: commonStyles.tabBarHieght,
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     borderTopWidth: 1,
     borderColor: '#D3D3D3',
+    paddingHorizontal: commonStyles.padding,
   },
   tabIcon: {
     fontSize: 30,

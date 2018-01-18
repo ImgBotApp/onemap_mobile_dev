@@ -29,7 +29,7 @@ export default class App extends Component {
   render() {
     const scenes = Actions.create(
       <Scene key="root">
-        <Scene key="ProfilePage" initial={ true } component={ ProfilePage } hideNavBar={ true } panHandlers={null}/>
+        <Scene key="Profile" initial={ true } component={ ProfilePage } hideNavBar={ true } panHandlers={null}/>
         <Scene key="BadgeList" component={ BadgeListPage } hideNavBar={ true } panHandlers={null}/>
         <Scene key="Campaign" component={ CampaignPage } hideNavBar={ true } panHandlers={null}/>
         <Scene key="PlaceDetail" component={ PlaceDetailPage } hideNavBar={ true } panHandlers={null}/>

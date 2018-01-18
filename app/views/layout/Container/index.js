@@ -32,11 +32,37 @@ class Container extends Component {
     }
   }
 
+  selectTab(index) {
+    this.setState({selectedTab: index});
+    if (index == 'home') {
+      Actions.Profile();
+    }
+  }
+
   render() {
+    const tab = this.state.selectedTab;
     return (
       <View style={styles.container}>
         <Navigation {...this.props} />
-        <TabNavigator
+        {this.props.children}
+        <View style={styles.tabContainer}>
+          <TouchableOpacity onPress={()=>this.selectTab('home')}>
+            <FontAwesome style={tab=='home' ? styles.tabSelectIcon : styles.tabIcon}>{Icons.home}</FontAwesome>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>this.selectTab('search')}>
+            <FontAwesome style={tab=='search' ? styles.tabSelectIcon : styles.tabIcon}>{Icons.search}</FontAwesome>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>this.selectTab('plus')}>
+            <View style={styles.tabPlusIcon}><Text style={styles.tabPlusIconText}>+</Text></View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>this.selectTab('notification')}>
+            <FontAwesome style={tab=='notification' ? styles.tabSelectIcon : styles.tabIcon}>{Icons.bellO}</FontAwesome>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>this.selectTab('profile')}>
+            <FontAwesome style={tab=='profile' ? styles.tabSelectIcon : styles.tabIcon}>{Icons.userO}</FontAwesome>
+          </TouchableOpacity>
+        </View>
+        {/* <TabNavigator
           tabBarStyle={styles.tabContainer}
         >
           <TabNavigator.Item
@@ -74,7 +100,7 @@ class Container extends Component {
             onPress={() => this.setState({ selectedTab: 'profile' })}>
             <View></View>
           </TabNavigator.Item>
-        </TabNavigator>
+        </TabNavigator> */}
       </View>
     );
   }

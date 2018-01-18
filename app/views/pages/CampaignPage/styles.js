@@ -6,7 +6,7 @@ import * as commonStyles from '@global/styles/commonStyles';
 
 export const styles = StyleSheet.create({
   container: {
-    height: commonStyles.screenNormalHeight,
+    height: commonStyles.screenSubHeight,
     width: commonStyles.screenWidth,
   },
   campaignItem: {
