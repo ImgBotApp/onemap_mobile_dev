@@ -134,7 +134,7 @@ class FeedPage extends Component {
   isBookmarked(place) {
     let marked = false;
     place.collections.forEach(collection => {
-      if (collection.user.id === this.props.user.id) {
+      if (collection.user && collection.user.id === this.props.user.id) {
         marked = true;
       }
     });
