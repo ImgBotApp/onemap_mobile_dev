@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   bio: {
     fontSize: 13,
-    color: '#575858'    
+    color: '#575858',
   },
   labelContainer: {
     flexDirection: 'row',

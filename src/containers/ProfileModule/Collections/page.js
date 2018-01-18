@@ -1,9 +1,12 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Tabs from 'react-native-tabs';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { PROVIDER_GOOGLE } from 'react-native-maps';
+
+import MapView from 'react-native-map-clustering';
+import { Marker, Callout } from 'react-native-maps';
 
 import styles from './styles'
 import { getDeviceWidth, getDeviceHeight } from '@global'
@@ -12,32 +15,18 @@ import * as SCREEN from '../../../global/screenName'
 import { clone } from '@global';
 import I18n from '@language'
 
-import { client } from '@root/main'
-import { GET_COLLECTION_WITH_PLACES } from '@graphql/collections'
+import { client } from '@root/main';
+import { graphql } from "react-apollo";
+import { GET_COLLECTION_WITH_PLACES } from '@graphql/collections';
+const PLACES_PER_PAGE = 20;
 
 const map = {
-  latitude: 37.78825,
-  longitude: -122.4324,
-  latitudeDelta: 0.00922,
-  longitudeDelta: 0.00421,
+  latitude: 0,
+  longitude: -180,
+  latitudeDelta: 360,
+  longitudeDelta: 180,
 }
-const stories = [
-  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
-  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
-  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
-  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
-  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
-  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
-  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
-  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
-  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
-  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
-  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-  { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
-]
+
 // create a component
 class Collections extends Component {
   static navigatorButtons = {
@@ -53,10 +42,11 @@ class Collections extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      page: 'Hearted View',
-      places: []
+      page: 'Grid View',
+      places: [],
+      loading: true
     }
-    this.props.navigator.setTitle({ title: props.collection.name });
+    this.props.navigator.setTitle({ title: props.collection ? props.collection.name : "Collection" });
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
   componentWillMount() {
@@ -69,17 +59,21 @@ class Collections extends Component {
       }
     }
   }
+
   getCollectionPlaces() {
     client.query({
       query: GET_COLLECTION_WITH_PLACES,
       variables: {
-        id: this.props.collection.id
+        id: this.props.collection.id,
+        first: 50,
+        skip: 0
       }
     }).then(collections => {
-      this.setState({ places: collections.data.allCollections[0].places });
+      this.setState({ places: collections.data.Collection.places, loading: false });
       client.resetStore();
-    })
+    }).catch(err => alert(err))
   }
+
   _renderTabHeader(text) {
     return (
       <Text name={text} style={styles.TabText} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>
@@ -177,33 +171,67 @@ class Collections extends Component {
         <MapView
           provider={PROVIDER_GOOGLE}
           style={styles.map}
-          initialRegion={map}
-          region={map}
+          region={{
+            latitude: 23, longitude: 101,
+            latitudeDelta: 10.8, longitudeDelta: 30.4
+          }}
+          clustering={true}
+          clusterColor='#41C6F2'
+          clusterTextColor='white'
+          clusterBorderColor='#fff'
+          clusterBorderWidth={0}
         >
           {this.state.places.map((item, index) =>
-            <MapView.Marker
+            <Marker
               key={index}
               image={require('@assets/images/marker.png')}
-              coordinate={{ ...map, latitude: item.locationLat, longitude: item.locationLong }}
-            />
+              coordinate={{ latitude: item.locationLat, longitude: item.locationLong }}
+            >
+              <Callout style={styles.customView} onPress={() => this.openPlaceProfile(item.id)}>
+                <Text style={{ flexWrap: "nowrap" }}>{item.address}</Text>
+              </Callout>
+            </Marker>
           )}
         </MapView>
       </View>
     )
   }
+  openPlaceProfile(id) {
+
+    this.props.navigator.push({
+      screen: SCREEN.PLACE_PROFILE_PAGE,
+      title: I18n.t('PLACE_TITLE'),
+      animated: true,
+      passProps: {
+        placeID: id
+      }
+    });
+
+  }
   render() {
+    /*
+    if (!this.props.data.loading) {
+      this.setState({ places: this.props.data.Collection.places});
+    }*/
+    if (this.state.loading)
+      return (
+        <View style={[styles.container, styles.horizontal]}>
+          <ActivityIndicator size="large" color="#dddddd" />
+        </View>
+      );
+
     return (
       <View style={styles.container}>
         <View style={styles.mainContainer}>
           <Tabs selected={this.state.page} style={styles.tabHeader}
             selectedStyle={{ color: 'red' }} onSelect={el => this.setState({ page: el.props.name })}>
-            {this._renderTabHeader('Hearted View')}
+            {this._renderTabHeader('Grid View')}
             {this._renderTabHeader('Map View')}
           </Tabs>
         </View>
         <ScrollView style={styles.CollectionContainer}>
           {
-            this.state.page == 'Hearted View' ? this._renderHeartedView() : this._renderMapView()
+            this.state.page == 'Grid View' ? this._renderHeartedView() : this._renderMapView()
           }
         </ScrollView>
       </View>
@@ -211,7 +239,15 @@ class Collections extends Component {
   }
 }
 
-
-
+/*
+const ComponentWithQueries = graphql(GET_COLLECTION_WITH_PLACES, {
+  options: (props) => ({
+    variables: {
+      collectionId: props.collection.id,
+    }
+  })
+})
+  (Collections);
+*/
 //make this component available to the app
 export default Collections;

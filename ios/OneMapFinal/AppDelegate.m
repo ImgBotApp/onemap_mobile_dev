@@ -8,10 +8,13 @@
  */
 
 #import "AppDelegate.h"
-#import "RCCManager.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import "RCCManager.h"
+#import "Orientation.h"
+#import <AVFoundation/AVFoundation.h>
+
 @import GoogleMaps;
 @import GooglePlaces;
 @implementation AppDelegate
@@ -22,7 +25,6 @@
                            didFinishLaunchingWithOptions:launchOptions];
   [GMSServices provideAPIKey:@"AIzaSyBJGLClnfCAfweyr7BLiDtig71MMPOly3w"];
   [GMSPlacesClient provideAPIKey:@"AIzaSyBJGLClnfCAfweyr7BLiDtig71MMPOly3w"];
-  
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
@@ -41,7 +43,10 @@
 //  rootViewController.view = rootView;
 //  self.window.rootViewController = rootViewController;
 //  [self.window makeKeyAndVisible];
+  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];  // allow
   return YES;
 }
-
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  return [Orientation getOrientation];
+}
 @end

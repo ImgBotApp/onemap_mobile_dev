@@ -1,7 +1,7 @@
 
 //import liraries
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
 import GridView from 'react-native-gridview'
 import TitleImage from '@components/TitledImage'
 import CollectionItem from '@components/CollectionItem'
@@ -56,6 +56,7 @@ class AllCollections extends Component {
   onItemPress(item) {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
+      title: I18n.t('DRAWER_STORIES'),
       animated: true,
       passProps: {
         collection: item
@@ -86,7 +87,6 @@ class AllCollections extends Component {
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
-
           {
             this.props.collections
               // .filter(collection => collection.type === 'USER')
@@ -105,7 +105,6 @@ class AllCollections extends Component {
                 )
               })
           }
-
         </View>
       </ScrollView>
     );

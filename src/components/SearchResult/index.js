@@ -11,7 +11,7 @@ import RNGooglePlaces from 'react-native-google-places'
 import { client } from '@root/main'
 import { GET_FILTER_KEYWORDS } from '@graphql/keywords'
 import { FILER_USERS } from '@graphql/users'
-const data=[
+const data = [
   {
     type: 'user',
     uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg',
@@ -26,12 +26,12 @@ const data=[
   {
     type: 'place',
     name: 'Nai Circus School',
-    address: 'Pai, Thailand'    
+    address: 'Pai, Thailand'
   },
   {
     type: 'place',
     name: 'Nai Circus School',
-    address: 'Pai, Thailand'    
+    address: 'Pai, Thailand'
   },
   {
     type: 'campaign',
@@ -47,10 +47,10 @@ const data=[
 ]
 // create a component
 class SearchResult extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      page:'Places',
+      page: 'Places',
       places: [],
       keywords: [],
       users: []
@@ -85,20 +85,20 @@ class SearchResult extends Component {
   }
   _renderTabHeader(text) {
     return (
-      <Text name={text} style={styles.TabText} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>      
+      <Text name={text} style={styles.TabText} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>
     )
   }
 
   _onUserItem(item) {
     return (
       <TouchableOpacity onPress={() => this.props.onUser(item.id)} >
-      <View style={styles.item}>
-        <CircleImage style={styles.profileImage} uri={item.photoURL} radius={getDeviceWidth(70)}/>
-        <View style={styles.infomation}>
-          <Text style={styles.name}>{item.username}</Text>
-          <Text style={styles.following}>{item.displayName}</Text>
+        <View style={styles.item}>
+          <CircleImage style={styles.profileImage} uri={item.photoURL} radius={getDeviceWidth(70)} />
+          <View style={styles.infomation}>
+            <Text style={styles.name}>{item.username}</Text>
+            <Text style={styles.following}>{item.displayName}</Text>
+          </View>
         </View>
-      </View>
       </TouchableOpacity>
     )
   }
@@ -128,20 +128,21 @@ class SearchResult extends Component {
     )
   }
   _onKeywordItem(item) {
+    const placeId = item.places.length ? item.places[0].id : '';
     return (
-      <TouchableOpacity onPress={() => this.props.onKeywordItem(item.id)}>
-      <View style={styles.item}>
-        <Image source={require('@assets/images/bookmarker.png')} style={styles.placeImage} />
-        <View style={styles.infomation}>
-          <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.following}>{item.following ? 'Follower' : null}</Text>
+      <TouchableOpacity onPress={() => this.props.onKeywordItem(placeId)}>
+        <View style={styles.item}>
+          <Image source={require('@assets/images/bookmarker.png')} style={styles.placeImage} />
+          <View style={styles.infomation}>
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.following}>{item.following ? 'Follower' : null}</Text>
+          </View>
         </View>
-      </View>
       </TouchableOpacity>
     )
   }
   _onRenderItem(item) {
-    switch(item.type) {
+    switch (item.type) {
       case 'user':
         return this._onUserItem(item)
       case 'place':
@@ -150,32 +151,38 @@ class SearchResult extends Component {
         return this._onCampaignItem(item)
     }
   }
-  _renderPlaces () {
+  _renderPlaces() {
     return (
       <View style={styles.scrollView}>
-      <FlatList style={styles.scrollView} 
+        <FlatList
+          keyExtractor={(item, index) => index}
+          style={styles.scrollView}
           data={this.state.places}
-        renderItem={({item}) => this._onPlaceItem(item)}
-      />
-    </View>
-    )
-  }
-  _renderKeywords () {
-    return (
-      <View style={styles.scrollView}>
-        <FlatList style={styles.scrollView} 
-          data={this.state.keywords}
-          renderItem={({item}) => this._onKeywordItem(item)}
+          renderItem={({ item }) => this._onPlaceItem(item)}
         />
       </View>
-      )
+    )
   }
-  _renderUsers () {
+  _renderKeywords() {
     return (
       <View style={styles.scrollView}>
-        <FlatList style={styles.scrollView} 
+        <FlatList
+          keyExtractor={(item, index) => index}
+          style={styles.scrollView}
+          data={this.state.keywords}
+          renderItem={({ item }) => this._onKeywordItem(item)}
+        />
+      </View>
+    )
+  }
+  _renderUsers() {
+    return (
+      <View style={styles.scrollView}>
+        <FlatList
+          keyExtractor={(item, index) => index}
+          style={styles.scrollView}
           data={this.state.users}
-          renderItem={({item}) => this._onUserItem(item)}
+          renderItem={({ item }) => this._onUserItem(item)}
         />
       </View>
     )
@@ -185,7 +192,7 @@ class SearchResult extends Component {
       <View style={styles.container}>
         <View style={styles.mainContainer}>
           <Tabs selected={this.state.page} style={styles.tabHeader}
-                selectedStyle={{color:'red'}} onSelect={el=>this.setState({page:el.props.name})}>
+            selectedStyle={{ color: 'red' }} onSelect={el => this.setState({ page: el.props.name })}>
             {this._renderTabHeader('People')}
             {this._renderTabHeader('Keywords')}
             {this._renderTabHeader('Places')}

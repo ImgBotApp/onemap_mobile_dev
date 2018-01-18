@@ -22,7 +22,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 })
 
-let store = createStore(combineReducers({ userReducers }))
+let store = createStore(combineReducers({userReducers}))
 
 export default class App extends Component<{}> {
   render() {

@@ -22,7 +22,9 @@ import { clone } from '@global';
 const PLACES_PER_PAGE = 8;
 
 import { client } from '@root/main'
-import { PAGINATED_PLACES } from "@graphql/places";
+import { graphql } from "react-apollo";
+
+import { PLACES_PAGINATED } from "@graphql/places";
 import { SUGGEST_USERS } from '@graphql/users'
 import { GET_USER_COLLECTIONS, GET_MY_COLLECTIONS } from '@graphql/collections'
 
@@ -44,6 +46,8 @@ class FeedPage extends Component {
       refreshing: false,
       selectedCollections: []
     };
+    this.onEndReached = this.onEndReached.bind(this)
+    this.onRefresh = this.onRefresh.bind(this)
   }
   componentWillMount() {
     client.query({
@@ -62,33 +66,42 @@ class FeedPage extends Component {
         })
       };
     })
-    this.fetchFeedItems();
     this.getMyCollections();
   }
   componentWillReceiveProps(nextProps) {
     if (!this.props.placeUpdated && nextProps.placeUpdated) {
-      this.fetchFeedItems();
+      this.onRefresh();
+      // this.fetchFeedItems();
       this.props.placeUpdate(false);
+    } else if (nextProps.data.allPlaces != this.props.data.allPlaces) {
+      let graphcoolData = nextProps.data.allPlaces.map((place) => {
+        return {
+          id: place.id,
+          type: 'item',
+          user: {
+            name: place.createdBy.username,
+            id: place.createdBy.id,
+            uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+            updated: new Date(place.updatedAt)
+          },
+          feedTitle: place.placeName,
+          images: place.pictureURL ? place.pictureURL.map(uri => { return { uri } }) : [],
+          description: place.description || '',
+          bookmark: this.isBookmarked(place),
+          collectionIds: place.collections.map(collection => collection.id)//will be removed later
+        }
+      });
+      this.setState({ items: [this.suggestUsers, ...graphcoolData] });
     }
-    // client.query({
-    //   query: PAGINATED_PLACES,
-    //   variables: {
-    //     first: 10,
-    //     skip: this.state.skip
-    //   }
-    // }).then((places) => {
-    //   console.log(places)
-    // })
   }
-  fetchFeedItems = () => {
+  fetchFeedItems = () => {//unused
     client.query({
-      query: PAGINATED_PLACES,
+      query: PLACES_PAGINATED,
       variables: {
         first: 10,
         skip: this.state.skip
       }
     }).then((places) => {
-      console.log(places)
       items = places.data.allPlaces.map((place) => {
         return {
           id: place.id,
@@ -121,7 +134,7 @@ class FeedPage extends Component {
   isBookmarked(place) {
     let marked = false;
     place.collections.forEach(collection => {
-      if (collection.user.id === this.props.user.id) {
+      if (collection.user && collection.user.id === this.props.user.id) {
         marked = true;
       }
     });
@@ -183,7 +196,35 @@ class FeedPage extends Component {
       suggestFlag: false
     })
   }
-
+  onRefresh() {
+    this.props.data.refetch({
+      variables: {
+        skip: 0,
+        first: PLACES_PER_PAGE
+      }
+    });
+  }
+  onEndReached() {
+    if (!this.props.data.loading) {
+      const { data } = this.props;
+      data.fetchMore({
+        variables: {
+          skip: data.allPlaces.length + PLACES_PER_PAGE,
+          first: PLACES_PER_PAGE
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          console.log(fetchMoreResult)
+          console.log(previousResult)
+          if (!fetchMoreResult || fetchMoreResult.allPlaces.length === 0) {
+            return previousResult;
+          }
+          return {
+            allPlaces: previousResult.allPlaces.concat(fetchMoreResult.allPlaces),
+          };
+        }
+      })
+    }
+  }
   _renderSuggestedList(data) {
     if (this.state.suggestFlag == false) return null
     return (
@@ -197,6 +238,7 @@ class FeedPage extends Component {
         </View>
         {/* User list */}
         <FlatList
+          keyExtractor={(item, index) => index}
           style={styles.users}
           data={data}
           horizontal
@@ -272,13 +314,13 @@ class FeedPage extends Component {
     }
   }
 
-  onPressUserProfile = (id) => {
+  onPressUserProfile = (userdata) => {
     this.props.navigator.push({
       screen: SCREEN.USERS_PROFILE_PAGE,
       title: I18n.t('PROFILE_PAGE_TITLE'),
       animated: true,
       passProps: {
-        placeID: id
+        userinf: userdata
       }
     })
   }
@@ -346,7 +388,7 @@ class FeedPage extends Component {
       </View>
     )
   };
-  handleLoadMore = () => {
+  handleLoadMore = () => {//unused
     this.setState({
       skip: this.state.skip + 10,
       refreshing: true
@@ -361,16 +403,15 @@ class FeedPage extends Component {
     return (
       <View style={styles.container}>
         <FlatList
-          keyExtractor={(item, index) => item.id}
+          keyExtractor={(item, index) => index}
           style={{ width: '100%', height: '100%' }}
           data={this.state.items}
-          initialNumToRender={10}
-          renderItem={this._renderItem}
-          // ListFooterComponent={this.renderFooter}
-          // refreshing={this.state.refreshing}
-          // onRefresh={this.handlerefresh}
-          // onEndReached={this.handleLoadMore}
-          onEndReachedThreshold={0}
+          initialNumToRender={8}
+          renderItem={this._renderItem.bind(this)}
+          onEndReachedThreshold={1}
+          onEndReached={this.onEndReached}
+          refreshing={this.props.data.networkStatus === 4}
+          onRefresh={this.onRefresh}
         />
         <Modal
           style={styles.collectionModal}
@@ -422,5 +463,15 @@ class FeedPage extends Component {
   }
 }
 
+const ComponentWithQueries = graphql(PLACES_PAGINATED, {
+  options: {
+    variables: {
+      skip: 0,
+      first: PLACES_PER_PAGE
+    }
+  }
+})
+  (FeedPage);
+
 //make this component available to the app
-export default FeedPage;
+export default ComponentWithQueries;

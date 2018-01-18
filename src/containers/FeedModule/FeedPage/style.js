@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   users: {
-    marginTop: getDeviceHeight(114)      
+    marginTop: getDeviceHeight(114),   
+    marginLeft:  getDeviceHeight(20)
   },
   feedItem: {alignItems: 'center', marginTop: getDeviceHeight(84)},
   modalContainer: {

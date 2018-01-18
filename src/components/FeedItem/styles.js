@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
     width: getDeviceWidth(1267),
     paddingTop: getDeviceHeight(74),
     paddingLeft: getDeviceWidth(54),
-    paddingRight: getDeviceWidth(42)
+    paddingRight: getDeviceWidth(42),
+    paddingBottom: getDeviceWidth(32)
   },
   userInfo: {
     flexDirection: 'row',

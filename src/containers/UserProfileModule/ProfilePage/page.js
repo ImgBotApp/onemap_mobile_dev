@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import styles from './styles'
 
@@ -93,7 +93,6 @@ class ProfileComponent extends Component {
   };
   constructor(props) {
     super(props)
-    console.log(props.user)
     this.state = {
       ...props.user,
       displayName: props.user.displayName || props.user.firstName + " " + props.user.lastName,
@@ -133,70 +132,125 @@ class ProfileComponent extends Component {
     })
   }
   render() {
-    return (
-      <ScrollView style={styles.container}>
-        <View style={styles.infoView}>
-          <View style={{ flexDirection: 'row' }}>
-            <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(171)} />
-            <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage} />
-          </View>
-          <View style={styles.infoContainer}>
-            <View style={styles.nameView}>
-              <View>
-                <Text style={styles.bigName}>{this.state.displayName}</Text>
-                <Text style={styles.userId}>
-                  <EvilIcons name="sc-facebook" size={SMALL_FONT_SIZE} />
-                  {this.state.username}
-                </Text>
-              </View>
-              <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={this.onEditProfile.bind(this)}>
-                <View style={styles.editProfileContainer}>
-                  <Text style={styles.editProfile}>{I18n.t('SETTING_EDIT_PROFILE')}</Text>
+    const { data: { loading, error, allStories }, GetFollowingList, GetFollowersList } = this.props
+    if (loading) {
+      return(
+        <ActivityIndicator />
+      )
+    }
+    if(!loading && error){
+      return <Text>{error}</Text>
+    }
+      return (
+        <ScrollView style={styles.container}>
+          <View style={styles.infoView}>
+            <View style={{flexDirection:'row'}}>
+              <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(171)}/>
+              <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage}/>
+            </View>
+            <View style={styles.infoContainer}>
+              <View style={styles.nameView}>
+                <View>
+                  <Text style={styles.bigName}>{this.state.displayName}</Text>
+                  <Text style={styles.userId}>
+                    <EvilIcons name="sc-facebook" size={SMALL_FONT_SIZE}/>
+                    {this.state.username}
+                  </Text>
                 </View>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.spec}>
-              <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWING')}</Text>
-              <Text style={styles.specFont}>290</Text>
-              <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWER')}</Text>
-              <Text style={styles.specFont}>54.2 K</Text>
-              <Text style={styles.specFont}>{I18n.t('PROFILE_VISITED')}</Text>
-              <Text style={styles.specFont}>636</Text>
+                <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={this.onEditProfile.bind(this)}>
+                  <View style={styles.editProfileContainer}>
+                    <Text style={styles.editProfile}>{I18n.t('SETTING_EDIT_PROFILE')}</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.spec}>
+                <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWING')}</Text>
+                <Text style={styles.specFont}>{GetFollowingList.loading?0:GetFollowingList.User.follows.length}</Text>
+                <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWER')}</Text>
+                <Text style={styles.specFont}>{GetFollowersList.loading?0:GetFollowersList.User.followers.length}</Text>
+                <Text style={styles.specFont}>{I18n.t('PROFILE_VISITED')}</Text>
+                <Text style={styles.specFont}>636</Text>
+              </View>
             </View>
           </View>
-        </View>
-        <View style={styles.bioText}>
-          <Text style={styles.bio} numberOfLines={2} ellipsizeMode={'tail'}>{this.state.bio}</Text>
-        </View>
-        {/* Collection Part */}
-        <View style={styles.vCollections}>
-          <Text style={styles.collectionTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
-          <View style={styles.collectionItems}>
-            <Collections
-              collections={this.props.collections}
-              onHearted={this.onColletionView}
-              onCheckIns={this.onColletionView}
-              onWishList={this.onColletionView}
-              onViewAll={this.onViewAll}
+          <View style={styles.bioText}>
+            <Text style={styles.bio} numberOfLines={2} ellipsizeMode={'tail'}>{this.state.bio}</Text>
+          </View>
+          {/* Collection Part */}
+          <View style={styles.vCollections}>
+            <Text style={styles.collectionTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
+            <View style={styles.collectionItems}>
+              <Collections
+                collections={this.state.collections}
+                onHearted={this.onHearted.bind(this)}
+                onCheckIns={this.onCheckIns.bind(this)}
+                onWishList={this.onWishList.bind(this)}
+                onViewAll={this.onViewAll.bind(this)}
+                />
+            </View>
+          </View>
+          {/* Stories Part */}
+          <View style={styles.vStories}>
+            <Text style={styles.storyTitle}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
+            <StoryBoard style={styles.StoryContainer} subContainer={styles.StoryList} data={allStories} width={343}
+              onPressItem={this.onStoryItem.bind(this)}
             />
           </View>
-        </View>
-        {/* Stories Part */}
-        <View style={styles.vStories}>
-          <Text style={styles.storyTitle}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
-          <StoryBoard style={styles.StoryContainer} subContainer={styles.StoryList} data={data.stories} width={343}
-            onPressItem={this.onStoryItem.bind(this)}
-          />
-        </View>
-      </ScrollView>
-    );
+        </ScrollView>
+      );
+
   }
-  onColletionView = (collection) => {
+  onHearted = () => {
+    /*
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
+      title: I18n.t('DRAWER_STORIES'),
+      animated: true
+    })
+    */
+    this.props.navigator.push({
+      screen: SCREEN.FEED_ALL_COLLECTION,
+      title: I18n.t('COLLECTION_TITLE'),
       animated: true,
       passProps: {
-        collection
+        collections: this.state.collections,
+        refresh: this.onRefresh
+      }
+    })
+  }
+  onCheckIns = () => {
+    /*
+    this.props.navigator.push({
+      screen: SCREEN.COLLECTIONS_PAGE,
+      title: I18n.t('DRAWER_STORIES'),
+      animated: true
+    })
+    */
+    this.props.navigator.push({
+      screen: SCREEN.FEED_ALL_COLLECTION,
+      title: I18n.t('COLLECTION_TITLE'),
+      animated: true,
+      passProps: {
+        collections: this.state.collections,
+        refresh: this.onRefresh
+      }
+    })
+  }
+  onWishList = () => {
+    /*
+    this.props.navigator.push({
+      screen: SCREEN.COLLECTIONS_PAGE,
+      title: I18n.t('DRAWER_STORIES'),
+      animated: true
+    })
+    */
+    this.props.navigator.push({
+      screen: SCREEN.FEED_ALL_COLLECTION,
+      title: I18n.t('COLLECTION_TITLE'),
+      animated: true,
+      passProps: {
+        collections: this.state.collections,
+        refresh: this.onRefresh
       }
     })
   }
@@ -216,6 +270,7 @@ class ProfileComponent extends Component {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       title: 'My Stories',
+      passProps: { placeID: id },
       navigatorbuttons: {
         rightButtons: [
           {
@@ -231,8 +286,9 @@ class ProfileComponent extends Component {
             disableIconTint: true
           }
         ]
-      }
+      },
     })
+    
   }
   _openDrawerMenu() {
     $this.props.navigation.navigate('DrawerOpen')

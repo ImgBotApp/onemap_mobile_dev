@@ -7,6 +7,9 @@ export const GET_FILTER_KEYWORDS = gql`
     }){
       id
       name
+      places {
+        id
+      }
     }
   }
 `

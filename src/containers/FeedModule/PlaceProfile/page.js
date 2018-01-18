@@ -24,6 +24,8 @@ import { clone } from '@global';
 
 import { client } from '@root/main'
 import { GET_PLACE_PROFILE } from '@graphql/places'
+import Overlay from 'react-native-modal-overlay';
+import { GET_USER_COLLECTIONS, GET_MY_COLLECTIONS } from '@graphql/collections'
 
 const ImagePickerOption = {
   title: 'Select Image',
@@ -150,8 +152,8 @@ class PlaceProfile extends Component {
   };
   constructor(props) {
     super(props)
-
     this.state = {
+      currentPlaceID: props.placeID ? props.placeID : props.place.id,
       placeData: {
         information: {},
         image: [],
@@ -175,15 +177,14 @@ class PlaceProfile extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
   }
 
-  async componentWillMount() {
-    let Place = await client.query({
+  componentWillMount() {
+    let Place = client.query({
       query: GET_PLACE_PROFILE,
       variables: {
-        id: this.props.place.id || "cjc0b98k2nsyj0113eizs1e5e"
+        id: this.state.currentPlaceID
       }
     }).then((place) => {
-      console.log(place)
-      let data = place.data.Place
+      let data = place.data.Place;
       this.setState({
         placeData: {
           title: data.placeName,
@@ -212,12 +213,38 @@ class PlaceProfile extends Component {
           },
           keywords: data.keywords && data.keywords.map((item) => item.name),
           comments: [],
-          bookmark: this.props.place.bookmark,
-          collectionIds: this.props.place.collectionIds
+          bookmark: this.props.place ? this.props.place.bookmark : false,
+          collectionIds: this.props.place ? this.props.place.collectionIds : null
         }
       })
+    });
+    if (this.state.collections == null) {
+      //this.getUserCollections();
+      this.getMyCollections();
+    }
+  }
+
+  getUserCollections = () => {
+    client.query({
+      query: GET_USER_COLLECTIONS,
+      variables: {
+        id: this.props.user.id
+      }
+    }).then(collections => {
+      this.setState({ collections: collections.data.allCollections });
     })
   }
+  getMyCollections = () => {
+    client.query({
+      query: GET_MY_COLLECTIONS,
+      variables: {
+        id: this.props.user.id
+      }
+    }).then(collections => {
+      this.setState({ collections: collections.data.allCollections });
+    })
+  }
+
   onBookMarker = () => {
     if (this.state.placeData.bookmark) {
       this.removeBookmark();
@@ -240,7 +267,7 @@ class PlaceProfile extends Component {
   addBookmarks() {
     this.props.addCollectionToPlace({
       variables: {
-        id: this.props.place.id,
+        id: this.state.currentPlaceID,
         collectionIds: this.state.selectedCollections
       }
     }).then(places => {
@@ -262,7 +289,7 @@ class PlaceProfile extends Component {
     collectionIds = collectionIds.filter(id => !this.props.collections.map(collection => collection.id).includes(id));
     this.props.removeCollectionFromPlace({
       variables: {
-        id: this.props.place.id,
+        id: this.state.currentPlaceID,
         collectionIds
       }
     }).then(places => {
@@ -329,6 +356,7 @@ class PlaceProfile extends Component {
   render() {
     return (
       <View style={styles.container}>
+
         <ScrollView style={styles.container}>
 
           {/* Title */}
@@ -449,16 +477,18 @@ class PlaceProfile extends Component {
           </View>
 
         </ScrollView>
-        {this.state.sliderShow ?
-          (
-            <ImageSliderComponent
-              data={this.state.placeData.image.map(item => item.uri)}
-              onPress={() => {
-                this.setState({ sliderShow: false })
-              }} />
-          ) : null
-        }
-        {/* Modal Collection */}{/* TODO: Make this Modal as component */}
+
+        <Overlay visible={this.state.sliderShow} closeOnTouchOutside animationType="zoomIn"
+          containerStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.9)', padding: 0, flex: 1, justifyContent: 'center', alignItems: "center" }}
+          childrenWrapperStyle={{ backgroundColor: 'rgba(0, 0, 0, 0)', padding: 0, justifyContent: 'center' }}
+          onClose={() => this.setState({ sliderShow: false })}
+          supportedOrientations={['portrait', 'landscape']}>
+          <ImageSliderComponent
+            data={this.state.placeData.image}
+            onPress={() => this.setState({ sliderShow: false })}
+          />
+        </Overlay>
+        {/* Modal Collection */}
         <Modal
           style={styles.collectionModal}
           isOpen={this.state.collectionModal}
@@ -470,7 +500,7 @@ class PlaceProfile extends Component {
           onClosed={() => this.setState({ collectionModal: false })}
         >
           <View style={styles.modalContainer}>
-          <TouchableOpacity onPress={this.onAddCollection}>
+            <TouchableOpacity onPress={this.onAddCollection}>
               <Text style={styles.plusButton}>{'+'}</Text>
             </TouchableOpacity>
             <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
