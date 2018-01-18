@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
   campaignItem: {
     backgroundColor: 'white',
     position: 'absolute',
-    bottom: 70,
+    bottom: 10,
     left: commonStyles.padding,
     width: commonStyles.screenSubWidth,
     borderRadius: 10,
