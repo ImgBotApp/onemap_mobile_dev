@@ -26,7 +26,7 @@ import { client } from '@root/main'
 import { GET_PLACE_PROFILE } from '@graphql/places'
 import Overlay from 'react-native-modal-overlay';
 import { GET_USER_COLLECTIONS, GET_MY_COLLECTIONS } from '@graphql/collections'
-import { getThum1nailFromVideoURL } from '@global/const';
+import { getThumlnailFromVideoURL } from '@global/const';
 
 const ImagePickerOption = {
   title: 'Select Image',
@@ -551,7 +551,7 @@ class PlaceProfile extends PureComponent {
     return (
       <TouchableOpacity onPress={() => this.setState({ sliderShow: true, selectedCard: index })}>
         <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-          <Image source={{ uri: getThum1nailFromVideoURL(item.uri) }} style={styles.imageItem} />
+          <Image source={{ uri: getThumlnailFromVideoURL(item.uri) }} style={styles.imageItem} />
         </CardView>
       </TouchableOpacity>
     )
