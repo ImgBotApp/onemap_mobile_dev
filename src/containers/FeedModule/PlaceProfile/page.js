@@ -1,7 +1,6 @@
 //import liraries
 import React, { Component, PureComponent } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, Platform, TextInput } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CardView from 'react-native-cardview'
 import ViewMoreText from 'react-native-view-more-text';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
@@ -11,6 +10,8 @@ import TitleImage from '@components/TitledImage'
 import TagInput from 'react-native-tag-input';
 import Foundation from 'react-native-vector-icons/Foundation'
 import IonIcons from 'react-native-vector-icons/Ionicons'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import ImagePicker from 'react-native-image-picker'
 import CircleImage from '@components/CircleImage'
 import ImageSliderComponent from '@components/ImageSliderComponent'
@@ -39,15 +40,6 @@ const user = {
   photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
 }
 
-const inputProps = {
-  keyboardType: 'default',
-  placeholder: 'Keyword',
-  autoFocus: true,
-  style: {
-    fontSize: 14,
-    marginVertical: Platform.OS == 'ios' ? 10 : -2,
-  },
-};
 // create a component
 class PlaceProfile extends PureComponent {
   static navigatorButtons = {
@@ -426,12 +418,42 @@ class PlaceProfile extends PureComponent {
   }
 
   renderKeywords() {
+    const { keywordEditable } = this.state;
+    const inputProps = {
+      keyboardType: 'default',
+      placeholder: 'Keyword',
+      autoFocus: false,
+      style: {
+        fontSize: 14,
+        marginVertical: Platform.OS == 'ios' ? 10 : -2,
+      },
+      editable: keywordEditable
+    };
     return (
       <View style={styles.keyWords}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text style={styles.keywordTitle}>{I18n.t('PLACE_KEYWORDS')}</Text>
-          <TouchableOpacity onPress={() => this.onWriteStory()}>
-            <Text style={styles.keywordDone}>{I18n.t('PLACE_KEYWORD_DONE')}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              if (keywordEditable) {
+                this.saveKeyword();
+              }
+              this.setState({ keywordEditable: !keywordEditable });
+            }}>
+            {!keywordEditable ?
+              <MaterialCommunityIcons
+                name='pencil'
+                color='green'
+                size={25}
+              />
+              :
+              <MaterialIcons
+                name='save'
+                color='green'
+                size={25}
+              />
+            }
+            {/* <Text style={styles.keywordDone}>{I18n.t('PLACE_KEYWORD_DONE')}</Text> */}
           </TouchableOpacity>
         </View>
         <View style={styles.keywordContainer}>
@@ -477,6 +499,9 @@ class PlaceProfile extends PureComponent {
         keywords: tags
       }
     });
+  }
+  saveKeyword() {
+    
   }
 
   _renderWriteStory() {
