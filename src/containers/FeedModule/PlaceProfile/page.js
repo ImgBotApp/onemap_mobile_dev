@@ -1,5 +1,5 @@
 //import liraries
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, Platform, TextInput } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CardView from 'react-native-cardview'
@@ -132,7 +132,7 @@ const inputProps = {
   },
 };
 // create a component
-class PlaceProfile extends Component {
+class PlaceProfile extends PureComponent {
   static navigatorButtons = {
     leftButtons: [
       {
@@ -322,24 +322,6 @@ class PlaceProfile extends Component {
       title: I18n.t('COLLECTION_CREATE_NEW'),
     })
   }
-  _renderItem(item) {
-    if (item.type == 'add') {
-      return (
-        <TouchableOpacity onPress={this.addImageToStory.bind(this)}>
-          <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-            <Image source={require('@assets/images/blankImage.png')} style={styles.imageItem} />
-          </CardView>
-        </TouchableOpacity>
-      )
-    }
-    return (
-      <TouchableOpacity onPress={() => this.setState({ sliderShow: true })}>
-        <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-          <Image source={{ uri: item.uri }} style={styles.imageItem} />
-        </CardView>
-      </TouchableOpacity>
-    )
-  }
   goMapDetail() {
     // this.props.navigation.navigate('MapViewPage')
     this.props.navigator.push({
@@ -353,238 +335,234 @@ class PlaceProfile extends Component {
       }
     })
   }
-  render() {
+
+  renderTitle() {
     return (
-      <View style={styles.container}>
-
-        <ScrollView style={styles.container}>
-
-          {/* Title */}
-          <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>{this.state.placeData.title}</Text>
-            <TouchableOpacity onPress={this.onBookMarker}>
-              <MaterialCommunityIcons name={data.bookmark ? "bookmark" : "bookmark-outline"} size={30}
-                color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} />
-            </TouchableOpacity>
-          </View>
-          {/* Images */}
-          <View style={styles.imageContainer}>
-            <FlatList
-              keyExtractor={(item, index) => index}
-              style={styles.imageFlatList}
-              horizontal
-              data={this.state.placeData.image}
-              renderItem={({ item }) => { return this._renderItem(item) }}
-            />
-          </View>
-          {/* Description */}
-          <View style={styles.description}>
-            <ViewMoreText
-              numberOfLines={3}
-              renderViewMore={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read more</Text>)}
-              renderViewLess={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read less</Text>)}
-              textStyle={styles.descriptionText}>
-              <Text style={DFonts.DFontFamily}>
-                {this.state.placeData.description}
-              </Text>
-            </ViewMoreText>
-          </View>
-          {/* MapView */}
-          <TouchableOpacity onPress={this.goMapDetail.bind(this)}>
-            <View style={styles.mapView}>
-              <MapView
-                provider={PROVIDER_GOOGLE}
-                style={styles.map}
-                initialRegion={this.state.placeData.map}
-                region={this.state.placeData.map}
-              >
-                <MapView.Marker
-                  style={styles.mapmarker}
-                  title={this.state.placeData.title}
-                  image={require('@assets/images/marker.png')}
-                  coordinate={this.state.placeData.map}
-                />
-              </MapView>
-            </View>
-          </TouchableOpacity>
-          {/* Information */}
-          <View style={styles.informationContainer}>
-            <Text style={styles.informationText}>{I18n.t('PLACE_ADDRESS')}{`\t\t\t: `}{this.state.placeData.information.address}</Text>
-            <Text style={styles.informationText}>{I18n.t('PLACE_NUMBER')}{`\t\t: `}{this.state.placeData.information.phoneNumber}</Text>
-            <Text style={styles.informationText}>{I18n.t('PLACE_WEBSITE')}{`\t\t\t: `}{this.state.placeData.information.website}</Text>
-            <Text style={styles.informationText}>{I18n.t('PLACE_OPENHOUR')}{`\t\t: `}{this.state.placeData.information.openingHours}</Text>
-          </View>
-          {/* Interest */}
-          <View style={styles.interestContainer}>
-            <View style={styles.interestInformation}>
-              <View style={{ flexDirection: 'row' }}>
-                <Foundation name="heart" size={12} color={RED_COLOR} />
-                <Foundation name="marker" size={12} color={BLUE_COLOR} />
-                <Foundation name="bookmark" size={12} color={RED_COLOR} />
-              </View>
-              <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.hearted)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
-              <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.checkIns)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
-              <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.bookmark)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
-            </View>
-            <View style={styles.serparate}></View>
-            <View style={styles.buttonInterest}>
-              <TouchableOpacity>
-                <Foundation name="heart" size={35} color={RED_COLOR} />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Foundation name="marker" size={35} color={BLUE_COLOR} />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Foundation name="share" size={35} color={GREEN_COLOR} />
-              </TouchableOpacity>
-            </View>
-          </View>
-          {/* Keywords */}
-          <View style={styles.keyWords}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={styles.keywordTitle}>{I18n.t('PLACE_KEYWORDS')}</Text>
-              <TouchableOpacity>
-                <Text style={styles.keywordDone}>{I18n.t('PLACE_KEYWORD_DONE')}</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.keywordContainer}>
-              <TagInput
-                value={this.state.placeData.keywords}
-                onChange={this.onChangeTags}
-                labelExtractor={this.labelExtractor}
-                text={this.state.text}
-                onChangeText={this.onChangeText}
-                tagContainerStyle={styles.KeywordInput}
-                tagTextStyle={styles.keywordTextStyle}
-                tagColor="#5c5a5a"
-                tagTextColor="#e9e8eb"
-                inputProps={inputProps}
-                maxHeight={150}
-              />
-            </View>
-          </View>
-          {/* Write Story */}
-          <View style={styles.WriteStory}>
-            <Text style={styles.writeStoryTitle}>{I18n.t('PLACE_WRITE_STORY')}</Text>
-            {this._renderWriteStory()}
-          </View>
-          {/* Story Comments */}
-          <View style={styles.WriteStory}>
-            {
-              this._renderCommentStory()
-            }
-            {/* {this._renderComments()} */}
-          </View>
-
-        </ScrollView>
-
-        <Overlay visible={this.state.sliderShow} closeOnTouchOutside animationType="zoomIn"
-          containerStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.9)', padding: 0, flex: 1, justifyContent: 'center', alignItems: "center" }}
-          childrenWrapperStyle={{ backgroundColor: 'rgba(0, 0, 0, 0)', padding: 0, justifyContent: 'center' }}
-          onClose={() => this.setState({ sliderShow: false })}
-          supportedOrientations={['portrait', 'landscape']}>
-          <ImageSliderComponent
-            data={this.state.placeData.image}
-            onPress={() => this.setState({ sliderShow: false })}
-          />
-        </Overlay>
-        {/* Modal Collection */}
-        <Modal
-          style={styles.collectionModal}
-          isOpen={this.state.collectionModal}
-          backdropPressToClose={true}
-          position={'bottom'}
-          backdrop={true}
-          backdropOpacity={0.5}
-          backdropColor={'lightgray'}
-          onClosed={() => this.setState({ collectionModal: false })}
-        >
-          <View style={styles.modalContainer}>
-            <TouchableOpacity onPress={this.onAddCollection}>
-              <Text style={styles.plusButton}>{'+'}</Text>
-            </TouchableOpacity>
-            <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
-            <TouchableOpacity disabled={!this.state.selectedCollections.length} onPress={() => this.addBookmarks()}>
-              <Text style={styles.plusButton}>{'Done'}</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.separatebar}></View>
-          <ScrollView horizontal={true} style={styles.Collections}>
-            {this.props.collections
-              .filter(collection => collection.type === 'USER')
-              .map((collection, index) => (
-                <TouchableOpacity key={index} style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>
-                  <TitleImage
-                    style={styles.collection}
-                    uri={collection.pictureURL ? collection.pictureURL : 'https://placeimg.com/640/480/any'}
-                    title={collection.name}
-                    radius={8}
-                    vAlign={'center'}
-                    hAlign={'center'}
-                    titleStyle={styles.collectionItemTitle}
-                    disabled={true}
-                  />
-                  {this.state.selectedCollections.includes(collection.id) &&
-                    <IonIcons
-                      name='ios-checkmark-circle'
-                      size={30}
-                      style={{ position: 'absolute', backgroundColor: 'transparent' }}
-                    />
-                  }
-                </TouchableOpacity>
-              ))}
-          </ScrollView>
-        </Modal>
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}>{this.state.placeData.title}</Text>
+        <TouchableOpacity onPress={this.onBookMarker}>
+          <MaterialCommunityIcons name={data.bookmark ? "bookmark" : "bookmark-outline"} size={30}
+            color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} />
+        </TouchableOpacity>
       </View>
-    );
-  }
-  _renderCommentStory() {
-    return this.state.placeData.comments.map(comment => {
-      return this._renderComments(comment)
-    })
-  }
-  _renderComments(dataItem) {
-    return (
-      <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-        <View style={{ flexDirection: 'row' }}>
-          <CircleImage style={styles.storyWriterImage} uri={dataItem.user.uri} radius={getDeviceWidth(67)} />
-          <View>
-            <Text style={styles.storyWriterName}>{dataItem.user.name}</Text>
-            <Text style={styles.commentDate}>{calculateDuration(dataItem.user.update)}</Text>
-          </View>
-        </View>
-        <FlatList
-          keyExtractor={(item, index) => index}
-          style={[styles.imageFlatList, { marginTop: 10 }]}
-          horizontal
-          data={dataItem.images}
-          renderItem={({ item }) => this._renderItem(item)}
-        />
-        <Text style={styles.commentDescription}>{dataItem.description}</Text>
-      </CardView>
     )
   }
-  addImageToStory() {
-    ImagePicker.showImagePicker(ImagePickerOption, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      }
-      else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      }
-      else {
-        let source = { uri: response.uri };
-        var cloneObj = JSON.parse(JSON.stringify(this.state.storyImages))
-        cloneObj.pop()
-        cloneObj.push(source)
-        cloneObj.push({ type: 'add' })
-        this.setState({
-          storyImages: cloneObj
+
+  renderPlaceImages() {
+    return (
+      <View style={styles.imageContainer}>
+        <FlatList
+          keyExtractor={(item, index) => index}
+          style={styles.imageFlatList}
+          horizontal
+          data={this.state.placeData.image}
+          renderItem={({ item }) => { return this._renderItem(item) }}
+        />
+      </View>
+    )
+  }
+
+  renderDescription() {
+    return (
+      <View style={styles.description}>
+        <ViewMoreText
+          numberOfLines={3}
+          renderViewMore={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read more</Text>)}
+          renderViewLess={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read less</Text>)}
+          textStyle={styles.descriptionText}>
+          <Text style={DFonts.DFontFamily}>
+            {this.state.placeData.description}
+          </Text>
+        </ViewMoreText>
+      </View>
+    )
+  }
+
+  renderMapView() {
+    return (
+      <TouchableOpacity onPress={this.goMapDetail.bind(this)}>
+        <View style={styles.mapView}>
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            style={styles.map}
+            initialRegion={this.state.placeData.map}
+            region={this.state.placeData.map}
+          >
+            <MapView.Marker
+              style={styles.mapmarker}
+              title={this.state.placeData.title}
+              image={require('@assets/images/marker.png')}
+              coordinate={this.state.placeData.map}
+            />
+          </MapView>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
+  renderInfo() {
+    return (
+      <View style={styles.informationContainer}>
+        <Text style={styles.informationText}>{I18n.t('PLACE_ADDRESS')}{`\t\t\t: `}{this.state.placeData.information.address}</Text>
+        <Text style={styles.informationText}>{I18n.t('PLACE_NUMBER')}{`\t\t: `}{this.state.placeData.information.phoneNumber}</Text>
+        <Text style={styles.informationText}>{I18n.t('PLACE_WEBSITE')}{`\t\t\t: `}{this.state.placeData.information.website}</Text>
+        <Text style={styles.informationText}>{I18n.t('PLACE_OPENHOUR')}{`\t\t: `}{this.state.placeData.information.openingHours}</Text>
+      </View>
+    )
+  }
+
+  renderInterest() {
+    return (
+      <View style={styles.interestContainer}>
+        <View style={styles.interestInformation}>
+          <View style={{ flexDirection: 'row' }}>
+            <Foundation name="heart" size={12} color={RED_COLOR} />
+            <Foundation name="marker" size={12} color={BLUE_COLOR} />
+            <Foundation name="bookmark" size={12} color={RED_COLOR} />
+          </View>
+          <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.hearted)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
+          <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.checkIns)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
+          <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.bookmark)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
+        </View>
+        <View style={styles.serparate}></View>
+        <View style={styles.buttonInterest}>
+          <TouchableOpacity>
+            <Foundation name="heart" size={35} color={RED_COLOR} />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Foundation name="marker" size={35} color={BLUE_COLOR} />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Foundation name="share" size={35} color={GREEN_COLOR} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+  }
+
+  renderSliderShow() {
+    return (
+      <Overlay visible={this.state.sliderShow} closeOnTouchOutside animationType="zoomIn"
+        containerStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.9)', padding: 0, flex: 1, justifyContent: 'center', alignItems: "center" }}
+        childrenWrapperStyle={{ backgroundColor: 'rgba(0, 0, 0, 0)', padding: 0, justifyContent: 'center' }}
+        onClose={() => this.setState({ sliderShow: false })}
+        supportedOrientations={['portrait', 'landscape']}>
+        <ImageSliderComponent
+          data={this.state.placeData.image}
+          onPress={() => this.setState({ sliderShow: false })}
+        />
+      </Overlay>
+    )
+  }
+
+  renderCollectionModal() {
+    return (
+      <Modal
+        style={styles.collectionModal}
+        isOpen={this.state.collectionModal}
+        backdropPressToClose={true}
+        position={'bottom'}
+        backdrop={true}
+        backdropOpacity={0.5}
+        backdropColor={'lightgray'}
+        onClosed={() => this.setState({ collectionModal: false })}
+      >
+        <View style={styles.modalContainer}>
+          <TouchableOpacity onPress={this.onAddCollection}>
+            <Text style={styles.plusButton}>{'+'}</Text>
+          </TouchableOpacity>
+          <Text style={styles.modalTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
+          <TouchableOpacity disabled={!this.state.selectedCollections.length} onPress={() => this.addBookmarks()}>
+            <Text style={styles.plusButton}>{'Done'}</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.separatebar}></View>
+        <ScrollView horizontal={true} style={styles.Collections}>
+          {this.props.collections
+            .filter(collection => collection.type === 'USER')
+            .map((collection, index) => (
+              <TouchableOpacity key={index} style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>
+                <TitleImage
+                  style={styles.collection}
+                  uri={collection.pictureURL ? collection.pictureURL : 'https://placeimg.com/640/480/any'}
+                  title={collection.name}
+                  radius={8}
+                  vAlign={'center'}
+                  hAlign={'center'}
+                  titleStyle={styles.collectionItemTitle}
+                  disabled={true}
+                />
+                {this.state.selectedCollections.includes(collection.id) &&
+                  <IonIcons
+                    name='ios-checkmark-circle'
+                    size={30}
+                    style={{ position: 'absolute', backgroundColor: 'transparent' }}
+                  />
+                }
+              </TouchableOpacity>
+            ))}
+        </ScrollView>
+      </Modal>
+    )
+  }
+
+  renderKeywords() {
+    return (
+      <View style={styles.keyWords}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={styles.keywordTitle}>{I18n.t('PLACE_KEYWORDS')}</Text>
+          <TouchableOpacity>
+            <Text style={styles.keywordDone}>{I18n.t('PLACE_KEYWORD_DONE')}</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.keywordContainer}>
+          <TagInput
+            value={this.state.placeData.keywords}
+            onChange={this.onChangeTags}
+            labelExtractor={this.labelExtractor}
+            text={this.state.text}
+            onChangeText={this.onChangeText}
+            tagContainerStyle={styles.KeywordInput}
+            tagTextStyle={styles.keywordTextStyle}
+            tagColor="#5c5a5a"
+            tagTextColor="#e9e8eb"
+            inputProps={inputProps}
+            maxHeight={150}
+          />
+        </View>
+      </View>
+    )
+  }
+  onChangeText = (text) => {
+    this.setState({ text });
+
+    const lastTyped = text.charAt(text.length - 1);
+    const parseWhen = [',', ' ', ';', '\n'];
+
+    if (parseWhen.indexOf(lastTyped) > -1) {
+      this.setState(
+        {
+          placeData: {
+            ...this.state.placeData,
+            keywords: {
+              ...this.state.placeData.keywords,
+              text
+            }
+          },
+          // tags: [...this.state.tags, this.state.text],
+          text: "",
         });
-        // alert(JSON.stringify(this.state.storyImages))
+    }
+  }
+  onChangeTags = (tags) => {
+    this.setState({
+      placeData: {
+        ...this.state.placeData,
+        keywords: tags
       }
     });
   }
+
   _renderWriteStory() {
     return (
       <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
@@ -615,38 +593,101 @@ class PlaceProfile extends Component {
       </CardView>
     )
   }
-  onChangeText = (text) => {
-    this.setState({ text });
 
-    const lastTyped = text.charAt(text.length - 1);
-    const parseWhen = [',', ' ', ';', '\n'];
-
-    if (parseWhen.indexOf(lastTyped) > -1) {
-      this.setState(
-        {
-          placeData: {
-            ...this.state.placeData,
-            keywords: {
-              ...this.state.placeData.keywords,
-              text
-            }
-          },
-          // tags: [...this.state.tags, this.state.text],
-          text: "",
-        });
-    }
+  _renderCommentStory() {
+    return this.state.placeData.comments.map(dataItem => {
+      return (
+        <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
+          <View style={{ flexDirection: 'row' }}>
+            <CircleImage style={styles.storyWriterImage} uri={dataItem.user.uri} radius={getDeviceWidth(67)} />
+            <View>
+              <Text style={styles.storyWriterName}>{dataItem.user.name}</Text>
+              <Text style={styles.commentDate}>{calculateDuration(dataItem.user.update)}</Text>
+            </View>
+          </View>
+          <FlatList
+            keyExtractor={(item, index) => index}
+            style={[styles.imageFlatList, { marginTop: 10 }]}
+            horizontal
+            data={dataItem.images}
+            renderItem={({ item }) => this._renderItem(item)}
+          />
+          <Text style={styles.commentDescription}>{dataItem.description}</Text>
+        </CardView>
+      )
+    })
   }
 
-  labelExtractor = (tag) => tag;
+  _renderItem(item) {
+    if (item.type == 'add') {
+      return (
+        <TouchableOpacity onPress={this.addImageToStory.bind(this)}>
+          <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
+            <Image source={require('@assets/images/blankImage.png')} style={styles.imageItem} />
+          </CardView>
+        </TouchableOpacity>
+      )
+    }
+    return (
+      <TouchableOpacity onPress={() => this.setState({ sliderShow: true })}>
+        <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
+          <Image source={{ uri: item.uri }} style={styles.imageItem} />
+        </CardView>
+      </TouchableOpacity>
+    )
+  }
 
-  onChangeTags = (tags) => {
-    this.setState({
-      placeData: {
-        ...this.state.placeData,
-        keywords: tags
+  render() {
+    return (
+      <View style={styles.container}>
+        <ScrollView style={styles.container}>
+          {this.renderTitle()}
+          {this.renderPlaceImages()}
+          {this.renderDescription()}
+          {this.renderMapView()}
+          {this.renderInfo()}
+          {this.renderInterest()}
+          {this.renderKeywords()}
+          {/* my stories */}
+          <View style={styles.WriteStory}>
+            <Text style={styles.writeStoryTitle}>{I18n.t('PLACE_WRITE_STORY')}</Text>
+            {this._renderWriteStory()}
+          </View>
+          {/* other stories */}
+          <View style={styles.WriteStory}>
+            {this._renderCommentStory()}
+          </View>
+        </ScrollView>
+
+        {this.renderSliderShow()}
+        {this.renderCollectionModal()}
+      </View>
+    );
+  }
+
+  addImageToStory() {
+    ImagePicker.showImagePicker(ImagePickerOption, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else {
+        let source = { uri: response.uri };
+        var cloneObj = JSON.parse(JSON.stringify(this.state.storyImages))
+        cloneObj.pop()
+        cloneObj.push(source)
+        cloneObj.push({ type: 'add' })
+        this.setState({
+          storyImages: cloneObj
+        });
+        // alert(JSON.stringify(this.state.storyImages))
       }
     });
   }
+
+  labelExtractor = (tag) => tag;
 }
 
 
