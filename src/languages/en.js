@@ -121,9 +121,9 @@ export default {
   PLACE_HEARTED: "Hearted",
   PLACE_CHECK_IN: "Check-ins",
   PLACE_BOOKMARK: "Added to Collection",
-  PLACE_KEYWORDS: "Keywords",
+  PLACE_KEYWORDS: "Place Keywords",
   PLACE_KEYWORD_DONE: "Done",
-  PLACE_WRITE_STORY: "Write Story",
+  PLACE_WRITE_STORY: "My Story",
   PLACE_TITLE_BOLD:"Title (Bold)",
 
   // Map View

@@ -124,7 +124,7 @@ const data = {
 
 const inputProps = {
   keyboardType: 'default',
-  placeholder: 'Tag',
+  placeholder: 'Keyword',
   autoFocus: true,
   style: {
     fontSize: 14,
