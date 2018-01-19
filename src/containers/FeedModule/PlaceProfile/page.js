@@ -26,6 +26,7 @@ import { client } from '@root/main'
 import { GET_PLACE_PROFILE } from '@graphql/places'
 import Overlay from 'react-native-modal-overlay';
 import { GET_USER_COLLECTIONS, GET_MY_COLLECTIONS } from '@graphql/collections'
+import { getThum1nailFromVideoURL } from '@global/const';
 
 const ImagePickerOption = {
   title: 'Select Image',
@@ -37,89 +38,6 @@ const ImagePickerOption = {
 const user = {
   name: 'Minna Hamilton',
   photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-}
-const data = {
-  title: 'GRAMERCY TAVERN',
-  bookmark: true,
-  image: [
-    { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-    { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-    { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-    { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-    { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' }
-  ],
-  description: 'The Main Dining Room serves a fixed-price menu for dinner an a la carte menu for lunch. Our Tavern serves an a la menu and welcomes guests on a walk-in basic',
-  map: {
-    latitude: 37.78825,
-    longitude: -122.4324,
-    latitudeDelta: 0.00922,
-    longitudeDelta: 0.00421,
-  },
-  information: {
-    address: '42 E 20th St, New York, NY 10003, USA',
-    phoneNumber: '+1-212-477-0777',
-    website: 'www.gramercytavern.com',
-    openingHours: [
-      'Mon - Thu and Sun, 11:30 AM - 11:00 PM']
-  },
-  interests: {
-    hearted: 12809,
-    checkIns: 239,
-    bookmark: 218
-  },
-  keywords: [
-    'Steak', 'Cocktails', 'Lunch', 'Dinner', 'Food'
-  ],
-  comments: [
-    {
-      user: {
-        name: 'Theresa',
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-        update: new Date()
-      },
-      images: [
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-      ],
-      description: 'I came here for RW last night. The reason this review gets 4 stars is because of the everything biscuit. So GOOD. It comes with a vegetable cream cheese and it was the best part of the meal. So good that we ordered seconds and then kind of regretted it because we were so full, Oysters to start. It was okay. Tiny oysters that were baked with cheese. my friend had the bacon and it seemed to be extra crispy'
-    },
-    {
-      user: {
-        name: 'Theresa',
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-        update: new Date()
-      },
-      images: [
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-      ],
-      description: 'I came here for RW last night. The reason this review gets 4 stars is because of the everything biscuit. So GOOD. It comes with a vegetable cream cheese and it was the best part of the meal. So good that we ordered seconds and then kind of regretted it because we were so full, Oysters to start. It was okay. Tiny oysters that were baked with cheese. my friend had the bacon and it seemed to be extra crispy'
-    },
-    {
-      user: {
-        name: 'Theresa',
-        uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-        update: new Date()
-      },
-      images: [
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-        { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-      ],
-      description: 'I came here for RW last night. The reason this review gets 4 stars is because of the everything biscuit. So GOOD. It comes with a vegetable cream cheese and it was the best part of the meal. So good that we ordered seconds and then kind of regretted it because we were so full, Oysters to start. It was okay. Tiny oysters that were baked with cheese. my friend had the bacon and it seemed to be extra crispy'
-    }
-  ]
 }
 
 const inputProps = {
@@ -160,7 +78,8 @@ class PlaceProfile extends PureComponent {
         map: {},
         interests: {},
         keywords: [],
-        comments: []
+        comments: [],
+        selectedCard: 0
       },
       tags: ['Steak', 'Cocktails', 'Dinner', 'Food'],
       text: "",
@@ -341,7 +260,7 @@ class PlaceProfile extends PureComponent {
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>{this.state.placeData.title}</Text>
         <TouchableOpacity onPress={this.onBookMarker}>
-          <MaterialCommunityIcons name={data.bookmark ? "bookmark" : "bookmark-outline"} size={30}
+          <MaterialCommunityIcons name={this.state.placeData.bookmark ? "bookmark" : "bookmark-outline"} size={30}
             color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} />
         </TouchableOpacity>
       </View>
@@ -356,7 +275,7 @@ class PlaceProfile extends PureComponent {
           style={styles.imageFlatList}
           horizontal
           data={this.state.placeData.image}
-          renderItem={({ item }) => { return this._renderItem(item) }}
+          renderItem={this._renderItem.bind(this)}
         />
       </View>
     )
@@ -449,6 +368,7 @@ class PlaceProfile extends PureComponent {
         supportedOrientations={['portrait', 'landscape']}>
         <ImageSliderComponent
           data={this.state.placeData.image}
+          firstItem={this.state.selectedCard}
           onPress={() => this.setState({ sliderShow: false })}
         />
       </Overlay>
@@ -511,7 +431,7 @@ class PlaceProfile extends PureComponent {
       <View style={styles.keyWords}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text style={styles.keywordTitle}>{I18n.t('PLACE_KEYWORDS')}</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => this.onWriteStory()}>
             <Text style={styles.keywordDone}>{I18n.t('PLACE_KEYWORD_DONE')}</Text>
           </TouchableOpacity>
         </View>
@@ -618,7 +538,7 @@ class PlaceProfile extends PureComponent {
     })
   }
 
-  _renderItem(item) {
+  _renderItem({ item, index }) {
     if (item.type == 'add') {
       return (
         <TouchableOpacity onPress={this.addImageToStory.bind(this)}>
@@ -629,9 +549,9 @@ class PlaceProfile extends PureComponent {
       )
     }
     return (
-      <TouchableOpacity onPress={() => this.setState({ sliderShow: true })}>
+      <TouchableOpacity onPress={() => this.setState({ sliderShow: true, selectedCard: index })}>
         <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-          <Image source={{ uri: item.uri }} style={styles.imageItem} />
+          <Image source={{ uri: getThum1nailFromVideoURL(item.uri) }} style={styles.imageItem} />
         </CardView>
       </TouchableOpacity>
     )
@@ -688,6 +608,10 @@ class PlaceProfile extends PureComponent {
   }
 
   labelExtractor = (tag) => tag;
+
+  onWriteStory() {
+
+  }
 }
 
 

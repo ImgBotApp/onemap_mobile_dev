@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   image: {
       ...StyleSheet.absoluteFillObject,
-      resizeMode: 'cover',
+      resizeMode: 'contain',
       borderRadius: 0,
       borderTopLeftRadius: 0,
       borderTopRightRadius: 0
