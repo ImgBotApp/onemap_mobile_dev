@@ -10,6 +10,7 @@ import DFonts from '@theme/fonts'
 import { RED_COLOR, LIGHT_GRAY_COLOR } from '../../theme/colors';
 import { getDeviceWidth, getDeviceHeight, calculateDuration } from '@global'
 import { EMPTY_IMG } from '@global/const';
+import { getThumlnailFromVideoURL } from '@global/const';
 
 // create a component
 class FeedItem extends Component {
@@ -61,7 +62,7 @@ class FeedItem extends Component {
             renderItem={({ item }) => (
               <CardView cardElevation={5} cardMaxElevation={5} cornerRadius={5} style={styles.FeedImageItem}>
                 <TouchableOpacity onPress={this._onPlaceImagePress.bind(this)}>
-                  <Image source={{ uri: item.uri }} style={styles.feedItemImage} />
+                  <Image source={{ uri: getThumlnailFromVideoURL(item.uri) }} style={styles.feedItemImage} />
                 </TouchableOpacity>
               </CardView>
             )}

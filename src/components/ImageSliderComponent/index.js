@@ -3,12 +3,13 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity,Dimensions,Image,Button } from 'react-native';
 import ImageSliderView from 'react-native-image-slider';
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import VideoPlayer from '@components/VideoPlayer';
 import styles,{ sliderWidth, itemWidth,landWidth} from './styles'
 
 import Carousel, { Pagination,ParallaxImage } from 'react-native-snap-carousel';
 import Orientation from 'react-native-orientation';
+import {getMediatTypeFromURL} from '@global/const';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('screen');
 
@@ -17,24 +18,24 @@ class ImageSlider extends Component {
   constructor (props) {
     super(props);
     this.state = {
-        slider1ActiveSlide: 1,
+        slider1ActiveSlide: props.firsItem,
         slider1Ref: null,
         sliderWidth: viewportWidth,
         sliderHeight: viewportHeight,
-        itemWidth : viewportWidth
+        itemWidth : viewportWidth,
     };
   }
   onPress () {
     this.props.onPress();
   }
-  componentWillMount() {
-    const initial = Orientation.getInitialOrientation();
-    this.onlayoutOrientation(initial);
-  }
-
+  
   componentDidMount() {
     Orientation.unlockAllOrientations();
     Orientation.addOrientationListener(this._orientationDidChange);
+    Orientation.getOrientation((err, orientation) => {
+      this.onlayoutOrientation(orientation);
+    });
+    
   }
 
   _orientationDidChange = (orientation) => {
@@ -57,7 +58,6 @@ class ImageSlider extends Component {
         sliderWidth: Math.min(dim.width,dim.height),
         sliderHeight: Math.max(dim.width,dim.height),
         itemWidth : Math.min(dim.width,dim.height),
-        slider1ActiveSlide:1
         });
         
     } else {
@@ -65,9 +65,7 @@ class ImageSlider extends Component {
         sliderWidth: Math.max(dim.width,dim.height),
         sliderHeight: Math.min(dim.width,dim.height),
         itemWidth : Math.max(dim.width,dim.height),
-        slider1ActiveSlide:1
       });
-       
     }
     this.forceUpdate()
   }
@@ -76,11 +74,15 @@ class ImageSlider extends Component {
     return (
       <SliderEntry
         data={item}
-        even={(index + 1) % 2 === 0}
+        even={index}
         parallax={false}
         parallaxProps={parallaxProps}
+        slider1ActiveSlide ={this.state.slider1ActiveSlide}
       />
     );
+  }
+  _onSnapToItem(index){
+    this.setState({ slider1ActiveSlide: index});
   }
   render () {
     const { slider1ActiveSlide, slider1Ref } = this.state;
@@ -89,23 +91,23 @@ class ImageSlider extends Component {
         <Carousel
           ref={(c) => { if (!this.state.slider1Ref) { this.setState({ slider1Ref: c }); } }}
           data={this.props.data}
-          renderItem={this._renderItemWithParallax}
+          renderItem={this._renderItemWithParallax.bind(this)}
           sliderWidth={this.state.sliderWidth}
           sliderHeight={this.state.sliderHeight}
           itemWidth={this.state.itemWidth}
           hasParallaxImages={true}
-          firstItem={1}
+          firstItem={this.props.firsItem}
           inactiveSlideScale={1}
           inactiveSlideOpacity={0.7}
           enableMomentum={false}
           containerCustomStyle={styles.slider}
           contentContainerCustomStyle={styles.sliderContentContainer}
-          loop={true}
-          loopClonesPerSide={2}
+          loop={false}
+          loopClonesPerSide={0}
           autoplay={false}
           autoplayDelay={500}
           autoplayInterval={3000}
-          onSnapToItem={(index) => this.setState({ slider1ActiveSlide: index }) }
+          onSnapToItem={(index) => this._onSnapToItem(index)}
         />
         <Pagination
           dotsLength={this.props.data.length}
@@ -119,7 +121,7 @@ class ImageSlider extends Component {
           carouselRef={slider1Ref}
           tappableDots={!!slider1Ref}
         />
-        <Icon name="times-circle-o" backgroundColor="#3b5998" onPress={this.onPress.bind(this)} style={styles.backbutton}/>
+        <EvilIcons name="close" backgroundColor="#3b5998" onPress={this.onPress.bind(this)} style={styles.backbutton}/>
       </View>
     );
   }
@@ -135,11 +137,13 @@ class SliderEntry extends Component {
   };
 
   get image () {
-    const { data: { uri }, parallax, parallaxProps, even } = this.props;
-    if(even)
+    const { data: { uri }, parallax, parallaxProps, even} = this.props;
+    let type = getMediatTypeFromURL(uri);
+    
+    if(type=="MP4" ||type=="AVI" )
     {
       return (
-        <VideoPlayer videourl="https://www.w3schools.com/html/mov_bbb.mp4"/>
+        <VideoPlayer videourl={uri} {...this.props}/>
       );
     }
     else{

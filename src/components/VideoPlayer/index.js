@@ -22,12 +22,14 @@ class VideoPlayer extends Component {
     this.onLoad = this.onLoad.bind(this);
     this.onProgress = this.onProgress.bind(this);
     this.onBuffer = this.onBuffer.bind(this);
+
+    
   }
   state = {
     rate: 1,
     volume: 1,
     muted: false,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
     duration: 0.0,
     currentTime: 0.0,
     controls: false,
@@ -127,6 +129,9 @@ class VideoPlayer extends Component {
     const flexCompleted = this.getCurrentTimePercentage() * 100;
     const flexRemaining = (1 - this.getCurrentTimePercentage()) * 100;
 
+    let isCurrrentVideo = false;
+    if(this.props.even != this.props.slider1ActiveSlide)
+      isCurrrentVideo = true;
     return (
       <View style={styles.container}>
         <TouchableOpacity style={styles.fullScreen} onPress={() => { this.setState({ paused: !this.state.paused }) }}>
@@ -134,8 +139,8 @@ class VideoPlayer extends Component {
             source={{ uri: this.props.videourl }}
             style={styles.fullScreen}
             rate={this.state.rate}
-            paused={this.state.paused}
-            volume={this.state.volume}
+            paused={ this.state.paused || isCurrrentVideo}
+            volume={ this.state.volume }
             muted={this.state.muted}
             ignoreSilentSwitch={this.state.ignoreSilentSwitch}
             resizeMode={this.state.resizeMode}
