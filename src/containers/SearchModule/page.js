@@ -146,7 +146,7 @@ class SearchPage extends Component {
   onPlaceProfile(placeID) {
     var ret_photos;
     this.setState({loading:true});
-    RNPlaces.lookUpPlaceByID(placeID).then((result) => 
+    RNPlaces.lookUpPlaceByID(placeID).then((result) =>
       {
         this.setState({placeInf:result});
         return Places.details({ placeid: placeID });
@@ -162,7 +162,7 @@ class SearchPage extends Component {
             })
         })
       }
-    ).then( place => 
+    ).then( place =>
       {
         if ( !place.data.allPlaces || place.data.allPlaces.length <= 0 ) {
           this.onFetchGooglePictures(ret_photos?ret_photos:[]);
@@ -183,7 +183,7 @@ class SearchPage extends Component {
   async onFetchGooglePictures(ret_photos){
     let redrictURLS = [];
     await Promise.all(
-      ret_photos.map(photo => fetch("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=400&photoreference="+photo.photo_reference+"&key="+Places.apiKey)
+      ret_photos.map(photo => fetch("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference="+photo.photo_reference+"&key="+Places.apiKey)
         .then(response => {
           redrictURLS.push(response.url);
           return response.json();
@@ -191,9 +191,9 @@ class SearchPage extends Component {
         .then( json => json.error ? reject(json) : resolve(json) )
         .catch(err => this.setState({loading:false}))
       )
-    ).then(() => { 
-      this.setState({pictureURLS:redrictURLS,isFeaching:true}); 
-    }, err => { this.setState({loading:false}); }) 
+    ).then(() => {
+      this.setState({pictureURLS:redrictURLS,isFeaching:true});
+    }, err => { this.setState({loading:false}); })
   }
   async onCreatePlace(){
     this.props.createPlace({
@@ -204,17 +204,17 @@ class SearchPage extends Component {
         createSide: 'FRONTEND',// # FRONTEND or BACKEND
         description: '',
         sourceId: this.state.placeInf.placeID,// # GOOGLE place id if source is GOOGLE_PLACE
-        placeName: this.state.placeInf.name, 
-        locationLat: this.state.placeInf.latitude, 
-        locationLong: this.state.placeInf.longitude, 
+        placeName: this.state.placeInf.name,
+        locationLat: this.state.placeInf.latitude,
+        locationLong: this.state.placeInf.longitude,
         //addressAreaDistrict: String
         addressCityTown: this.state.placeInf.addressComponents ? this.state.placeInf.addressComponents.administrative_area_level_2 : '',
         //addressStateProvince: String
         addressCountry: this.state.placeInf.addressComponents ? this.state.placeInf.addressComponents.country : '',
         addressPostalCode: this.state.placeInf.addressComponents ? this.state.placeInf.addressComponents.postal_code : '',
         //addressStreet: String
-        address: this.state.placeInf.address, 
-        phoneNumber: this.state.placeInf.phoneNumber || '', 
+        address: this.state.placeInf.address,
+        phoneNumber: this.state.placeInf.phoneNumber || '',
         website: this.state.placeInf.website || '',
         facebook: this.state.placeInf.facebook || '',
         //line: String

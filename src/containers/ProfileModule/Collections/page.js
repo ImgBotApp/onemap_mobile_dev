@@ -42,7 +42,7 @@ class Collections extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      page: 'Hearted View',
+      page: 'Grid View',
       places: [],
       loading: true
     }
@@ -197,7 +197,7 @@ class Collections extends Component {
     )
   }
   openPlaceProfile(id) {
-    
+
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       title: I18n.t('PLACE_TITLE'),
@@ -206,7 +206,7 @@ class Collections extends Component {
         placeID: id
       }
     });
-    
+
   }
   render() {
     /*
@@ -225,13 +225,13 @@ class Collections extends Component {
         <View style={styles.mainContainer}>
           <Tabs selected={this.state.page} style={styles.tabHeader}
             selectedStyle={{ color: 'red' }} onSelect={el => this.setState({ page: el.props.name })}>
-            {this._renderTabHeader('Hearted View')}
+            {this._renderTabHeader('Grid View')}
             {this._renderTabHeader('Map View')}
           </Tabs>
         </View>
         <ScrollView style={styles.CollectionContainer}>
           {
-            this.state.page == 'Hearted View' ? this._renderHeartedView() : this._renderMapView()
+            this.state.page == 'Grid View' ? this._renderHeartedView() : this._renderMapView()
           }
         </ScrollView>
       </View>
@@ -251,4 +251,3 @@ const ComponentWithQueries = graphql(GET_COLLECTION_WITH_PLACES, {
 */
 //make this component available to the app
 export default Collections;
-

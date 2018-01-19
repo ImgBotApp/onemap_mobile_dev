@@ -5,7 +5,7 @@ import TitleImage from '@components/TitledImage'
 
 import styles from './styles'
 
-const imagePlaceholder = 'https://placeimg.com/640/480/nature/grayscale'
+const imagePlaceholder = 'https://res.cloudinary.com/onemap-co/image/upload/v1516259041/placeholder_veswep.png'
 
 class CollectionItem extends Component {
   constructor(props) {
