@@ -131,19 +131,19 @@ class SliderEntry extends Component {
 
   static propTypes = {
       data: PropTypes.object.isRequired,
-      even: PropTypes.bool,
+      even: PropTypes.number,
       parallax: PropTypes.bool,
       parallaxProps: PropTypes.object,
   };
 
   get image () {
     const { data: { uri }, parallax, parallaxProps, even} = this.props;
-    let type = getMediatTypeFromURL(uri);
     
-    if(type=="MP4" ||type=="AVI" )
+    if(getMediatTypeFromURL(uri))
     {
       return (
         <VideoPlayer videourl={uri} {...this.props}/>
+        //<VideoPlayer videourl={"https://www.w3schools.com/html/mov_bbb.mp4"} {...this.props}/>
       );
     }
     else{

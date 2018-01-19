@@ -10,6 +10,10 @@ const styles = StyleSheet.create({
     backgroundColor: BACKGROUNDCOLOR,
     paddingTop: getDeviceHeight(45)
   },
+  containerCentered:{
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -232,6 +236,13 @@ const styles = StyleSheet.create({
   overlayWrapper:{
     
   },
+  playButton:{
+    position:"absolute",
+    backgroundColor:"transparent",
+    color:"white",
+    fontSize:40,
+    alignSelf:"center"
+  }
 });
 
 export default styles

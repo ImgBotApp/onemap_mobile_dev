@@ -10,7 +10,8 @@ import DFonts from '@theme/fonts'
 import { RED_COLOR, LIGHT_GRAY_COLOR } from '../../theme/colors';
 import { getDeviceWidth, getDeviceHeight, calculateDuration } from '@global'
 import { EMPTY_IMG } from '@global/const';
-import { getThumlnailFromVideoURL } from '@global/const';
+import { getThumlnailFromVideoURL,getMediatTypeFromURL } from '@global/const';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 // create a component
 class FeedItem extends Component {
@@ -60,9 +61,15 @@ class FeedItem extends Component {
             data={this.props.data.images}
             horizontal
             renderItem={({ item }) => (
-              <CardView cardElevation={5} cardMaxElevation={5} cornerRadius={5} style={styles.FeedImageItem}>
-                <TouchableOpacity onPress={this._onPlaceImagePress.bind(this)}>
+              <CardView cardElevation={5} cardMaxElevation={5} cornerRadius={5} style={styles.FeedImageCard}>
+                <TouchableOpacity style={styles.containerCentered} onPress={this._onPlaceImagePress.bind(this)}>
                   <Image source={{ uri: getThumlnailFromVideoURL(item.uri) }} style={styles.feedItemImage} />
+                  {
+                    getMediatTypeFromURL(item.uri)?
+                    (
+                      <EvilIcons name="play" style={styles.playButton}/>
+                    ):null
+                  }
                 </TouchableOpacity>
               </CardView>
             )}

@@ -14,6 +14,10 @@ const styles = StyleSheet.create({
     paddingRight: getDeviceWidth(42),
     paddingBottom: getDeviceWidth(32)
   },
+  containerCentered:{
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   userInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -54,7 +58,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
     borderRadius: 5
   },
-  FeedImageItem: {
+  FeedImageCard: {
     marginTop: getDeviceHeight(50),    
     height: getDeviceHeight(340),
     width: getDeviceWidth(532),
@@ -79,6 +83,13 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     marginTop: getDeviceHeight(50),        
+  },
+  playButton:{
+    position:"absolute",
+    backgroundColor:"transparent",
+    color:"white",
+    fontSize:40,
+    alignSelf:"center"
   }
 });
 

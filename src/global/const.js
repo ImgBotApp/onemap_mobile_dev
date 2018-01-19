@@ -13,7 +13,7 @@ export const APP_USER_KEY = 'onemap.user.id'
 export const EMPTY_IMG = 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg';
 
 export function getMediatTypeFromURL (url) {
-  let result = "";
+  let result = false;
   if(url)
   {
     let splitUrl = url.split('/');
@@ -21,14 +21,18 @@ export function getMediatTypeFromURL (url) {
     {
       let filename = splitUrl[splitUrl.length-1].split('.');
       if(filename && filename.length > 0)
-        result = filename[filename.length-1].toUpperCase();
+      {
+        const filetype = filename[filename.length-1].toUpperCase();
+        if(filetype == "MP4" || filetype == "AVI")
+          result = true;
+        else result = false;
+      }
     }
   }
   return result;
 }
 export function getThumlnailFromVideoURL (videourl){
-  let type = getMediatTypeFromURL(videourl);
-  if(type=="MP4" || type=="AVI")
+  if(getMediatTypeFromURL(videourl))
   {
     let splitUrl = videourl.slice(0,videourl.length-3);
     return splitUrl+"JPG";

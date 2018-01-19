@@ -26,7 +26,8 @@ import { client } from '@root/main'
 import { GET_PLACE_PROFILE } from '@graphql/places'
 import Overlay from 'react-native-modal-overlay';
 import { GET_USER_COLLECTIONS, GET_MY_COLLECTIONS } from '@graphql/collections'
-import { getThumlnailFromVideoURL } from '@global/const';
+import { getThumlnailFromVideoURL,getMediatTypeFromURL } from '@global/const';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 const ImagePickerOption = {
   title: 'Select Image',
@@ -252,11 +253,18 @@ class PlaceProfile extends Component {
       )
     }
     return (
-      <TouchableOpacity onPress={() => this.setState({ sliderShow: true ,selectedCard:index})}>
-        <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
+      <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
+        <TouchableOpacity style={styles.containerCentered} onPress={() => this.setState({ sliderShow: true ,selectedCard:index})}>
           <Image source={{ uri: getThumlnailFromVideoURL(item.uri) }} style={styles.imageItem} />
-        </CardView>
-      </TouchableOpacity>
+          {
+            getMediatTypeFromURL(item.uri)?
+            (
+              <EvilIcons name="play" style={styles.playButton}/>
+            ):null
+          }
+        </TouchableOpacity>
+      </CardView>
+      
     )
   }
   goMapDetail() {
