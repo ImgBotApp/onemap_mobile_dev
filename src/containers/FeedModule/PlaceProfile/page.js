@@ -121,7 +121,7 @@ class PlaceProfile extends PureComponent {
             checkIns: data._userCheckedInMeta.count,
             bookmark: data._collectionsMeta.count
           },
-          keywords: data.keywords && data.keywords.map((item) => item.name),
+          keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id).map(item => item.name),
           comments: [],
           bookmark: this.props.place ? this.props.place.bookmark : false,
           collectionIds: this.props.place ? this.props.place.collectionIds : null
@@ -433,23 +433,17 @@ class PlaceProfile extends PureComponent {
       <View style={styles.keyWords}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text style={styles.keywordTitle}>{I18n.t('PLACE_KEYWORDS')}</Text>
-          <TouchableOpacity
-            onPress={() => {
-              if (keywordEditable) {
-                this.saveKeyword();
-              }
-              this.setState({ keywordEditable: !keywordEditable });
-            }}>
+          <TouchableOpacity onPress={() => this.setState({ keywordEditable: !keywordEditable })}>
             {!keywordEditable ?
               <MaterialCommunityIcons
                 name='pencil'
-                color='green'
+                color={DARK_GRAY_COLOR}
                 size={25}
               />
               :
               <MaterialIcons
                 name='save'
-                color='green'
+                color={DARK_GRAY_COLOR}
                 size={25}
               />
             }
@@ -501,7 +495,7 @@ class PlaceProfile extends PureComponent {
     });
   }
   saveKeyword() {
-    
+
   }
 
   _renderWriteStory() {

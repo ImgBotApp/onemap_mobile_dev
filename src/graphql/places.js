@@ -84,6 +84,9 @@ export const GET_PLACE_PROFILE = gql`
       }
       keywords {
         id
+        createdBy {
+          id
+        }
         name
       }
       _userCheckedInMeta {
