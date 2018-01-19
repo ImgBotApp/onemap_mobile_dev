@@ -23,8 +23,8 @@
 {
   [[FBSDKApplicationDelegate sharedInstance] application:application
                            didFinishLaunchingWithOptions:launchOptions];
-  [GMSServices provideAPIKey:@"AIzaSyBJGLClnfCAfweyr7BLiDtig71MMPOly3w"];
-  [GMSPlacesClient provideAPIKey:@"AIzaSyBJGLClnfCAfweyr7BLiDtig71MMPOly3w"];
+  [GMSServices provideAPIKey:@"AIzaSyAat5w4Pk7FTXOR1ZPcuavjwjIbiP-JBGU"];
+  [GMSPlacesClient provideAPIKey:@"AIzaSyAat5w4Pk7FTXOR1ZPcuavjwjIbiP-JBGU"];
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
