@@ -61,7 +61,9 @@ class SearchResult extends Component {
       this.setState({
         places: results
       })
-    }).catch((error) => console.log(error))
+    }).catch((error) => {
+      console.log(error)
+    })
     client.query({
       query: GET_FILTER_KEYWORDS,
       variables: {
@@ -95,8 +97,8 @@ class SearchResult extends Component {
         <View style={styles.item}>
           <CircleImage style={styles.profileImage} uri={item.photoURL} radius={getDeviceWidth(70)} />
           <View style={styles.infomation}>
-            <Text style={styles.name}>{item.username}</Text>
-            <Text style={styles.following}>{item.displayName}</Text>
+            <Text style={styles.name}>{item.displayName}</Text>
+            <Text style={styles.following}>{item.username}</Text>
           </View>
         </View>
       </TouchableOpacity>

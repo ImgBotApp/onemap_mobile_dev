@@ -14,10 +14,6 @@ const styles = StyleSheet.create({
     paddingRight: getDeviceWidth(42),
     paddingBottom: getDeviceWidth(32)
   },
-  containerCentered:{
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   userInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -88,8 +84,10 @@ const styles = StyleSheet.create({
     position:"absolute",
     backgroundColor:"transparent",
     color:"white",
-    fontSize:40,
-    alignSelf:"center"
+    fontSize:20,
+    right:5,
+    bottom:5,
+    fontWeight:"100"
   }
 });
 

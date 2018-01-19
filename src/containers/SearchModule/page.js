@@ -134,6 +134,7 @@ class SearchPage extends Component {
     })
   }
   onKeywordItem(id) {
+    if (!id) return;
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       title: I18n.t('PLACE_TITLE'),
