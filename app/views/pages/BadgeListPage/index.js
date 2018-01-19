@@ -14,6 +14,7 @@ import { styles } from './styles';
 import * as commonStyles from '@global/styles/commonStyles';
 import Container from '@layout/Container';
 import MapPage from '../MapPage';
+import I18n from '@i18n';
 
 export default class BadgeListPage extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ export default class BadgeListPage extends Component {
   
   render() {
     return (
-      <Container title="All Badges">
+      <Container title={I18n.t('ALL_BADGES')}>
         <View style={styles.container}>
           <MapPage data={mapData} currentLocation={currentLocation} onPressMarker={(data)=>this.onPressMarker(data)} radius={0} />
         </View>

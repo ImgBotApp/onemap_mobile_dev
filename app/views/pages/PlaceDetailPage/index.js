@@ -23,6 +23,7 @@ import SuggestPlaceItem from '@components/SuggestPlaceItem';
 import SuggestPlaceDetailItem from '@components/SuggestPlaceDetailItem';
 import ImageSlider from '@components/ImageSliderComponent';
 import RuleItem from '@components/RuleItem';
+import I18n from '@i18n';
 
 export default class PlaceDetailPage extends Component {
   constructor(props) {
@@ -141,7 +142,7 @@ export default class PlaceDetailPage extends Component {
     }
 
     return (
-      <Container title="Place detail">
+      <Container title={I18n.t('PLACE_DETAIL')}>
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.topView}>
@@ -156,7 +157,7 @@ export default class PlaceDetailPage extends Component {
                 <View>
                   <TouchableOpacity onPress={()=>this.onCheckIn()}>
                     <View style={styles.btnCheck}>
-                      <Text style={styles.textCheck}>Check-In</Text>
+                      <Text style={styles.textCheck}>{I18n.t('CHECK_IN')}</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -166,7 +167,7 @@ export default class PlaceDetailPage extends Component {
               <SuggestPlaceDetailItem data={data} viewMore={()=>this.gotoPlaceProfile()}/>
             </View>
             <View>
-              <Text style={styles.textSuggest}>Rule</Text>
+              <Text style={styles.textSuggest}>{I18n.t('RULE')}</Text>
               <View style={styles.ruleView}>
                 <ScrollView
                   ref={(scrollView) => { this._scrollView = scrollView; }}
@@ -184,7 +185,7 @@ export default class PlaceDetailPage extends Component {
               </View>
             </View>
             <View style={styles.suggestPlaceView}>
-              <Text style={styles.textSuggest}>Suggested Place</Text>
+              <Text style={styles.textSuggest}>{I18n.t('SUGGESTED_PLACE')}</Text>
               <View style={styles.suggestView}>
                 <Carousel
                   data={data.suggestPlace}

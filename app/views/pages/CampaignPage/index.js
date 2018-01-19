@@ -17,6 +17,7 @@ import CampaignItem from '@components/CampaignItem';
 import CampaignModal from '@components/CampaignModal';
 import MapPage from '../MapPage';
 import { Actions } from 'react-native-router-flux';
+import I18n from '@i18n';
 
 export default class CampaignPage extends Component {
   constructor(props) {
@@ -104,7 +105,7 @@ export default class CampaignPage extends Component {
     }
 
     return (
-      <Container title="Campaign">
+      <Container title={I18n.t('CAMPAIGN')}>
         <View style={styles.container}>
           <MapPage data={mapData} currentLocation={currentLocation} onPressMarker={(data)=>this.onPressMarker(data)} radius={0} />
           {!this.state.showCampaignModal && (

@@ -18,6 +18,7 @@
     "react-native-flexi-radio-button": "^0.2.2",
     "react-native-fontawesome": "^5.7.0",
     "react-native-grid-component": "^1.0.7",
+    "react-native-i18n": "^2.0.10",
     "react-native-image-picker": "^0.26.7",
     "react-native-image-slider": "^1.1.5",
     "react-native-iphone-x-helper": "^1.0.1",

@@ -16,6 +16,7 @@ import EventPage from './SubTabViews/EventPage';
 import BadgePage from './SubTabViews/BadgePage';
 
 import CircleImage from '@components/CircleImage'
+import I18n from '@i18n';
 
 import { styles } from './styles';
 import * as commonStyles from '@global/styles/commonStyles';
@@ -35,7 +36,7 @@ export default class ProfilePage extends Component {
 
   render() {
     return (
-      <Container title="Profile">
+      <Container title={I18n.t('FOLLOWERS')}>
         <ScrollView style={styles.container}>
           <View style={styles.infoView}>
             <View style={styles.profileView}>
@@ -52,7 +53,7 @@ export default class ProfilePage extends Component {
             </View>
             <View style={styles.followingContainer}>
               <Text style={styles.followers}>
-                Followers
+                {I18n.t('FOLLOWERS')}
               </Text>
               <Text style={styles.followerCount}>
                 {data.followerCount}
@@ -67,15 +68,15 @@ export default class ProfilePage extends Component {
           <View style={styles.tabContainer}>
             <Tabs selected={this.state.page} style={styles.tabView} onSelect={el => this.setState({page: el.props.name})} >
               <View style={styles.tabItem} name="mapView" >
-                <Text style={this.state.page=='mapView' ? styles.tabSelectItemText : styles.tabItemText}> Map View </Text>
+                <Text style={this.state.page=='mapView' ? styles.tabSelectItemText : styles.tabItemText}> {I18n.t('MAP_VIEW')} </Text>
                 <View style={this.state.page=='mapView' ? styles.separateSelect : styles.separate}></View>
               </View>
               <View style={styles.tabItem} name="events">
-                <Text style={this.state.page=='events' ? styles.tabSelectItemText : styles.tabItemText}> Events </Text>
+                <Text style={this.state.page=='events' ? styles.tabSelectItemText : styles.tabItemText}> {I18n.t('EVENTS')} </Text>
                 <View style={this.state.page=='events' ? styles.separateSelect : styles.separate}></View>
               </View>
               <View style={styles.tabItem} name="badge">
-                <Text style={this.state.page=='badge' ? styles.tabSelectItemText : styles.tabItemText}> Badge </Text>
+                <Text style={this.state.page=='badge' ? styles.tabSelectItemText : styles.tabItemText}> {I18n.t('BADGE')} </Text>
                 <View style={this.state.page=='badge' ? styles.separateSelect : styles.separate}></View>
               </View>
             </Tabs>

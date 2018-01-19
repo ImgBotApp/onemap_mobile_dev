@@ -20,6 +20,7 @@ import CardView from 'react-native-cardview';
 import CampaignItem from '@components/CampaignItem';
 import SuggestPlaceItem from '@components/SuggestPlaceItem';
 import ImageSlider from '@components/ImageSliderComponent';
+import I18n from '@i18n';
 
 export default class CampaignModal extends Component {
   constructor(props) {
@@ -55,7 +56,7 @@ export default class CampaignModal extends Component {
           </Text>
         </View>
         <View style={styles.suggestPlaceView}>
-          <Text style={styles.textSuggest}>Suggested Place</Text>
+          <Text style={styles.textSuggest}>{I18n.t('SUGGESTED_PLACE')}</Text>
           <View style={styles.suggestView}>
             <Carousel
               data={data.suggestPlace}
@@ -72,7 +73,7 @@ export default class CampaignModal extends Component {
           </View>
         </View>
         <View style={styles.suggestPlaceView}>
-          <Text style={styles.textSuggest}>Badges</Text>
+          <Text style={styles.textSuggest}>{I18n.t('BADGES')}</Text>
           <View style={styles.suggestView}>
             <ImageSlider data={data.badge}  offset={{w: 80, h: 80, padding: 15}} />
           </View>

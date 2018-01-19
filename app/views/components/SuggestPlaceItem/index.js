@@ -14,6 +14,7 @@ import * as commonStyles from '@global/styles/commonStyles';
 import Grid from 'react-native-grid-component';
 import CardView from 'react-native-cardview';
 import ImageSlider from '@components/ImageSliderComponent';
+import I18n from '@i18n';
 
 export default class SuggestPlaceItem extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ export default class SuggestPlaceItem extends Component {
           </View>
           <TouchableOpacity onPress={()=>this.onViewMore()}>
             <View style={styles.btnView}>
-              <Text style={styles.textView}>View more</Text>
+              <Text style={styles.textView}>{I18n.t('VIEW_MORE')}</Text>
             </View>
           </TouchableOpacity>
         </View>

@@ -4,6 +4,8 @@ import {
   Platform,
 } from 'react-native';
 
+import I18n from '@i18n';
+
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 
 import ExtraDimensions from 'react-native-extra-dimensions-android';
@@ -107,12 +109,12 @@ export function calculateDuration (updateDate) {
   var updatedTime = updateDate.getTime()
   var duration = Math.floor((today - updatedTime) / one_day)
 
-  if ( duration == 0) return `Updated yesterday`
-  if ( duration < 31) return `Updated ${duration} Days ago`
+  if ( duration == 0) return `${I18n.t('UPDATED_YESTERDAY')}`
+  if ( duration < 31) return `${I18n.t('UPDATED')} ${duration} ${I18n.t('DAYS_AGO')}`
   var months = Math.floor(duration/30)
-  if ( months == 0) return `Updated a Month ago`
-  if ( months < 12) return `Updated ${months} months ago`
+  if ( months == 0) return `${I18n.t('UPDATED_MONTH_AGO')}`
+  if ( months < 12) return `${I18n.t('UPDATED')} ${months} ${I18n.t('MONTHS_AGO')}`
   var year = Math.floor(months/12)
-  if ( year == 0) return `Updated a Year ago`
-  return `Updated ${year} years ago`
+  if ( year == 0) return `${I18n.t('UPDATED_YEAR_AGO')}`
+  return `${I18n.t('Updated')} ${year} ${I18n.t('Years ago')}`
 }

@@ -29,16 +29,16 @@ import RuleItem from '@components/RuleItem';
 import CircleImage from '@components/CircleImage';
 import ViewMoreText from 'react-native-view-more-text';
 import TagInput from 'react-native-tag-input';
-import ImagePicker from 'react-native-image-picker'
-
-import { Icon } from 'react-native-elements'
+import ImagePicker from 'react-native-image-picker';
+import I18n from '@i18n';
+import { Icon } from 'react-native-elements';
 import FontAwesome, {Icons} from 'react-native-fontawesome';
 
 import { styles } from './styles';
 
 const inputProps = {
   keyboardType: 'default',
-  placeholder: 'Tag',
+  placeholder: `${I18n.t('TAG')}`,
   autoFocus: true,
   style: {
     fontSize: 14,
@@ -152,9 +152,9 @@ export default class PlaceProfilePage extends Component {
             <ImageSlider data={this.state.storyImages}  offset={{w: 110, h: 80, padding: 0}} />
           </View>
         )}
-        <TextInput style={styles.storyTitle} placeholder={'Title (Bold)'} />
+        <TextInput style={styles.storyTitle} placeholder={I18n.t('TITLE_BOLD')} />
         <View style={styles.serparate}></View>
-        <TextInput style={styles.storyDescription} placeholder={'What is this story about'} />
+        <TextInput style={styles.storyDescription} placeholder={I18n.t('WHAT_IS_THE_STORY_ABOUT')} />
       </CardView>
     )
   }
@@ -162,7 +162,7 @@ export default class PlaceProfilePage extends Component {
   render() {
 
     return (
-      <Container title="Place Profile">
+      <Container title={I18n.t('PLACE_PROFILE')}>
         <View style={styles.container}>
           <ScrollView>
             <View style={styles.subContainer}>
@@ -217,7 +217,7 @@ export default class PlaceProfilePage extends Component {
               <View style={styles.informationContainer}>
                 <View style={styles.informationItem}>
                   <View style={styles.title}>
-                    <Text style={styles.informationText}>Address</Text>
+                    <Text style={styles.informationText}>{I18n.t('ADDRESS')}</Text>
                   </View>
                   <Text style={styles.informationText}>:</Text>
                   <View style={styles.content}>
@@ -226,7 +226,7 @@ export default class PlaceProfilePage extends Component {
                 </View>
                 <View style={styles.informationItem}>
                   <View style={styles.title}>
-                    <Text style={styles.informationText}>Phone Number</Text>
+                    <Text style={styles.informationText}>{I18n.t('Phone Number')}</Text>
                   </View>
                   <Text style={styles.informationText}>:</Text>
                   <View style={styles.content}>
@@ -235,7 +235,7 @@ export default class PlaceProfilePage extends Component {
                 </View>
                 <View style={styles.informationItem}>
                   <View style={styles.title}>
-                    <Text style={styles.informationText}>Opening hours</Text>
+                    <Text style={styles.informationText}>{I18n.t('OPENING_HOURS')}</Text>
                   </View>
                   <Text style={styles.informationText}>:</Text>
                   <View style={styles.content}>
@@ -274,9 +274,9 @@ export default class PlaceProfilePage extends Component {
                     </FontAwesome>
 
                   </View>
-                  <Text style={styles.interestText}>{commonStyles.calculateCount(data.interests.hearted)}{' '}Hearted</Text>
-                  <Text style={styles.interestText}>{commonStyles.calculateCount(data.interests.checkIns)}{' '}Check-ins</Text>
-                  <Text style={styles.interestText}>{commonStyles.calculateCount(data.interests.bookmark)}{' '}Aded To Collection</Text>
+                  <Text style={styles.interestText}>{commonStyles.calculateCount(data.interests.hearted)}{' '}{I18n.t('HEARTED')}</Text>
+                  <Text style={styles.interestText}>{commonStyles.calculateCount(data.interests.checkIns)}{' '}{I18n.t('CHECK_INS')}</Text>
+                  <Text style={styles.interestText}>{commonStyles.calculateCount(data.interests.bookmark)}{' '}{I18n.t('ADD_TO_COLLECTION')}</Text>
                 </View>
                 <View style={styles.serparate}></View>
                 <View style={styles.buttonInterest}>
@@ -316,9 +316,9 @@ export default class PlaceProfilePage extends Component {
               {/* Keywords */}
               <View style={styles.keywordsContainer}>
                 <View style={styles.keywordTitleContainer}>
-                  <Text style={styles.keywordTitle}>Keywords</Text>
+                  <Text style={styles.keywordTitle}>{I18n.t('KEYWORDS')}</Text>
                   <TouchableOpacity>
-                    <Text style={styles.keywordDone}>Done</Text>
+                    <Text style={styles.keywordDone}>{I18n.t('DONE')}</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={styles.tagInputContainer}>
@@ -341,7 +341,7 @@ export default class PlaceProfilePage extends Component {
               {/* Write Story */}
               <View style={styles.storyContainer}>
                 <View style={styles.keywordTitleContainer}>
-                  <Text style={styles.keywordTitle}>Write Story</Text>
+                  <Text style={styles.keywordTitle}>{I18n.t('WRITE_STORY')}</Text>
                 </View>
                 {this._renderWriteStory()}
               </View>
