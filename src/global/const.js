@@ -11,3 +11,27 @@ export const ACCOUNT_MODE = {
 export const APP_USER_KEY = 'onemap.user.id'
 
 export const EMPTY_IMG = 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg';
+
+export function getMediatTypeFromURL (url) {
+  let result = "";
+  if(url)
+  {
+    let splitUrl = url.split('/');
+    if(splitUrl && splitUrl.length > 0)
+    {
+      let filename = splitUrl[splitUrl.length-1].split('.');
+      if(filename && filename.length > 0)
+        result = filename[filename.length-1].toUpperCase();
+    }
+  }
+  return result;
+}
+export function getThumlnailFromVideoURL (videourl){
+  let type = getMediatTypeFromURL(videourl);
+  if(type=="MP4" || type=="AVI")
+  {
+    let splitUrl = videourl.slice(0,videourl.length-3);
+    return splitUrl+"JPG";
+  }
+  else return videourl;
+}

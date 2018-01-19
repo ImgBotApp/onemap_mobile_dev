@@ -10,7 +10,7 @@ class CircleImage extends Component {
   render() {
     return (
       <View style={this.props.style}>
-        <Image source={{ uri: this.props.uri }} style={[styles.image, { borderRadius: this.props.radius }]} />
+        <Image source={{ uri: this.props.uri ? this.props.uri : '' }} style={[styles.image, { borderRadius: this.props.radius }]} />
       </View>
     );
   }
