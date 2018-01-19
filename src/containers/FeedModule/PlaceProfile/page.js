@@ -16,11 +16,10 @@ import CircleImage from '@components/CircleImage'
 import ImageSliderComponent from '@components/ImageSliderComponent'
 import styles from './styles'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
-import { calculateCount, getDeviceWidth, calculateDuration } from '@global'
+import { calculateCount, clone, getDeviceWidth, calculateDuration } from '@global'
 import DFonts from '@theme/fonts'
 import I18n from '@language'
 import * as SCREEN from '@global/screenName'
-import { clone } from '@global';
 
 import { client } from '@root/main'
 import { GET_PLACE_PROFILE } from '@graphql/places'
@@ -454,24 +453,21 @@ class PlaceProfile extends PureComponent {
     )
   }
   onChangeText = (text) => {
-    this.setState({ text });
-
     const lastTyped = text.charAt(text.length - 1);
     const parseWhen = [',', ' ', ';', '\n'];
 
     if (parseWhen.indexOf(lastTyped) > -1) {
-      this.setState(
-        {
-          placeData: {
-            ...this.state.placeData,
-            keywords: {
-              ...this.state.placeData.keywords,
-              text
-            }
-          },
-          // tags: [...this.state.tags, this.state.text],
-          text: "",
+      let placeData = clone(this.state.placeData);
+      let keywords = placeData.keywords;
+      if (!keywords.includes(this.state.text)) {
+        keywords.push(this.state.text);
+        this.setState({
+          placeData,
+          text: '',
         });
+      }
+    } else {
+      this.setState({ text });
     }
   }
   onChangeTags = (tags) => {
