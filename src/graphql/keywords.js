@@ -15,10 +15,8 @@ export const GET_FILTER_KEYWORDS = gql`
 `
 
 export const GET_KEYWORD = gql`
-  query GetKeyword($keyword: String) {
-    Keyword(filter: {
-      name: $keyword
-    }){
+  query GetKeyword($keyword: String!) {
+    Keyword(name: $keyword){
       id
       name
       places {

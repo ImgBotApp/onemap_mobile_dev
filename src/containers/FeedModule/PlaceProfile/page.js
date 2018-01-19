@@ -1,32 +1,34 @@
 //import liraries
 import React, { Component, PureComponent } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, Platform, TextInput } from 'react-native';
-import CardView from 'react-native-cardview'
-import ViewMoreText from 'react-native-view-more-text';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import Modal from 'react-native-modalbox';
-import TitleImage from '@components/TitledImage'
 
+import CardView from 'react-native-cardview'
+import ImagePicker from 'react-native-image-picker'
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';import Modal from 'react-native-modalbox';
+import Overlay from 'react-native-modal-overlay';
 import TagInput from 'react-native-tag-input';
 import Foundation from 'react-native-vector-icons/Foundation'
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import ImagePicker from 'react-native-image-picker'
+import ViewMoreText from 'react-native-view-more-text';
+
 import CircleImage from '@components/CircleImage'
 import ImageSliderComponent from '@components/ImageSliderComponent'
-import styles from './styles'
-import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
+import TitleImage from '@components/TitledImage'
 import { calculateCount, clone, getDeviceWidth, calculateDuration } from '@global'
+import { getThumlnailFromVideoURL } from '@global/const';
+import * as SCREEN from '@global/screenName'
+import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import DFonts from '@theme/fonts'
 import I18n from '@language'
-import * as SCREEN from '@global/screenName'
-
 import { client } from '@root/main'
-import { GET_PLACE_PROFILE } from '@graphql/places'
-import Overlay from 'react-native-modal-overlay';
+
 import { GET_USER_COLLECTIONS, GET_MY_COLLECTIONS } from '@graphql/collections'
-import { getThumlnailFromVideoURL } from '@global/const';
+import { GET_KEYWORD } from '@graphql/keywords'
+import { GET_PLACE_PROFILE } from '@graphql/places'
+
+import styles from './styles'
 
 const ImagePickerOption = {
   title: 'Select Image',
@@ -481,6 +483,7 @@ class PlaceProfile extends PureComponent {
           placeData,
           text: '',
         });
+        this.saveKeyword(this.state.text);
       }
     } else {
       this.setState({ text });
@@ -494,8 +497,14 @@ class PlaceProfile extends PureComponent {
       }
     });
   }
-  saveKeyword() {
-
+  saveKeyword(keyword) {
+    client.query({
+      query: GET_KEYWORD,
+      variables: {
+        keyword
+      }
+    }).then((keyword) => {alert(JSON.stringify(keyword))
+    }).catch(err => alert(err));
   }
 
   _renderWriteStory() {
