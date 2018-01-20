@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   keywordTextStyle: {
-    fontSize: SMALLER_FONT_SIZE
+    fontSize: SMALL_FONT_SIZE
   },
   WriteStory: {
     marginLeft: getDeviceWidth(76),

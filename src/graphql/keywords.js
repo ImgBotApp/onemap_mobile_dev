@@ -13,3 +13,46 @@ export const GET_FILTER_KEYWORDS = gql`
     }
   }
 `
+
+export const GET_KEYWORD = gql`
+  query GetKeyword($keyword: String!) {
+    Keyword(name: $keyword){
+      id
+      name
+      places {
+        id
+      }
+    }
+  }
+`
+
+export const CREATE_KEYWORD = gql`
+  mutation(
+    $name: String!,
+    $places: [ID!],
+    $userId: ID!
+  ) {
+      updateKeyword(
+        createdBy: $userId, 
+        name: $name,
+        places: $places
+      ) {
+        id,
+        name
+      }
+    }
+`
+
+export const UPDATE_KEYWORD = gql`
+  mutation(
+    $id: ID!
+    $places: [ID!]
+  ) {
+      updateKeyword(
+        places: $places
+      ) {
+        id,
+        name
+      }
+    }
+`

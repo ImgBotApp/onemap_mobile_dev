@@ -1,33 +1,34 @@
 //import liraries
 import React, { Component, PureComponent } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, Platform, TextInput } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import CardView from 'react-native-cardview'
-import ViewMoreText from 'react-native-view-more-text';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import Modal from 'react-native-modalbox';
-import TitleImage from '@components/TitledImage'
 
+import CardView from 'react-native-cardview'
+import ImagePicker from 'react-native-image-picker'
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; import Modal from 'react-native-modalbox';
+import Overlay from 'react-native-modal-overlay';
 import TagInput from 'react-native-tag-input';
 import Foundation from 'react-native-vector-icons/Foundation'
 import IonIcons from 'react-native-vector-icons/Ionicons'
-import ImagePicker from 'react-native-image-picker'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import ViewMoreText from 'react-native-view-more-text';
+
 import CircleImage from '@components/CircleImage'
 import ImageSliderComponent from '@components/ImageSliderComponent'
-import styles from './styles'
-import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
-import { calculateCount, getDeviceWidth, calculateDuration } from '@global'
+import TitleImage from '@components/TitledImage'
+import { calculateCount, clone, getDeviceWidth, calculateDuration } from '@global'
+import { getThumlnailFromVideoURL, getMediatTypeFromURL } from '@global/const';
+import * as SCREEN from '@global/screenName'
+import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import DFonts from '@theme/fonts'
 import I18n from '@language'
-import * as SCREEN from '@global/screenName'
-import { clone } from '@global';
-
 import { client } from '@root/main'
-import { GET_PLACE_PROFILE } from '@graphql/places'
-import Overlay from 'react-native-modal-overlay';
+
 import { GET_USER_COLLECTIONS, GET_MY_COLLECTIONS } from '@graphql/collections'
-import { getThumlnailFromVideoURL,getMediatTypeFromURL } from '@global/const';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { GET_KEYWORD } from '@graphql/keywords'
+import { GET_PLACE_PROFILE } from '@graphql/places'
+
+import styles from './styles'
 
 const ImagePickerOption = {
   title: 'Select Image',
@@ -41,15 +42,6 @@ const user = {
   photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
 }
 
-const inputProps = {
-  keyboardType: 'default',
-  placeholder: 'Keyword',
-  autoFocus: true,
-  style: {
-    fontSize: 14,
-    marginVertical: Platform.OS == 'ios' ? 10 : -2,
-  },
-};
 // create a component
 class PlaceProfile extends PureComponent {
   static navigatorButtons = {
@@ -131,7 +123,7 @@ class PlaceProfile extends PureComponent {
             checkIns: data._userCheckedInMeta.count,
             bookmark: data._collectionsMeta.count
           },
-          keywords: data.keywords && data.keywords.map((item) => item.name),
+          keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id).map(item => item.name),
           comments: [],
           bookmark: this.props.place ? this.props.place.bookmark : false,
           collectionIds: this.props.place ? this.props.place.collectionIds : null
@@ -259,7 +251,7 @@ class PlaceProfile extends PureComponent {
           {
             getMediatTypeFromURL(item.uri)?
             (
-              <Icon name="play-circle-outline" style={styles.playButton}/>
+              <MaterialCommunityIcons name="play-circle-outline" style={styles.playButton}/>
             ):null
           }
         </TouchableOpacity>
@@ -454,12 +446,36 @@ class PlaceProfile extends PureComponent {
   }
 
   renderKeywords() {
+    const { keywordEditable } = this.state;
+    const inputProps = {
+      keyboardType: 'default',
+      placeholder: 'Keyword',
+      autoFocus: false,
+      style: {
+        fontSize: 14,
+        marginVertical: Platform.OS == 'ios' ? 10 : -2,
+      },
+      editable: keywordEditable
+    };
     return (
       <View style={styles.keyWords}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text style={styles.keywordTitle}>{I18n.t('PLACE_KEYWORDS')}</Text>
-          <TouchableOpacity onPress={() => this.onWriteStory()}>
-            <Text style={styles.keywordDone}>{I18n.t('PLACE_KEYWORD_DONE')}</Text>
+          <TouchableOpacity onPress={() => this.setState({ keywordEditable: !keywordEditable })}>
+            {!keywordEditable ?
+              <MaterialCommunityIcons
+                name='pencil'
+                color={DARK_GRAY_COLOR}
+                size={25}
+              />
+              :
+              <MaterialIcons
+                name='save'
+                color={DARK_GRAY_COLOR}
+                size={25}
+              />
+            }
+            {/* <Text style={styles.keywordDone}>{I18n.t('PLACE_KEYWORD_DONE')}</Text> */}
           </TouchableOpacity>
         </View>
         <View style={styles.keywordContainer}>
@@ -481,24 +497,22 @@ class PlaceProfile extends PureComponent {
     )
   }
   onChangeText = (text) => {
-    this.setState({ text });
-
     const lastTyped = text.charAt(text.length - 1);
     const parseWhen = [',', ' ', ';', '\n'];
 
     if (parseWhen.indexOf(lastTyped) > -1) {
-      this.setState(
-        {
-          placeData: {
-            ...this.state.placeData,
-            keywords: {
-              ...this.state.placeData.keywords,
-              text
-            }
-          },
-          // tags: [...this.state.tags, this.state.text],
-          text: "",
+      let placeData = clone(this.state.placeData);
+      let keywords = placeData.keywords;
+      if (!keywords.includes(this.state.text)) {
+        keywords.push(this.state.text);
+        this.setState({
+          placeData,
+          text: '',
         });
+        this.saveKeyword(this.state.text);
+      }
+    } else {
+      this.setState({ text });
     }
   }
   onChangeTags = (tags) => {
@@ -508,6 +522,16 @@ class PlaceProfile extends PureComponent {
         keywords: tags
       }
     });
+  }
+  saveKeyword(keyword) {
+    client.query({
+      query: GET_KEYWORD,
+      variables: {
+        keyword
+      }
+    }).then((keyword) => {
+      alert(JSON.stringify(keyword))
+    }).catch(err => alert(err));
   }
 
   _renderWriteStory() {
@@ -594,7 +618,7 @@ class PlaceProfile extends PureComponent {
   }
 
   addImageToStory() {
-    ImagePicker.showImagePicker(ImagePickerOption, (response) => {
+    ImagePicker.showImagePicker({ ...ImagePickerOption, mediaType: 'mixed' }, (response) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       }
