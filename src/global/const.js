@@ -37,5 +37,5 @@ export function getThumlnailFromVideoURL (videourl){
     let splitUrl = videourl.slice(0,videourl.length-3);
     return splitUrl+"JPG";
   }
-  else return videourl;
+  else return videourl?videourl:EMPTY_IMG;
 }

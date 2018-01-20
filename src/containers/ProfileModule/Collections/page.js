@@ -122,7 +122,7 @@ class Collections extends Component {
           onLongPress={() => this.onRemovePlace(data)}
         >
           <AutoHeightTitledImage
-            uri={item.pictureURL ? item.pictureURL[0] : null}
+            uri={item.pictureURL ? item.pictureURL[0] : ""}
             width={getDeviceWidth(343)}
             title={item.address}
             vAlign={'center'}

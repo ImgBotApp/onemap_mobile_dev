@@ -16,6 +16,7 @@ import * as appActions from '@reducers/app/actions'
 import { EXIST_FACEBOOK_USER } from '@graphql/users'
 import { client } from '@root/main'
 import { saveUserInfo } from '@reducers/user/actions'
+import { GET_PROFILE } from '@graphql/userprofile';
 
 const { GraphRequest, GraphRequestManager, AccessToken } = FBSDK
 
@@ -39,16 +40,17 @@ class LoginPage extends Component {
         gender = 'MALE'
       if ( result.gender == 'female') 
         gender = 'FEMALE'
+      
       let UserExist = await client.query({
-        query: EXIST_FACEBOOK_USER,
+        query: GET_PROFILE,
         variables: {
-          id: this.state.id
+          userId: this.state.id
         }
       }).then((user) => {
         var data = user.data.User
         if ( data.firstName ) {
           this.props.saveUserInfo({
-            id: data.id,
+            id: this.state.id,
             createdAt: new Date().toLocaleDateString(),
             updatedAt: new Date().toLocaleDateString(),
             loginMethod: data.loginMethod,
@@ -60,7 +62,7 @@ class LoginPage extends Component {
             firstName: data.firstName,
             lastName: data.lastName,
             displayName: data.displayName,
-            username: data.facebookUserId
+            username: data.username
           })
           // this.props.dispatch(appActions.login())
           this.props.login();
@@ -134,7 +136,7 @@ class LoginPage extends Component {
       if (val !== null && val.id !== null){
         // We have data!!
         let UserExist = await client.query({
-          query: EXIST_FACEBOOK_USER,
+          query: GET_PROFILE,
           variables: {
             id: val.id
           }
@@ -156,7 +158,7 @@ class LoginPage extends Component {
               firstName: data.firstName,
               lastName: data.lastName,
               displayName: data.displayName,
-              username: data.facebookUserId
+              username: data.username
             })
             this.props.login();
           } 

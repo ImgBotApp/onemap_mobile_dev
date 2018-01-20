@@ -3,6 +3,7 @@ package com.onemapfinal;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.github.yamill.orientation.OrientationPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -43,6 +44,7 @@ public class MainApplication extends NavigationApplication implements ReactAppli
     // No need to add RnnPackage and MainReactPackage
     return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new PickerPackage(),
             new ReactVideoPackage(),
             new OrientationPackage(),
             new VectorIconsPackage(),
