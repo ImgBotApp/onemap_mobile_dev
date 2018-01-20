@@ -10,6 +10,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator
 } from 'react-native';
 
 import Video from 'react-native-video';
@@ -33,10 +34,11 @@ class VideoPlayer extends Component {
     duration: 0.0,
     currentTime: 0.0,
     controls: false,
-    paused: true,
+    paused: false,
     skin: 'custom',
     ignoreSilentSwitch: null,
     isBuffering: false,
+    loading:true
   };
 
   onLoad(data) {
@@ -128,10 +130,12 @@ class VideoPlayer extends Component {
   renderCustomSkin() {
     const flexCompleted = this.getCurrentTimePercentage() * 100;
     const flexRemaining = (1 - this.getCurrentTimePercentage()) * 100;
-
+      
     let isCurrrentVideo = false;
     if(this.props.even != this.props.slider1ActiveSlide)
       isCurrrentVideo = true;
+
+    
     return (
       <View style={styles.container}>
         <TouchableOpacity style={styles.fullScreen} onPress={() => { this.setState({ paused: !this.state.paused }) }}>
@@ -163,10 +167,14 @@ class VideoPlayer extends Component {
             <View style={[styles.innerProgressRemaining, { flex: flexRemaining }]} />
           </View>
           <View style={styles.muteControl}>
-            <Ionicons name={this.state.volume ? "md-volume-mute" : "md-volume-off"} onPress={() => { this.setState({ volume: !this.state.volume }) }} style={styles.controlbutton} />
+            <Ionicons name={this.state.volume ? "md-volume-mute" : "md-volume-off"} onPress={() => { this.setState({ volume: this.state.volume?0:1 }) }} style={styles.controlbutton} />
           </View>
-
         </View>
+        {
+          flexCompleted <=0 && !this.state.paused?(
+            <ActivityIndicator size="large" color="#dddddd" />
+          ):null
+        }
       </View>
     );
   }
@@ -246,6 +254,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'black',
+  },
+  horizontal:{
+    alignSelf:"center"
   },
   fullScreen: {
     position: 'absolute',

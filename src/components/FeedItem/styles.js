@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
     borderRadius: 5
   },
-  FeedImageItem: {
+  FeedImageCard: {
     marginTop: getDeviceHeight(50),    
     height: getDeviceHeight(340),
     width: getDeviceWidth(532),
@@ -79,6 +79,15 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     marginTop: getDeviceHeight(50),        
+  },
+  playButton:{
+    position:"absolute",
+    backgroundColor:"transparent",
+    color:"white",
+    fontSize:20,
+    right:5,
+    bottom:5,
+    fontWeight:"100"
   }
 });
 

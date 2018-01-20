@@ -18,7 +18,7 @@ class ImageSlider extends Component {
   constructor (props) {
     super(props);
     this.state = {
-        slider1ActiveSlide: props.firsItem,
+        slider1ActiveSlide: props.firstItem,
         slider1Ref: null,
         sliderWidth: viewportWidth,
         sliderHeight: viewportHeight,
@@ -35,7 +35,6 @@ class ImageSlider extends Component {
     Orientation.getOrientation((err, orientation) => {
       this.onlayoutOrientation(orientation);
     });
-    
   }
 
   _orientationDidChange = (orientation) => {
@@ -96,7 +95,7 @@ class ImageSlider extends Component {
           sliderHeight={this.state.sliderHeight}
           itemWidth={this.state.itemWidth}
           hasParallaxImages={true}
-          firstItem={this.props.firsItem}
+          firstItem={this.props.firstItem}
           inactiveSlideScale={1}
           inactiveSlideOpacity={0.7}
           enableMomentum={false}
@@ -131,19 +130,19 @@ class SliderEntry extends Component {
 
   static propTypes = {
       data: PropTypes.object.isRequired,
-      even: PropTypes.bool,
+      even: PropTypes.number,
       parallax: PropTypes.bool,
       parallaxProps: PropTypes.object,
   };
 
   get image () {
     const { data: { uri }, parallax, parallaxProps, even} = this.props;
-    let type = getMediatTypeFromURL(uri);
     
-    if(type=="MP4" ||type=="AVI" )
+    if(getMediatTypeFromURL(uri))
     {
       return (
         <VideoPlayer videourl={uri} {...this.props}/>
+        //<VideoPlayer videourl={"https://www.w3schools.com/html/mov_bbb.mp4"} {...this.props}/>
       );
     }
     else{

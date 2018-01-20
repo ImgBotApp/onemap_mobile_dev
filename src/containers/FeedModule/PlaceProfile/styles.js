@@ -232,6 +232,15 @@ const styles = StyleSheet.create({
   overlayWrapper:{
     
   },
+  playButton:{
+    position:"absolute",
+    backgroundColor:"transparent",
+    color:"white",
+    fontSize:20,
+    right:5,
+    bottom:5,
+    fontWeight:"100"
+  }
 });
 
 export default styles

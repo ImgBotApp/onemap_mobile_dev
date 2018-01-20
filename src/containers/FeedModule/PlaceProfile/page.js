@@ -17,7 +17,7 @@ import CircleImage from '@components/CircleImage'
 import ImageSliderComponent from '@components/ImageSliderComponent'
 import TitleImage from '@components/TitledImage'
 import { calculateCount, clone, getDeviceWidth, calculateDuration } from '@global'
-import { getThumlnailFromVideoURL } from '@global/const';
+import { getThumlnailFromVideoURL, getMediatTypeFromURL } from '@global/const';
 import * as SCREEN from '@global/screenName'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import DFonts from '@theme/fonts'
@@ -234,6 +234,32 @@ class PlaceProfile extends PureComponent {
       title: I18n.t('COLLECTION_CREATE_NEW'),
     })
   }
+  _renderItem({ item, index }) {
+    if (item.type == 'add') {
+      return (
+        <TouchableOpacity onPress={this.addImageToStory.bind(this)}>
+          <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
+            <Image source={require('@assets/images/blankImage.png')} style={styles.imageItem} />
+          </CardView>
+        </TouchableOpacity>
+      )
+    }
+    return (
+      <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
+        <TouchableOpacity onPress={() => this.setState({ sliderShow: true ,selectedCard:index})}>
+          <Image source={{ uri: getThumlnailFromVideoURL(item.uri) }} style={styles.imageItem} />
+          {
+            getMediatTypeFromURL(item.uri)?
+            (
+              <MaterialCommunityIcons name="play-circle-outline" style={styles.playButton}/>
+            ):null
+          }
+        </TouchableOpacity>
+      </CardView>
+      
+    )
+  }
+
   goMapDetail() {
     // this.props.navigation.navigate('MapViewPage')
     this.props.navigator.push({
@@ -561,25 +587,6 @@ class PlaceProfile extends PureComponent {
         </CardView>
       )
     })
-  }
-
-  _renderItem({ item, index }) {
-    if (item.type == 'add') {
-      return (
-        <TouchableOpacity onPress={this.addImageToStory.bind(this)}>
-          <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-            <Image source={require('@assets/images/blankImage.png')} style={styles.imageItem} />
-          </CardView>
-        </TouchableOpacity>
-      )
-    }
-    return (
-      <TouchableOpacity onPress={() => this.setState({ sliderShow: true, selectedCard: index })}>
-        <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-          <Image source={{ uri: getThumlnailFromVideoURL(item.uri) }} style={styles.imageItem} />
-        </CardView>
-      </TouchableOpacity>
-    )
   }
 
   render() {
