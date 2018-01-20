@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, 
 
 import CardView from 'react-native-cardview'
 import ImagePicker from 'react-native-image-picker'
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';import Modal from 'react-native-modalbox';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; import Modal from 'react-native-modalbox';
 import Overlay from 'react-native-modal-overlay';
 import TagInput from 'react-native-tag-input';
 import Foundation from 'react-native-vector-icons/Foundation'
@@ -503,7 +503,8 @@ class PlaceProfile extends PureComponent {
       variables: {
         keyword
       }
-    }).then((keyword) => {alert(JSON.stringify(keyword))
+    }).then((keyword) => {
+      alert(JSON.stringify(keyword))
     }).catch(err => alert(err));
   }
 
@@ -610,7 +611,7 @@ class PlaceProfile extends PureComponent {
   }
 
   addImageToStory() {
-    ImagePicker.showImagePicker(ImagePickerOption, (response) => {
+    ImagePicker.showImagePicker({ ...ImagePickerOption, mediaType: 'mixed' }, (response) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       }
