@@ -192,9 +192,12 @@ class ProfileComponent extends Component {
           {/* Stories Part */}
           <View style={styles.vStories}>
             <Text style={styles.storyTitle}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
-            <StoryBoard style={styles.StoryContainer} subContainer={styles.StoryList} data={allStories} width={343}
-              onPressItem={this.onStoryItem.bind(this)}
-            />
+            {
+              allStories?(
+                <StoryBoard style={styles.StoryContainer} subContainer={styles.StoryList} data={allStories} width={343}
+                  onPressItem={this.onStoryItem.bind(this)}
+                />):null
+            }
           </View>
         </ScrollView>
       );

@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Platform,Image } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -9,7 +9,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker'
 
 import { Dropdown } from 'react-native-material-dropdown';
 
-import ImagePicker from 'react-native-image-picker'
+import ImagePicker from 'react-native-image-crop-picker'
 import CircleImage from '@components/CircleImage'
 
 import styles from './styles'
@@ -19,13 +19,21 @@ import { DARK_GRAY_COLOR } from '../../../theme/colors';
 import * as SCREEN from '@global/screenName'
 import { saveUserInfo } from '@reducers/user/actions'
 
+import LoadingSpinner from '@components/LoadingSpinner'
+import {uploadImage} from '@global/cloudinary';
+import ActionSheet from 'react-native-actionsheet'
+
+const CANCEL_INDEX = 0
+const DESTRUCTIVE_INDEX = 4
+const options = [ 'Cancel', 'Take Photo...','Choose from Library...']
+const title = 'Select Avatar'
 
 const imagePickerOptions = {
-  title: 'Select Avatar',
-  storageOptions: {
-    skipBackup: true,
-    path: 'images'
-  }
+  width: 1080,
+  height: 1080,
+  cropping: true,
+  includeBase64: true,
+  includeExif: true,
 }
 
 // create a component
@@ -55,8 +63,12 @@ class EditProfile extends Component {
       displayName: props.user.displayName || props.user.firstName + ' ' + props.user.lastName,
       photoChanged: false,
       isDateTimePickerVisible: false,
+      processing:false,
+      selected:''
     }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
+    this.handlePress = this.handlePress.bind(this)
+    this.showActionSheet = this.showActionSheet.bind(this)
   }
 
   onNavigatorEvent=(event) => {
@@ -129,20 +141,52 @@ class EditProfile extends Component {
       }
     })
   }
+  showActionSheet() {
+    this.ActionSheet.show()
+  }
 
-  onProfileImagePick () {
-    ImagePicker.showImagePicker(imagePickerOptions, (response) => {
-      if (response.didCancel) {
-
-      } else if (response.error) {
-        alert('There is an error')
-      } else {
-        this.setState({
-          photoChanged: true,
-          photoURL: response.uri
-        });
-      }
+  handlePress(i) {
+    this.setState({
+      selected: i
     })
+    if(i==2)
+    {
+      this.onProfileImagePickerFromLibrary();
+    }
+    else if(i==1)
+    {
+      this.onProfileImagePickerFromCamear();
+    }
+  }
+  onProfileImagePickerFromLibrary () {
+    this.setState({processing:true});
+    ImagePicker.openPicker(imagePickerOptions).then(image => {
+      if(image != null){
+        uploadImage(image.data).then(url =>{
+          this.setState({processing:false});
+          if(url)
+            this.setState({
+              photoChanged: true,
+              photoURL: url
+            });
+        })
+      }else this.setState({processing:false});
+    }).catch(e => this.setState({processing:false}));
+  }
+  onProfileImagePickerFromCamear(){
+    this.setState({processing:true});
+    ImagePicker.openCamera(imagePickerOptions).then(image => {
+      if(image != null){
+        uploadImage(image.data).then(url =>{
+          this.setState({processing:false});
+          if(url)
+            this.setState({
+              photoChanged: true,
+              photoURL: url
+            });
+        })
+      }else this.setState({processing:false});
+    }).catch(e => this.setState({processing:false}));
   }
   render() {
     let Genderdata = [{
@@ -156,8 +200,9 @@ class EditProfile extends Component {
       <View style={{height: '100%', flex: 1,backgroundColor: '#efefef'}}>
       <KeyboardAwareScrollView>
       <View style={styles.container}>
-        <TouchableOpacity onPress={this.onProfileImagePick.bind(this)}>
+        <TouchableOpacity style={styles.avatarView} onPress={this.showActionSheet.bind(this)}>
           <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(236)}/>
+          <Image style={styles.cameraImage} source={require('@assets/images/icon/camera.png')} />
         </TouchableOpacity>
         
         {/* Name */}
@@ -206,6 +251,7 @@ class EditProfile extends Component {
               ref="gender"
               label='Gender'
               style={styles.gender}
+              itemTextStyle = {styles.genderItem}
               value={I18n.t('GENDER_MAILE_STR')}
               data={Genderdata}
               onChangeText={this._onGenderSelect.bind(this)}
@@ -217,7 +263,7 @@ class EditProfile extends Component {
           <View style={styles.fontAweSome}>
             <EvilIcons name="tag" size={24} color="#0a91ed" />
           </View>
-          <TextInput style={styles.textInput} value={this.state.username} onChangeText={(val) => this.setState({username: val})}/>
+          <TextInput editable={false} style={styles.textInput} value={this.state.username} onChangeText={(val) => this.setState({username: val})}/>
         </View>
         {/* bio */}
         <View style={styles.bioInput}>
@@ -225,6 +271,17 @@ class EditProfile extends Component {
         </View>
       </View>
       </KeyboardAwareScrollView>
+      {
+        this.state.processing ? (<LoadingSpinner />) : null
+      }
+      <ActionSheet
+          ref={o => this.ActionSheet = o}
+          title={title}
+          options={options}
+          cancelButtonIndex={CANCEL_INDEX}
+          destructiveButtonIndex={DESTRUCTIVE_INDEX}
+          onPress={this.handlePress}
+        />
       </View>
     );
   }

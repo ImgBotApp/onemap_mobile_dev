@@ -9,5 +9,6 @@ target 'OneMapFinal' do
   pod 'GooglePlaces'
   pod 'GoogleMaps'
   pod 'GooglePlacePicker'
-
+  pod 'RSKImageCropper'
+  pod 'QBImagePickerController'
 end

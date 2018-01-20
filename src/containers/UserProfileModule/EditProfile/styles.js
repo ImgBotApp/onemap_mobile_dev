@@ -7,6 +7,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#efefef',
   },
+  avatarView:{
+    justifyContent:"center",
+    alignItems:"center",
+    width: getDeviceWidth(473),
+    height: getDeviceHeight(473),
+    marginTop: getDeviceHeight(126),
+    marginBottom: getDeviceHeight(277)
+  },
   headerTitle: {
     fontFamily: 'Comfortaa-regular',
     color: '#575858'
@@ -29,10 +37,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   profileImage: {
-    width: getDeviceWidth(473),
-    height: getDeviceHeight(473),
-    marginTop: getDeviceHeight(126),
-    marginBottom: getDeviceHeight(277)
+    width:"100%",
+    height:"100%"
   },
   inputElement: {
     width: getDeviceWidth(969),
@@ -68,7 +74,11 @@ const styles = StyleSheet.create({
     width: getDeviceWidth(830),
   },
   gender: {
-    borderBottomWidth: 0,    
+    borderBottomWidth: 0,  
+    fontFamily: 'Comfortaa-light',
+  },
+  genderItem:{
+    fontFamily: 'Comfortaa-light',
   },
   fontAweSome: {
     alignItems: 'center',
@@ -88,7 +98,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: Platform.OS === 'ios' ? 1 : 0,
     // height: getDeviceHeight(98),
     alignItems: 'flex-end',
-    borderBottomColor: '#b0b0b0'
+    borderBottomColor: '#b0b0b0',
+    fontFamily: 'Comfortaa-light',
   },
   bioText: {
     marginLeft: getDeviceWidth(51),
@@ -96,6 +107,7 @@ const styles = StyleSheet.create({
     // borderBottomWidth: Platform.OS === 'ios' ? 1 : 0,
     height: getDeviceHeight(402),
     alignItems: 'flex-end',
+    fontFamily: 'Comfortaa-light',
     // borderBottomColor: '#b0b0b0'    
   },
   text: {
@@ -118,6 +130,15 @@ const styles = StyleSheet.create({
     height: getDeviceHeight(402),
     borderWidth: 1,
     borderColor: '#b0b0b0'
+  },
+  cameraImage: {
+    width           : getDeviceWidth(152),
+    height          : getDeviceHeight(152),
+    marginBottom: getDeviceHeight(277),
+    resizeMode      : 'contain',
+    alignSelf:"center",
+    position:"absolute",
+    backgroundColor:"transparent",
   }
 })
 

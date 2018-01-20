@@ -162,3 +162,32 @@ export const GET_BLOCKUSRS = gql`
     }
   }
 `
+/**
+ * View User profile
+ * @return User
+ */
+export const GET_PROFILE = gql`
+  query GetProfile($userId: ID!) {
+    User(id: $userId) {
+      id
+      email
+      username
+      firstName
+      lastName
+      displayName
+      bio
+      gender
+      birthdate
+      facebookUserId
+      mobile
+      mobileVerification
+      city
+      country
+      photoURL
+      loginMethod
+      registrationDate
+      group
+      accountStatus
+    }
+  }
+`
