@@ -525,7 +525,7 @@ class PlaceProfile extends PureComponent {
         this.saveKeyword(this.state.keywordText);
       }
     } else {
-      this.setState({ text });
+      this.setState({ keywordText: text });
     }
   }
   onChangeTags = (tags) => {
@@ -650,7 +650,7 @@ class PlaceProfile extends PureComponent {
         storyImages.push({ type: 'add' });
         this.setState({ storyImages });
         this.state.imageUploading = true;
-        uploadImage(response.data, '#story').then(url => {
+        uploadMedia(response.uri, '#story').then(url => {
           if (url) {
             this.state.storyImages[this.state.storyImages.length - 2].uri = url;
           }
