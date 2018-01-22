@@ -23,7 +23,7 @@ export function getMediatTypeFromURL(url) {
         // if (filetype === 'JPG' || filetype === 'PNG')
         //   result = false;
         // else result = true;
-        if (filetype == "MP4" || filetype == "AVI")
+        if (filetype == "MP4" || filetype == "AVI" || filetype == "MOV")
           result = true;
         else result = false;
       }

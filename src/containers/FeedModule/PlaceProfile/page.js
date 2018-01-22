@@ -19,7 +19,7 @@ import LoadingSpinner from '@components/LoadingSpinner'
 import ImageSliderComponent from '@components/ImageSliderComponent'
 import TitleImage from '@components/TitledImage'
 import { calculateCount, clone, getDeviceWidth, calculateDuration } from '@global'
-import { uploadImage } from '@global/cloudinary';
+import { uploadImage, uploadMedia } from '@global/cloudinary';
 import { getThumlnailFromVideoURL, getMediatTypeFromURL } from '@global/const';
 import * as SCREEN from '@global/screenName'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
@@ -93,6 +93,7 @@ class PlaceProfile extends PureComponent {
       selectedCollections: [],
       selectedMediaData: [],
       selectedCard: 0,
+      imageUploading: false,
     }
     console.log(this.props.user)
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
@@ -309,6 +310,7 @@ class PlaceProfile extends PureComponent {
       <View style={styles.imageContainer}>
         <FlatList
           keyExtractor={(item, index) => index}
+          extraData={this.state}
           style={styles.imageFlatList}
           horizontal
           data={this.state.placeData.image}

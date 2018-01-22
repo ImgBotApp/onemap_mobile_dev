@@ -44,3 +44,31 @@ export function uploadImage(imgdata, tag) {
             return null;
         });
 }
+
+export function uploadMedia(uri, tag) {
+    var url = 'https://api.cloudinary.com/v1_1/' + cloud_name + '/media/upload';
+
+    let timestamp = (Date.now() / 1000 | 0).toString();
+    let signature = sha1("tags=" + tag + "&timestamp=" + timestamp + cloud_api_secret);
+
+    let formdata = new FormData()
+    formdata.append('file', {uri: uri, type: 'image/*', name: timestamp})
+    formdata.append('timestamp', timestamp)
+    formdata.append('api_key', cloud_api_key)
+    formdata.append('signature', signature)
+
+    const config = {
+        method: 'POST',
+        body: formdata
+    }
+
+    return fetch(url, config)
+    .then(res => res.json())
+    .then(res => {alert(JSON.stringify(res))
+        console.log(res)
+        return res.url
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+}
