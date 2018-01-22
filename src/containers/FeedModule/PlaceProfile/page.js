@@ -15,9 +15,11 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import ViewMoreText from 'react-native-view-more-text';
 
 import CircleImage from '@components/CircleImage'
+import LoadingSpinner from '@components/LoadingSpinner'
 import ImageSliderComponent from '@components/ImageSliderComponent'
 import TitleImage from '@components/TitledImage'
 import { calculateCount, clone, getDeviceWidth, calculateDuration } from '@global'
+import { uploadImage } from '@global/cloudinary';
 import { getThumlnailFromVideoURL, getMediatTypeFromURL } from '@global/const';
 import * as SCREEN from '@global/screenName'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
@@ -253,6 +255,7 @@ class PlaceProfile extends PureComponent {
           <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
             <Image source={require('@assets/images/blankImage.png')} style={styles.imageItem} />
           </CardView>
+          {this.state.imageUploading && <LoadingSpinner/>}
         </TouchableOpacity>
       )
     }
@@ -594,6 +597,7 @@ class PlaceProfile extends PureComponent {
               (
                 <TouchableOpacity disabled={!storyEditable} onPress={this.addImageToStory.bind(this)}>
                   <Image style={styles.myImages} source={require('@assets/images/blankImage.png')} />
+                  {this.state.imageUploading && <LoadingSpinner/>}
                 </TouchableOpacity>
               ) : (
                 <FlatList
@@ -625,20 +629,28 @@ class PlaceProfile extends PureComponent {
   }
   addImageToStory() {
     if (!this.state.storyEditable) return;
-    ImagePicker.showImagePicker({ ...ImagePickerOption, mediaType: 'mixed' }, (response) => {
+    ImagePicker.showImagePicker({
+      ...ImagePickerOption,
+      mediaType: 'mixed',
+      maxWidth: 1080,
+      maxHeight: 1920,
+    }, (response) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
-      }
-      else if (response.error) {
+      } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
-      }
-      else {
-        let source = { uri: response.uri };
-        var storyImages = clone(this.state.storyImages);
-        storyImages.pop();
-        storyImages.push(source);
-        storyImages.push({ type: 'add' });
-        this.setState({ storyImages });
+      } else {
+        this.setState({ imageUploading: true });
+        uploadImage(response.data, '#story').then(url => {
+          if (url) {
+            let source = { uri: url };
+            var storyImages = clone(this.state.storyImages);
+            storyImages.pop();
+            storyImages.push(source);
+            storyImages.push({ type: 'add' });
+            this.setState({ storyImages, imageUploading: false });
+          }
+        }).catch(err => alert(err));
       }
     });
   }
