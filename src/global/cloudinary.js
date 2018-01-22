@@ -31,8 +31,16 @@ export function uploadImage(imgdata, tag) {
     return fetch(url, request)
         .then((response) => response.json())
         .then((data) => {
-            console.log("+++++++++++++++++++++++++" + data.url);
-            return data.url;
+            if (data.error) {
+                alert(data.error.message);
+                return null;
+            } else {
+                console.log("+++++++++++++++++++++++++" + data.url);
+                return data.url;
+            }
         })
-        .catch((err) => { console.log("--------------------" + err); this.setState({ processing: false }); return null; });
+        .catch((err) => {
+            console.log("--------------------" + err);
+            return null;
+        });
 }

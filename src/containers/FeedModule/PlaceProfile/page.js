@@ -255,7 +255,7 @@ class PlaceProfile extends PureComponent {
           <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
             <Image source={require('@assets/images/blankImage.png')} style={styles.imageItem} />
           </CardView>
-          {this.state.imageUploading && <LoadingSpinner/>}
+          {this.state.imageUploading && <LoadingSpinner />}
         </TouchableOpacity>
       )
     }
@@ -597,7 +597,7 @@ class PlaceProfile extends PureComponent {
               (
                 <TouchableOpacity disabled={!storyEditable} onPress={this.addImageToStory.bind(this)}>
                   <Image style={styles.myImages} source={require('@assets/images/blankImage.png')} />
-                  {this.state.imageUploading && <LoadingSpinner/>}
+                  {this.state.imageUploading && <LoadingSpinner />}
                 </TouchableOpacity>
               ) : (
                 <FlatList
@@ -638,6 +638,7 @@ class PlaceProfile extends PureComponent {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
+        alert(response.error)
         console.log('ImagePicker Error: ', response.error);
       } else {
         this.setState({ imageUploading: true });
@@ -649,8 +650,10 @@ class PlaceProfile extends PureComponent {
             storyImages.push(source);
             storyImages.push({ type: 'add' });
             this.setState({ storyImages, imageUploading: false });
+          } else {
+            this.setState({ imageUploading: false });
           }
-        }).catch(err => alert(err));
+        });
       }
     });
   }
