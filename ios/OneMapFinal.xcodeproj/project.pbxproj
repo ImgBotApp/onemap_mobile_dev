@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -39,7 +40,6 @@
 		3972F3B32C0844BE906FAFD6 /* Comfortaa-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6F6AA29087944C4ABA096ABA /* Comfortaa-Bold.ttf */; };
 		41C65A1F83D448BBBB6674B2 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 010A55C11DD3406AB2B28934 /* Feather.ttf */; };
 		4218BAF5ADDE493985FE9FFA /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 075E9CBDA95249C48747AF8C /* libReactNativeNavigation.a */; };
-		52FC6C29AD4C4B2A84BFA3E3 /* libRNCloudinary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6241838B27434100BB6FC81A /* libRNCloudinary.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		5FDF7C3301A04F50989B98CB /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A8A3086F18343EF94D8BF22 /* libRNI18n.a */; };
 		6455636122D44B9396AC5F3F /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3438503F76C48EA90FCADA8 /* MaterialCommunityIcons.ttf */; };
@@ -418,13 +418,6 @@
 			remoteGlobalIDString = 641E28441F0EEC8500443AF6;
 			remoteInfo = "RCTVideo-tvOS";
 		};
-		84D42FDF2015E36800A13D1D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DD43ADCC756F42979A79451D /* RNCloudinary.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D75CDE9D1F2105B100133DAC;
-			remoteInfo = RNCloudinary;
-		};
 		84F71616200F7D7C003B5A10 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 84F71604200F7D7C003B5A10 /* RCTOrientation.xcodeproj */;
@@ -484,7 +477,6 @@
 		4A8C48302E5C4968BC89C4FC /* Comfortaa-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-Light.ttf"; path = "../assets/fonts/Comfortaa-Light.ttf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		5FF0AE75313849B7BA7284F5 /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
-		6241838B27434100BB6FC81A /* libRNCloudinary.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCloudinary.a; sourceTree = "<group>"; };
 		694E56FBE83A4310B17880CD /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		6F6AA29087944C4ABA096ABA /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-Bold.ttf"; path = "../assets/fonts/Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -552,7 +544,6 @@
 		D2DBCA5820108EEB001D3571 /* libreact-native-google-maps.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-google-maps.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D63AE679ED894D0ABD9EB8ED /* libRCTFBSDK.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTFBSDK.a; sourceTree = "<group>"; };
 		D6C236315EC94CBD8CDEA8F6 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
-		DD43ADCC756F42979A79451D /* RNCloudinary.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCloudinary.xcodeproj; path = "../node_modules/react-native-cloudinary/ios/RNCloudinary.xcodeproj"; sourceTree = "<group>"; };
 		F0108B3728804CCEA028240D /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		F19634409E2D44E2AFE4459B /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
 		F5B69B160AF840CFB6567F52 /* libRNGooglePlaces.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGooglePlaces.a; sourceTree = "<group>"; };
@@ -600,7 +591,6 @@
 				9190FD98C9D041F1B08AAAC1 /* libRNVectorIcons.a in Frameworks */,
 				9F18667299A2F9F9D2AF9679 /* libPods-OneMapFinal.a in Frameworks */,
 				BF01490F1CFC4EDD95D466E5 /* libimageCropPicker.a in Frameworks */,
-				52FC6C29AD4C4B2A84BFA3E3 /* libRNCloudinary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -830,7 +820,6 @@
 				CF5BDE37135F4521943ED424 /* ReactNativeNavigation.xcodeproj */,
 				F0108B3728804CCEA028240D /* RNVectorIcons.xcodeproj */,
 				B444D09081234875949D94EE /* imageCropPicker.xcodeproj */,
-				DD43ADCC756F42979A79451D /* RNCloudinary.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -885,7 +874,6 @@
 				075E9CBDA95249C48747AF8C /* libReactNativeNavigation.a */,
 				D6C236315EC94CBD8CDEA8F6 /* libRNVectorIcons.a */,
 				1CD08342BA1E4EC39F756D79 /* libimageCropPicker.a */,
-				6241838B27434100BB6FC81A /* libRNCloudinary.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -960,14 +948,6 @@
 			children = (
 				84925E5B200F82F7001FC858 /* libRCTVideo.a */,
 				84925E5D200F82F7001FC858 /* libRCTVideo.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		84D42FDC2015E36700A13D1D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				84D42FE02015E36800A13D1D /* libRNCloudinary.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1237,10 +1217,6 @@
 				{
 					ProductGroup = 8426B7E6200298E100C7E6EA /* Products */;
 					ProjectRef = B6FE7609230F4A99A7B939ED /* RNCardView.xcodeproj */;
-				},
-				{
-					ProductGroup = 84D42FDC2015E36700A13D1D /* Products */;
-					ProjectRef = DD43ADCC756F42979A79451D /* RNCloudinary.xcodeproj */;
 				},
 				{
 					ProductGroup = 8426B7E4200298E100C7E6EA /* Products */;
@@ -1585,13 +1561,6 @@
 			remoteRef = 84925E5C200F82F7001FC858 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		84D42FE02015E36800A13D1D /* libRNCloudinary.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNCloudinary.a;
-			remoteRef = 84D42FDF2015E36800A13D1D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		84F71617200F7D7C003B5A10 /* libRCTOrientation.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1849,7 +1818,6 @@
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-cloudinary/ios",
 				);
 				INFOPLIST_FILE = OneMapFinalTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1893,7 +1861,6 @@
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-cloudinary/ios",
 				);
 				INFOPLIST_FILE = OneMapFinalTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1951,7 +1918,6 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/AirMaps/**",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-cloudinary/ios",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1997,7 +1963,6 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/AirMaps/**",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-cloudinary/ios",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2036,7 +2001,6 @@
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-cloudinary/ios",
 				);
 				INFOPLIST_FILE = "OneMapFinal-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2088,7 +2052,6 @@
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-cloudinary/ios",
 				);
 				INFOPLIST_FILE = "OneMapFinal-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -21,7 +21,6 @@
     "react-native-auto-height-image": "git+https://gitlab.com/kingDeveloper_21th/react-native-auto-height-image.git",
     "react-native-cardview": "^1.1.5",
     "react-native-circular-progress": "^0.1.1",
-    "react-native-cloudinary": "^1.0.1",
     "react-native-confirmation-code-input": "^1.0.4",
     "react-native-easy-toast": "^1.0.9",
     "react-native-fbsdk": "^0.7.0",
