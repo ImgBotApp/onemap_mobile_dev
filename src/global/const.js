@@ -20,12 +20,12 @@ export function getMediatTypeFromURL(url) {
       let filename = splitUrl[splitUrl.length - 1].split('.');
       if (filename && filename.length > 0) {
         const filetype = filename[filename.length - 1].toUpperCase();
-        if (filetype === 'JPG' || filetype === 'PNG')
-          result = false;
-        else result = true;
-        // if (filetype == "MP4" || filetype == "AVI")
-        //   result = true;
-        // else result = false;
+        // if (filetype === 'JPG' || filetype === 'PNG')
+        //   result = false;
+        // else result = true;
+        if (filetype == "MP4" || filetype == "AVI")
+          result = true;
+        else result = false;
       }
     }
   }
