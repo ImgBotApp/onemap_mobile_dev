@@ -24,7 +24,7 @@ class VideoPlayer extends Component {
     this.onProgress = this.onProgress.bind(this);
     this.onBuffer = this.onBuffer.bind(this);
 
-    
+
   }
   state = {
     rate: 1,
@@ -38,7 +38,7 @@ class VideoPlayer extends Component {
     skin: 'custom',
     ignoreSilentSwitch: null,
     isBuffering: false,
-    loading:true
+    loading: true
   };
 
   onLoad(data) {
@@ -130,12 +130,11 @@ class VideoPlayer extends Component {
   renderCustomSkin() {
     const flexCompleted = this.getCurrentTimePercentage() * 100;
     const flexRemaining = (1 - this.getCurrentTimePercentage()) * 100;
-      
+
     let isCurrrentVideo = false;
-    if(this.props.even != this.props.slider1ActiveSlide)
+    if (this.props.even != this.props.slider1ActiveSlide)
       isCurrrentVideo = true;
 
-    
     return (
       <View style={styles.container}>
         <TouchableOpacity style={styles.fullScreen} onPress={() => { this.setState({ paused: !this.state.paused }) }}>
@@ -143,8 +142,8 @@ class VideoPlayer extends Component {
             source={{ uri: this.props.videourl }}
             style={styles.fullScreen}
             rate={this.state.rate}
-            paused={ this.state.paused || isCurrrentVideo}
-            volume={ this.state.volume }
+            paused={this.state.paused || isCurrrentVideo}
+            volume={this.state.volume}
             muted={this.state.muted}
             ignoreSilentSwitch={this.state.ignoreSilentSwitch}
             resizeMode={this.state.resizeMode}
@@ -167,13 +166,13 @@ class VideoPlayer extends Component {
             <View style={[styles.innerProgressRemaining, { flex: flexRemaining }]} />
           </View>
           <View style={styles.muteControl}>
-            <Ionicons name={this.state.volume ? "md-volume-mute" : "md-volume-off"} onPress={() => { this.setState({ volume: this.state.volume?0:1 }) }} style={styles.controlbutton} />
+            <Ionicons name={this.state.volume ? "md-volume-mute" : "md-volume-off"} onPress={() => { this.setState({ volume: this.state.volume ? 0 : 1 }) }} style={styles.controlbutton} />
           </View>
         </View>
         {
-          flexCompleted <=0 && !this.state.paused?(
+          flexCompleted <= 0 && !this.state.paused ? (
             <ActivityIndicator size="large" color="#dddddd" />
-          ):null
+          ) : null
         }
       </View>
     );
@@ -255,8 +254,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'black',
   },
-  horizontal:{
-    alignSelf:"center"
+  horizontal: {
+    alignSelf: "center"
   },
   fullScreen: {
     position: 'absolute',

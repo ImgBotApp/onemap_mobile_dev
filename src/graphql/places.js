@@ -89,6 +89,18 @@ export const GET_PLACE_PROFILE = gql`
         }
         name
       }
+      stories {
+        id
+        title
+        story
+        createdBy {
+          id
+          displayName
+          photoURL
+        }
+        pictureURL
+        updatedAt
+      }
       _userCheckedInMeta {
         count
       }

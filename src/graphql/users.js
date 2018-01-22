@@ -112,7 +112,7 @@ export const LIST_USER_COLLECTIONS = gql`
   }
   `
 
-  export const LIST_PLACE_STORIES = gql`
+  export const LIST_PLACE_STORIES = gql` #unused
   query getPlaceStories(
     $placeId: ID! # place
     $orderBy: StoryOrderBy # title_ASC, title_DESC, createdAt_ASC, createdAt_DESC
