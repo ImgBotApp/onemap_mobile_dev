@@ -71,7 +71,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Camera Usage</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Mic Usage</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
