@@ -7,7 +7,6 @@ import styles from './styles'
 
 import RoundButton from '@components/RoundButton'
 import LoadingSpinner from '@components/LoadingSpinner'
-import { UPDATE_USER } from '@graphql/users'
 import * as SCREEN from '@global/screenName'
 import { ACCOUNT_MODE, APP_USER_KEY } from '@global/const'
 import { DARK_GRAY_COLOR } from '../../../theme/colors';
@@ -55,7 +54,7 @@ class LoginPage extends Component {
             updatedAt: new Date().toLocaleDateString(),
             loginMethod: data.loginMethod,
             bio: data.bio,
-            gender: data.gender,
+            gender: data.gender.toUpperCase(),
             city: data.city,
             country: data.country,
             photoURL: data.photoURL,
@@ -151,7 +150,7 @@ class LoginPage extends Component {
               updatedAt: new Date().toLocaleDateString(),
               loginMethod: data.loginMethod,
               bio: data.bio,
-              gender: data.gender,
+              gender: data.gender.toUpperCase(),
               city: data.city,
               country: data.country,
               photoURL: data.photoURL,

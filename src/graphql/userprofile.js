@@ -191,3 +191,49 @@ export const GET_PROFILE = gql`
     }
   }
 `
+
+/**
+ * Edit Profile
+ * @return update result
+ */
+export const UPDATE_PROFILE = gql`
+ mutation UpdateProfile (
+    $id: ID! # user id
+    $country: String
+    $city: String 
+    $displayName: String
+    $email: String
+    $username: String
+    $accountStatus: Enabled # ENABLE or DISABLE
+    $bio: String
+    $firstName: String
+    $lastName: String
+    $birthdate: String
+    $photoURL: String
+    $registrationDate: String
+    $mobileVerification: Boolean
+    $mobile: String
+    $gender: Gender #  NOT_SPECIFIC, MALE or FEMAIL
+  ) {
+    updateUser(
+      id: $id
+      country: $country
+      city: $city 
+      displayName: $displayName
+      email: $email
+      username: $username
+      accountStatus: $accountStatus
+      bio: $bio
+      firstName: $firstName
+      lastName: $lastName
+      birthdate: $birthdate
+      photoURL: $photoURL
+      registrationDate: $registrationDate
+      mobileVerification: $mobileVerification
+      mobile: $mobile
+      gender: $gender
+    ) {
+      id
+    }
+  } 
+`

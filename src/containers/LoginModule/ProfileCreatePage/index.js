@@ -25,8 +25,8 @@ import { DARK_GRAY_COLOR } from '@theme/colors'
 import { graphql } from 'react-apollo'
 import { getDeviceWidth } from '@global'
 import { 
-  UPDATE_USER
-} from '@graphql/users'
+  UPDATE_PROFILE
+} from '@graphql/userprofile'
 
 // create a component
 class ProfileCreatePage extends Component {
@@ -91,7 +91,7 @@ class ProfileCreatePage extends Component {
             updatedAt: new Date().toLocaleDateString(),
             loginMethod: this.state.loginMethod,
             bio: this.state.bio,
-            gender: this.state.gender,
+            gender: this.state.gender.toUpperCase(),
             city: this.state.city,
             country: this.state.country,
             photoURL: this.state.photoURL,
@@ -110,7 +110,8 @@ class ProfileCreatePage extends Component {
               registrationDate: new Date().toLocaleDateString(),
               city: this.state.city,
               country: this.state.country,
-              bio: this.state.bio
+              bio: this.state.bio,
+              username: this.state.username
           }})
           AsyncStorage.setItem(APP_USER_KEY, JSON.stringify({
             id: this.state.userId
@@ -310,7 +311,7 @@ function mapStateToProps (state) {
     user: state.userReducers
   }
 }
-let container = graphql(UPDATE_USER, {name: 'updateUser'})(ProfileCreatePage);
+let container = graphql(UPDATE_PROFILE, {name: 'updateUser'})(ProfileCreatePage);
 
 //make this component available to the app
 // export default ProfileCreatePage;
