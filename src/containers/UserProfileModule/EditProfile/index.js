@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 
 import { graphql } from 'react-apollo'
 import { 
-  UPDATE_USER
-} from '@graphql/users'
+  UPDATE_PROFILE
+} from '@graphql/userprofile'
 
 function mapStateToProps(state) {
   return {
@@ -12,6 +12,6 @@ function mapStateToProps(state) {
   }
 }
 
-let container = graphql(UPDATE_USER, {name: 'updateUser'})(EditProfile);
+let container = graphql(UPDATE_PROFILE, {name: 'updateUser'})(EditProfile);
 
 export default connect(mapStateToProps)(container)

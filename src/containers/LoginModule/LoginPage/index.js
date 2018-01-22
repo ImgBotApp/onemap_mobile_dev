@@ -15,9 +15,9 @@ import Page from './page'
 
 import { 
   AUTHENTICATE_FACEBOOK_USER, 
-  UPDATE_USER ,
   EXIST_FACEBOOK_USER
 } from '@graphql/users'
+import { UPDATE_PROFILE } from '@graphql/userprofile';
 
 function mapStateToProps (state) {
   return {
@@ -47,7 +47,7 @@ function mapDispatchToProps (dispatch) {
 }
 
 let container = graphql(AUTHENTICATE_FACEBOOK_USER, {name: 'FacebookLogin'})(Page);
-container = graphql(UPDATE_USER, {name: 'updateFacebookUser'})(container);
+container = graphql(UPDATE_PROFILE, {name: 'updateFacebookUser'})(container);
 
 //make this component available to the app
 export default connect(mapStateToProps, mapDispatchToProps)(container);
