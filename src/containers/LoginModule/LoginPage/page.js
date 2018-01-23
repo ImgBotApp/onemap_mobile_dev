@@ -289,6 +289,7 @@ class LoginPage extends Component {
           disabled={false}
           pressColor={'white'} onPress={this._fbAuth.bind(this)}
         />
+        {/* commented by rgs for facebook login */}
         {/* <View >
             <LoginButton
               publishPermissions={["publish_actions"]}
