@@ -300,17 +300,20 @@ class FeedPage extends Component {
     )
   }
   _renderItem = ({ item, index }) => {
-    switch (item.type) {
-      case 'users':
-        return this._renderSuggestedList(item.data)
-      case 'item':
-        return this._renderFeedItem(item, index)
-      case 'event':
-        return this._renderFeedEvent(item)
-      case 'campaign':
-        return this._renderFeedCampaign(item)
-      case 'place':
-        return this._renderSuggestPlace(item)
+    if(item.type)
+    {
+      switch (item.type) {
+        case 'users':
+          return this._renderSuggestedList(item.data)
+        case 'item':
+          return this._renderFeedItem(item, index)
+        case 'event':
+          return this._renderFeedEvent(item)
+        case 'campaign':
+          return this._renderFeedCampaign(item)
+        case 'place':
+          return this._renderSuggestPlace(item)
+      }
     }
   }
 

@@ -1,7 +1,8 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList,Dimensions,Image,TouchableOpacity } from 'react-native';
 import RNPlaces from 'react-native-google-places'
+import RNGooglePlaces from 'react-native-google-places'
 import Search from 'react-native-search-box';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import SearchResult from '@components/SearchResult'
@@ -14,44 +15,18 @@ import { client } from '@root/main'
 
 import 'whatwg-fetch'
 import LoadingSpinner from '@components/LoadingSpinner'
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { Marker, Callout } from 'react-native-maps';
 
 import { Places } from 'google-places-web'
 Places.apiKey = 'AIzaSyDs4M5G0eckEL14WLcCwuJ1S3LuNBAB5FE';
 Places.debug = true;
 
-// create a component
-const stories = [
-  {
-    items: [
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
-    ]
-  },
-  {
-    items: [
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-    ]
-  },
-  {
-    items: [
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_scale,w_1342/v1512354244/fguqcicplirbfl6fhh0o.jpg' },
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg' },
-      { uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg' },
-    ]
-  }
-]
+const { width, height } = Dimensions.get('window')
+const ASPECT_RATIO = width / height
+const LATTITUDE_DELTA = 0.002;
+const LONGTITUDE_DELTA = LATTITUDE_DELTA * ASPECT_RATIO
+
 class SearchPage extends Component {
   constructor(props) {
     super(props)
@@ -60,22 +35,75 @@ class SearchPage extends Component {
       keyword: '',
       isFeaching:false,
       pictureURLS:[],
-      loading:false
+      loading:false,
+
+      nearByPlaces: [],
+      newNearByPlaces: [],
+      title: '',
+      address: '',
+      isSearching: false,
+      isSelected: false,
+      searched: null,
+      nearByPlacesPin: [],
+      initialPosition: {
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: LATTITUDE_DELTA,
+        longitudeDelta: LONGTITUDE_DELTA,
+      },
+      initialMarker: {
+        latitude: 0,
+        longitude: 0,
+      },
     }
     console.log(props.user)
   }
-  _renderStoryItem(item) {
-    return (
-      <View>
-        <AutoHeightTitledImage uri={item.uri}
-          width={getDeviceWidth(400)}
-          title={'abc'} vAlign={'center'} hAlign={'left'} titleStyle={styles.storyItemTitle}
-          style={{ marginBottom: 10 }}
-        />
-        {/* <AutoHeightImage imageURL={item.uri} width={getDeviceWidth(343)} style={{marginBottom: 10}} /> */}
-      </View>
-    )
+  componentDidMount() {
+    _this = this;
   }
+  componentWillMount() {
+    RNGooglePlaces.getCurrentPlace()
+      .then((results) => {
+        var getInitialRegion = {
+          latitude: results[0].latitude,
+          longitude: results[0].longitude,
+          latitudeDelta: LATTITUDE_DELTA,
+          longitudeDelta: LONGTITUDE_DELTA,
+        }
+        var getInitialRegionMaker = {
+          latitude: results[0].latitude,
+          longitude: results[0].longitude,
+        }
+        this.setState({
+          initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
+          title: results[0].name, address: results[0].address,
+        })
+        // this.setPinLocation(results);
+        var getNearByLocationsPin = [];
+        for (var i = 0; i < results.length; i++) {
+          if(results[i].latitude && results[i].longitude)
+          {
+            var obj = {
+              coordinates: {
+                latitude: results[i].latitude,
+                longitude: results[i].longitude,
+              },
+              title: results[i].name,
+              address: results[i].address,
+              placeID: results[i].placeID
+            }
+            getNearByLocationsPin.push(obj);
+          }
+        }
+        this.setState({
+          nearByPlacesPin: getNearByLocationsPin
+        })
+        results.shift();
+        this.setState({ nearByPlaces: results })
+      })
+      .catch((error) => alert(error.message));
+  }
+  
   render() {
     if(this.state.isFeaching)
       this.onCreatePlace();
@@ -91,29 +119,70 @@ class SearchPage extends Component {
         />
         <View>
           <ScrollView style={{ width: '100%' }}>
-            <View style={styles.StoryContainer}>
-              <View style={styles.StoryList}>
-                <FlatList
-                  keyExtractor={(item, index) => index}
-                  data={stories[0].items}
-                  renderItem={({ item }) => { return this._renderStoryItem(item) }}
-                />
+          <View style={styles.mapView}>
+            <MapView
+              // showsUserLocation={true}
+              provider={PROVIDER_GOOGLE}
+              style={styles.map}
+              initialRegion={this.state.initialPosition}
+              region={this.state.initialPosition}
+              showsCompass={true}
+              loadingEnabled={true}
+              showsBuildings={true}
+            >
+              {this.state.nearByPlacesPin.map((marker, key) => (
+                key == 0 ?
+                  <Marker
+                    key={key}
+                    image={require('@assets/images/marker.png')}
+                    coordinate={this.state.initialMarker}
+                    zIndex = {this.state.nearByPlacesPin.length+1000}
+                  >
+                    <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
+                      <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
+                    </Callout>
+                  </Marker>
+                  :
+                  <Marker
+                    key={key} 
+                    image={require('@assets/images/greenPin.png')}
+                    coordinate={marker.coordinates}
+                    zIndex = {key}
+                  >
+                    <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
+                      <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
+                    </Callout>
+                  </Marker>
+              ))}
+
+            </MapView>
+          </View>
+          {/* } */}
+          <View style={styles.selectLocation}>
+            <Image source={require('@assets/images/greyPin.png')} style={styles.nearPlaceImage} />
+            <Text style={[styles.name,{paddingLeft:getDeviceWidth(50)}]}>Nearby Places</Text>
+          </View>
+          <FlatList
+            data={this.state.nearByPlaces}
+            renderItem={({ item }) =>
+              <View>
+                  <View style={styles.item}>
+                    <Image source={require('@assets/images/greenPin.png')} style={styles.placeImage} />
+                    <View style={styles.infomation}>
+                      <View>
+                        <TouchableOpacity onPress={() => this.onPlaceProfile(item.placeID)}>
+                          <Text style={styles.name}>{item.name}</Text>
+                          {this.state.isSelected ?
+                            <Text style={styles.following}>{item.vicinity}</Text>
+                            : <Text style={styles.following}>{item.address}</Text>
+                          }
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
               </View>
-              <View style={styles.StoryList}>
-                <FlatList
-                  keyExtractor={(item, index) => index}
-                  data={stories[1].items}
-                  renderItem={({ item }) => { return this._renderStoryItem(item) }}
-                />
-              </View>
-              <View style={styles.StoryList}>
-                <FlatList
-                  keyExtractor={(item, index) => index}
-                  data={stories[2].items}
-                  renderItem={({ item }) => { return this._renderStoryItem(item) }}
-                />
-              </View>
-            </View>
+            }
+          />
           </ScrollView>
           {this.state.result == true ? <SearchResult keyword={this.state.keyword}
             onUser={this.onUserItem.bind(this)}
@@ -145,6 +214,7 @@ class SearchPage extends Component {
     })
   }
   onPlaceProfile(placeID) {
+    if(!placeID) return;
     var ret_photos;
     this.setState({loading:true});
     RNPlaces.lookUpPlaceByID(placeID).then((result) =>
@@ -187,9 +257,8 @@ class SearchPage extends Component {
       ret_photos.map(photo => fetch("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference="+photo.photo_reference+"&key="+Places.apiKey)
         .then(response => {
           redrictURLS.push(response.url);
-          return response.json();
+          Promise.resolve();
         })
-        .then( json => json.error ? reject(json) : resolve(json) )
         .catch(err => this.setState({loading:false}))
       )
     ).then(() => {

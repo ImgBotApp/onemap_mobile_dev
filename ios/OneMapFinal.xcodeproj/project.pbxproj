@@ -64,6 +64,7 @@
 		D2C24F662015E183007B9D14 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B7DD200298E100C7E6EA /* libReactNativeNavigation.a */; };
 		D2C24F672015E19A007B9D14 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B7E3200298E100C7E6EA /* libRNVectorIcons.a */; };
 		D2C24F682015E1B2007B9D14 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D23E3C34201262ED0018B570 /* libimageCropPicker.a */; };
+		D2C24FB32016E368007B9D14 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2C24FB22016E368007B9D14 /* MapKit.framework */; };
 		D2C60E022010ABC000870FF2 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B7D7200298E100C7E6EA /* libAirMaps.a */; };
 		D2C60E2A2010B53200870FF2 /* AIRGMSMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C60E052010B53200870FF2 /* AIRGMSMarker.m */; };
 		D2C60E2B2010B53200870FF2 /* AIRGMSPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C60E072010B53200870FF2 /* AIRGMSPolygon.m */; };
@@ -503,6 +504,8 @@
 		C3438503F76C48EA90FCADA8 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		C87BBA57A94A4E0EBE582EC1 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		CF5BDE37135F4521943ED424 /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
+		D2C24FB22016E368007B9D14 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		D2C4C59A2016F2C60068194A /* OneMapFinal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = OneMapFinal.entitlements; path = OneMapFinal/OneMapFinal.entitlements; sourceTree = "<group>"; };
 		D2C60E042010B53200870FF2 /* AIRGMSMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGMSMarker.h; sourceTree = "<group>"; };
 		D2C60E052010B53200870FF2 /* AIRGMSMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGMSMarker.m; sourceTree = "<group>"; };
 		D2C60E062010B53200870FF2 /* AIRGMSPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGMSPolygon.h; sourceTree = "<group>"; };
@@ -584,6 +587,7 @@
 				8426B87020029C6000C7E6EA /* FBSDKLoginKit.framework in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
+				D2C24FB32016E368007B9D14 /* MapKit.framework in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
@@ -710,6 +714,7 @@
 		13B07FAE1A68108700A75B9A /* OneMapFinal */ = {
 			isa = PBXGroup;
 			children = (
+				D2C4C59A2016F2C60068194A /* OneMapFinal.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -745,6 +750,7 @@
 		21574105C3BB5B1E9D8C0EEB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D2C24FB22016E368007B9D14 /* MapKit.framework */,
 				D2DBCA5820108EEB001D3571 /* libreact-native-google-maps.a */,
 				B7DC52AAC7D86D803DFFC0FD /* libPods-OneMapFinal.a */,
 				8426B83220029C5F00C7E6EA /* Bolts.framework */,
@@ -1118,6 +1124,11 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = GVXQ56F8Z7;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1890,6 +1901,7 @@
 			baseConfigurationReference = 3D7A5DF8397F007F137A2D0D /* Pods-OneMapFinal.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = OneMapFinal/OneMapFinal.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1918,6 +1930,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1936,6 +1949,7 @@
 			baseConfigurationReference = 0D1830BDF198C0387558B8CF /* Pods-OneMapFinal.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = OneMapFinal/OneMapFinal.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1963,6 +1977,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
