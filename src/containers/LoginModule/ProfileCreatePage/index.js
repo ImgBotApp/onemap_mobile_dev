@@ -73,7 +73,7 @@ class ProfileCreatePage extends Component {
   constructor (props) {
     super(props)
     var today = new Date().toLocaleDateString();
-    var user= "@"+this.props.info.id;
+    var user= "@"+this.props.info.name;
     this.state = {
       username: user,
       displayName: this.props.info.first_name + " " + this.props.info.last_name,
@@ -89,6 +89,7 @@ class ProfileCreatePage extends Component {
       userId : this.props.info.userId || '',
       processing:false,
     }
+
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
     this.handlePress = this.handlePress.bind(this)
     this.showActionSheet = this.showActionSheet.bind(this)
@@ -158,6 +159,8 @@ class ProfileCreatePage extends Component {
 
   componentWillMount () {
     // this.props.navigation.setParams({submitProfile: $this.submitProfile})
+    this.onChangeUserName(this.state.username);
+    
   }
   _showDatePicker = () => {
     this.setState({isDateTimePickerVisible: true})

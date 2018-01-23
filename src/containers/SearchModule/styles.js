@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Platform.OS == 'ios' ? 20 : 0,
-    backgroundColor: BACKGROUNDCOLOR,
+    backgroundColor: 'white',//BACKGROUNDCOLOR,
   },
   StoryContainer: {
     marginLeft: getDeviceWidth(50),
@@ -63,10 +63,9 @@ backArrow: {
     height: getDeviceHeight(95),
   },
   placeImage: {
-    marginRight:'3%',
-    marginBottom:'5%',
-    width: getDeviceWidth(100),
-    height: getDeviceHeight(100),
+    width: getDeviceWidth(140),
+    height: getDeviceHeight(140),
+    marginBottom:getDeviceHeight(80),
     resizeMode: 'contain'
   },
   nearPlaceImage: {
@@ -85,6 +84,7 @@ backArrow: {
   item: {
     // height: getDeviceHeight(192),
     marginLeft: getDeviceWidth(60),
+    height: getDeviceHeight(192),
     alignItems: 'center',
     flexDirection: 'row'
   },
@@ -104,10 +104,13 @@ backArrow: {
   name: {
     fontSize: NORMAL_FONT_SIZE,
     color: DARK_GRAY_COLOR,
+    fontFamily      : 'Comfortaa-regular',
+    marginBottom :getDeviceHeight(10),
   },
   following: {
     fontSize: SMALL_FONT_SIZE,
-    color: LIGHT_GRAY_COLOR
+    color: LIGHT_GRAY_COLOR,
+    fontFamily      : 'Comfortaa-light',
   },
   customView: {
     width: 160,

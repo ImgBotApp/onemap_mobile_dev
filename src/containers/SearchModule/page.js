@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, FlatList,Dimensions,Image,TouchableOpacity } from 'react-native';
 import RNPlaces from 'react-native-google-places'
 import RNGooglePlaces from 'react-native-google-places'
-import Search from 'react-native-search-box';
+import Search from '@components/SearchBar';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import SearchResult from '@components/SearchResult'
-import { getDeviceWidth } from '@global'
+import { getDeviceWidth,getDeviceHeight } from '@global'
 import styles from './styles'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
@@ -17,8 +17,9 @@ import 'whatwg-fetch'
 import LoadingSpinner from '@components/LoadingSpinner'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker, Callout } from 'react-native-maps';
-
+import Permissions from 'react-native-permissions'
 import { Places } from 'google-places-web'
+
 Places.apiKey = 'AIzaSyDs4M5G0eckEL14WLcCwuJ1S3LuNBAB5FE';
 Places.debug = true;
 
@@ -62,48 +63,61 @@ class SearchPage extends Component {
     _this = this;
   }
   componentWillMount() {
-    RNGooglePlaces.getCurrentPlace()
-      .then((results) => {
-        var getInitialRegion = {
-          latitude: results[0].latitude,
-          longitude: results[0].longitude,
-          latitudeDelta: LATTITUDE_DELTA,
-          longitudeDelta: LONGTITUDE_DELTA,
-        }
-        var getInitialRegionMaker = {
-          latitude: results[0].latitude,
-          longitude: results[0].longitude,
-        }
-        this.setState({
-          initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
-          title: results[0].name, address: results[0].address,
-        })
-        // this.setPinLocation(results);
-        var getNearByLocationsPin = [];
-        for (var i = 0; i < results.length; i++) {
-          if(results[i].latitude && results[i].longitude)
+    Permissions.check('location').then(response => {
+      if(response != 'authorized')
+      {
+        Permissions.request('location').then(response => {
+          if(response == 'authorized')
           {
-            var obj = {
-              coordinates: {
-                latitude: results[i].latitude,
-                longitude: results[i].longitude,
-              },
-              title: results[i].name,
-              address: results[i].address,
-              placeID: results[i].placeID
-            }
-            getNearByLocationsPin.push(obj);
+            this.onSearchNearByPlace();
           }
-        }
-        this.setState({
-          nearByPlacesPin: getNearByLocationsPin
         })
-        results.shift();
-        this.setState({ nearByPlaces: results })
-      })
-      .catch((error) => alert(error.message));
+      }
+      else this.onSearchNearByPlace();
+    })
   }
-  
+  onSearchNearByPlace(){
+    RNGooglePlaces.getCurrentPlace()
+            .then((results) => {
+              var getInitialRegion = {
+                latitude: results[0].latitude,
+                longitude: results[0].longitude,
+                latitudeDelta: LATTITUDE_DELTA,
+                longitudeDelta: LONGTITUDE_DELTA,
+              }
+              var getInitialRegionMaker = {
+                latitude: results[0].latitude,
+                longitude: results[0].longitude,
+              }
+              this.setState({
+                initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
+                title: results[0].name, address: results[0].address,
+              })
+              // this.setPinLocation(results);
+              var getNearByLocationsPin = [];
+              for (var i = 0; i < results.length; i++) {
+                if(results[i].latitude && results[i].longitude)
+                {
+                  var obj = {
+                    coordinates: {
+                      latitude: results[i].latitude,
+                      longitude: results[i].longitude,
+                    },
+                    title: results[i].name,
+                    address: results[i].address,
+                    placeID: results[i].placeID
+                  }
+                  getNearByLocationsPin.push(obj);
+                }
+              }
+              this.setState({
+                nearByPlacesPin: getNearByLocationsPin
+              })
+              results.shift();
+              this.setState({ nearByPlaces: results })
+            })
+            .catch((error) => alert(error.message));
+  }
   render() {
     if(this.state.isFeaching)
       this.onCreatePlace();
@@ -118,76 +132,81 @@ class SearchPage extends Component {
           onCancel={this.onDismissResult.bind(this)}
         />
         <View>
-          <ScrollView style={{ width: '100%' }}>
-          <View style={styles.mapView}>
-            <MapView
-              // showsUserLocation={true}
-              provider={PROVIDER_GOOGLE}
-              style={styles.map}
-              initialRegion={this.state.initialPosition}
-              region={this.state.initialPosition}
-              showsCompass={true}
-              loadingEnabled={true}
-              showsBuildings={true}
-            >
-              {this.state.nearByPlacesPin.map((marker, key) => (
-                key == 0 ?
-                  <Marker
-                    key={key}
-                    image={require('@assets/images/marker.png')}
-                    coordinate={this.state.initialMarker}
-                    zIndex = {this.state.nearByPlacesPin.length+1000}
-                  >
-                    <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
-                      <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
-                    </Callout>
-                  </Marker>
-                  :
-                  <Marker
-                    key={key} 
-                    image={require('@assets/images/greenPin.png')}
-                    coordinate={marker.coordinates}
-                    zIndex = {key}
-                  >
-                    <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
-                      <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
-                    </Callout>
-                  </Marker>
-              ))}
+        {
+          this.state.result == false ?
+          (
+            <ScrollView style={{ width: '100%' }}>
+            <View style={styles.mapView}>
+              <MapView
+                // showsUserLocation={true}
+                provider={PROVIDER_GOOGLE}
+                style={styles.map}
+                initialRegion={this.state.initialPosition}
+                region={this.state.initialPosition}
+                showsCompass={true}
+                loadingEnabled={true}
+                showsBuildings={true}
+              >
+                {this.state.nearByPlacesPin.map((marker, key) => (
+                  key == 0 ?
+                    <Marker
+                      key={key}
+                      image={require('@assets/images/greenPin.png')}
+                      coordinate={this.state.initialMarker}
+                      zIndex = {this.state.nearByPlacesPin.length+1000}
+                    >
+                      <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
+                        <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
+                      </Callout>
+                    </Marker>
+                    :
+                    <Marker
+                      key={key} 
+                      image={require('@assets/images/marker.png')}
+                      coordinate={marker.coordinates}
+                      zIndex = {key}
+                    >
+                      <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
+                        <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
+                      </Callout>
+                    </Marker>
+                ))}
 
-            </MapView>
-          </View>
-          {/* } */}
-          <View style={styles.selectLocation}>
-            <Image source={require('@assets/images/greyPin.png')} style={styles.nearPlaceImage} />
-            <Text style={[styles.name,{paddingLeft:getDeviceWidth(50)}]}>Nearby Places</Text>
-          </View>
-          <FlatList
-            data={this.state.nearByPlaces}
-            renderItem={({ item }) =>
-              <View>
-                  <View style={styles.item}>
-                    <Image source={require('@assets/images/greenPin.png')} style={styles.placeImage} />
-                    <View style={styles.infomation}>
-                      <View>
-                        <TouchableOpacity onPress={() => this.onPlaceProfile(item.placeID)}>
-                          <Text style={styles.name}>{item.name}</Text>
-                          {this.state.isSelected ?
-                            <Text style={styles.following}>{item.vicinity}</Text>
-                            : <Text style={styles.following}>{item.address}</Text>
-                          }
-                        </TouchableOpacity>
+              </MapView>
+            </View>
+            {/* } */}
+            <FlatList
+              style = {{paddingTop:getDeviceHeight(50)}}
+              data={this.state.nearByPlaces}
+              renderItem={({ item }) =>
+                <View>
+                    <View style={styles.item}>
+                      <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
+                      <View style={styles.infomation}>
+                        <View>
+                          <TouchableOpacity onPress={() => this.onPlaceProfile(item.placeID)}>
+                            <Text style={styles.name}>{item.name}</Text>
+                            {this.state.isSelected ?
+                              <Text style={styles.following}>{item.vicinity}</Text>
+                              : <Text style={styles.following}>{item.address}</Text>
+                            }
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     </View>
-                  </View>
-              </View>
-            }
-          />
-          </ScrollView>
-          {this.state.result == true ? <SearchResult keyword={this.state.keyword}
-            onUser={this.onUserItem.bind(this)}
-            onKeywordItem={this.onKeywordItem.bind(this)}
-            onPlace={this.onPlaceProfile.bind(this)} /> : null}
+                </View>
+              }
+            />
+            </ScrollView>
+          )
+          :
+          (
+            <SearchResult keyword={this.state.keyword}
+              onUser={this.onUserItem.bind(this)}
+              onKeywordItem={this.onKeywordItem.bind(this)}
+              onPlace={this.onPlaceProfile.bind(this)} />
+          )
+        }
         </View>
         {
           this.state.loading ? (<LoadingSpinner />) : null

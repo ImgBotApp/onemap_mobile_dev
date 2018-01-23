@@ -65,6 +65,7 @@ class LoginPage extends Component {
           })
           // this.props.dispatch(appActions.login())
           this.props.login();
+          
         } else {
           this.props.navigator.push({
             screen: SCREEN.ACCOUNT_CREATE_PAGE,
@@ -144,6 +145,7 @@ class LoginPage extends Component {
           this.setState({loading: false})
           var data = user.data.User
           if ( data.firstName ) {
+            
             this.props.saveUserInfo({
               id: data.id,
               createdAt: new Date().toLocaleDateString(),
@@ -159,6 +161,7 @@ class LoginPage extends Component {
               displayName: data.displayName,
               username: data.username
             })
+            
             this.props.login();
           } 
           else {
@@ -179,7 +182,7 @@ class LoginPage extends Component {
             //     naviBarComponentAlignment: 'center'
             //   },
             // })
-            LoginManager.logInWithReadPermissions(['public_profile','email','user_about_me','user_birthday','user_hometown','user_location'])
+            LoginManager.logInWithReadPermissions(['public_profile','email','user_about_me','user_birthday','user_hometown','user_location','pages_show_list'])
             .then((result) => {
               if (result.isCancelled) {
                 // alert('cancelled')
@@ -198,7 +201,7 @@ class LoginPage extends Component {
               this.setState({id: gctoken.data.authenticateFBUser.id})
               this.props.saveUserId(gctoken.data.authenticateFBUser.id, gctoken.data.authenticateFBUser.token)
               const infoRequest = new GraphRequest(
-                '/me?fields=id,first_name,last_name,picture,email,gender,address,about',
+                '/me?fields=id,first_name,last_name,picture.height(1000),email,gender,address,about,name',
                 null,
                 (error, result) => this._responseInfoCallback(error, result),
               );
@@ -211,7 +214,7 @@ class LoginPage extends Component {
           }
         })
       } else {
-        LoginManager.logInWithReadPermissions(['public_profile','email','user_about_me','user_birthday','user_hometown','user_location'])
+        LoginManager.logInWithReadPermissions(['public_profile','email','user_about_me','user_birthday','user_hometown','user_location','pages_show_list'])
         .then((result) => {
           if (result.isCancelled) {
             // alert('cancelled')
@@ -230,7 +233,7 @@ class LoginPage extends Component {
           this.setState({id: gctoken.data.authenticateFBUser.id})
           this.props.saveUserId(gctoken.data.authenticateFBUser.id, gctoken.data.authenticateFBUser.token)
           const infoRequest = new GraphRequest(
-            '/me?fields=id,first_name,last_name,picture,email,gender,address,about',
+            '/me?fields=id,first_name,last_name,picture.height(1000),email,gender,address,about,name',
             null,
             (error, result) => this._responseInfoCallback(error, result),
           );

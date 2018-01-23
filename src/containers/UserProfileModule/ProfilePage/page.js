@@ -141,6 +141,13 @@ class ProfileComponent extends Component {
     if(!loading && error){
       return <Text>{error}</Text>
     }
+    var follower_cnt = 0;
+    if(!GetFollowersList.loading && GetFollowersList.User.followers)
+      follower_cnt = GetFollowersList.User.followers.length;
+
+    var follow_cnt = 0;
+    if(!GetFollowingList.loading && GetFollowingList.User.followers)
+      follower_cnt = GetFollowingList.User.followers.length;
       return (
         <ScrollView style={styles.container}>
           <View style={styles.infoView}>
@@ -164,9 +171,9 @@ class ProfileComponent extends Component {
               </View>
               <View style={styles.spec}>
                 <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWING')}</Text>
-                <Text style={styles.specFont}>{GetFollowingList.loading?0:GetFollowingList.User.follows.length}</Text>
+                <Text style={styles.specFont}>{follow_cnt}</Text>
                 <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWER')}</Text>
-                <Text style={styles.specFont}>{GetFollowersList.loading?0:GetFollowersList.User.followers.length}</Text>
+                <Text style={styles.specFont}>{follower_cnt}</Text>
                 <Text style={styles.specFont}>{I18n.t('PROFILE_VISITED')}</Text>
                 <Text style={styles.specFont}>636</Text>
               </View>

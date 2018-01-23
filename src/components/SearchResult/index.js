@@ -11,40 +11,7 @@ import RNGooglePlaces from 'react-native-google-places'
 import { client } from '@root/main'
 import { GET_FILTER_KEYWORDS } from '@graphql/keywords'
 import { FILER_USERS } from '@graphql/users'
-const data = [
-  {
-    type: 'user',
-    uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg',
-    name: 'Guillaume',
-    following: true
-  },
-  {
-    type: 'place',
-    name: 'Nai Circus School',
-    address: 'Pai, Thailand'
-  },
-  {
-    type: 'place',
-    name: 'Nai Circus School',
-    address: 'Pai, Thailand'
-  },
-  {
-    type: 'place',
-    name: 'Nai Circus School',
-    address: 'Pai, Thailand'
-  },
-  {
-    type: 'campaign',
-    name: 'Nature',
-    user: 'Minna'
-  },
-  {
-    type: 'user',
-    uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_1544,w_1146/v1512300247/tno52ejrenimshhspntk.jpg',
-    name: 'Guillaume',
-    following: false
-  }
-]
+
 // create a component
 class SearchResult extends Component {
   constructor(props) {
@@ -57,7 +24,15 @@ class SearchResult extends Component {
     };
   }
   componentWillReceiveProps(nextProps) {
-    RNGooglePlaces.getAutocompletePredictions(nextProps.keyword).then((results) => {
+    //type (String) - (geocode, address, establishment, regions, and cities)
+    RNGooglePlaces.getAutocompletePredictions(nextProps.keyword,{
+      type: 'establishment',
+      
+      latitude: 53.544389,
+      longitude: -113.490927,
+      radius: 10000
+      
+    }).then((results) => {
       this.setState({
         places: results
       })
@@ -195,9 +170,9 @@ class SearchResult extends Component {
         <View style={styles.mainContainer}>
           <Tabs selected={this.state.page} style={styles.tabHeader}
             selectedStyle={{ color: 'red' }} onSelect={el => this.setState({ page: el.props.name })}>
+            {this._renderTabHeader('Places')}
             {this._renderTabHeader('People')}
             {this._renderTabHeader('Keywords')}
-            {this._renderTabHeader('Places')}
           </Tabs>
         </View>
         {
