@@ -84,11 +84,12 @@ class AllCollections extends Component {
     })
   }
   render() {
+    const collections = this.props.collections ? this.props.collections : this.props.myCollections;
     return (
       <ScrollView style={styles.main}>
         <View style={styles.container}>
           {
-            this.props.collections
+            collections
               // .filter(collection => collection.type === 'USER')
               .map((item, index) => {
                 return (
@@ -100,7 +101,7 @@ class AllCollections extends Component {
                     title={item.name}
                     radius={8}
                     onPress={() => this.onItemPress(item)}
-                    onLongPress={() => item.type === 'USER' && this.onItemRemove(item)}
+                    onLongPress={() => !this.props.collections && item.type === 'USER' && this.onItemRemove(item)}
                   />
                 )
               })

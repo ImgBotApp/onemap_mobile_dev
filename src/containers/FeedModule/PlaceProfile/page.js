@@ -742,7 +742,7 @@ class PlaceProfile extends PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView keyboardShouldPersistTaps={'handled'} style={styles.container}>
+        <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} style={styles.container}>
           {this.renderTitle()}
           {this.renderPlaceImages()}
           {this.renderDescription()}
@@ -756,10 +756,10 @@ class PlaceProfile extends PureComponent {
             {this._renderWriteStory()}
           </View>
           {/* other stories */}
-          <View style={styles.WriteStory}>
+          <View style={[styles.WriteStory, { marginBottom: 15 }]}>
             {this._renderCommentStory()}
           </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
 
         {this.renderSliderShow()}
         {this.renderCollectionModal()}

@@ -237,3 +237,41 @@ export const UPDATE_PROFILE = gql`
     }
   } 
 `
+
+/**
+ * View OneMapper profile
+ * @return User
+ */
+export const GET_ONEMAPPER_PROFILE = gql`
+query GetOneMapperProfile($userId: ID!) {
+  User(id: $userId) {
+    bio
+    _followersMeta {
+      count
+    }
+    collections {
+      id
+      type
+      name
+      pictureURL
+    }
+    stories {
+      id
+      title
+      story
+      pictureURL
+      place {
+        id
+        pictureURL
+        placeName
+      }
+      createdBy {
+        id
+        displayName
+        photoURL
+      }
+      updatedAt
+    }
+  }
+}
+`

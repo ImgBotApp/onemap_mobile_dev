@@ -44,6 +44,7 @@ export const PLACES_PAGINATED = gql`
       pictureURL
       createdBy {
         id
+        displayName
         username
         photoURL
       }

@@ -25,7 +25,7 @@ import { client } from '@root/main'
 import { graphql } from "react-apollo";
 
 import { PLACES_PAGINATED } from "@graphql/places";
-import { SUGGEST_USERS } from '@graphql/users'
+import { SUGGEST_USERS, GET_FOLLOW_USERS } from '@graphql/users'
 import { GET_USER_COLLECTIONS, GET_MY_COLLECTIONS } from '@graphql/collections'
 
 // create a component
@@ -67,6 +67,7 @@ class FeedPage extends Component {
       };
     })
     this.getMyCollections();
+    this.getMyFollows();
   }
   componentWillReceiveProps(nextProps) {
     if (!this.props.placeUpdated && nextProps.placeUpdated) {
@@ -79,8 +80,9 @@ class FeedPage extends Component {
           id: place.id,
           type: 'item',
           user: {
-            name: place.createdBy.username,
             id: place.createdBy.id,
+            displayName: place.createdBy.displayName,
+            name: place.createdBy.username,
             uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
             updated: new Date(place.updatedAt)
           },
@@ -191,6 +193,17 @@ class FeedPage extends Component {
       this.props.saveCollections(collections.data.allCollections);
     })
   }
+  getMyFollows = () => {
+    client.query({
+      query: GET_FOLLOW_USERS,
+      variables: {
+        userId: this.props.user.id,
+        blockUsersIds: []
+      }
+    }).then(({ data }) => {
+      this.props.saveUserFollows(data.User.follows);
+    }).catch(err => alert(err))
+  }
   closeSuggest() {
     this.setState({
       suggestFlag: false
@@ -265,7 +278,7 @@ class FeedPage extends Component {
       <View style={styles.feedItem}>
         <FeedItem
           data={data}
-          onPress={this.onPressUserProfile}
+          onPress={place => this.onPressUserProfile(place.user)}
           onBookMarker={() => this.onBookMarker(data, index)}
           onPlace={() => this.onPlace(data, index)}
         />
@@ -314,13 +327,13 @@ class FeedPage extends Component {
     }
   }
 
-  onPressUserProfile = (userdata) => {
+  onPressUserProfile(userInfo) {
     this.props.navigator.push({
       screen: SCREEN.USERS_PROFILE_PAGE,
       title: I18n.t('PROFILE_PAGE_TITLE'),
       animated: true,
       passProps: {
-        userinf: userdata
+        userInfo
       }
     })
   }
