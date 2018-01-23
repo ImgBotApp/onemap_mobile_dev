@@ -277,7 +277,7 @@ class EditProfile extends Component {
         {/* gender */}
         <View style={styles.genderElement}>
           <View style={styles.genderAwesome}>
-            <MaterialCommunityIcons name="gender-male-female" size={24} color="#0a91ed" />
+            <Image style={styles.genderIcon} source={require('@assets/images/icon/gender.png')} />
           </View>
           <View style={[styles.genderSelection]}>
             <Dropdown

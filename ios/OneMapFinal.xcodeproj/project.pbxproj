@@ -39,9 +39,7 @@
 		332831B897EE4DC5AA005174 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 09E609E011FD4F8AA3D3A186 /* Entypo.ttf */; };
 		3972F3B32C0844BE906FAFD6 /* Comfortaa-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6F6AA29087944C4ABA096ABA /* Comfortaa-Bold.ttf */; };
 		41C65A1F83D448BBBB6674B2 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 010A55C11DD3406AB2B28934 /* Feather.ttf */; };
-		4218BAF5ADDE493985FE9FFA /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 075E9CBDA95249C48747AF8C /* libReactNativeNavigation.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		5FDF7C3301A04F50989B98CB /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A8A3086F18343EF94D8BF22 /* libRNI18n.a */; };
 		6455636122D44B9396AC5F3F /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3438503F76C48EA90FCADA8 /* MaterialCommunityIcons.ttf */; };
 		65A2761B90A446FFAD8C43D0 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90AF79317F26460BA96C455C /* Zocial.ttf */; };
 		6DFB7C3D054B410F8CE9D2B0 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B30CD1DA368D405FBFCCD715 /* SimpleLineIcons.ttf */; };
@@ -54,15 +52,18 @@
 		847F2A1FFDA04766B5F68678 /* Comfortaa-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4A8C48302E5C4968BC89C4FC /* Comfortaa-Light.ttf */; };
 		84A88222200FCAC200D809ED /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84925E5B200F82F7001FC858 /* libRCTVideo.a */; };
 		84A8824F200FD0A200D809ED /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F71617200F7D7C003B5A10 /* libRCTOrientation.a */; };
-		8FC5025D5788448A88BCAD8C /* libRNGooglePlaces.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5B69B160AF840CFB6567F52 /* libRNGooglePlaces.a */; };
 		90A333F21A3C49748C9983A8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22790D010FC445B89202A198 /* FontAwesome.ttf */; };
-		9190FD98C9D041F1B08AAAC1 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6C236315EC94CBD8CDEA8F6 /* libRNVectorIcons.a */; };
 		9F18667299A2F9F9D2AF9679 /* libPods-OneMapFinal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DC52AAC7D86D803DFFC0FD /* libPods-OneMapFinal.a */; };
 		A49C34FBF8B8461BAAD9F578 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91A21A0C319F4291AEDA13BA /* Ionicons.ttf */; };
-		ABF51260F667471C8C2FC09B /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B362FA1FAE140569A42041F /* libRNImagePicker.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B4DB861647A64FBA8740158B /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C87BBA57A94A4E0EBE582EC1 /* MaterialIcons.ttf */; };
-		BF01490F1CFC4EDD95D466E5 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CD08342BA1E4EC39F756D79 /* libimageCropPicker.a */; };
+		D2C24F622015E15B007B9D14 /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B7DA200298E100C7E6EA /* libRCTFBSDK.a */; };
+		D2C24F632015E167007B9D14 /* libRNGooglePlaces.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B7ED200298E100C7E6EA /* libRNGooglePlaces.a */; };
+		D2C24F642015E16E007B9D14 /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B7F3200298E100C7E6EA /* libRNI18n.a */; };
+		D2C24F652015E178007B9D14 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B7E0200298E100C7E6EA /* libRNImagePicker.a */; };
+		D2C24F662015E183007B9D14 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B7DD200298E100C7E6EA /* libReactNativeNavigation.a */; };
+		D2C24F672015E19A007B9D14 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B7E3200298E100C7E6EA /* libRNVectorIcons.a */; };
+		D2C24F682015E1B2007B9D14 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D23E3C34201262ED0018B570 /* libimageCropPicker.a */; };
 		D2C60E022010ABC000870FF2 /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B7D7200298E100C7E6EA /* libAirMaps.a */; };
 		D2C60E2A2010B53200870FF2 /* AIRGMSMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C60E052010B53200870FF2 /* AIRGMSMarker.m */; };
 		D2C60E2B2010B53200870FF2 /* AIRGMSPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C60E072010B53200870FF2 /* AIRGMSPolygon.m */; };
@@ -84,7 +85,6 @@
 		D2C60E3B2010B53200870FF2 /* DummyView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C60E272010B53200870FF2 /* DummyView.m */; };
 		D2C60E3C2010B53200870FF2 /* RCTConvert+GMSMapViewType.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C60E292010B53200870FF2 /* RCTConvert+GMSMapViewType.m */; };
 		D2DBCA5920108EFA001D3571 /* libRNCardView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B7EA200298E100C7E6EA /* libRNCardView.a */; };
-		DDF6AB16B4574E10AE48A963 /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D63AE679ED894D0ABD9EB8ED /* libRCTFBSDK.a */; };
 		DDF996FE459F408C80F3FF20 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 795A42D188BC4B9C9FEB8A7B /* EvilIcons.ttf */; };
 /* End PBXBuildFile section */
 
@@ -562,6 +562,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2C24F682015E1B2007B9D14 /* libimageCropPicker.a in Frameworks */,
+				D2C24F672015E19A007B9D14 /* libRNVectorIcons.a in Frameworks */,
+				D2C24F662015E183007B9D14 /* libReactNativeNavigation.a in Frameworks */,
+				D2C24F652015E178007B9D14 /* libRNImagePicker.a in Frameworks */,
+				D2C24F642015E16E007B9D14 /* libRNI18n.a in Frameworks */,
+				D2C24F632015E167007B9D14 /* libRNGooglePlaces.a in Frameworks */,
+				D2C24F622015E15B007B9D14 /* libRCTFBSDK.a in Frameworks */,
 				D2C60E022010ABC000870FF2 /* libAirMaps.a in Frameworks */,
 				D2DBCA5920108EFA001D3571 /* libRNCardView.a in Frameworks */,
 				84A8824F200FD0A200D809ED /* libRCTOrientation.a in Frameworks */,
@@ -582,15 +589,8 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				8426B86F20029C6000C7E6EA /* FBSDKCoreKit.framework in Frameworks */,
-				DDF6AB16B4574E10AE48A963 /* libRCTFBSDK.a in Frameworks */,
 				8426B86E20029C6000C7E6EA /* Bolts.framework in Frameworks */,
-				8FC5025D5788448A88BCAD8C /* libRNGooglePlaces.a in Frameworks */,
-				5FDF7C3301A04F50989B98CB /* libRNI18n.a in Frameworks */,
-				ABF51260F667471C8C2FC09B /* libRNImagePicker.a in Frameworks */,
-				4218BAF5ADDE493985FE9FFA /* libReactNativeNavigation.a in Frameworks */,
-				9190FD98C9D041F1B08AAAC1 /* libRNVectorIcons.a in Frameworks */,
 				9F18667299A2F9F9D2AF9679 /* libPods-OneMapFinal.a in Frameworks */,
-				BF01490F1CFC4EDD95D466E5 /* libimageCropPicker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

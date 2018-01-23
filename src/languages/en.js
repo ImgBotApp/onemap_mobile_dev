@@ -24,7 +24,8 @@ export default {
   PRIVACY_PLICY   : "Privacy Policy",
   CREATE_ACCOUNT  : "Create Account",
   DONE_STR        : "Done",
-
+  INPUT_YOUR_DETAILS:"Please enter your details for create an account.",
+  
 
   // Drawer String
 

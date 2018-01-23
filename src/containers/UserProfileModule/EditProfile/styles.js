@@ -80,6 +80,12 @@ const styles = StyleSheet.create({
   genderItem:{
     fontFamily: 'Comfortaa-light',
   },
+  genderIcon:{
+    width:getDeviceHeight(62),
+    height:getDeviceHeight(102),
+    resizeMode      : 'contain',
+    marginTop :getDeviceHeight(75),
+  },
   fontAweSome: {
     alignItems: 'center',
     width: getDeviceHeight(97),

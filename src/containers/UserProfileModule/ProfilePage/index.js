@@ -25,16 +25,6 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  /*
-  graphql(
-    GET_PROFILE, {
-      options(props) {
-        return {
-          variables: { userId: props.user.id },
-        }
-    },
-  }),
-  */
   graphql(
    GET_USER_STORIES, {
      options(props) {

@@ -28,6 +28,28 @@ import {
   UPDATE_PROFILE
 } from '@graphql/userprofile'
 
+import ImagePicker from 'react-native-image-crop-picker'
+import ActionSheet from 'react-native-actionsheet'
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import PhoneInput from 'react-native-phone-input'
+import LoadingSpinner from '@components/LoadingSpinner'
+import {uploadImage} from '@global/cloudinary';
+
+const CANCEL_INDEX = 0
+const DESTRUCTIVE_INDEX = 4
+const options = [ 'Cancel', 'Take Photo...','Choose from Library...']
+const title = 'Select Avatar'
+
+const imagePickerOptions = {
+  width: 1080,
+  height: 1080,
+  cropping: true,
+  includeBase64: true,
+  includeExif: true,
+}
+
 // create a component
 class ProfileCreatePage extends Component {
   static navigatorButtons = {
@@ -50,21 +72,26 @@ class ProfileCreatePage extends Component {
   };
   constructor (props) {
     super(props)
+    var today = new Date().toLocaleDateString();
+    var user= "@"+this.props.info.id;
     this.state = {
-      username: this.props.mode == ACCOUNT_MODE.facebook ? this.props.info.id : '',
-      name: this.props.info.first_name + ' ' + this.props.info.last_name || '',
+      username: user,
+      displayName: this.props.info.first_name + " " + this.props.info.last_name,
       photoURL : this.props.info.picture.data.url,
       country: 'Thailand',
       city: 'Thailand',
-      birthday: new Date(),
-      gender: this.props.info.gender || '',
+      birthday: today,
+      gender: this.props.info.gender.toUpperCase() || 'FEMALE',
       bio: this.props.info.about || '',
       loginMethod: this.props.mode == ACCOUNT_MODE.facebook ? 'FACEBOOK' : 'PHONE',
       isDateTimePickerVisible: false,
       success: false,
-      userId : this.props.info.userId || ''
+      userId : this.props.info.userId || '',
+      processing:false,
     }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
+    this.handlePress = this.handlePress.bind(this)
+    this.showActionSheet = this.showActionSheet.bind(this)
   }
 
   onNavigatorEvent (event) {
@@ -97,7 +124,8 @@ class ProfileCreatePage extends Component {
             photoURL: this.state.photoURL,
             firstName: this.props.info.first_name,
             lastName: this.props.info.last_name,
-            username: this.state.username
+            username: this.state.username,
+            displayName: this.state.displayName,
           }))
           this.props.updateUser({
             variables: {
@@ -106,7 +134,7 @@ class ProfileCreatePage extends Component {
               last_name: this.props.info.last_name,
               gender: this.state.gender.toUpperCase(),
               photoURL: this.state.photoURL,
-              displayName: this.props.info.first_name + " " + this.props.info.last_name,
+              displayName: this.state.displayName,
               registrationDate: new Date().toLocaleDateString(),
               city: this.state.city,
               country: this.state.country,
@@ -121,11 +149,13 @@ class ProfileCreatePage extends Component {
       }
     }
   }
+
   onBackButtonPress() {
     this.props.navigator.pop({
       animated: true
     })
   }
+
   componentWillMount () {
     // this.props.navigation.setParams({submitProfile: $this.submitProfile})
   }
@@ -137,12 +167,11 @@ class ProfileCreatePage extends Component {
     this.setState({isDateTimePickerVisible: false})
   }
   _onConfirmBirthDay = (date) => {
-    this.setState({birthday: date})
+    var dateStr = date.toLocaleDateString();
+    this.setState({birthday: date.toLocaleDateString()})
     this.setState({isDateTimePickerVisible: false})
   }
-  _onGenderSelect = (value, index, data) => {
-    this.setState({gender: value})
-  }
+  
   async submitProfile () {
     // var complete = $this.checkValidation()
     // if ( complete == false ) return
@@ -162,15 +191,23 @@ class ProfileCreatePage extends Component {
   }
 
   checkValidation () {
-    if (this.state.username == '') {
+    if(this.state.username.length <= 1)
+    {
       this.onShowMessage('Please input Username')
       this.refs.username.focus()
       return false
     }
-    if (this.state.name == '') {
-      this.onShowMessage('Please input name')
-      this.refs.name.focus()
-      return  false
+    if(this.state.displayName.length <= 0)
+    {
+      this.refs.toast.show('Please input Full Name')
+      this.refs.displayname.focus();
+      return false;
+    }
+    if (this.state.displayName.indexOf(' ') < 0)
+    { 
+      this.refs.toast.show('Please input Full Name')
+      this.refs.displayname.focus();
+      return false;
     }
     if (this.state.country == '') {
       this.onShowMessage('Please input country')
@@ -192,103 +229,215 @@ class ProfileCreatePage extends Component {
       this.refs.bio.focus()
       return  false
     }
+
+    var subnames = this.state.displayName.split(' ');
+    var lastname ='';
+    for(var i=1; i< subnames.length ;i++)
+     lastname += subnames[i]+' ';
+    this.setState({first_name:subnames[0],last_name:lastname});
     return true
+  }
+  showActionSheet() {
+    this.ActionSheet.show()
+  }
+  handlePress(i) {
+    this.setState({
+      selected: i
+    })
+    if(i==2)
+    {
+      this.onProfileImagePickerFromLibrary();
+    }
+    else if(i==1)
+    {
+      this.onProfileImagePickerFromCamear();
+    }
+  }
+  onProfileImagePickerFromLibrary () {
+    this.setState({processing:true});
+    ImagePicker.openPicker(imagePickerOptions).then(image => {
+      if(image != null){
+        uploadImage(image.data).then(url =>{
+          this.setState({processing:false});
+          if(url)
+            this.setState({
+              photoChanged: true,
+              photoURL: url
+            });
+        })
+      }else this.setState({processing:false});
+    }).catch(e => this.setState({processing:false}));
+  }
+  onProfileImagePickerFromCamear(){
+    this.setState({processing:true});
+    ImagePicker.openCamera(imagePickerOptions).then(image => {
+      if(image != null){
+        uploadImage(image.data).then(url =>{
+          this.setState({processing:false});
+          if(url)
+            this.setState({
+              photoChanged: true,
+              photoURL: url
+            });
+        })
+      }else this.setState({processing:false});
+    }).catch(e => this.setState({processing:false}));
+  }
+  onChangeDisplayName(val){
+    let result ="";
+    for(var i=0; i< val.length; i++)
+    {
+      var lastChar=val[i];
+      if((lastChar>='a' && lastChar <= 'z')||
+        (lastChar>='A' && lastChar <= 'Z') ||
+        (lastChar>='0' && lastChar <= '9') || lastChar == ' '
+        )
+        result+=lastChar;
+    }
+    this.setState({displayName:result});
+  }
+  onChangeUserName(val){
+    if(val.length <= 1)
+      this.setState({username:"@"});
+    else{
+      let result ="@";
+      for(var i=1; i< val.length; i++)
+      {
+        var lastChar=val[i];
+        if((lastChar>='a' && lastChar <= 'z')||
+          (lastChar>='A' && lastChar <= 'Z') ||
+          (lastChar>='0' && lastChar <= '9')
+          )
+          result+=lastChar;
+      }
+      this.setState({username:result});
+    }
+  }
+  _onGenderSelect = (value, index, data) => {
+    switch(index)
+    {
+      case 0: this.setState({gender: "MALE"});break;
+      case 1: this.setState({gender: "FEMALE"});break;
+      case 2: this.setState({gender: "NOT_SPECIFIC"});break;
+      default: this.setState({gender: "NOT_SPECIFIC"});break;
+    }
   }
   render() {
     let Genderdata = [{
-      value: I18n.t('GENDER_MAILE_STR'),
+      value: I18n.t('MALE'),
     }, {
-      value: I18n.t('GENDER_FEMALE_STR'),
+      value: I18n.t('FEMALE'),
     }, {
-      value: I18n.t('GENDER_NOT_SAY_STR'),
+      value: I18n.t('NOT_SPECIFIC'),
     }];
 
     return (
-      <View style={styles.container}>
-      <KeyboardAwareScrollView styles={styles.scrollView}
-        innerRef={ref => {this.scroll = ref}}
-        extraHeight={30}
-      >      
-        <View style={styles.textDescription}>
-          <Text style={styles.descriptionText}>{I18n.t('CREATE_PROFILE_DESCRIPTION1')}</Text>
-          <Text style={styles.descriptionText}>{I18n.t('CREATE_PROFILE_DESCRIPTION2')}</Text>
-          <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(236)}/>
-        </View>
-        <View style={styles.profile}>
-          <Text style={styles.hintText}>*A-Z, a-z, 0-9, Only English</Text>
-          <TextInput style={[styles.infoText]} 
-            ref="username"
-            placeholder={I18n.t('CREATE_PROFILE_USERNAME')}
-            onChangeText={(text) => this.setState({username: text})}
-            returnKeyType={'next'}
-            onSubmitEditing={() => this.refs.name.focus() }
-            value={this.state.username}
-          />
-          <Text style={styles.hintText}>*A-Z, a-z, 0-9, Only English</Text>          
-          <TextInput style={[styles.infoText]} 
-            ref="name"
-            placeholder={I18n.t('CREATE_PROFILE_DISPLAYNAME')}
-            onChangeText={(text) => this.setState({name: text})}
-            value={this.state.name}
-            returnKeyType={'next'}
-            onSubmitEditing={() => this.refs.country.focus()}
-          />
-          {/* <TextInput style={[styles.infoText]} 
-            ref="country"
-            placeholder={I18n.t('CREATE_PROFILE_COUNTRY')}
-            onChangeText={(text) => this.setState({country: text})}
-            value = {this.state.country}
-            returnKeyType={'next'}
-            onSubmitEditing={() => this.refs.city.focus()}
-          />
-          <TextInput style={[styles.infoText]} 
-            ref="city"
-            placeholder={I18n.t('CREATE_PROFILE_CITY')}
-            onChangeText={(text) => this.setState({city: text})}
-            value = {this.state.city}
-            returnKeyType={'next'}
-            onSubmitEditing={() => this.refs.birthday.focus()}
-          /> */}
-          <TextInput style={[styles.infoText]} 
-            ref="birthday"
-            onFocus={this._showDatePicker.bind(this)}
-            placeholder={'Birthday'}
-            value = {this.state.birthday.toLocaleDateString()}
-          />
-          <DateTimePicker
-            isVisible={this.state.isDateTimePickerVisible}
-            onConfirm={this._onConfirmBirthDay}
-            onCancel={this._hideDatePicker}
-          />
-          <View style={[styles.genderSelection]}>
-            <Dropdown
-              ref="gender"
-              label='Gender'
-              data={Genderdata}
-              value={this.state.gender}
-              onChangeText={this._onGenderSelect.bind(this)}
-            />
+      <View style={{height: '100%', flex: 1,backgroundColor: '#efefef'}}>
+        <KeyboardAwareScrollView> 
+          <View style={styles.container}>
+            {/*
+            <Text numberOfLines={2} style={styles.enterText}>{I18n.t('INPUT_YOUR_DETAILS')}</Text>
+            */}
+            <View style={styles.avatarView}>
+              <TouchableOpacity style={styles.avatarView} onPress={this.showActionSheet.bind(this)}>
+                <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(236)}/>
+                <Image style={styles.cameraImage} source={require('@assets/images/icon/camera.png')} />
+              </TouchableOpacity>
+            </View>
+
+            {/* Name */}
+            <View style={styles.inputElement}>
+              <View style={styles.fontAweSome}>
+                <EvilIcons name="user" size={24} color="#0a91ed" />
+              </View>
+              <TextInput ref="displayname" style={styles.textInput} value={this.state.displayName} onChangeText={(val) => this.onChangeDisplayName(val)}/>
+            </View>
+
+            {/*
+            <View style={[styles.textElement,{flexDirection:'row'}]}>
+              <View style={styles.fontAweSome}>
+                <Ionicons name="ios-phone-portrait-outline" size={24} color="#0a91ed" />            
+              </View>
+              <View style={styles.text}>
+                <PhoneInput ref='phone' textStyle={{fontFamily: 'Comfortaa-light'}} confirmText={'Confirm'} initialCountry={"us"}/>
+              </View>
+              
+            </View> 
+
+            <View style={styles.inputElement}>
+              <TouchableOpacity onPress={() => this.setState({isDateTimePickerVisible : true})}>
+              <View style={{flexDirection: 'row'}}>
+              <View style={styles.fontAweSome}>
+                <EvilIcons name="calendar" size={24} color="#0a91ed" />            
+              </View>
+              <View style={styles.text}>
+                <Text style={{fontFamily: 'Comfortaa-light'}}>{this.state.birthday} </Text>
+              </View>
+              <DateTimePicker
+                isVisible={this.state.isDateTimePickerVisible}
+                onConfirm={this._onConfirmBirthDay.bind(this)}
+                onCancel={this._hideDatePicker.bind(this)}
+              />
+              </View>
+              </TouchableOpacity>
+            </View> 
+            */}
+            {/* gender */}
+            <View style={styles.genderElement}>
+              <View style={styles.genderAwesome}>
+                <Image style={styles.genderIcon} source={require('@assets/images/icon/gender.png')} />
+              </View>
+              <View style={[styles.genderSelection]}>
+                <Dropdown
+                  ref="gender"
+                  label='Gender'
+                  style={styles.gender}
+                  itemTextStyle = {styles.genderItem}
+                  value={
+                    I18n.t(this.state.gender)?I18n.t(this.state.gender):I18n.t("NOT_SPECIFIC")
+                  }
+                  data={Genderdata}
+                  onChangeText={this._onGenderSelect.bind(this)}
+                />
+              </View>
+            </View>
+            {/* User Name */}
+            <View style={styles.inputElement}>
+              <View style={styles.fontAweSome}>
+                <EvilIcons name="tag" size={24} color="#0a91ed" />
+              </View>
+              <TextInput ref="username" style={styles.textInput} value={this.state.username} onChangeText={(val) => this.onChangeUserName(val)}/>
+            </View>
+            {/* bio */}
+            <View style={styles.inputElement}>
+              <Text style={styles.biolabel}>{I18n.t('CREATE_PROFILE_BIO')}</Text>
+            </View>
+            <View style={styles.bioInput}>
+              <TextInput ref="bio" style={styles.bioText} underlineColorAndroid={'transparent'} multiline = {true} numberOfLines = {4} editable={true} value={this.state.bio} onChangeText={(val) => this.setState({bio: val})}/>
+            </View>
+
+            {/*
+            <Text style={styles.hintText}>*A-Z, a-z, 0-9, Only English</Text>
+            
+            */}
           </View>
-          <Text style={styles.bio}>{I18n.t('CREATE_PROFILE_BIO')}</Text>
-          <TextInput 
-            ref="bio"
-            style={styles.bioText}
-            multiline={true}
-            numberOfLines={4}
-            onChangeText={(text) => {this.setState({bio: text})}}
-            value={this.state.bio}
-            onFocus={() => {this.scroll.scrollToEnd(true)}}
-            returnKeyType={'next'}
-            onSubmitEditing={() => this.submitProfile.bind(this)}
-          />
-        </View>
-        <Toast ref="toast" />
         </KeyboardAwareScrollView>
         {
           this._showSuccess()
         }
+        {
+          this.state.processing ? (<LoadingSpinner />) : null
+        }
+        <ActionSheet
+            ref={o => this.ActionSheet = o}
+            title={title}
+            options={options}
+            cancelButtonIndex={CANCEL_INDEX}
+            destructiveButtonIndex={DESTRUCTIVE_INDEX}
+            onPress={this.handlePress}
+          />
+        <Toast ref="toast" />
       </View>
-      
     );
   }
   _showSuccess () {

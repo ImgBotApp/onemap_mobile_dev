@@ -137,7 +137,7 @@ class LoginPage extends Component {
         let UserExist = await client.query({
           query: GET_PROFILE,
           variables: {
-            id: val.id
+            userId: val.id
           }
         }).then((user) => {
           // alert(JSON.stringify(user))
@@ -278,7 +278,7 @@ class LoginPage extends Component {
         <Text style={[styles.login_str, styles.first_line]}>{I18n.t('SIGN_LOGIN_STR')}</Text>
         <Text style={[styles.login_str, styles.second_line]}>{I18n.t('WITH_STR')}</Text>
         <RoundButton style={styles.phone_number} title={'Phone Number'} 
-          disabled={true}
+          disabled={false}
           pressColor={'#0a91ed'} onPress={this.onPhoneNumber.bind(this)}
         />
         <View style={styles.mid_line}>

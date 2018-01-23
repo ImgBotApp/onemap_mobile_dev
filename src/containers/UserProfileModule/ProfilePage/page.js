@@ -153,7 +153,6 @@ class ProfileComponent extends Component {
                 <View>
                   <Text style={styles.bigName}>{this.state.displayName}</Text>
                   <Text style={styles.userId}>
-                    <EvilIcons name="sc-facebook" size={SMALL_FONT_SIZE}/>
                     {this.state.username}
                   </Text>
                 </View>
