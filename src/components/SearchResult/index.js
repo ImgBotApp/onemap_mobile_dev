@@ -25,14 +25,16 @@ class SearchResult extends Component {
   }
   componentWillReceiveProps(nextProps) {
     //type (String) - (geocode, address, establishment, regions, and cities)
-    RNGooglePlaces.getAutocompletePredictions(nextProps.keyword,{
-      type: 'establishment',
+    /*,{
+      type: 'cities',
       
       latitude: 53.544389,
       longitude: -113.490927,
       radius: 10000
       
-    }).then((results) => {
+    }
+  */
+    RNGooglePlaces.getAutocompletePredictions(nextProps.keyword).then((results) => {
       this.setState({
         places: results
       })

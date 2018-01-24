@@ -182,7 +182,7 @@ class LoginPage extends Component {
             //     naviBarComponentAlignment: 'center'
             //   },
             // })
-            LoginManager.logInWithReadPermissions(['public_profile','email','user_about_me','user_birthday','user_hometown','user_location','pages_show_list'])
+            LoginManager.logInWithReadPermissions(['public_profile','email','user_about_me','user_birthday','user_hometown','user_location'])
             .then((result) => {
               if (result.isCancelled) {
                 // alert('cancelled')
@@ -214,7 +214,7 @@ class LoginPage extends Component {
           }
         })
       } else {
-        LoginManager.logInWithReadPermissions(['public_profile','email','user_about_me','user_birthday','user_hometown','user_location','pages_show_list'])
+        LoginManager.logInWithReadPermissions(['public_profile','email','user_about_me','user_birthday','user_hometown','user_location'])
         .then((result) => {
           if (result.isCancelled) {
             // alert('cancelled')
