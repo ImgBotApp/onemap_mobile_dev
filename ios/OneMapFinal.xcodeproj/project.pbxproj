@@ -1972,6 +1972,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.writingfuture.onemap;
 				PRODUCT_NAME = OneMapFinal;
+				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -2019,6 +2020,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.writingfuture.onemap;
 				PRODUCT_NAME = OneMapFinal;
+				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};

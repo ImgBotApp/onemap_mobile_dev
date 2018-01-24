@@ -25,7 +25,7 @@ export default {
   CREATE_ACCOUNT  : "Create Account",
   DONE_STR        : "Done",
   INPUT_YOUR_DETAILS:"Please enter your details for create an account.",
-  
+  LOGINFACEBOOK :'Login With FaceBook',
 
   // Drawer String
 

@@ -278,11 +278,12 @@ class LoginPage extends Component {
     return (
       <View style={styles.container}>
         <Image style={styles.marker} source={require('@assets/images/login/mark.png')} />
+        {/*
         <Text style={[styles.login_str, styles.first_line]}>{I18n.t('SIGN_LOGIN_STR')}</Text>
         <Text style={[styles.login_str, styles.second_line]}>{I18n.t('WITH_STR')}</Text>
         <RoundButton style={styles.phone_number} title={'Phone Number'} 
           disabled={false}
-          pressColor={'#0a91ed'} onPress={this.onPhoneNumber.bind(this)}
+          pressColor={'#0a91ed'} onPress={this._fbAuth.bind(this)}
         />
         <View style={styles.mid_line}>
           <Text style={styles.or_str}>{I18n.t('OR_STR')}</Text>
@@ -298,6 +299,11 @@ class LoginPage extends Component {
             accessibilityTraits='disabled'
           />
         </View>
+        */}
+        <RoundButton style={styles.loginWithFB} title={I18n.t('LOGINFACEBOOK')} 
+          pressColor={'transparent'} onPress={this._fbAuth.bind(this)}
+        />
+        
         {
           this.state.loading ? (<LoadingSpinner />) : null
         }

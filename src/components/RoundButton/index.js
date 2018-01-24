@@ -10,7 +10,7 @@ class RoundButton extends Component {
   constructor (props) {
     super(props)
     this.state ={
-      backgroundColor : 'transparent'
+      backgroundColor : '#0a91ed'
     }
   }
 
@@ -22,7 +22,7 @@ class RoundButton extends Component {
 
   onPressOut () {
     this.setState({
-      backgroundColor: 'transparent'
+      backgroundColor: '#0a91ed'
     })
   }
 
@@ -40,7 +40,7 @@ class RoundButton extends Component {
         disabled={this.props.disabled}
         >
         <Text 
-          style={{color: this.state.backgroundColor == this.props.pressColor ? '#fff' : this.props.pressColor,
+          style={{color: this.state.backgroundColor != this.props.pressColor ? '#fff' : '#0a91ed',
           fontSize: GLOBAL.MEDIUM
           }}>
           {this.props.title}
