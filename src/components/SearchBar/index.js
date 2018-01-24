@@ -406,7 +406,7 @@ const getStyles = (inputHeight) => {
       backgroundColor: '#f7f7f7',
       borderRadius: 5,
       fontSize: 16,
-      fontFamily      : 'Comfortaa-bold',
+      
     },
     placeholderColor: 'grey',
     iconSearch: {
@@ -439,7 +439,7 @@ const getStyles = (inputHeight) => {
     cancelButtonText: {
       fontSize: 14,
       color: '#fff',
-      fontFamily      : 'Comfortaa-regular',
+      
     }
   };
 }

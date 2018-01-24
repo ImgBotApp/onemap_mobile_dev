@@ -59,13 +59,11 @@ const styles = StyleSheet.create({
   name: {
     fontSize: NORMAL_FONT_SIZE,
     color: DARK_GRAY_COLOR,
-    fontFamily      : 'Comfortaa-regular',
     
   },
   following: {
     fontSize: SMALL_FONT_SIZE,
     color: LIGHT_GRAY_COLOR,
-    fontFamily      : 'Comfortaa-light',
     marginBottom :getDeviceHeight(10),
   },
   placeImage: {

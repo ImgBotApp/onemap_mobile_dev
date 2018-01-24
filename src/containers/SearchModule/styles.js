@@ -52,7 +52,7 @@ backArrow: {
 },
   mapView: {
     width: '100%',
-    height: getDeviceHeight(1200)
+    height: getDeviceHeight(1000)
   },
   map: {
     width: '100%',
@@ -104,13 +104,11 @@ backArrow: {
   name: {
     fontSize: NORMAL_FONT_SIZE,
     color: DARK_GRAY_COLOR,
-    fontFamily      : 'Comfortaa-regular',
     marginBottom :getDeviceHeight(10),
   },
   following: {
     fontSize: SMALL_FONT_SIZE,
     color: LIGHT_GRAY_COLOR,
-    fontFamily      : 'Comfortaa-light',
   },
   customView: {
     width: 160,

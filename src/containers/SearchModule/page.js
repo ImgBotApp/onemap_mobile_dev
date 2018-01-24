@@ -135,7 +135,7 @@ class SearchPage extends Component {
         {
           this.state.result == false ?
           (
-            <ScrollView style={{ width: '100%' }}>
+            <View style={{ width: '100%' }}>
             <View style={styles.mapView}>
               <MapView
                 // showsUserLocation={true}
@@ -197,7 +197,7 @@ class SearchPage extends Component {
                 </View>
               }
             />
-            </ScrollView>
+            </View>
           )
           :
           (
