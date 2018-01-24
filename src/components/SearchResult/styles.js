@@ -1,18 +1,17 @@
 import { StyleSheet } from 'react-native'
-import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '../../theme/colors';
+import { BACKGROUNDCOLOR,LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '../../theme/colors';
 import { NORMAL_FONT_SIZE, BIG_FONT_SIZE, SMALL_FONT_SIZE } from '../../theme/fonts';
 import { getDeviceHeight, getDeviceWidth } from '@global'
 
 // define your styles
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    position:"relative",
     width: '100%',
-    height: '100%',
-    alignItems: 'center',
     flex: 1,
     // height: 100,
-    backgroundColor: 'rgba(153,153,153,0.6)',
+    backgroundColor: 'white',
+    marginTop:50,
   },
   TabText: {
     color: LIGHT_GRAY_COLOR,
@@ -26,8 +25,7 @@ const styles = StyleSheet.create({
     color: DARK_GRAY_COLOR
   },
   mainContainer: {
-    width: getDeviceWidth(1223),
-    marginTop: getDeviceHeight(223),
+    top:0
   },
   tabHeader: {
     borderColor: 'transparent',
@@ -35,11 +33,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   scrollView: {
-    width: getDeviceWidth(1223),
+    width: '100%',
     height: getDeviceHeight(1211),
     borderBottomWidth: 1,
     borderColor: 'transparent',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    paddingTop:getDeviceHeight(50)
   },
   item: {
     height: getDeviceHeight(192),
@@ -53,22 +52,25 @@ const styles = StyleSheet.create({
   },
   infomation: {
     marginLeft: getDeviceWidth(72),
-    width: getDeviceWidth(838),
+    width: getDeviceWidth(980),
     borderBottomWidth: 1,
     borderBottomColor: LIGHT_GRAY_COLOR
   },
   name: {
     fontSize: NORMAL_FONT_SIZE,
-    color: DARK_GRAY_COLOR
+    color: DARK_GRAY_COLOR,
+    
   },
   following: {
     fontSize: SMALL_FONT_SIZE,
-    color: LIGHT_GRAY_COLOR
+    color: LIGHT_GRAY_COLOR,
+    marginBottom :getDeviceHeight(10),
   },
   placeImage: {
     width: getDeviceWidth(140),
     height: getDeviceHeight(140),
-    resizeMode: 'contain'
+    resizeMode: 'contain',
+    marginBottom:getDeviceHeight(80),
   }
 });
 

@@ -269,36 +269,23 @@ class EditProfile extends Component {
           </View>
           </TouchableOpacity>
         </View> */}
-            {/* gender */}
-            <View style={styles.genderElement}>
-              <View style={styles.genderAwesome}>
-                <MaterialCommunityIcons name="gender-male-female" size={24} color="#0a91ed" />
-              </View>
-              <View style={[styles.genderSelection]}>
-                <Dropdown
-                  ref="gender"
-                  label='Gender'
-                  style={styles.gender}
-                  itemTextStyle={styles.genderItem}
-                  value={
-                    I18n.t(this.state.gender) ? I18n.t(this.state.gender) : I18n.t("NOT_SPECIFIC")
-                  }
-                  data={Genderdata}
-                  onChangeText={this._onGenderSelect.bind(this)}
-                />
-              </View>
-            </View>
-            {/* User Name */}
-            <View style={styles.inputElement}>
-              <View style={styles.fontAweSome}>
-                <EvilIcons name="tag" size={24} color="#0a91ed" />
-              </View>
-              <TextInput style={styles.textInput} value={this.state.username} onChangeText={(val) => this.onChangeUserName(val)} />
-            </View>
-            {/* bio */}
-            <View style={styles.bioInput}>
-              <TextInput style={styles.bioText} underlineColorAndroid={'transparent'} multiline={true} numberOfLines={4} editable={true} value={this.state.bio} onChangeText={(val) => this.setState({ bio: val })} />
-            </View>
+        {/* gender */}
+        <View style={styles.genderElement}>
+          <View style={styles.genderAwesome}>
+            <Image style={styles.genderIcon} source={require('@assets/images/icon/gender.png')} />
+          </View>
+          <View style={[styles.genderSelection]}>
+            <Dropdown
+              ref="gender"
+              label='Gender'
+              style={styles.gender}
+              itemTextStyle = {styles.genderItem}
+              value={
+                I18n.t(this.state.gender)?I18n.t(this.state.gender):I18n.t("NOT_SPECIFIC")
+              }
+              data={Genderdata}
+              onChangeText={this._onGenderSelect.bind(this)}
+            />
           </View>
         </KeyboardAwareScrollView>
         {

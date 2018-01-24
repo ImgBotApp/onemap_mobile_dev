@@ -17,6 +17,8 @@
 
 @import GoogleMaps;
 @import GooglePlaces;
+@import GooglePlacePicker;
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

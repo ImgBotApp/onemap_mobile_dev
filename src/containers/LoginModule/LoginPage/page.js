@@ -65,6 +65,7 @@ class LoginPage extends Component {
           })
           // this.props.dispatch(appActions.login())
           this.props.login();
+          
         } else {
           this.props.navigator.push({
             screen: SCREEN.ACCOUNT_CREATE_PAGE,
@@ -137,13 +138,14 @@ class LoginPage extends Component {
         let UserExist = await client.query({
           query: GET_PROFILE,
           variables: {
-            id: val.id
+            userId: val.id
           }
         }).then((user) => {
           // alert(JSON.stringify(user))
           this.setState({loading: false})
           var data = user.data.User
           if ( data.firstName ) {
+            
             this.props.saveUserInfo({
               id: data.id,
               createdAt: new Date().toLocaleDateString(),
@@ -159,6 +161,7 @@ class LoginPage extends Component {
               displayName: data.displayName,
               username: data.username
             })
+            
             this.props.login();
           } 
           else {
@@ -198,7 +201,7 @@ class LoginPage extends Component {
               this.setState({id: gctoken.data.authenticateFBUser.id})
               this.props.saveUserId(gctoken.data.authenticateFBUser.id, gctoken.data.authenticateFBUser.token)
               const infoRequest = new GraphRequest(
-                '/me?fields=id,first_name,last_name,picture,email,gender,address,about',
+                '/me?fields=id,first_name,last_name,picture.height(1000),email,gender,address,about,name',
                 null,
                 (error, result) => this._responseInfoCallback(error, result),
               );
@@ -230,7 +233,7 @@ class LoginPage extends Component {
           this.setState({id: gctoken.data.authenticateFBUser.id})
           this.props.saveUserId(gctoken.data.authenticateFBUser.id, gctoken.data.authenticateFBUser.token)
           const infoRequest = new GraphRequest(
-            '/me?fields=id,first_name,last_name,picture,email,gender,address,about',
+            '/me?fields=id,first_name,last_name,picture.height(1000),email,gender,address,about,name',
             null,
             (error, result) => this._responseInfoCallback(error, result),
           );
@@ -275,11 +278,12 @@ class LoginPage extends Component {
     return (
       <View style={styles.container}>
         <Image style={styles.marker} source={require('@assets/images/login/mark.png')} />
+        {/*
         <Text style={[styles.login_str, styles.first_line]}>{I18n.t('SIGN_LOGIN_STR')}</Text>
         <Text style={[styles.login_str, styles.second_line]}>{I18n.t('WITH_STR')}</Text>
         <RoundButton style={styles.phone_number} title={'Phone Number'} 
-          disabled={true}
-          pressColor={'#0a91ed'} onPress={this.onPhoneNumber.bind(this)}
+          disabled={false}
+          pressColor={'#0a91ed'} onPress={this._fbAuth.bind(this)}
         />
         <View style={styles.mid_line}>
           <Text style={styles.or_str}>{I18n.t('OR_STR')}</Text>
@@ -295,6 +299,11 @@ class LoginPage extends Component {
             accessibilityTraits='disabled'
           />
         </View>
+        */}
+        <RoundButton style={styles.loginWithFB} title={I18n.t('LOGINFACEBOOK')} 
+          pressColor={'transparent'} onPress={this._fbAuth.bind(this)}
+        />
+        
         {
           this.state.loading ? (<LoadingSpinner />) : null
         }

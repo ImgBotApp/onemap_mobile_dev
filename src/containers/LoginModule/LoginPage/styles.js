@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     backgroundColor : BACKGROUNDCOLOR,
   },
   marker: {
-    marginTop       : getDeviceHeight(540),
+    marginTop       : getDeviceHeight(560),
     marginLeft      : getDeviceWidth(184),
     width           : getDeviceWidth(1010),
     height          : getDeviceHeight(226)
@@ -37,6 +37,16 @@ const styles = StyleSheet.create({
     borderWidth     : 2,
     borderRadius    : 360,
     backgroundColor : 'transparent'
+  },
+  loginWithFB:{
+    marginLeft      : getDeviceWidth(172),
+    marginTop       : getDeviceHeight(306),
+    width           : getDeviceWidth(1097),
+    height          : getDeviceHeight(145),
+    borderColor     : '#0a91ed',
+    borderWidth     : 2,
+    borderRadius    : 360,
+    backgroundColor : '#0a91ed'
   },
   mid_line: {
     marginTop       : getDeviceHeight(158),
