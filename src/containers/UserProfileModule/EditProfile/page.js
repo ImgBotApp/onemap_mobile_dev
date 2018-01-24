@@ -242,50 +242,52 @@ class EditProfile extends Component {
             </View>
             {/* Phone Number */}
             {/* <View style={styles.textElement}>
-          <TouchableOpacity onPress={this.onPhoneNumberEdit.bind(this)} style={{flexDirection:'row'}}>
-          <View style={styles.fontAweSome}>
-            <Ionicons name="ios-phone-portrait-outline" size={24} color="#0a91ed" />            
-          </View>
-          <View style={styles.text}>
-            <Text>{this.state.phoneNumber} </Text>
-          </View>
-          </TouchableOpacity>
-        </View> */}
+              <TouchableOpacity onPress={this.onPhoneNumberEdit.bind(this)} style={{ flexDirection: 'row' }}>
+                <View style={styles.fontAweSome}>
+                  <Ionicons name="ios-phone-portrait-outline" size={24} color="#0a91ed" />
+                </View>
+                <View style={styles.text}>
+                  <Text>{this.state.phoneNumber} </Text>
+                </View>
+              </TouchableOpacity>
+            </View> */}
             {/* Calender */}
             {/* <View style={styles.inputElement}>
-          <TouchableOpacity onPress={() => this.setState({isDateTimePickerVisible : true})}>
-          <View style={{flexDirection: 'row'}}>
-          <View style={styles.fontAweSome}>
-            <EvilIcons name="calendar" size={24} color="#0a91ed" />            
-          </View>
-          <View style={styles.text}>
-            <Text>{this.state.birthday} </Text>
-          </View>
-          <DateTimePicker
-            isVisible={this.state.isDateTimePickerVisible}
-            onConfirm={this._onConfirmBirthDay.bind(this)}
-            onCancel={this._hideDatePicker.bind(this)}
-          />
-          </View>
-          </TouchableOpacity>
-        </View> */}
-        {/* gender */}
-        <View style={styles.genderElement}>
-          <View style={styles.genderAwesome}>
-            <Image style={styles.genderIcon} source={require('@assets/images/icon/gender.png')} />
-          </View>
-          <View style={[styles.genderSelection]}>
-            <Dropdown
-              ref="gender"
-              label='Gender'
-              style={styles.gender}
-              itemTextStyle = {styles.genderItem}
-              value={
-                I18n.t(this.state.gender)?I18n.t(this.state.gender):I18n.t("NOT_SPECIFIC")
-              }
-              data={Genderdata}
-              onChangeText={this._onGenderSelect.bind(this)}
-            />
+              <TouchableOpacity onPress={() => this.setState({ isDateTimePickerVisible: true })}>
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={styles.fontAweSome}>
+                    <EvilIcons name="calendar" size={24} color="#0a91ed" />
+                  </View>
+                  <View style={styles.text}>
+                    <Text>{this.state.birthday} </Text>
+                  </View>
+                  <DateTimePicker
+                    isVisible={this.state.isDateTimePickerVisible}
+                    onConfirm={this._onConfirmBirthDay.bind(this)}
+                    onCancel={this._hideDatePicker.bind(this)}
+                  />
+                </View>
+              </TouchableOpacity>
+            </View> */}
+            {/* gender */}
+            <View style={styles.genderElement}>
+              <View style={styles.genderAwesome}>
+                <Image style={styles.genderIcon} source={require('@assets/images/icon/gender.png')} />
+              </View>
+              <View style={[styles.genderSelection]}>
+                <Dropdown
+                  ref="gender"
+                  label='Gender'
+                  style={styles.gender}
+                  itemTextStyle={styles.genderItem}
+                  value={
+                    I18n.t(this.state.gender) ? I18n.t(this.state.gender) : I18n.t("NOT_SPECIFIC")
+                  }
+                  data={Genderdata}
+                  onChangeText={this._onGenderSelect.bind(this)}
+                />
+              </View>
+            </View>
           </View>
         </KeyboardAwareScrollView>
         {

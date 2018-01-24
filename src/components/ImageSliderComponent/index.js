@@ -48,6 +48,7 @@ class ImageSlider extends Component {
     });
     // Remember to remove listener
     Orientation.removeOrientationListener(this._orientationDidChange);
+    Orientation.lockToPortrait();
   }
 
   onlayoutOrientation(orientation) {

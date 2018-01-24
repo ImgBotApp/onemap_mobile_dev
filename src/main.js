@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 
 import { Navigation } from 'react-native-navigation'
+import Orientation from 'react-native-orientation'
 import thunk from 'redux-thunk'
 import * as reducers from './reducers'
 import * as appActions from './reducers/app/actions'
@@ -43,6 +44,7 @@ var SearchIcon;
 
 export default class App {
   constructor () {
+    Orientation.lockToPortrait();
     store.subscribe(this.onStoreUpdate.bind(this));
     store.dispatch(appActions.appInitialized());
   }
