@@ -201,7 +201,7 @@ class ProfileComponent extends Component {
             {
               allStories?(
                 <StoryBoard style={styles.StoryContainer} subContainer={styles.StoryList} data={allStories} width={343}
-                  onPressItem={this.onStoryItem.bind(this)}
+                  onPressItem={this.onStoryItem}
                 />):null
             }
           </View>
@@ -275,7 +275,7 @@ class ProfileComponent extends Component {
       animated: true,
     })
   }
-  onStoryItem = (id) => {
+  onStoryItem = id => {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       title: 'My Stories',

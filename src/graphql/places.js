@@ -44,6 +44,7 @@ export const PLACES_PAGINATED = gql`
       pictureURL
       createdBy {
         id
+        displayName
         username
         photoURL
       }
@@ -88,6 +89,18 @@ export const GET_PLACE_PROFILE = gql`
           id
         }
         name
+      }
+      stories {
+        id
+        title
+        story
+        createdBy {
+          id
+          displayName
+          photoURL
+        }
+        pictureURL
+        updatedAt
       }
       _userCheckedInMeta {
         count

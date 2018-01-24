@@ -38,3 +38,10 @@ export function placeUpdated(updated) {
     placeUpdated: updated
   }
 }
+
+export function saveUserFollows(follows) {
+  return {
+    type: types.STORE_USER_FOLLOWS,
+    follows
+  }
+}

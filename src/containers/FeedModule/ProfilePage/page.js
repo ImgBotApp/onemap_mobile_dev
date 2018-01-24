@@ -11,24 +11,16 @@ import StoryBoard from '@components/StoryBoard'
 import CircleImage from '@components/CircleImage'
 import TitleImage from '@components/TitledImage'
 import styles from './styles'
-import I18n  from '@language'
+import I18n from '@language'
 import { getDeviceWidth, getDeviceHeight, calculateCount } from '@global'
+import * as SCREEN from '@global/screenName'
+import { BLUE_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import DFonts from '@theme/fonts'
-import { BLUE_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
+
+import { client } from '@root/main'
+import { GET_ONEMAPPER_PROFILE } from '@graphql/userprofile'
+
 const data = {
-  user: {
-    photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-    name: 'AlexandraStorms',
-    id: 'alexan.storms',
-    followers: 24200,
-    visited:  212,
-    about: 'if you enjoy my travels, follow me, Let\'s explorer together.'
-  },
-  collections: [
-    {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-    {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},
-    {uri : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'},        
-  ],
   campaign: [
     {
       id: 'a1',
@@ -79,73 +71,8 @@ const data = {
       ]
     }
   ],
-  storyCollecton: [
-    {place:
-    {
-      id: 'a1',
-      placeName: 'a1',
-      pictureURL : ['https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg']
-    },
-  },
-  {place:
-    {
-      id: 'a2',
-      placeName: 'a2',
-      pictureURL : ['https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg']
-    },
-  },
-  {place:
-    {
-      id: 'a3',
-      placeName: 'a3',
-      pictureURL : ['https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg']
-    },
-  },
-  {place:
-    {
-      id: 'a4',
-      placeName: 'a4',
-      pictureURL : ['https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg']
-    },
-  },
-  {place:
-    {
-      id: 'a5',
-      placeName: 'a5',
-      pictureURL : ['https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg']
-    },
-  },
-  {place:
-    {
-      id: 'a6',
-      placeName: 'a6',
-      pictureURL : ['https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg']
-    },
-  },
-  {place:
-    {
-      id: 'a7',
-      placeName: 'a7',
-      pictureURL : ['https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg']
-    },
-  },
-  {place:
-    {
-      id: 'a8',
-      placeName: 'a8',
-      pictureURL : ['https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg']
-    },
-  },
-  {place:
-    {
-      id: 'a9',
-      placeName: 'a9',
-      pictureURL : ['https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg']
-    },
-  }
-  ]
 }
-// create a component
+
 class ProfilePage extends Component {
   static navigatorButtons = {
     leftButtons: [
@@ -157,10 +84,23 @@ class ProfilePage extends Component {
       }
     ]
   };
-  constructor (props) {
+
+  constructor(props) {
     super(props)
+
+    this.state = {
+      user: { ...props.userInfo },
+      collections: [],
+      stories: []
+    }
+
     this.props.navigator.setOnNavigatorEvent(this.onNavigateEvent.bind(this))
   }
+
+  componentWillMount() {
+    this.getProfile();
+  }
+
   onNavigateEvent(event) {
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'backButton') {
@@ -168,54 +108,89 @@ class ProfilePage extends Component {
       }
     }
   }
+
+  getProfile() {
+    client.query({
+      query: GET_ONEMAPPER_PROFILE,
+      variables: {
+        userId: this.state.user.id
+      }
+    }).then(({ data }) => {
+      let user = this.state.user;
+      user.bio = data.User.bio;
+      user.followers = data.User._followersMeta.count;
+      this.setState({ user, collections: data.User.collections, stories: data.User.stories });
+    }).catch(err => alert(err))
+  }
+
   onCampaignPress(id) {
     alert(id)
   }
-  _renderStoryItem (item) {
+  onHearted = () => {
+    // alert('Hearted')
+  }
+
+  onCheckIns = () => {
+    // alert('Check-ins')
+  }
+
+  onWishList = () => {
+    // alert('Wish list')
+  }
+
+  onViewAll = () => {
+    this.props.navigator.push({
+      screen: SCREEN.FEED_ALL_COLLECTION,
+      title: I18n.t('COLLECTION_TITLE'),
+      animated: true,
+      passProps: {
+        collections: this.state.collections
+      }
+    })
+  }
+  onStoryItem(id) {
+    // this.props.navigator.push({
+    //   screen: SCREEN.STORY_LIST_PAGE,
+    //   passProps: {
+    //     id
+    //   }
+    // })
+  }
+
+
+  _renderStoryItem(item) {
     return (
       <View>
         <AutoHeightTitledImage uri={item.uri}
           width={getDeviceWidth(343)}
           title={'abc'} vAlign={'center'} hAlign={'left'} titleStyle={styles.storyItemTitle}
-          style={{marginBottom: 10}}
+          style={{ marginBottom: 10 }}
         />
       </View>
     )
   }
 
-  onHearted =() => {
-    alert('Hearted')
-  }
-
-  onCheckIns =() => {
-    alert('Check-ins')
-  }
-
-  onWishList =() => {
-    alert('Wish list')
-  }
-
-  onViewAll =() => {
-    alert('View All')
-  }
   render() {
+    const { user, collections, stories } = this.state;
+    const followed = this.props.follows.map(item => item.id).includes(user.id);
+
     return (
       <ScrollView style={styles.container}>
         {/* user information */}
         <View style={styles.userInformationContainer}>
           <View style={styles.userInformation}>
-            <View style={{flexDirection: 'row'}}>
-              <CircleImage uri={data.user.photoURL} style={styles.userImage} radius={getDeviceWidth(177)}/>
-              <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage}/>
+            <View style={{ flexDirection: 'row' }}>
+              <CircleImage uri={user.uri} style={styles.userImage} radius={getDeviceWidth(177)} />
+              <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage} />
             </View>
             <View style={styles.userInfo}>
               <View>
-                <Text style={styles.userName}>{data.user.name}</Text>
-                <Text style={styles.userId}>{'@'}{data.user.id}</Text>
+                <Text style={styles.userName}>{user.displayName}</Text>
+                <Text style={styles.userId}>{user.name}</Text>
               </View>
               <TouchableOpacity>
                 <View style={styles.FollowingButton}>
-                  <Text style={styles.FollowingText}>{I18n.t('PROFILE_FOLLOWING')}</Text>
+                  <Text style={styles.FollowingText}>{followed ? I18n.t('PROFILE_FOLLOWING') : I18n.t('FEED_FOLLOW')}</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -223,52 +198,54 @@ class ProfilePage extends Component {
           <View style={styles.propertyContainer}>
             <View style={styles.propertyView}>
               <Text style={styles.pText}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWED')}</Text>
-              <Entypo name="user" size={12} color={BLUE_COLOR} />
+              {followed && <Entypo name="user" size={12} color={BLUE_COLOR} />}
             </View>
             <View style={styles.propertyView}>
               <Text style={styles.pText}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWERS')}</Text>
-              <Text style={styles.pText}>{calculateCount(data.user.followers)}</Text>
+              <Text style={styles.pText}>{calculateCount(user.followers)}</Text>
             </View>
             <View style={styles.propertyView}>
               <Text style={styles.pText}>{I18n.t('FEED_FOLLOWER_PROFILE_VISITED')}</Text>
-              <Text style={styles.pText}>{calculateCount(data.user.visited)}</Text>              
+              <Text style={styles.pText}>{calculateCount(100)}</Text>
             </View>
           </View>
         </View>
         <View>
-          <Text style={styles.about}>{data.user.about}</Text>
+          <Text style={styles.about}>{user.bio}</Text>
         </View>
         {/* Campaign list */}
         <View>
-          <Text style={styles.collectionText}>{I18n.t('PROFILE_CAMPAIGN')}</Text>          
+          <Text style={styles.collectionText}>{I18n.t('PROFILE_CAMPAIGN')}</Text>
         </View>
         <View style={styles.collectionContainer}>
-          <CampaignList data={data.campaign} onViewMore={this.onCampaignPress.bind(this)}/>
+          <CampaignList data={data.campaign} onViewMore={this.onCampaignPress.bind(this)} />
         </View>
         {/* Collection list */}
         <View>
           <Text style={styles.collectionText}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
         </View>
         <View style={styles.collectionContainer}>
-          <Collections 
+          <Collections
+            collections={collections}
             onHearted={this.onHearted.bind(this)}
             onCheckIns={this.onCheckIns.bind(this)}
             onWishList={this.onWishList.bind(this)}
             onViewAll={this.onViewAll.bind(this)}
-           />
+          />
         </View>
         {/* Story board */}
-        <View>
+        <View style={{ marginBottom: 15 }}>
           <Text style={styles.StoryText}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
+          <StoryBoard
+            style={styles.StoryContainer}
+            subContainer={styles.StoryList}
+            data={stories}
+            width={343}
+            onPressItem={this.onStoryItem.bind(this)}
+          />
         </View>
-        <StoryBoard style={styles.StoryContainer} subContainer={styles.StoryList} data={data.storyCollecton} width={343} 
-          onPressItem={this.onStoryItem.bind(this)}
-        />
       </ScrollView>
     );
-  }
-  onStoryItem(id) {
-    alert(id)
   }
 }
 
