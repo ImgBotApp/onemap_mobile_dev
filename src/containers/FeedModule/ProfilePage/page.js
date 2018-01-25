@@ -33,7 +33,7 @@ class ProfilePage extends Component {
   };
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       user: { ...props.userInfo },
