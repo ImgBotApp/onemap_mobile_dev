@@ -407,7 +407,7 @@ const getStyles = (inputHeight) => {
       backgroundColor: '#f7f7f7',
       borderRadius: 5,
       fontSize: 16,
-      
+      fontFamily      : 'Comfortaa-Bold',
     },
     placeholderColor: 'grey',
     iconSearch: {
@@ -435,12 +435,13 @@ const getStyles = (inputHeight) => {
       alignItems: 'flex-start',
       backgroundColor: 'transparent',
       width: 60,
-      height: 50
+      height: 50,
+      
     },
     cancelButtonText: {
       fontSize: 14,
       color: '#fff',
-      
+      fontFamily      : 'Comfortaa-Regular',
     }
   };
 }
