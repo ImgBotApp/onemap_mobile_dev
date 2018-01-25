@@ -12,12 +12,12 @@ import Foundation from 'react-native-vector-icons/Foundation'
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import ViewMoreText from 'react-native-view-more-text';
 
 import CircleImage from '@components/CircleImage'
 import LoadingSpinner from '@components/LoadingSpinner'
 import ImageSliderComponent from '@components/ImageSliderComponent'
 import TitleImage from '@components/TitledImage'
+import ViewMoreText from '@components/ViewMoreText';
 import { calculateCount, clone, getDeviceWidth, calculateDuration } from '@global'
 import { uploadImage, uploadMedia } from '@global/cloudinary';
 import { getThumlnailFromVideoURL, getMediatTypeFromURL } from '@global/const';

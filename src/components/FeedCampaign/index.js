@@ -1,9 +1,9 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import ViewMoreText from 'react-native-view-more-text'
 import CardView from 'react-native-cardview'
 import styles from './styles'
+import ViewMoreText from '@components/ViewMoreText'
 import I18n from '@language'
 import DFonts from '@theme/fonts'
 

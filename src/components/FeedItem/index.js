@@ -2,12 +2,12 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import CardView from 'react-native-cardview'
-import ViewMoreText from 'react-native-view-more-text';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CircleImage from '@components/CircleImage'
+import ViewMoreText from '@components/ViewMoreText';
 import styles from './styles'
 import DFonts from '@theme/fonts'
-import { RED_COLOR, LIGHT_GRAY_COLOR } from '../../theme/colors';
+import { RED_COLOR, LIGHT_GRAY_COLOR } from '@theme/colors';
 import { getDeviceWidth, getDeviceHeight, calculateDuration } from '@global'
 import { EMPTY_IMG } from '@global/const';
 import { getThumlnailFromVideoURL, getMediatTypeFromURL } from '@global/const';
