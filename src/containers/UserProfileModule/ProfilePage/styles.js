@@ -119,12 +119,11 @@ const styles = StyleSheet.create({
   },
   StoryContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     paddingTop: getDeviceHeight(88),
-    paddingRight: getDeviceWidth(88)
   },
   subStory: {
-    width: GLOBAL.getDeviceWidth(343)
+    width: GLOBAL.getDeviceWidth(375)
   },
   storyItemTitle: {
     fontFamily: 'Comfortaa-regular',

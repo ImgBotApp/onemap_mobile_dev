@@ -67,7 +67,7 @@ class Profile extends Component {
     return (
       <View>
         <AutoHeightTitledImage uri={item.uri}
-          width={getDeviceWidth(343)}
+          width={getDeviceWidth(375)}
           title={'abc'} vAlign={'center'} hAlign={'left'} titleStyle={styles.storyItemTitle}
           style={{ marginBottom: 10 }}
         />

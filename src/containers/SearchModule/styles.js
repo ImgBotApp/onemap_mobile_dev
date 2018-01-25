@@ -10,15 +10,6 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS == 'ios' ? 20 : 0,
     backgroundColor: 'white',//BACKGROUNDCOLOR,
   },
-  StoryContainer: {
-    marginLeft: getDeviceWidth(50),
-    marginRight: getDeviceWidth(50),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  StoryList: {
-    width: getDeviceWidth(400)
-  },
   SectionStyle: {
     // position:'absolute',
     height:50,

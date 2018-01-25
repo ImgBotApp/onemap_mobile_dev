@@ -106,18 +106,6 @@ class ProfilePage extends Component {
   }
 
 
-  _renderStoryItem(item) {
-    return (
-      <View>
-        <AutoHeightTitledImage uri={item.uri}
-          width={getDeviceWidth(343)}
-          title={'abc'} vAlign={'center'} hAlign={'left'} titleStyle={styles.storyItemTitle}
-          style={{ marginBottom: 10 }}
-        />
-      </View>
-    )
-  }
-
   render() {
     const { user, collections, stories, campaigns } = this.state;
     const followed = this.props.follows.map(item => item.id).includes(user.id);
@@ -188,9 +176,8 @@ class ProfilePage extends Component {
           <Text style={styles.StoryText}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
           <StoryBoard
             style={styles.StoryContainer}
-            subContainer={styles.StoryList}
             data={stories}
-            width={343}
+            width={375}
             onPressItem={this.onStoryItem.bind(this)}
           />
         </View>

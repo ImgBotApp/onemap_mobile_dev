@@ -82,7 +82,7 @@ class StoryListPage extends Component {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.vStories}>
-          <StoryBoard style={styles.StoryContainer} subContainer={styles.StoryList} data={data.stories} width={343}
+          <StoryBoard style={styles.StoryContainer} data={data.stories} width={375}
             onPressItem={this.onStoryItem.bind(this)}
           />
         </View>

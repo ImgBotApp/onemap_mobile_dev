@@ -123,7 +123,7 @@ class Collections extends Component {
         >
           <AutoHeightTitledImage
             uri={item.pictureURL ? item.pictureURL[0] : ""}
-            width={getDeviceWidth(343)}
+            width={getDeviceWidth(375)}
             title={item.address}
             vAlign={'center'}
             radius={8}
