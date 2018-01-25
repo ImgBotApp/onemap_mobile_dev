@@ -274,20 +274,20 @@ class EditProfile extends Component {
           <View style={styles.genderAwesome}>
             <Image style={styles.genderIcon} source={require('@assets/images/icon/gender.png')} />
           </View>
-          <View style={[styles.genderSelection]}>
-            <Dropdown
-              ref="gender"
-              label='Gender'
-              style={styles.gender}
-              itemTextStyle = {styles.genderItem}
-              value={
-                I18n.t(this.state.gender)?I18n.t(this.state.gender):I18n.t("NOT_SPECIFIC")
-              }
-              data={Genderdata}
-              onChangeText={this._onGenderSelect.bind(this)}
-            />
+            <View style={[styles.genderSelection]}>
+              <Dropdown
+                ref="gender"
+                label='Gender'
+                style={styles.gender}
+                itemTextStyle = {styles.genderItem}
+                value={
+                  I18n.t(this.state.gender)?I18n.t(this.state.gender):I18n.t("NOT_SPECIFIC")
+                }
+                data={Genderdata}
+                onChangeText={this._onGenderSelect.bind(this)}
+              />
+            </View>
           </View>
-        </View>
         </View>
         </KeyboardAwareScrollView>
         {
