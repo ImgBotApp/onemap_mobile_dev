@@ -190,6 +190,7 @@ class PlaceProfile extends PureComponent {
       tmp.push(id);
     }
     this.setState({ selectedCollections: tmp });
+    this.forceUpdate();
   }
   addBookmarks() {
     this.props.addCollectionToPlace({
