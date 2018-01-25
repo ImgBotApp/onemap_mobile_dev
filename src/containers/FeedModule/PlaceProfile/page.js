@@ -69,7 +69,7 @@ class PlaceProfile extends PureComponent {
     this.state = {
       currentPlaceID: props.placeID ? props.placeID : props.place.id,
       placeData: {
-        description: props.place.description,
+        description: props.place ? props.place.description : '',
         information: {},
         image: [],
         map: {},
@@ -644,7 +644,7 @@ class PlaceProfile extends PureComponent {
         <TextInput
           style={{ width: '100%', marginTop: 10 }}
           editable={storyEditable}
-          returnKeyType={'done'}
+          multiline={true}
           placeholder={'What is this story about'}
           value={this.state.myStory.story}
           onChangeText={text => this.setState({ myStory: { ...this.state.myStory, story: text } })}
@@ -685,7 +685,7 @@ class PlaceProfile extends PureComponent {
   deleteImageFromStory(index) {
     if (this.state.storyEditable) {
       Alert.alert(
-        'My Story',
+        I18n.t('PLACE_WRITE_STORY'),
         'Do you want to remove this image?',
         [
           {

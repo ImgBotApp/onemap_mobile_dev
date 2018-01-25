@@ -141,7 +141,6 @@ class LoginPage extends Component {
             userId: val.id
           }
         }).then((user) => {
-          // alert(JSON.stringify(user))
           this.setState({loading: false})
           var data = user.data.User
           if ( data.firstName ) {

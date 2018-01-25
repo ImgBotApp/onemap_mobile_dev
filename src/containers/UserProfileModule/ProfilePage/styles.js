@@ -120,7 +120,6 @@ const styles = StyleSheet.create({
   StoryContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: getDeviceHeight(88),
   },
   subStory: {
     width: GLOBAL.getDeviceWidth(375)

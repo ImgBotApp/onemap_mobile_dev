@@ -17,70 +17,6 @@ import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
 import { SMALL_FONT_SIZE } from '@theme/fonts';
 
-const data = {
-  id: 'test',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  facebookUserId: '@testUser',
-  email: 'test@user.com',
-  firstName: 'test',
-  lastName: 'user',
-  displayName: 'test User',
-  bio: 'always with you',
-  gender: 'male',
-  city: 'Baku',
-  country: 'Azerbaijian',
-  photoURL: 'https://placeimg.com/640/480/people',
-  registrationDate: new Date(),
-  stories: [
-    {
-      id: 'a1',
-      title: 'BAKUE',
-      uri: 'https://picsum.photos/200/300'
-    },
-    {
-      id: 'a2',
-      title: 'PARIS',
-      uri: 'https://picsum.photos/250/300'
-    },
-    {
-      id: 'a3',
-      title: 'BERLIN',
-      uri: 'https://picsum.photos/300/300'
-    },
-    {
-      id: 'a4',
-      title: 'MOSCOW',
-      uri: 'https://picsum.photos/350/300'
-    },
-    {
-      id: 'a5',
-      title: 'WARSAOW',
-      uri: 'https://picsum.photos/400/300'
-    },
-    {
-      id: 'a6',
-      title: 'MADRID',
-      uri: 'https://picsum.photos/150/300'
-    },
-    {
-      id: 'a7',
-      title: 'ROMA',
-      uri: 'https://picsum.photos/200/300'
-    },
-    {
-      id: 'a8',
-      title: 'NEW YORK',
-      uri: 'https://picsum.photos/250/300'
-    },
-    {
-      id: 'a9',
-      title: 'TOKYO',
-      uri: 'https://picsum.photos/300/300'
-    },
-  ]
-}
-// create a component
 class ProfileComponent extends Component {
   static navigatorButtons = {
     rightButtons: [
@@ -132,81 +68,81 @@ class ProfileComponent extends Component {
     })
   }
   render() {
-    const { data: { loading, error, allStories }, GetFollowingList, GetFollowersList } = this.props
+    const { data: { loading, error, allStories }, GetFollowingList, GetFollowersList } = this.props;
     if (loading) {
-      return(
+      return (
         <ActivityIndicator />
       )
     }
-    if(!loading && error){
+    if (!loading && error) {
       return <Text>{error}</Text>
     }
     var follower_cnt = 0;
-    if(!GetFollowersList.loading && GetFollowersList.User.followers)
+    if (!GetFollowersList.loading && GetFollowersList.User.followers)
       follower_cnt = GetFollowersList.User.followers.length;
 
     var follow_cnt = 0;
-    if(!GetFollowingList.loading && GetFollowingList.User.followers)
+    if (!GetFollowingList.loading && GetFollowingList.User.followers)
       follower_cnt = GetFollowingList.User.followers.length;
-      return (
-        <ScrollView style={styles.container}>
-          <View style={styles.infoView}>
-            <View style={{flexDirection:'row'}}>
-              <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(171)}/>
-              <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage}/>
-            </View>
-            <View style={styles.infoContainer}>
-              <View style={styles.nameView}>
-                <View>
-                  <Text style={styles.bigName}>{this.state.displayName}</Text>
-                  <Text style={styles.userId}>
-                    {this.state.username}
-                  </Text>
+    return (
+      <ScrollView style={styles.container}>
+        <View style={styles.infoView}>
+          <View style={{ flexDirection: 'row' }}>
+            <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(171)} />
+            <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage} />
+          </View>
+          <View style={styles.infoContainer}>
+            <View style={styles.nameView}>
+              <View>
+                <Text style={styles.bigName}>{this.state.displayName}</Text>
+                <Text style={styles.userId}>
+                  {this.state.username}
+                </Text>
+              </View>
+              <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={this.onEditProfile.bind(this)}>
+                <View style={styles.editProfileContainer}>
+                  <Text style={styles.editProfile}>{I18n.t('SETTING_EDIT_PROFILE')}</Text>
                 </View>
-                <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={this.onEditProfile.bind(this)}>
-                  <View style={styles.editProfileContainer}>
-                    <Text style={styles.editProfile}>{I18n.t('SETTING_EDIT_PROFILE')}</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.spec}>
-                <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWING')}</Text>
-                <Text style={styles.specFont}>{follow_cnt}</Text>
-                <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWER')}</Text>
-                <Text style={styles.specFont}>{follower_cnt}</Text>
-                <Text style={styles.specFont}>{I18n.t('PROFILE_VISITED')}</Text>
-                <Text style={styles.specFont}>636</Text>
-              </View>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.spec}>
+              <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWING')}</Text>
+              <Text style={styles.specFont}>{follow_cnt}</Text>
+              <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWER')}</Text>
+              <Text style={styles.specFont}>{follower_cnt}</Text>
+              <Text style={styles.specFont}>{I18n.t('PROFILE_VISITED')}</Text>
+              <Text style={styles.specFont}>636</Text>
             </View>
           </View>
-          <View style={styles.bioText}>
-            <Text style={styles.bio} numberOfLines={2} ellipsizeMode={'tail'}>{this.state.bio}</Text>
+        </View>
+        <View style={styles.bioText}>
+          <Text style={styles.bio} numberOfLines={2} ellipsizeMode={'tail'}>{this.state.bio}</Text>
+        </View>
+        {/* Collection Part */}
+        <View style={styles.vCollections}>
+          <Text style={styles.collectionTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
+          <View style={styles.collectionItems}>
+            <Collections
+              collections={this.state.collections}
+              onHearted={this.onHearted.bind(this)}
+              onCheckIns={this.onCheckIns.bind(this)}
+              onWishList={this.onWishList.bind(this)}
+              onViewAll={this.onViewAll.bind(this)}
+            />
           </View>
-          {/* Collection Part */}
-          <View style={styles.vCollections}>
-            <Text style={styles.collectionTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
-            <View style={styles.collectionItems}>
-              <Collections
-                collections={this.state.collections}
-                onHearted={this.onHearted.bind(this)}
-                onCheckIns={this.onCheckIns.bind(this)}
-                onWishList={this.onWishList.bind(this)}
-                onViewAll={this.onViewAll.bind(this)}
-                />
-            </View>
-          </View>
-          {/* Stories Part */}
-          <View style={styles.vStories}>
-            <Text style={styles.storyTitle}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
-            {
-              allStories?(
-                <StoryBoard style={styles.StoryContainer} data={allStories} width={375}
-                  onPressItem={this.onStoryItem}
-                />):null
-            }
-          </View>
-        </ScrollView>
-      );
+        </View>
+        {/* Stories Part */}
+        <View style={styles.vStories}>
+          <Text style={styles.storyTitle}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
+          {
+            allStories ? (
+              <StoryBoard style={styles.StoryContainer} data={allStories} width={375}
+                onPressItem={this.onStoryItem}
+              />) : null
+          }
+        </View>
+      </ScrollView>
+    );
 
   }
   onHearted = () => {
@@ -275,11 +211,11 @@ class ProfileComponent extends Component {
       animated: true,
     })
   }
-  onStoryItem = id => {
+  onStoryItem = place => {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       title: 'My Stories',
-      passProps: { placeID: id },
+      passProps: { place },
       navigatorbuttons: {
         rightButtons: [
           {
@@ -296,8 +232,7 @@ class ProfileComponent extends Component {
           }
         ]
       },
-    })
-    
+    });
   }
   _openDrawerMenu() {
     $this.props.navigation.navigate('DrawerOpen')

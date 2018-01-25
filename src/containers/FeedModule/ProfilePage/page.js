@@ -96,13 +96,12 @@ class ProfilePage extends Component {
       }
     })
   }
-  onStoryItem(id) {
-    // this.props.navigator.push({
-    //   screen: SCREEN.STORY_LIST_PAGE,
-    //   passProps: {
-    //     id
-    //   }
-    // })
+  onStoryItem(place) {
+    this.props.navigator.push({
+      screen: SCREEN.PLACE_PROFILE_PAGE,
+      title: 'OneMapper Stories',
+      passProps: { place },
+    });
   }
 
 
