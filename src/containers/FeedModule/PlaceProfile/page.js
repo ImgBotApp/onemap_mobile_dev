@@ -69,6 +69,7 @@ class PlaceProfile extends PureComponent {
     this.state = {
       currentPlaceID: props.placeID ? props.placeID : props.place.id,
       placeData: {
+        description: props.place.description,
         information: {},
         image: [],
         map: {},
@@ -328,9 +329,7 @@ class PlaceProfile extends PureComponent {
           renderViewMore={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read more</Text>)}
           renderViewLess={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read less</Text>)}
           textStyle={styles.descriptionText}>
-          <Text style={DFonts.DFontFamily}>
-            {this.state.placeData.description}
-          </Text>
+          {this.state.placeData.description}
         </ViewMoreText>
       </View>
     )

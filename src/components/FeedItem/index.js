@@ -88,9 +88,7 @@ class FeedItem extends Component {
             renderViewMore={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read more</Text>)}
             renderViewLess={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read less</Text>)}
             textStyle={styles.description}>
-            <Text style={DFonts.DFontFamily}>
-              {this.props.data.description}
-            </Text>
+            {this.props.data.description}
           </ViewMoreText>
         </View>
       </CardView>

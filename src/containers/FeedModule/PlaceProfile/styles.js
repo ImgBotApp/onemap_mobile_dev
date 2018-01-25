@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     color: LIGHT_GRAY_COLOR,
-    fontSize: SMALL_FONT_SIZE
+    fontSize: SMALL_FONT_SIZE,
+    fontFamily: 'Comfortaa-regular'
   },
   additionalText: {
     color: BLUE_COLOR,

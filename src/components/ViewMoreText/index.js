@@ -21,6 +21,17 @@ class ViewMoreText extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.children !== this.props.children) {
+      this.resetData();
+
+      this.setState({
+        numberOfLines: null,
+        opacity: 0,
+      });
+    }
+  }
+
   onLayout = (event) => {
     const {
       height,
@@ -148,8 +159,8 @@ ViewMoreText.propTypes = {
 };
 
 ViewMoreText.defaultProps = {
-  afterCollapse: () => {},
-  afterExpand: () => {},
+  afterCollapse: () => { },
+  afterExpand: () => { },
   textStyle: {},
 };
 
