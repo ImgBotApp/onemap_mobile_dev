@@ -20,59 +20,6 @@ import DFonts from '@theme/fonts'
 import { client } from '@root/main'
 import { GET_ONEMAPPER_PROFILE } from '@graphql/userprofile'
 
-const data = {
-  campaign: [
-    {
-      id: 'a1',
-      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-      name: 'Fun Campaign',
-      description: 'this is campaign description, Fun places and stories ... let\'s connect with this ',
-      points: 234,
-      badges: [
-        {
-          id: 'b1',
-          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-          name: 'fun'
-        },
-        {
-          id: 'b1',
-          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-          name: 'fun'
-        },
-        {
-          id: 'b1',
-          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-          name: 'fun'
-        },
-        {
-          id: 'b1',
-          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-          name: 'fun'
-        }
-      ]
-    },
-    {
-      id: 'a2',
-      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-      name: 'Fun Campaign',
-      description: 'this is campaign description, Fun places and stories ... let\'s connect with this ',
-      points: 123,
-      badges: [
-        {
-          id: 'b1',
-          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-          name: 'fun'
-        },
-        {
-          id: 'b1',
-          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-          name: 'fun'
-        }
-      ]
-    }
-  ],
-}
-
 class ProfilePage extends Component {
   static navigatorButtons = {
     leftButtons: [
@@ -91,7 +38,8 @@ class ProfilePage extends Component {
     this.state = {
       user: { ...props.userInfo },
       collections: [],
-      stories: []
+      stories: [],
+      campaigns: []
     }
 
     this.props.navigator.setOnNavigatorEvent(this.onNavigateEvent.bind(this))
@@ -171,7 +119,7 @@ class ProfilePage extends Component {
   }
 
   render() {
-    const { user, collections, stories } = this.state;
+    const { user, collections, stories, campaigns } = this.state;
     const followed = this.props.follows.map(item => item.id).includes(user.id);
 
     return (
@@ -214,12 +162,14 @@ class ProfilePage extends Component {
           <Text style={styles.about}>{user.bio}</Text>
         </View>
         {/* Campaign list */}
-        <View>
-          <Text style={styles.collectionText}>{I18n.t('PROFILE_CAMPAIGN')}</Text>
-        </View>
-        <View style={styles.collectionContainer}>
-          <CampaignList data={data.campaign} onViewMore={this.onCampaignPress.bind(this)} />
-        </View>
+        {campaigns.length > 0 &&
+          <View>
+            <Text style={styles.collectionText}>{I18n.t('PROFILE_CAMPAIGN')}</Text>
+          </View>}
+        {campaigns.length > 0 &&
+          <View style={styles.collectionContainer}>
+            <CampaignList data={campaigns} onViewMore={this.onCampaignPress.bind(this)} />
+          </View>}
         {/* Collection list */}
         <View>
           <Text style={styles.collectionText}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
