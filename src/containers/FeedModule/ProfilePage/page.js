@@ -105,6 +105,16 @@ class ProfilePage extends Component {
       }
     })
   }
+  onViewStories = () => {
+    this.props.navigator.push({
+      screen: SCREEN.COLLECTIONS_PAGE,
+      title: I18n.t('DRAWER_STORIES'),
+      animated: true,
+      passProps: {
+        places: this.state.stories.map(item => item.place)
+      }
+    })
+  }
 
   onStoryItem(place) {
     this.props.navigator.push({
@@ -176,6 +186,7 @@ class ProfilePage extends Component {
             collections={collections}
             onViewItem={this.onViewCollectionItem}
             onViewAll={this.onViewCollectionsAll}
+            onViewStories={this.onViewStories}
           />
         </View>
         {/* Story board */}

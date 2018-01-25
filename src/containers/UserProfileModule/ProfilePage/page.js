@@ -22,7 +22,7 @@ class ProfileComponent extends Component {
   static navigatorButtons = {
     rightButtons: [
       {
-        title:'',
+        title: '',
         id: 'Setting',
         disableIconTint: true
       }
@@ -136,6 +136,7 @@ class ProfileComponent extends Component {
               collections={this.state.collections}
               onViewItem={this.onViewCollectionItem}
               onViewAll={this.onViewCollectionsAll}
+              onViewStories={this.onViewStories}
             />
           </View>
         </View>
@@ -168,6 +169,16 @@ class ProfileComponent extends Component {
       screen: SCREEN.FEED_ALL_COLLECTION,
       title: I18n.t('COLLECTION_TITLE'),
       animated: true,
+    })
+  }
+  onViewStories = () => {
+    this.props.navigator.push({
+      screen: SCREEN.COLLECTIONS_PAGE,
+      title: I18n.t('DRAWER_STORIES'),
+      animated: true,
+      passProps: {
+        places: this.props.data.allStories.map(item => item.place)
+      }
     })
   }
   onStoryItem = place => {

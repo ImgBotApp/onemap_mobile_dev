@@ -102,7 +102,11 @@ export const GET_PLACE_PROFILE = gql`
         pictureURL
         place {
           id
+          address
           description
+          locationLat
+          locationLong
+          pictureURL
         }
         updatedAt
       }

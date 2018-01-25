@@ -49,14 +49,14 @@ class Collections extends Component {
           uri={collections.default > 2 ? collections.default.pictureURL : null}
           radius={8}
           title={'All Stories'}
-          onPress={() => false && collections.default && this.props.onViewItem(collections.default)}
+          onPress={this.props.onViewStories}
         />
         <CollectionItem style={styles.itemContainer}
           insideStyle={styles.itemContainer}
           uri={''}
           radius={8}
           title={'+\nView all\nCollections'}
-          onPress={() => this.props.onViewAll()}
+          onPress={this.props.onViewAll}
         />
       </View>
     );

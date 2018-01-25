@@ -54,14 +54,18 @@ class Collections extends Component {
     })
     this.state = {
       page: 'Grid View',
-      places: [],
-      loading: true
+      places: props.places ? props.places : [],
+      loading: false
     }
-    this.props.navigator.setTitle({ title: props.collection ? props.collection.name : "Collection" });
+    if (props.collection) {
+      this.props.navigator.setTitle({ title: props.collection.name });
+    }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
   componentWillMount() {
-    this.getCollectionPlaces();
+    if (!this.state.places.length) {
+      this.getCollectionPlaces();
+    }
   }
   onNavigatorEvent(event) {
     if (event.type == 'NavBarButtonPress') {
@@ -72,6 +76,8 @@ class Collections extends Component {
   }
 
   getCollectionPlaces() {
+    if (!this.props.collections) return;
+    this.setState({ loading: true });
     client.query({
       query: GET_COLLECTION_WITH_PLACES,
       variables: {
@@ -133,7 +139,7 @@ class Collections extends Component {
           onLongPress={() => this.onRemovePlace(data)}
         >
           <AutoHeightTitledImage
-            uri={item.pictureURL ? item.pictureURL[0] : ""}
+            uri={item.pictureURL && item.pictureURL[0] ? item.pictureURL[0] : ""}
             width={getDeviceWidth(375)}
             title={item.address}
             vAlign={'center'}
