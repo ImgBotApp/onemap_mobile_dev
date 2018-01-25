@@ -20,9 +20,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   user: {
-    width: getDeviceWidth(650),
     flexDirection: 'row',
-    // justifyContent: 'space-between'
+    width: '80%'
   },
   userDescription: {
     marginLeft: getDeviceWidth(47)

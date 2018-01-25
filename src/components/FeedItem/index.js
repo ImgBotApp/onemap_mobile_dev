@@ -10,7 +10,7 @@ import DFonts from '@theme/fonts'
 import { RED_COLOR, LIGHT_GRAY_COLOR } from '../../theme/colors';
 import { getDeviceWidth, getDeviceHeight, calculateDuration } from '@global'
 import { EMPTY_IMG } from '@global/const';
-import { getThumlnailFromVideoURL,getMediatTypeFromURL } from '@global/const';
+import { getThumlnailFromVideoURL, getMediatTypeFromURL } from '@global/const';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // create a component
@@ -38,9 +38,9 @@ class FeedItem extends Component {
         <View style={styles.userInfo}>
           <TouchableOpacity onPress={this._onUserInformation.bind(this)}>
             <View style={styles.user}>
-              <CircleImage style={styles.profileImage} uri={this.props.data.user.uri?this.props.data.user.uri:EMPTY_IMG} radius={getDeviceWidth(70)} />
+              <CircleImage style={styles.profileImage} uri={this.props.data.user.uri ? this.props.data.user.uri : EMPTY_IMG} radius={getDeviceWidth(70)} />
               <View style={styles.userDescription}>
-                <Text style={[styles.name, DFonts.DFontFamily]}>{this.props.data.user.name}</Text>
+                <Text numberOfLines={1} style={[styles.name, DFonts.DFontFamily]}>{this.props.data.user.displayName}</Text>
                 <Text style={[styles.update, DFonts.DFontFamily]}>{calculateDuration(this.props.data.user.updated)}</Text>
               </View>
             </View>
@@ -65,10 +65,10 @@ class FeedItem extends Component {
                 <TouchableOpacity onPress={this._onPlaceImagePress.bind(this)}>
                   <Image source={{ uri: getThumlnailFromVideoURL(item.uri) }} style={styles.feedItemImage} />
                   {
-                    getMediatTypeFromURL(item.uri)?
-                    (
-                      <Icon name="play-circle-outline" style={styles.playButton}/>
-                    ):null
+                    getMediatTypeFromURL(item.uri) ?
+                      (
+                        <Icon name="play-circle-outline" style={styles.playButton} />
+                      ) : null
                   }
                 </TouchableOpacity>
               </CardView>
