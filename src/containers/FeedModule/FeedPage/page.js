@@ -58,10 +58,10 @@ class FeedPage extends Component {
         type: 'users',
         data: users.data.allUsers.map((user) => {
           return {
-            id: user.username,
-            name: user.displayName,
+            id: user.id,
+            name: user.username,
+            displayName: user.displayName,
             uri: user.photoURL,
-            identify: user.id
           }
         })
       };
@@ -255,23 +255,17 @@ class FeedPage extends Component {
           style={styles.users}
           data={data}
           horizontal
-          renderItem={({ item }) => <View style={{ marginRight: 15 }}>
-            <SuggestUser uri={item.uri} name={item.name} id={item.id}
-              onPress={this.onSuggestUser.bind(this)}
-            /></View>}
+          renderItem={({ item }) =>
+            <View style={{ marginRight: 15 }}>
+              <SuggestUser
+                data={item}
+                onPress={() => this.onPressUserProfile(item)}
+              />
+            </View>
+          }
         />
       </View>
     )
-  }
-  onSuggestUser(id) {
-    this.props.navigator.push({
-      screen: SCREEN.USERS_PROFILE_PAGE,
-      title: I18n.t('PROFILE_PAGE_TITLE'),
-      animated: true,
-      passProps: {
-        placeID: id,
-      }
-    })
   }
   _renderFeedItem(data, index) {
     return (
@@ -313,8 +307,7 @@ class FeedPage extends Component {
     )
   }
   _renderItem = ({ item, index }) => {
-    if(item.type)
-    {
+    if (item.type) {
       switch (item.type) {
         case 'users':
           return this._renderSuggestedList(item.data)

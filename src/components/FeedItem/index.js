@@ -2,15 +2,15 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import CardView from 'react-native-cardview'
-import ViewMoreText from 'react-native-view-more-text';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CircleImage from '@components/CircleImage'
+import ViewMoreText from '@components/ViewMoreText';
 import styles from './styles'
 import DFonts from '@theme/fonts'
-import { RED_COLOR, LIGHT_GRAY_COLOR } from '../../theme/colors';
+import { RED_COLOR, LIGHT_GRAY_COLOR } from '@theme/colors';
 import { getDeviceWidth, getDeviceHeight, calculateDuration } from '@global'
 import { EMPTY_IMG } from '@global/const';
-import { getThumlnailFromVideoURL,getMediatTypeFromURL } from '@global/const';
+import { getThumlnailFromVideoURL, getMediatTypeFromURL } from '@global/const';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // create a component
@@ -38,9 +38,9 @@ class FeedItem extends Component {
         <View style={styles.userInfo}>
           <TouchableOpacity onPress={this._onUserInformation.bind(this)}>
             <View style={styles.user}>
-              <CircleImage style={styles.profileImage} uri={this.props.data.user.uri?this.props.data.user.uri:EMPTY_IMG} radius={getDeviceWidth(70)} />
+              <CircleImage style={styles.profileImage} uri={this.props.data.user.uri ? this.props.data.user.uri : EMPTY_IMG} radius={getDeviceWidth(70)} />
               <View style={styles.userDescription}>
-                <Text style={[styles.name, DFonts.DFontFamily]}>{this.props.data.user.name}</Text>
+                <Text numberOfLines={1} style={[styles.name, DFonts.DFontFamily]}>{this.props.data.user.displayName}</Text>
                 <Text style={[styles.update, DFonts.DFontFamily]}>{calculateDuration(this.props.data.user.updated)}</Text>
               </View>
             </View>
@@ -52,7 +52,7 @@ class FeedItem extends Component {
         </View>
         {/* Feed Title */}
         <View>
-          <Text style={[styles.feedTitle, DFonts.DFontFamily]}>{this.props.data.feedTitle}</Text>
+          <Text style={styles.feedTitle}>{this.props.data.feedTitle}</Text>
         </View>
         {/* Place Image */}
         <View style={styles.feedImages}>
@@ -65,10 +65,10 @@ class FeedItem extends Component {
                 <TouchableOpacity onPress={this._onPlaceImagePress.bind(this)}>
                   <Image source={{ uri: getThumlnailFromVideoURL(item.uri) }} style={styles.feedItemImage} />
                   {
-                    getMediatTypeFromURL(item.uri)?
-                    (
-                      <Icon name="play-circle-outline" style={styles.playButton}/>
-                    ):null
+                    getMediatTypeFromURL(item.uri) ?
+                      (
+                        <Icon name="play-circle-outline" style={styles.playButton} />
+                      ) : null
                   }
                 </TouchableOpacity>
               </CardView>
@@ -77,7 +77,7 @@ class FeedItem extends Component {
         </View>
         {/* Place Title */}
         <View>
-          <Text style={[styles.placeTitle, DFonts.DFontFamily]}>{this.props.data.place}</Text>
+          <Text style={styles.placeTitle}>{this.props.data.place}</Text>
         </View>
         {/* Border Bar */}
         <View style={styles.separate}></View>
@@ -88,9 +88,7 @@ class FeedItem extends Component {
             renderViewMore={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read more</Text>)}
             renderViewLess={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read less</Text>)}
             textStyle={styles.description}>
-            <Text style={DFonts.DFontFamily}>
-              {this.props.data.description}
-            </Text>
+            {this.props.data.description}
           </ViewMoreText>
         </View>
       </CardView>

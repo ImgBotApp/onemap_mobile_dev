@@ -37,7 +37,7 @@ class AllCollections extends Component {
   };
   constructor(props) {
     super(props)
-    
+
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
   onNavigatorEvent(event) {
@@ -79,9 +79,9 @@ class AllCollections extends Component {
         id
       }
     }).then(collection => {
-      let collections = this.props.collections.filter(item => item.id !== id);
+      let collections = this.props.myCollections.filter(item => item.id !== id);
       this.props.saveCollections(collections);
-    })
+    }).catch(err => alert(err));
   }
   render() {
     const collections = this.props.collections ? this.props.collections : this.props.myCollections;

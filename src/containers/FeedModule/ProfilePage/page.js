@@ -20,59 +20,6 @@ import DFonts from '@theme/fonts'
 import { client } from '@root/main'
 import { GET_ONEMAPPER_PROFILE } from '@graphql/userprofile'
 
-const data = {
-  campaign: [
-    {
-      id: 'a1',
-      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-      name: 'Fun Campaign',
-      description: 'this is campaign description, Fun places and stories ... let\'s connect with this ',
-      points: 234,
-      badges: [
-        {
-          id: 'b1',
-          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-          name: 'fun'
-        },
-        {
-          id: 'b1',
-          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-          name: 'fun'
-        },
-        {
-          id: 'b1',
-          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-          name: 'fun'
-        },
-        {
-          id: 'b1',
-          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-          name: 'fun'
-        }
-      ]
-    },
-    {
-      id: 'a2',
-      uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-      name: 'Fun Campaign',
-      description: 'this is campaign description, Fun places and stories ... let\'s connect with this ',
-      points: 123,
-      badges: [
-        {
-          id: 'b1',
-          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-          name: 'fun'
-        },
-        {
-          id: 'b1',
-          uri: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-          name: 'fun'
-        }
-      ]
-    }
-  ],
-}
-
 class ProfilePage extends Component {
   static navigatorButtons = {
     leftButtons: [
@@ -86,12 +33,13 @@ class ProfilePage extends Component {
   };
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       user: { ...props.userInfo },
       collections: [],
-      stories: []
+      stories: [],
+      campaigns: []
     }
 
     this.props.navigator.setOnNavigatorEvent(this.onNavigateEvent.bind(this))
@@ -126,19 +74,18 @@ class ProfilePage extends Component {
   onCampaignPress(id) {
     alert(id)
   }
-  onHearted = () => {
-    // alert('Hearted')
+  
+  onViewCollectionItem = (item) => {
+    this.props.navigator.push({
+      screen: SCREEN.COLLECTIONS_PAGE,
+      title: I18n.t('DRAWER_STORIES'),
+      animated: true,
+      passProps: {
+        collection: item
+      }
+    })
   }
-
-  onCheckIns = () => {
-    // alert('Check-ins')
-  }
-
-  onWishList = () => {
-    // alert('Wish list')
-  }
-
-  onViewAll = () => {
+  onViewCollectionsAll = () => {
     this.props.navigator.push({
       screen: SCREEN.FEED_ALL_COLLECTION,
       title: I18n.t('COLLECTION_TITLE'),
@@ -148,30 +95,18 @@ class ProfilePage extends Component {
       }
     })
   }
-  onStoryItem(id) {
-    // this.props.navigator.push({
-    //   screen: SCREEN.STORY_LIST_PAGE,
-    //   passProps: {
-    //     id
-    //   }
-    // })
+
+  onStoryItem(place) {
+    this.props.navigator.push({
+      screen: SCREEN.PLACE_PROFILE_PAGE,
+      title: 'OneMapper Stories',
+      passProps: { place },
+    });
   }
 
-
-  _renderStoryItem(item) {
-    return (
-      <View>
-        <AutoHeightTitledImage uri={item.uri}
-          width={getDeviceWidth(343)}
-          title={'abc'} vAlign={'center'} hAlign={'left'} titleStyle={styles.storyItemTitle}
-          style={{ marginBottom: 10 }}
-        />
-      </View>
-    )
-  }
 
   render() {
-    const { user, collections, stories } = this.state;
+    const { user, collections, stories, campaigns } = this.state;
     const followed = this.props.follows.map(item => item.id).includes(user.id);
 
     return (
@@ -214,12 +149,14 @@ class ProfilePage extends Component {
           <Text style={styles.about}>{user.bio}</Text>
         </View>
         {/* Campaign list */}
-        <View>
-          <Text style={styles.collectionText}>{I18n.t('PROFILE_CAMPAIGN')}</Text>
-        </View>
-        <View style={styles.collectionContainer}>
-          <CampaignList data={data.campaign} onViewMore={this.onCampaignPress.bind(this)} />
-        </View>
+        {campaigns.length > 0 &&
+          <View>
+            <Text style={styles.collectionText}>{I18n.t('PROFILE_CAMPAIGN')}</Text>
+          </View>}
+        {campaigns.length > 0 &&
+          <View style={styles.collectionContainer}>
+            <CampaignList data={campaigns} onViewMore={this.onCampaignPress.bind(this)} />
+          </View>}
         {/* Collection list */}
         <View>
           <Text style={styles.collectionText}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
@@ -227,10 +164,8 @@ class ProfilePage extends Component {
         <View style={styles.collectionContainer}>
           <Collections
             collections={collections}
-            onHearted={this.onHearted.bind(this)}
-            onCheckIns={this.onCheckIns.bind(this)}
-            onWishList={this.onWishList.bind(this)}
-            onViewAll={this.onViewAll.bind(this)}
+            onViewItem={this.onViewCollectionItem}
+            onViewAll={this.onViewCollectionsAll}
           />
         </View>
         {/* Story board */}
@@ -238,9 +173,8 @@ class ProfilePage extends Component {
           <Text style={styles.StoryText}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
           <StoryBoard
             style={styles.StoryContainer}
-            subContainer={styles.StoryList}
             data={stories}
-            width={343}
+            width={375}
             onPressItem={this.onStoryItem.bind(this)}
           />
         </View>

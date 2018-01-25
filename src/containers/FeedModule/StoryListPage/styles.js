@@ -18,9 +18,8 @@ const styles = StyleSheet.create({
   },
   StoryContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     paddingTop: getDeviceHeight(88),
-    paddingRight: getDeviceWidth(88)
   },
 });
 

@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: SMALL_FONT_SIZE,
-    color: LIGHT_GRAY_COLOR
+    color: LIGHT_GRAY_COLOR,
+    fontFamily: 'Comfortaa-regular'
   },
   descriptionText: {
     marginTop: getDeviceHeight(50)

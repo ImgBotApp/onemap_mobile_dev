@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   subStory: {
-    width: GLOBAL.getDeviceWidth(343)
+    width: GLOBAL.getDeviceWidth(375)
   },
   storyItemTitle: {
     fontFamily: 'Comfortaa-regular',

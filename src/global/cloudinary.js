@@ -64,7 +64,7 @@ export function uploadMedia(uri, tag) {
 
     return fetch(url, config)
     .then(res => res.json())
-    .then(res => {alert(JSON.stringify(res))
+    .then(res => {
         console.log(res)
         return res.url
     })
