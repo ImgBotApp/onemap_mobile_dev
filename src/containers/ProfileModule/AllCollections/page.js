@@ -98,9 +98,9 @@ class AllCollections extends Component {
         id
       }
     }).then(collection => {
-      let collections = this.props.collections.filter(item => item.id !== id);
+      let collections = this.props.myCollections.filter(item => item.id !== id);
       this.props.saveCollections(collections);
-    })
+    }).catch(err => alert(err));
   }
   render() {
     const collections = this.props.collections ? this.props.collections : this.props.myCollections;

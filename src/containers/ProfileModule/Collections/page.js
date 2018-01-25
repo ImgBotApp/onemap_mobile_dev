@@ -122,7 +122,7 @@ class Collections extends Component {
     }).then(collections => {
       this.setState({ places });
       this.props.placeUpdated(true);
-    })
+    }).catch(err => alert(err));
   }
   _renderStoryItem(data, mode) {
     const { item, index } = data;
@@ -134,7 +134,7 @@ class Collections extends Component {
         >
           <AutoHeightTitledImage
             uri={item.pictureURL ? item.pictureURL[0] : ""}
-            width={getDeviceWidth(343)}
+            width={getDeviceWidth(375)}
             title={item.address}
             vAlign={'center'}
             radius={8}

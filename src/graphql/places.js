@@ -100,6 +100,10 @@ export const GET_PLACE_PROFILE = gql`
           photoURL
         }
         pictureURL
+        place {
+          id
+          description
+        }
         updatedAt
       }
       _userCheckedInMeta {

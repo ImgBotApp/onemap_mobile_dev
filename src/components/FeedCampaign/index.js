@@ -1,9 +1,9 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import ViewMoreText from 'react-native-view-more-text'
 import CardView from 'react-native-cardview'
 import styles from './styles'
+import ViewMoreText from '@components/ViewMoreText'
 import I18n from '@language'
 import DFonts from '@theme/fonts'
 
@@ -18,9 +18,9 @@ class FeedCampaign extends Component {
   render() {
     return (
       <CardView style={styles.container} cardElevation={2} cardMaxElevation={2} cornerRadius={5}>
-        <View style={{flexDirection: 'row', width: '100%', justifyContent: 'space-between'}}>
-          <View style={{flexDirection: 'row'}}>
-            <Image source={{uri: this.props.data.mark}} style={styles.markImage} />
+        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+          <View style={{ flexDirection: 'row' }}>
+            <Image source={{ uri: this.props.data.mark }} style={styles.markImage} />
             <View style={styles.campaignInfo}>
               <Text style={styles.title}>{this.props.data.title}</Text>
               <Text style={styles.campaign}>{I18n.t('FEED_CAMPAIGN')}</Text>
@@ -38,12 +38,10 @@ class FeedCampaign extends Component {
             renderViewMore={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read more</Text>)}
             renderViewLess={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read less</Text>)}
             textStyle={styles.description}>
-            <Text style={DFonts.DFontFamily}>
-              {this.props.data.description}
-            </Text>
+            {this.props.data.description}
           </ViewMoreText>
         </View>
-        <Image source={{uri: this.props.data.image}} style={styles.image} />
+        <Image source={{ uri: this.props.data.image }} style={styles.image} />
       </CardView>
     );
   }

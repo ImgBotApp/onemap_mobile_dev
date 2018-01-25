@@ -90,13 +90,8 @@ const styles = StyleSheet.create({
   StoryContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingLeft: getDeviceWidth(88),
     paddingTop: getDeviceHeight(88),
-    paddingRight: getDeviceWidth(88)
   },
-  StoryList: {
-    width: getDeviceWidth(336),
-  }
 });
 
 export default styles

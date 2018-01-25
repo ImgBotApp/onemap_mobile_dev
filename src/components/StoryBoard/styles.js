@@ -4,11 +4,13 @@ import { StyleSheet } from 'react-native'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     backgroundColor: 'transparent',
   },
   subContainer: {
-    backgroundColor: 'transparent'
+    flex: 1,
+    backgroundColor: 'transparent',
+    alignItems: 'center'
   }
 });
 

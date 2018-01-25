@@ -12,12 +12,12 @@ import Foundation from 'react-native-vector-icons/Foundation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import ViewMoreText from 'react-native-view-more-text';
 
 import CircleImage from '@components/CircleImage'
 import LoadingSpinner from '@components/LoadingSpinner'
 import ImageSliderComponent from '@components/ImageSliderComponent'
 import TitleImage from '@components/TitledImage'
+import ViewMoreText from '@components/ViewMoreText';
 import { calculateCount, clone, getDeviceWidth, calculateDuration } from '@global'
 import { uploadImage, uploadMedia } from '@global/cloudinary';
 import { getThumlnailFromVideoURL, getMediatTypeFromURL } from '@global/const';
@@ -88,6 +88,7 @@ class PlaceProfile extends PureComponent {
     this.state = {
       currentPlaceID: props.placeID ? props.placeID : props.place.id,
       placeData: {
+        description: props.place ? props.place.description : '',
         information: {},
         image: [],
         map: {},
@@ -208,6 +209,7 @@ class PlaceProfile extends PureComponent {
       tmp.push(id);
     }
     this.setState({ selectedCollections: tmp });
+    this.forceUpdate();
   }
   addBookmarks() {
     this.props.addCollectionToPlace({
@@ -329,7 +331,7 @@ class PlaceProfile extends PureComponent {
       <View style={styles.imageContainer}>
         <FlatList
           keyExtractor={(item, index) => index}
-          extraData={this.state}
+          extraData={this.state.placeData}
           style={styles.imageFlatList}
           horizontal
           data={this.state.placeData.image}
@@ -347,9 +349,7 @@ class PlaceProfile extends PureComponent {
           renderViewMore={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read more</Text>)}
           renderViewLess={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read less</Text>)}
           textStyle={styles.descriptionText}>
-          <Text style={DFonts.DFontFamily}>
-            {this.state.placeData.description}
-          </Text>
+          {this.state.placeData.description}
         </ViewMoreText>
       </View>
     )
@@ -494,13 +494,23 @@ class PlaceProfile extends PureComponent {
         fontSize: 14,
         marginVertical: Platform.OS == 'ios' ? 10 : -2,
       },
-      editable: keywordEditable
+      editable: keywordEditable,
+      onSubmitEditing: this.onSubmitEditing
     };
     return (
       <View style={styles.keyWords}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text style={styles.keywordTitle}>{I18n.t('PLACE_KEYWORDS')}</Text>
-          <TouchableOpacity onPress={() => this.setState({ keywordEditable: !keywordEditable, keywordText: '' })}>
+          <TouchableOpacity onPress={() => {
+            if (!keywordEditable) {
+              setTimeout(() => {
+                this.refs.inputKeyword.focus();
+              });
+            } else {
+              this.state.keywordText = '';
+            }
+            this.setState({ keywordEditable: !keywordEditable });
+          }}>
             {!keywordEditable ?
               <MaterialCommunityIcons
                 name='pencil'
@@ -519,6 +529,7 @@ class PlaceProfile extends PureComponent {
         </View>
         <View style={styles.keywordContainer}>
           <TagInput
+            ref={'inputKeyword'}
             value={this.state.placeData.keywords.map(item => item.name)}
             onChange={this.onChangeTags}
             labelExtractor={(tag) => tag}
@@ -544,7 +555,12 @@ class PlaceProfile extends PureComponent {
         this.saveKeyword(this.state.keywordText);
       }
     } else {
-      this.setState({ keywordText: text });
+      this.setState({ keywordText: this.state.keywordEditable ? text : '' });
+    }
+  }
+  onSubmitEditing = () => {
+    if (this.state.keywordText && !this.state.placeData.keywords.includes(this.state.keywordText)) {
+      this.saveKeyword(this.state.keywordText);
     }
   }
   onChangeTags = (tags) => {
@@ -594,6 +610,10 @@ class PlaceProfile extends PureComponent {
           <TouchableOpacity onPress={() => {
             if (storyEditable) {
               this.saveStory();
+            } else {
+              setTimeout(() => {
+                this.refs.inputStoryTitle.focus();
+              });
             }
             this.setState({ storyEditable: !storyEditable });
           }}>
@@ -632,15 +652,18 @@ class PlaceProfile extends PureComponent {
           }
         </View>
         <TextInput
-          style={{ width: '100%', marginTop: 30 }}
+          ref={'inputStoryTitle'}
+          style={[styles.commentTitle, { width: '100%', marginTop: 10 }]}
           editable={storyEditable}
+          returnKeyType={'done'}
           placeholder={I18n.t('PLACE_TITLE_BOLD')}
           value={this.state.myStory.title}
           onChangeText={text => this.setState({ myStory: { ...this.state.myStory, title: text } })}
         />
         <TextInput
-          style={{ width: '100%', marginTop: 10 }}
+          style={[styles.commentDescription, { width: '100%' }]}
           editable={storyEditable}
+          multiline={true}
           placeholder={'What is this story about'}
           value={this.state.myStory.story}
           onChangeText={text => this.setState({ myStory: { ...this.state.myStory, story: text } })}
@@ -681,7 +704,7 @@ class PlaceProfile extends PureComponent {
   deleteImageFromStory(index) {
     if (this.state.storyEditable) {
       Alert.alert(
-        'My Story',
+        I18n.t('PLACE_WRITE_STORY'),
         'Do you want to remove this image?',
         [
           {
@@ -761,7 +784,11 @@ class PlaceProfile extends PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <KeyboardAwareScrollView keyboardShouldPersistTaps={'handled'} style={styles.container}>
+        <KeyboardAwareScrollView
+          extraScrollHeight={30}
+          keyboardShouldPersistTaps={'handled'}
+          style={styles.container}
+        >
           {this.renderTitle()}
           {this.renderPlaceImages()}
           {this.renderDescription()}

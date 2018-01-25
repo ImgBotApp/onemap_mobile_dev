@@ -1,7 +1,7 @@
 // //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import CardView  from 'react-native-cardview'
+import CardView from 'react-native-cardview'
 import CircleImage from '@components/CircleImage'
 
 import styles from './style'
@@ -10,24 +10,29 @@ import fontStyles from '@theme/fonts'
 import { getDeviceWidth, getDeviceHeight } from '@global'
 // create a component
 class SuggestUser extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
   _onFollow() {
-    this.props.onPress(this.props.id)
+    // this.props.onPress(this.props.id)
   }
   render() {
+    const { uri, name, displayName } = this.props.data;
     return (
       <CardView style={styles.container} cardElevation={5} cardMaxElevation={2} cornerRadius={10}>
-        <CircleImage style={styles.profileImage} uri={this.props.uri} radius={getDeviceWidth(152)}/>
+        <TouchableOpacity onPress={this.props.onPress}>
+          <CircleImage style={styles.profileImage} uri={uri} radius={getDeviceWidth(152)} />
+        </TouchableOpacity>
         <View style={styles.info}>
-          <View style={{alignItems: 'center'}}>
-            <Text numberOfLines={1} ellipsizeMode ={'tail'} style={[styles.name, fontStyles.DFontFamily]}>{this.props.name}</Text>
-            <Text style={[fontStyles.DFontFamily, styles.id]}>{'@'}{this.props.id}</Text>
+          <View style={{ alignItems: 'center' }}>
+            <TouchableOpacity onPress={this.props.onPress}>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.name, fontStyles.DFontFamily]}>{displayName}</Text>
+            </TouchableOpacity>
+            <Text style={[fontStyles.DFontFamily, styles.id]}>{name}</Text>
             <View style={styles.separate}></View>
           </View>
-          <View style={{alignItems:'center'}}>
+          <View style={{ alignItems: 'center' }}>
             <Text style={styles.suggest}>{I18n.t('FEED_SUGGESTED_BY_ONEMAP')}</Text>
             <TouchableOpacity>
               <View style={styles.followButton}>
@@ -36,7 +41,7 @@ class SuggestUser extends Component {
             </TouchableOpacity>
           </View>
         </View>
-      </CardView>
+      </CardView >
     );
   }
 }
