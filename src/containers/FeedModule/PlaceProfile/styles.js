@@ -181,7 +181,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: getDeviceWidth(40),
     color: DARK_GRAY_COLOR,
-    fontSize: BIG_FONT_SIZE
+    fontSize: BIG_FONT_SIZE,
+    fontFamily: 'Comfortaa-regular'
   },
   myImagesContainer: {
     marginTop: getDeviceHeight(89),
@@ -193,19 +194,21 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   commentDate: {
-    fontSize: NORMAL_FONT_SIZE,
     color: LIGHT_GRAY_COLOR,
+    fontSize: SMALL_FONT_SIZE,
+    fontFamily: 'Comfortaa-regular',
     marginLeft: getDeviceWidth(40),
   },
   commentTitle: {
     fontSize: NORMAL_FONT_SIZE,
-    color: 'grey',
+    color: DARK_GRAY_COLOR,
     marginVertical: 5,
-    fontWeight: 'bold'
+    fontFamily: 'Comfortaa-regular'
   },
   commentDescription: {
+    color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
-    color: LIGHT_GRAY_COLOR
+    fontFamily: 'Comfortaa-regular'
   },
   collectionModal: {
     height: getDeviceHeight(704),

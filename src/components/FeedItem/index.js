@@ -52,7 +52,7 @@ class FeedItem extends Component {
         </View>
         {/* Feed Title */}
         <View>
-          <Text style={[styles.feedTitle, DFonts.DFontFamily]}>{this.props.data.feedTitle}</Text>
+          <Text style={styles.feedTitle}>{this.props.data.feedTitle}</Text>
         </View>
         {/* Place Image */}
         <View style={styles.feedImages}>
@@ -77,7 +77,7 @@ class FeedItem extends Component {
         </View>
         {/* Place Title */}
         <View>
-          <Text style={[styles.placeTitle, DFonts.DFontFamily]}>{this.props.data.place}</Text>
+          <Text style={styles.placeTitle}>{this.props.data.place}</Text>
         </View>
         {/* Border Bar */}
         <View style={styles.separate}></View>

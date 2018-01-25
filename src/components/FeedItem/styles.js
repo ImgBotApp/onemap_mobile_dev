@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
   feedTitle: {
     marginTop: getDeviceHeight(78),
     fontSize: NORMAL_FONT_SIZE,
-    color: DARK_GRAY_COLOR    
+    color: DARK_GRAY_COLOR,
+    fontFamily: 'Comfortaa-regular'
   },
   feedImages: {
     height: getDeviceHeight(365)
@@ -54,17 +55,18 @@ const styles = StyleSheet.create({
     borderRadius: 5
   },
   FeedImageCard: {
-    marginTop: getDeviceHeight(50),    
+    marginTop: getDeviceHeight(50),
     height: getDeviceHeight(340),
     width: getDeviceWidth(532),
     marginRight: getDeviceWidth(30),
   },
   placeTitle: {
     marginTop: getDeviceHeight(50),
-    color: LIGHT_GRAY_COLOR
+    color: LIGHT_GRAY_COLOR,
+    fontFamily: 'Comfortaa-regular'
   },
   separate: {
-    marginTop: getDeviceHeight(50),    
+    marginTop: getDeviceHeight(50),
     borderWidth: 1,
     borderColor: LIGHT_GRAY_COLOR
   },
@@ -78,16 +80,16 @@ const styles = StyleSheet.create({
     fontSize: SMALL_FONT_SIZE
   },
   descriptionText: {
-    marginTop: getDeviceHeight(50),        
+    marginTop: getDeviceHeight(50),
   },
-  playButton:{
-    position:"absolute",
-    backgroundColor:"transparent",
-    color:"white",
-    fontSize:20,
-    right:5,
-    bottom:5,
-    fontWeight:"100"
+  playButton: {
+    position: "absolute",
+    backgroundColor: "transparent",
+    color: "white",
+    fontSize: 20,
+    right: 5,
+    bottom: 5,
+    fontWeight: "100"
   }
 });
 

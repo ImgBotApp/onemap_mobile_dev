@@ -634,7 +634,7 @@ class PlaceProfile extends PureComponent {
         </View>
         <TextInput
           ref={'inputStoryTitle'}
-          style={{ width: '100%', marginTop: 30 }}
+          style={[styles.commentTitle, { width: '100%', marginTop: 10 }]}
           editable={storyEditable}
           returnKeyType={'done'}
           placeholder={I18n.t('PLACE_TITLE_BOLD')}
@@ -642,7 +642,7 @@ class PlaceProfile extends PureComponent {
           onChangeText={text => this.setState({ myStory: { ...this.state.myStory, title: text } })}
         />
         <TextInput
-          style={{ width: '100%', marginTop: 10 }}
+          style={[styles.commentDescription, { width: '100%' }]}
           editable={storyEditable}
           multiline={true}
           placeholder={'What is this story about'}
