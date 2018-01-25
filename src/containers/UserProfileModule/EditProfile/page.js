@@ -225,50 +225,22 @@ class EditProfile extends Component {
       value: I18n.t('NOT_SPECIFIC'),
     }];
     return (
-      <View style={{ height: '100%', flex: 1, backgroundColor: '#efefef' }}>
+      <View style={{height: '100%', flex: 1,backgroundColor: '#efefef'}}>
         <KeyboardAwareScrollView>
           <View style={styles.container}>
             <TouchableOpacity style={styles.avatarView} onPress={this.showActionSheet.bind(this)}>
-              <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(236)} />
+              <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(236)}/>
               <Image style={styles.cameraImage} source={require('@assets/images/icon/camera.png')} />
             </TouchableOpacity>
-
+            
             {/* Name */}
             <View style={styles.inputElement}>
               <View style={styles.fontAweSome}>
                 <EvilIcons name="user" size={24} color="#0a91ed" />
               </View>
-              <TextInput style={styles.textInput} value={this.state.displayName} onChangeText={(val) => this.setState({ displayName: val })} />
+              <TextInput style={styles.textInput} value={this.state.displayName} onChangeText={(val) => this.setState({displayName: val})}/>
             </View>
-            {/* Phone Number */}
-            {/* <View style={styles.textElement}>
-              <TouchableOpacity onPress={this.onPhoneNumberEdit.bind(this)} style={{ flexDirection: 'row' }}>
-                <View style={styles.fontAweSome}>
-                  <Ionicons name="ios-phone-portrait-outline" size={24} color="#0a91ed" />
-                </View>
-                <View style={styles.text}>
-                  <Text>{this.state.phoneNumber} </Text>
-                </View>
-              </TouchableOpacity>
-            </View> */}
-            {/* Calender */}
-            {/* <View style={styles.inputElement}>
-              <TouchableOpacity onPress={() => this.setState({ isDateTimePickerVisible: true })}>
-                <View style={{ flexDirection: 'row' }}>
-                  <View style={styles.fontAweSome}>
-                    <EvilIcons name="calendar" size={24} color="#0a91ed" />
-                  </View>
-                  <View style={styles.text}>
-                    <Text>{this.state.birthday} </Text>
-                  </View>
-                  <DateTimePicker
-                    isVisible={this.state.isDateTimePickerVisible}
-                    onConfirm={this._onConfirmBirthDay.bind(this)}
-                    onCancel={this._hideDatePicker.bind(this)}
-                  />
-                </View>
-              </TouchableOpacity>
-            </View> */}
+            
             {/* gender */}
             <View style={styles.genderElement}>
               <View style={styles.genderAwesome}>
@@ -279,14 +251,25 @@ class EditProfile extends Component {
                   ref="gender"
                   label='Gender'
                   style={styles.gender}
-                  itemTextStyle={styles.genderItem}
+                  itemTextStyle = {styles.genderItem}
                   value={
-                    I18n.t(this.state.gender) ? I18n.t(this.state.gender) : I18n.t("NOT_SPECIFIC")
+                    I18n.t(this.state.gender)?I18n.t(this.state.gender):I18n.t("NOT_SPECIFIC")
                   }
                   data={Genderdata}
                   onChangeText={this._onGenderSelect.bind(this)}
                 />
               </View>
+            </View>
+            {/* User Name */}
+            <View style={styles.inputElement}>
+              <View style={styles.fontAweSome}>
+                <EvilIcons name="tag" size={24} color="#0a91ed" />
+              </View>
+              <TextInput style={styles.textInput} value={this.state.username} onChangeText={(val) => this.onChangeUserName(val)}/>
+            </View>
+            {/* bio */}
+            <View style={styles.bioInput}>
+              <TextInput style={styles.bioText} underlineColorAndroid={'transparent'} multiline = {true} numberOfLines = {4} editable={true} value={this.state.bio} onChangeText={(val) => this.setState({bio: val})}/>
             </View>
           </View>
         </KeyboardAwareScrollView>
@@ -294,16 +277,17 @@ class EditProfile extends Component {
           this.state.processing ? (<LoadingSpinner />) : null
         }
         <ActionSheet
-          ref={o => this.ActionSheet = o}
-          title={title}
-          options={options}
-          cancelButtonIndex={CANCEL_INDEX}
-          destructiveButtonIndex={DESTRUCTIVE_INDEX}
-          onPress={this.handlePress}
-        />
+            ref={o => this.ActionSheet = o}
+            title={title}
+            options={options}
+            cancelButtonIndex={CANCEL_INDEX}
+            destructiveButtonIndex={DESTRUCTIVE_INDEX}
+            onPress={this.handlePress}
+          />
         <Toast position="center" ref="toast" />
       </View>
-    );
+      );
+    
   }
 }
 

@@ -19,8 +19,9 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker, Callout } from 'react-native-maps';
 import Permissions from 'react-native-permissions'
 import { Places } from 'google-places-web'
+import { PLACES_APIKEY } from '@global/const';
 
-Places.apiKey = 'AIzaSyDs4M5G0eckEL14WLcCwuJ1S3LuNBAB5FE';
+Places.apiKey = PLACES_APIKEY;
 Places.debug = true;
 
 const { width, height } = Dimensions.get('window')
@@ -57,24 +58,30 @@ class SearchPage extends Component {
         longitude: 0,
       },
     }
-    console.log(props.user)
+    props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+  onNavigatorEvent(event) { // this is the onPress handler for the two buttons together
+    if(event.id == "bottomTabSelected")
+    {
+      Permissions.check('location').then(response => {
+        if(response != 'authorized')
+        {
+          Permissions.request('location').then(response => {
+            if(response == 'authorized')
+            {
+              this.onSearchNearByPlace();
+            }
+          })
+        }
+        else this.onSearchNearByPlace();
+      })
+    }
   }
   componentDidMount() {
     _this = this;
   }
   componentWillMount() {
-    Permissions.check('location').then(response => {
-      if(response != 'authorized')
-      {
-        Permissions.request('location').then(response => {
-          if(response == 'authorized')
-          {
-            this.onSearchNearByPlace();
-          }
-        })
-      }
-      else this.onSearchNearByPlace();
-    })
+    
   }
   onSearchNearByPlace(){
     RNGooglePlaces.getCurrentPlace()
@@ -121,14 +128,17 @@ class SearchPage extends Component {
   render() {
     if(this.state.isFeaching)
       this.onCreatePlace();
+
+    //let curr_position ="lat:"+this.state.initialMarker.latitude+" long:"+this.state.initialMarker.longitude;
+              
     return (
       <View style={styles.container}>
         <Search
           ref="search_box"
           backgroundColor={"#f3f3f3"}
           titleCancelColor={"#585958"}
-          onChangeText={this.onShowResult.bind(this)}
-          onSearch={this.onDismissResult.bind(this)}
+          //onChangeText={this.onShowResult.bind(this)}
+          onSearch={this.onShowResult.bind(this)}
           onCancel={this.onDismissResult.bind(this)}
         />
         <View>
@@ -176,6 +186,7 @@ class SearchPage extends Component {
             </View>
             {/* } */}
             <FlatList
+              keyExtractor={(item, index) => index}
               style = {{paddingTop:getDeviceHeight(50)}}
               data={this.state.nearByPlaces}
               renderItem={({ item }) =>
@@ -202,6 +213,7 @@ class SearchPage extends Component {
           :
           (
             <SearchResult keyword={this.state.keyword}
+              coordinate={this.state.initialMarker}
               onUser={this.onUserItem.bind(this)}
               onKeywordItem={this.onKeywordItem.bind(this)}
               onPlace={this.onPlaceProfile.bind(this)} />
@@ -330,11 +342,13 @@ class SearchPage extends Component {
     })
     if (val.length == 0) return this.setState({ result: false })
     else return this.setState({ result: true })
+    this.forceUpdate()
   }
   onDismissResult() {
     this.setState({
       result: false
     })
+    this.forceUpdate()
   }
 }
 

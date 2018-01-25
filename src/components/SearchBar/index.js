@@ -9,7 +9,8 @@ import {
   Dimensions,
   Keyboard,
   Image,
-  View
+  View,
+  ViewPropTypes
 } from 'react-native';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -304,7 +305,7 @@ class Search extends PureComponent {
           onFocus={this.onFocus}
           underlineColorAndroid="transparent"
         />
-        <TouchableWithoutFeedback onPress={this.onFocus}>
+        <TouchableWithoutFeedback onPress={this.onSearch}>
           {this.props.iconSearch
             ? <Animated.View
                 style={[styles.iconSearch, { left: this.iconSearchAnimated }]}
@@ -406,7 +407,7 @@ const getStyles = (inputHeight) => {
       backgroundColor: '#f7f7f7',
       borderRadius: 5,
       fontSize: 16,
-      
+      fontFamily      : 'Comfortaa-Bold',
     },
     placeholderColor: 'grey',
     iconSearch: {
@@ -434,12 +435,13 @@ const getStyles = (inputHeight) => {
       alignItems: 'flex-start',
       backgroundColor: 'transparent',
       width: 60,
-      height: 50
+      height: 50,
+      
     },
     cancelButtonText: {
       fontSize: 14,
       color: '#fff',
-      
+      fontFamily      : 'Comfortaa-Regular',
     }
   };
 }
@@ -499,12 +501,12 @@ Search.propTypes = {
   inputStyle: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.object,
-    PropTypes.style
+    ViewPropTypes.style
   ]),
-  cancelButtonStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.style]),
+  cancelButtonStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, ViewPropTypes.style]),
   onLayout: PropTypes.func,
   cancelButtonTextStyle: Text.propTypes.style,
-  cancelButtonViewStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.style]),
+  cancelButtonViewStyle: PropTypes.oneOfType([PropTypes.object, ViewPropTypes.style]),
 
   /**
      * text input

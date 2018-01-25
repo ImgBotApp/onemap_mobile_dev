@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity,ActivityIndicator } from 'react-native';
 import Tabs from 'react-native-tabs';
 import CircleImage from '@components/CircleImage'
 
@@ -12,6 +12,12 @@ import { client } from '@root/main'
 import { GET_FILTER_KEYWORDS } from '@graphql/keywords'
 import { FILER_USERS } from '@graphql/users'
 
+import { Places } from 'google-places-web'
+import { PLACES_APIKEY } from '@global/const';
+
+Places.apiKey = PLACES_APIKEY;
+Places.debug = true;
+
 // create a component
 class SearchResult extends Component {
   constructor(props) {
@@ -20,31 +26,58 @@ class SearchResult extends Component {
       page: 'Places',
       places: [],
       keywords: [],
-      users: []
+      users: [],
+      loading:false
     };
   }
+  componentWillMount() {
+    if(this.props.keyword)
+      this.onTextSearchPlace();
+  }
   componentWillReceiveProps(nextProps) {
-    //type (String) - (geocode, address, establishment, regions, and cities)
-    /*,{
-      type: 'cities',
-      
-      latitude: 53.544389,
-      longitude: -113.490927,
-      radius: 10000
-      
-    }
-  */
-    RNGooglePlaces.getAutocompletePredictions(nextProps.keyword).then((results) => {
+    this.onTextSearchPlace();
+  }
+  onTextSearchPlace() {
+    this.setState({loading:true});
+    const radius = 50000;
+    const language = 'en';
+    const query = this.props.keyword.replace(/\s/g, "+");
+
+    const placeTextSearchURL = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+this.props.keyword+"&location="+this.props.coordinate.latitude+","+this.props.coordinate.longitude+"&radius="+radius+"&key="+PLACES_APIKEY;
+
+    console.log("----------------------:"+placeTextSearchURL);
+    fetch(placeTextSearchURL, { 
+      method: 'GET',
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+    })
+    .then((response) => response.json())
+    .then((responseData) =>
+    {
+      //set your data here
+      this.setState({loading:false})
+      if(responseData.results)
+        this.setState({
+          places: responseData.results
+        })
+    })
+    .catch((error) => {
+      this.setState({loading:false})
+    });
+    
+    /*
+    RNGooglePlaces.getAutocompletePredictions(nextProps.keyword,{type: 'noFilter',radius: 10000}).then((results) => {
       this.setState({
         places: results
       })
     }).catch((error) => {
       console.log(error)
     })
+    */
     client.query({
       query: GET_FILTER_KEYWORDS,
       variables: {
-        keyword: nextProps.keyword
+        keyword: this.props.keyword
       }
     }).then((users) => {
       this.setState({
@@ -54,7 +87,7 @@ class SearchResult extends Component {
     client.query({
       query: FILER_USERS,
       variables: {
-        keyword: nextProps.keyword
+        keyword: this.props.keyword
       }
     }).then((users) => {
       this.setState({
@@ -84,12 +117,12 @@ class SearchResult extends Component {
 
   _onPlaceItem(item) {
     return (
-      <TouchableOpacity onPress={() => this.props.onPlace(item.placeID)}>
+      <TouchableOpacity onPress={() => this.props.onPlace(item.place_id)}>
         <View style={styles.item}>
           <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
           <View style={styles.infomation}>
-            <Text style={styles.name}>{item.primaryText}</Text>
-            <Text style={styles.following}>{item.secondaryText}</Text>
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.following}>{item.formatted_address}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -130,40 +163,64 @@ class SearchResult extends Component {
         return this._onCampaignItem(item)
     }
   }
+  //this.state.places.sort(this.compareValues('name', 'asc')
+  compareValues(key, order='asc') {
+    return function(a, b) {
+      if(!a.hasOwnProperty(key) || 
+         !b.hasOwnProperty(key)) {
+        return 0; 
+      }
+      
+      const varA = (typeof a[key] === 'string') ? 
+        a[key].toUpperCase() : a[key];
+      const varB = (typeof b[key] === 'string') ? 
+        b[key].toUpperCase() : b[key];
+        
+      let comparison = 0;
+      if (varA > varB) {
+        comparison = 1;
+      } else if (varA < varB) {
+        comparison = -1;
+      }
+      return (
+        (order == 'desc') ? 
+        (comparison * -1) : comparison
+      );
+    };
+  }
   _renderPlaces() {
     return (
-      <View style={styles.scrollView}>
-        <FlatList
+      <FlatList
           keyExtractor={(item, index) => index}
           style={styles.scrollView}
           data={this.state.places}
           renderItem={({ item }) => this._onPlaceItem(item)}
         />
-      </View>
+      
     )
   }
   _renderKeywords() {
     return (
-      <View style={styles.scrollView}>
+      
         <FlatList
           keyExtractor={(item, index) => index}
           style={styles.scrollView}
           data={this.state.keywords}
           renderItem={({ item }) => this._onKeywordItem(item)}
         />
-      </View>
+      
     )
   }
   _renderUsers() {
     return (
-      <View style={styles.scrollView}>
+      
         <FlatList
           keyExtractor={(item, index) => index}
           style={styles.scrollView}
           data={this.state.users}
           renderItem={({ item }) => this._onUserItem(item)}
         />
-      </View>
+     
     )
   }
   render() {
@@ -177,6 +234,9 @@ class SearchResult extends Component {
             {this._renderTabHeader('Keywords')}
           </Tabs>
         </View>
+        {
+          this.state.loading?(<ActivityIndicator style={{marginTop:10}} size="small" color="#aaa" />):null
+        }
         {
           this.state.page == 'Places' ? this._renderPlaces() : null
         }

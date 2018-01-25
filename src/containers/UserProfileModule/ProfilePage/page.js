@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './styles'
 
 import { getDeviceWidth } from '@global'
@@ -29,6 +30,15 @@ class ProfileComponent extends Component {
   };
   constructor(props) {
     super(props)
+    Ionicons.getImageSource('ios-settings-outline', 30, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        rightButtons: [{
+          icon,
+          id: 'Setting',
+          disableIconTint: true
+        }]
+      })
+    })
     this.state = {
       ...props.user,
       displayName: props.user.displayName || props.user.firstName + " " + props.user.lastName,
