@@ -234,6 +234,14 @@ export const UPDATE_PROFILE = gql`
       gender: $gender
     ) {
       id
+      firstName
+      lastName
+      gender
+      photoURL
+      displayName
+      registrationDate
+      country
+      city
     }
   } 
 `

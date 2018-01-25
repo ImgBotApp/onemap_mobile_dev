@@ -73,7 +73,7 @@ class ProfileCreatePage extends Component {
   constructor (props) {
     super(props)
     var today = new Date().toLocaleDateString();
-    var user= "@"+this.props.info.name;
+    var user= "@"+this.props.info.first_name+this.props.info.last_name;
     this.state = {
       username: user,
       displayName: this.props.info.first_name + " " + this.props.info.last_name,
@@ -115,18 +115,21 @@ class ProfileCreatePage extends Component {
           })
           this.props.dispatch(saveUserInfo({
             id: this.state.userId,
-            createdAt: new Date().toLocaleDateString(),
-            updatedAt: new Date().toLocaleDateString(),
-            loginMethod: this.state.loginMethod,
-            bio: this.state.bio,
-            gender: this.state.gender.toUpperCase(),
-            city: this.state.city,
             country: this.state.country,
-            photoURL: this.state.photoURL,
+            city: this.state.city,
+            displayName: this.state.displayName,
+            email:this.props.info.mail,
+            username: this.state.username,
+            accountStatus:"ENABLE",
+            bio: this.state.bio,
             firstName: this.props.info.first_name,
             lastName: this.props.info.last_name,
-            username: this.state.username,
-            displayName: this.state.displayName,
+            birthdate:'',
+            photoURL: this.state.photoURL,
+            registrationDate: new Date().toLocaleDateString(),
+            mobileVerification: false,
+            mobile: "iPhone",
+            gender: this.state.gender.toUpperCase(),
           }))
           this.props.updateUser({
             variables: {
@@ -141,7 +144,12 @@ class ProfileCreatePage extends Component {
               country: this.state.country,
               bio: this.state.bio,
               username: this.state.username
-          }})
+          }}).then(result=>
+            {
+              if(result)
+                console.log("result ="+result);
+            }
+          );
           AsyncStorage.setItem(APP_USER_KEY, JSON.stringify({
             id: this.state.userId
           }))

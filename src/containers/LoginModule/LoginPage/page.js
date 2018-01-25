@@ -47,7 +47,7 @@ class LoginPage extends Component {
         }
       }).then((user) => {
         var data = user.data.User
-        if ( data.firstName ) {
+        if ( data.username ) {
           this.props.saveUserInfo({
             id: this.state.id,
             createdAt: new Date().toLocaleDateString(),
@@ -144,7 +144,7 @@ class LoginPage extends Component {
           // alert(JSON.stringify(user))
           this.setState({loading: false})
           var data = user.data.User
-          if ( data.firstName ) {
+          if ( data.username ) {
             
             this.props.saveUserInfo({
               id: data.id,
@@ -182,6 +182,7 @@ class LoginPage extends Component {
             //     naviBarComponentAlignment: 'center'
             //   },
             // })
+            LoginManager.logOut();
             LoginManager.logInWithReadPermissions(['public_profile','email','user_about_me','user_birthday','user_hometown','user_location'])
             .then((result) => {
               if (result.isCancelled) {
@@ -201,7 +202,7 @@ class LoginPage extends Component {
               this.setState({id: gctoken.data.authenticateFBUser.id})
               this.props.saveUserId(gctoken.data.authenticateFBUser.id, gctoken.data.authenticateFBUser.token)
               const infoRequest = new GraphRequest(
-                '/me?fields=id,first_name,last_name,picture.height(1000),email,gender,address,about,name',
+                '/me?fields=id,first_name,last_name,picture.height(1000),email,gender,address,about',
                 null,
                 (error, result) => this._responseInfoCallback(error, result),
               );
@@ -214,6 +215,7 @@ class LoginPage extends Component {
           }
         })
       } else {
+        LoginManager.logOut();
         LoginManager.logInWithReadPermissions(['public_profile','email','user_about_me','user_birthday','user_hometown','user_location'])
         .then((result) => {
           if (result.isCancelled) {
@@ -233,7 +235,7 @@ class LoginPage extends Component {
           this.setState({id: gctoken.data.authenticateFBUser.id})
           this.props.saveUserId(gctoken.data.authenticateFBUser.id, gctoken.data.authenticateFBUser.token)
           const infoRequest = new GraphRequest(
-            '/me?fields=id,first_name,last_name,picture.height(1000),email,gender,address,about,name',
+            '/me?fields=id,first_name,last_name,picture.height(1000),email,gender,address,about',
             null,
             (error, result) => this._responseInfoCallback(error, result),
           );

@@ -5,6 +5,6 @@
  */
 
 import App from './src/main'
-console.disableYellowBox = true;
+console.disableYellowBox = false;
 const app = new App()
 

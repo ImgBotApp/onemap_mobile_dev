@@ -19,8 +19,9 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker, Callout } from 'react-native-maps';
 import Permissions from 'react-native-permissions'
 import { Places } from 'google-places-web'
+import { PLACES_APIKEY } from '@global/const';
 
-Places.apiKey = 'AIzaSyDs4M5G0eckEL14WLcCwuJ1S3LuNBAB5FE';
+Places.apiKey = PLACES_APIKEY;
 Places.debug = true;
 
 const { width, height } = Dimensions.get('window')
@@ -127,8 +128,8 @@ class SearchPage extends Component {
           ref="search_box"
           backgroundColor={"#f3f3f3"}
           titleCancelColor={"#585958"}
-          onChangeText={this.onShowResult.bind(this)}
-          onSearch={this.onDismissResult.bind(this)}
+          //onChangeText={this.onShowResult.bind(this)}
+          onSearch={this.onShowResult.bind(this)}
           onCancel={this.onDismissResult.bind(this)}
         />
         <View>
@@ -202,6 +203,7 @@ class SearchPage extends Component {
           :
           (
             <SearchResult keyword={this.state.keyword}
+              coordinate={this.state.initialMarker}
               onUser={this.onUserItem.bind(this)}
               onKeywordItem={this.onKeywordItem.bind(this)}
               onPlace={this.onPlaceProfile.bind(this)} />
@@ -330,11 +332,13 @@ class SearchPage extends Component {
     })
     if (val.length == 0) return this.setState({ result: false })
     else return this.setState({ result: true })
+    this.forceUpdate()
   }
   onDismissResult() {
     this.setState({
       result: false
     })
+    this.forceUpdate()
   }
 }
 

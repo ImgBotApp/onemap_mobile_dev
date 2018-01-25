@@ -8,8 +8,7 @@ const styles = StyleSheet.create({
   container: {
     position:"relative",
     width: '100%',
-    flex: 1,
-    // height: 100,
+    height: '100%',
     backgroundColor: 'white',
     marginTop:50,
   },
@@ -34,7 +33,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     width: '100%',
-    height: getDeviceHeight(1211),
+    height: '100%',
     borderBottomWidth: 1,
     borderColor: 'transparent',
     backgroundColor: 'white',

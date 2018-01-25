@@ -9,7 +9,8 @@ import {
   Dimensions,
   Keyboard,
   Image,
-  View
+  View,
+  ViewPropTypes
 } from 'react-native';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
@@ -304,7 +305,7 @@ class Search extends PureComponent {
           onFocus={this.onFocus}
           underlineColorAndroid="transparent"
         />
-        <TouchableWithoutFeedback onPress={this.onFocus}>
+        <TouchableWithoutFeedback onPress={this.onSearch}>
           {this.props.iconSearch
             ? <Animated.View
                 style={[styles.iconSearch, { left: this.iconSearchAnimated }]}
@@ -499,12 +500,12 @@ Search.propTypes = {
   inputStyle: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.object,
-    PropTypes.style
+    ViewPropTypes.style
   ]),
-  cancelButtonStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.style]),
+  cancelButtonStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, ViewPropTypes.style]),
   onLayout: PropTypes.func,
   cancelButtonTextStyle: Text.propTypes.style,
-  cancelButtonViewStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.style]),
+  cancelButtonViewStyle: PropTypes.oneOfType([PropTypes.object, ViewPropTypes.style]),
 
   /**
      * text input
