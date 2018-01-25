@@ -24,6 +24,7 @@ import { uploadImage } from '@global/cloudinary';
 import ActionSheet from 'react-native-actionsheet'
 import Toast, { DURATION } from 'react-native-easy-toast'
 
+
 const CANCEL_INDEX = 0
 const DESTRUCTIVE_INDEX = 4
 const options = ['Cancel', 'Take Photo...', 'Choose from Library...']
@@ -42,7 +43,7 @@ class EditProfile extends Component {
   static navigatorButtons = {
     leftButtons: [
       {
-        icon: require('@assets/images/login/leftNav.png'),
+        title: '',
         id: 'backButton',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
@@ -59,6 +60,15 @@ class EditProfile extends Component {
   };
   constructor(props) {
     super(props)
+    Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        leftButtons: [{
+          icon,
+          id: 'backButton',
+          disableIconTint: true
+        }]
+      })
+    })
     this.state = {
       ...props.user,
       displayName: props.user.displayName || props.user.firstName + ' ' + props.user.lastName,

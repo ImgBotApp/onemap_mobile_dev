@@ -22,7 +22,7 @@ class ProfileComponent extends Component {
   static navigatorButtons = {
     rightButtons: [
       {
-        icon: require('@assets/images/setting.png'),
+        title:'',
         id: 'Setting',
         disableIconTint: true
       }

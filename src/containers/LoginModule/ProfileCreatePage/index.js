@@ -55,7 +55,7 @@ class ProfileCreatePage extends Component {
   static navigatorButtons = {
     leftButtons: [
       {
-        icon: require('@assets/images/login/leftNav.png'),
+        title: '',
         id: 'backButton',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
@@ -72,6 +72,16 @@ class ProfileCreatePage extends Component {
   };
   constructor (props) {
     super(props)
+    Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        leftButtons: [{
+          icon,
+          id: 'backButton',
+          disableIconTint: true
+        }]
+      })
+    })
+
     var today = new Date().toLocaleDateString();
     var user= "@"+this.props.info.first_name+this.props.info.last_name;
     this.state = {

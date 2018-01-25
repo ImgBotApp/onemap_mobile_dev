@@ -18,6 +18,8 @@ import I18n from '@language'
 import { client } from '@root/main';
 import { graphql } from "react-apollo";
 import { GET_COLLECTION_WITH_PLACES } from '@graphql/collections';
+import Ionicons from 'react-native-vector-icons/Ionicons'
+
 const PLACES_PER_PAGE = 20;
 
 const map = {
@@ -32,7 +34,7 @@ class Collections extends Component {
   static navigatorButtons = {
     leftButtons: [
       {
-        icon: require('@assets/images/login/leftNav.png'),
+        title: '',
         id: 'backButton',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
@@ -41,6 +43,15 @@ class Collections extends Component {
   };
   constructor(props) {
     super(props)
+    Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        leftButtons: [{
+          icon,
+          id: 'backButton',
+          disableIconTint: true
+        }]
+      })
+    })
     this.state = {
       page: 'Grid View',
       places: [],

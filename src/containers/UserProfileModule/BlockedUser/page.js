@@ -13,6 +13,8 @@ import { getDeviceWidth, getDeviceHeight } from '@global'
 import { DARK_GRAY_COLOR } from '../../../theme/colors';
 
 import { GET_BLOCKUSRS } from "@graphql/userprofile";
+import Ionicons from 'react-native-vector-icons/Ionicons'
+
 const BLOCKUSERS_PER_PAGE = 20;
 
 // create a component
@@ -20,7 +22,7 @@ class BlockedUser extends Component {
   static navigatorButtons = {
     leftButtons: [
       {
-        icon: require('@assets/images/login/leftNav.png'),
+        title: '',
         id: 'backButton',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
@@ -29,6 +31,15 @@ class BlockedUser extends Component {
   };
   constructor (props) {
     super(props)
+    Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        leftButtons: [{
+          icon,
+          id: 'backButton',
+          disableIconTint: true
+        }]
+      })
+    })
     this.state = {
       modalVisible: false
     }

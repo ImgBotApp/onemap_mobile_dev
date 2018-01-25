@@ -12,6 +12,7 @@ import { ACCOUNT_MODE } from '@global/const'
 import * as SCREEN from '@global/screenName'
 
 import I18n from '@language'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import { verifyCode, requestVerify } from '@apis/phoneVerify'
 // import { setTimeout } from 'timers';
@@ -22,7 +23,7 @@ class PhoneVerifyPage extends Component {
   static navigatorButtons = {
     leftButtons: [
       {
-        icon: require('@assets/images/login/leftNav.png'),
+        title: '',
         id: 'backButton',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
@@ -30,7 +31,7 @@ class PhoneVerifyPage extends Component {
     ],
     rightButtons: [
       {
-        icon: require('@assets/images/login/rightNav.png'),
+        title:'',
         id: 'goNext',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
@@ -39,6 +40,24 @@ class PhoneVerifyPage extends Component {
   };
   constructor (props) {
     super(props)
+    Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        leftButtons: [{
+          icon,
+          id: 'backButton',
+          disableIconTint: true
+        }]
+      })
+    })
+    Ionicons.getImageSource('ios-arrow-round-forward', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        rightButtons: [{
+          icon,
+          id: 'goNext',
+          disableIconTint: true
+        }]
+      })
+    })
     this.state = {
       phoneNumber: props.phoneNumber,
       countryCode: props.countryCode,

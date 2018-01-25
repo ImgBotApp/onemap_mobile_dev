@@ -9,12 +9,14 @@ import FollowingList from '@components/FollowingList'
 import styles from './styles'
 import { DARK_GRAY_COLOR } from '../../../theme/colors';
 import I18n from '@language'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+
 // create a component
 class FollowerPeople extends Component {
   static navigatorButtons = {
     leftButtons: [
       {
-        icon: require('@assets/images/login/leftNav.png'),
+        title: '',
         id: 'backButton',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
@@ -23,6 +25,15 @@ class FollowerPeople extends Component {
   };
   constructor (props) {
     super(props)
+    Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        leftButtons: [{
+          icon,
+          id: 'backButton',
+          disableIconTint: true
+        }]
+      })
+    })
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
 
     this.state = {
