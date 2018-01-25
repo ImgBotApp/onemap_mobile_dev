@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   keywordTextStyle: {
-    fontSize: SMALL_FONT_SIZE
+    fontSize: NORMAL_FONT_SIZE
   },
   WriteStory: {
     marginLeft: getDeviceWidth(76),
@@ -177,6 +177,7 @@ const styles = StyleSheet.create({
     height: getDeviceHeight(134)
   },
   storyWriterName: {
+    flex: 1,
     marginLeft: getDeviceWidth(40),
     color: DARK_GRAY_COLOR,
     fontSize: BIG_FONT_SIZE
@@ -194,6 +195,12 @@ const styles = StyleSheet.create({
     fontSize: NORMAL_FONT_SIZE,
     color: LIGHT_GRAY_COLOR,
     marginLeft: getDeviceWidth(40),
+  },
+  commentTitle: {
+    fontSize: NORMAL_FONT_SIZE,
+    color: 'grey',
+    marginVertical: 5,
+    fontWeight: 'bold'
   },
   commentDescription: {
     fontSize: SMALL_FONT_SIZE,

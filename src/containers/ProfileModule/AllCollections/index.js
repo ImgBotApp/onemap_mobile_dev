@@ -7,7 +7,7 @@ import page from './page'
 function mapStateToProps(state) {
   return {
     user: state.User,
-    collections: state.app.collections
+    myCollections: state.app.collections
   }
 }
 

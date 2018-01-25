@@ -88,14 +88,7 @@
         <key>NSExceptionRequiresForwardSecrecy</key>
         <false/>
       </dict>
-      <key>akamaihd.net</key>
-      <dict>
-        <key>NSIncludesSubdomains</key>
-        <true/>
-        <key>NSExceptionRequiresForwardSecrecy</key>
-        <false/>
-      </dict>
-			<key>res.cloudinary.com</key>
+      <key>res.cloudinary.com</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>

@@ -4,7 +4,7 @@ export const GET_FILTER_KEYWORDS = gql`
   query AllKeywords($keyword: String) {
     allKeywords(filter: {
       name_contains: $keyword
-    }){
+    }) {
       id
       name
       places {
@@ -15,13 +15,17 @@ export const GET_FILTER_KEYWORDS = gql`
 `
 
 export const GET_KEYWORD = gql`
-  query GetKeyword($keyword: String!) {
-    Keyword(name: $keyword){
+  query GetKeyword(
+    $keyword: String!,
+    $userId: ID,
+    $placeId: ID!
+  ) {
+    Keyword(
+      name: $keyword,
+      createdBy: $userId,
+      places: [$placeId]
+    ) {
       id
-      name
-      places {
-        id
-      }
     }
   }
 `
@@ -32,27 +36,24 @@ export const CREATE_KEYWORD = gql`
     $places: [ID!],
     $userId: ID!
   ) {
-      updateKeyword(
-        createdBy: $userId, 
+      createKeyword(
+        createdById: $userId, 
         name: $name,
-        places: $places
+        placesIds: $places
       ) {
-        id,
-        name
+        id
       }
     }
 `
 
-export const UPDATE_KEYWORD = gql`
+export const DELETE_KEYWORD = gql`
   mutation(
     $id: ID!
-    $places: [ID!]
   ) {
-      updateKeyword(
-        places: $places
+      deleteKeyword(
+        id: $id
       ) {
-        id,
-        name
+        id
       }
     }
 `
