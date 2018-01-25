@@ -6,12 +6,14 @@ import styles from './styles'
 import { clone, getDeviceWidth, getDeviceHeight } from '@global'
 import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
 import Modal from 'react-native-modalbox';
+import Ionicons from 'react-native-vector-icons/Ionicons'
+
 // create a component
 class NewCollection extends Component {
   static navigatorButtons = {
     leftButtons: [
       {
-        icon: require('@assets/images/login/leftNav.png'),
+        title: '',
         id: 'backButton',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
@@ -28,6 +30,15 @@ class NewCollection extends Component {
   };
   constructor(props) {
     super(props)
+    Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        leftButtons: [{
+          icon,
+          id: 'backButton',
+          disableIconTint: true
+        }]
+      })
+    })
     this.state = {
       isPublic: false,
       isModal: false,

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import StoryBoard from '@components/StoryBoard'
 import I18n from '@language'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import styles from './styles'
 import { DARK_GRAY_COLOR } from '../../../theme/colors';
@@ -60,7 +61,7 @@ class StoryListPage extends Component {
   static navigatorButtons = {
     leftButtons: [
       {
-        icon: require('@assets/images/login/leftNav.png'),
+        title: '',
         id: 'backButton',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
@@ -69,6 +70,15 @@ class StoryListPage extends Component {
   };
   constructor (props) {
     super(props)
+    Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        leftButtons: [{
+          icon,
+          id: 'backButton',
+          disableIconTint: true
+        }]
+      })
+    })
     this.props.navigator.setOnNavigatorEvent(this.onNavigateEvent.bind(this))
   }
   onNavigateEvent(event) {

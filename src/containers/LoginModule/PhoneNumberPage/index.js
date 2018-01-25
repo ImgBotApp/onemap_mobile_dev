@@ -16,7 +16,7 @@ import { requestVerify } from '@apis/phoneVerify'
 import { DARK_GRAY_COLOR } from '../../../theme/colors';
 
 import { ACCOUNT_MODE } from '@global/const'
-
+import Ionicons from 'react-native-vector-icons/Ionicons'
 /**
  * Props 
  *  Mode : 'createAccount' / 'updateAccount'
@@ -27,7 +27,7 @@ class PhoneNumberPage extends Component {
   static navigatorButtons = {
     leftButtons: [
       {
-        icon: require('@assets/images/login/leftNav.png'),
+        title: '',
         id: 'backButton',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
@@ -35,7 +35,7 @@ class PhoneNumberPage extends Component {
     ],
     rightButtons: [
       {
-        icon: require('@assets/images/login/rightNav.png'),
+        title: '',
         id: 'goVerify',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
@@ -44,7 +44,24 @@ class PhoneNumberPage extends Component {
   };
   constructor (props) {
     super(props)
-
+    Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        leftButtons: [{
+          icon,
+          id: 'backButton',
+          disableIconTint: true
+        }]
+      })
+    })
+    Ionicons.getImageSource('ios-arrow-round-forward', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        rightButtons: [{
+          icon,
+          id: 'goVerify',
+          disableIconTint: true
+        }]
+      })
+    })
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
 

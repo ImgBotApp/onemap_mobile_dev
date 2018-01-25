@@ -10,6 +10,8 @@ import { DARK_GRAY_COLOR } from '../../../theme/colors';
 import * as SCREEN from '@global/screenName';
 import { clone } from '@global';
 import I18n from '@language';
+import Ionicons from 'react-native-vector-icons/Ionicons'
+
 const itemsPerRow = 3
 
 const imagePlaceholder = 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg';
@@ -20,7 +22,7 @@ class AllCollections extends Component {
   static navigatorButtons = {
     leftButtons: [
       {
-        icon: require('@assets/images/login/leftNav.png'),
+        title: '',
         id: 'backButton',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
@@ -28,7 +30,7 @@ class AllCollections extends Component {
     ],
     rightButtons: [
       {
-        title: '+',
+        title: '',
         id: 'add',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
@@ -37,7 +39,24 @@ class AllCollections extends Component {
   };
   constructor(props) {
     super(props)
-
+    Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        leftButtons: [{
+          icon,
+          id: 'backButton',
+          disableIconTint: true
+        }]
+      })
+    })
+    Ionicons.getImageSource('ios-add', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        rightButtons: [{
+          icon,
+          id: 'add',
+          disableIconTint: true
+        }]
+      })
+    })
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
   onNavigatorEvent(event) {
