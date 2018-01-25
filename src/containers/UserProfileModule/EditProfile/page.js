@@ -287,6 +287,8 @@ class EditProfile extends Component {
               onChangeText={this._onGenderSelect.bind(this)}
             />
           </View>
+        </View>
+        </View>
         </KeyboardAwareScrollView>
         {
           this.state.processing ? (<LoadingSpinner />) : null
