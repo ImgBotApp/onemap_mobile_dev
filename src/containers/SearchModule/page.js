@@ -58,24 +58,30 @@ class SearchPage extends Component {
         longitude: 0,
       },
     }
-    console.log(props.user)
+    props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+  onNavigatorEvent(event) { // this is the onPress handler for the two buttons together
+    if(event.id == "bottomTabSelected")
+    {
+      Permissions.check('location').then(response => {
+        if(response != 'authorized')
+        {
+          Permissions.request('location').then(response => {
+            if(response == 'authorized')
+            {
+              this.onSearchNearByPlace();
+            }
+          })
+        }
+        else this.onSearchNearByPlace();
+      })
+    }
   }
   componentDidMount() {
     _this = this;
   }
   componentWillMount() {
-    Permissions.check('location').then(response => {
-      if(response != 'authorized')
-      {
-        Permissions.request('location').then(response => {
-          if(response == 'authorized')
-          {
-            this.onSearchNearByPlace();
-          }
-        })
-      }
-      else this.onSearchNearByPlace();
-    })
+    
   }
   onSearchNearByPlace(){
     RNGooglePlaces.getCurrentPlace()
@@ -122,6 +128,9 @@ class SearchPage extends Component {
   render() {
     if(this.state.isFeaching)
       this.onCreatePlace();
+
+    //let curr_position ="lat:"+this.state.initialMarker.latitude+" long:"+this.state.initialMarker.longitude;
+              
     return (
       <View style={styles.container}>
         <Search
@@ -177,6 +186,7 @@ class SearchPage extends Component {
             </View>
             {/* } */}
             <FlatList
+              keyExtractor={(item, index) => index}
               style = {{paddingTop:getDeviceHeight(50)}}
               data={this.state.nearByPlaces}
               renderItem={({ item }) =>

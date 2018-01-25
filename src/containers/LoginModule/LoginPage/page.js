@@ -64,6 +64,9 @@ class LoginPage extends Component {
             username: data.username
           })
           // this.props.dispatch(appActions.login())
+          AsyncStorage.setItem(APP_USER_KEY, JSON.stringify({
+            id: this.state.id
+          }))
           this.props.login();
           
         } else {
