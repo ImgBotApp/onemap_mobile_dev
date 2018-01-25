@@ -18,7 +18,7 @@ class PhoneNumberPage extends Component {
 	static navigatorButtons = {
     leftButtons: [
       {
-        icon: require('@assets/images/login/leftNav.png'),
+        title: '',
         id: 'backButton',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
@@ -35,6 +35,15 @@ class PhoneNumberPage extends Component {
   };
 	constructor (props) {
 		super(props)
+		Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
+			props.navigator.setButtons({
+			  leftButtons: [{
+				icon,
+				id: 'backButton',
+				disableIconTint: true
+			  }]
+			})
+		  })
 		this.state = {
 			phoneNumber: props.phoneNumber,
 			newNumber: ""

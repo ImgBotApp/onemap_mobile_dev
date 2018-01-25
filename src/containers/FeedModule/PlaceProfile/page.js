@@ -9,7 +9,7 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; import Modal from 
 import Overlay from 'react-native-modal-overlay';
 import TagInput from 'react-native-tag-input';
 import Foundation from 'react-native-vector-icons/Foundation'
-import IonIcons from 'react-native-vector-icons/Ionicons'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import ViewMoreText from 'react-native-view-more-text';
@@ -50,7 +50,7 @@ class PlaceProfile extends PureComponent {
   static navigatorButtons = {
     leftButtons: [
       {
-        icon: require('@assets/images/login/leftNav.png'),
+        title: '',
         id: 'backButton',
         buttonColor: DARK_GRAY_COLOR,
         disableIconTint: true
@@ -58,14 +58,33 @@ class PlaceProfile extends PureComponent {
     ],
     rightButtons: [
       {
-        title: '•••',
+        title: '',
         buttonColor: DARK_GRAY_COLOR,
+        id:'more',
         disableIconTint: true
       }
     ]
   };
   constructor(props) {
     super(props)
+    Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        leftButtons: [{
+          icon,
+          id: 'backButton',
+          disableIconTint: true
+        }]
+      })
+    })
+    Ionicons.getImageSource('ios-more', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        rightButtons: [{
+          icon,
+          id: 'more',
+          disableIconTint: true
+        }]
+      })
+    })
     this.state = {
       currentPlaceID: props.placeID ? props.placeID : props.place.id,
       placeData: {
@@ -452,7 +471,7 @@ class PlaceProfile extends PureComponent {
                   disabled={true}
                 />
                 {this.state.selectedCollections.includes(collection.id) &&
-                  <IonIcons
+                  <Ionicons
                     name='ios-checkmark-circle'
                     size={30}
                     style={{ position: 'absolute', backgroundColor: 'transparent' }}
