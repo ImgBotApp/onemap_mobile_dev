@@ -74,19 +74,18 @@ class ProfilePage extends Component {
   onCampaignPress(id) {
     alert(id)
   }
-  onHearted = () => {
-    // alert('Hearted')
+  
+  onViewCollectionItem = (item) => {
+    this.props.navigator.push({
+      screen: SCREEN.COLLECTIONS_PAGE,
+      title: I18n.t('DRAWER_STORIES'),
+      animated: true,
+      passProps: {
+        collection: item
+      }
+    })
   }
-
-  onCheckIns = () => {
-    // alert('Check-ins')
-  }
-
-  onWishList = () => {
-    // alert('Wish list')
-  }
-
-  onViewAll = () => {
+  onViewCollectionsAll = () => {
     this.props.navigator.push({
       screen: SCREEN.FEED_ALL_COLLECTION,
       title: I18n.t('COLLECTION_TITLE'),
@@ -96,6 +95,7 @@ class ProfilePage extends Component {
       }
     })
   }
+
   onStoryItem(place) {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
@@ -164,10 +164,8 @@ class ProfilePage extends Component {
         <View style={styles.collectionContainer}>
           <Collections
             collections={collections}
-            onHearted={this.onHearted.bind(this)}
-            onCheckIns={this.onCheckIns.bind(this)}
-            onWishList={this.onWishList.bind(this)}
-            onViewAll={this.onViewAll.bind(this)}
+            onViewItem={this.onViewCollectionItem}
+            onViewAll={this.onViewCollectionsAll}
           />
         </View>
         {/* Story board */}

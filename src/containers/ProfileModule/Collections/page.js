@@ -111,7 +111,7 @@ class Collections extends Component {
     }).then(collections => {
       this.setState({ places });
       this.props.placeUpdated(true);
-    })
+    }).catch(err => alert(err));
   }
   _renderStoryItem(data, mode) {
     const { item, index } = data;

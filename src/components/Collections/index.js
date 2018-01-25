@@ -21,7 +21,7 @@ class Collections extends Component {
       let collections = {};
       collections.hearted = nextProps.collections.filter(item => item.type === 'HEARTED')[0];
       collections.checkedin = nextProps.collections.filter(item => item.type == 'CHECKED_IN')[0];
-      collections.default = nextProps.collections.filter(item => item.type == 'DEFAULT')[0];
+      // collections.default = nextProps.collections.filter(item => item.type == 'DEFAULT')[0];
       this.setState({ collections });
     }
   }
@@ -35,21 +35,21 @@ class Collections extends Component {
           uri={collections.hearted ? collections.hearted.pictureURL : null}
           radius={8}
           title={'Hearted'}
-          onPress={() => collections.hearted && this.props.onHearted(collections.hearted)}
+          onPress={() => collections.hearted && this.props.onViewItem(collections.hearted)}
         />
         <CollectionItem style={styles.itemContainer}
           insideStyle={styles.itemContainer}
           uri={collections.checkedin ? collections.checkedin.pictureURL : null}
           radius={8}
           title={'Check-Ins'}
-          onPress={() => collections.checkedin && this.props.onCheckIns(collections.checkedin)}
+          onPress={() => collections.checkedin && this.props.onViewItem(collections.checkedin)}
         />
         <CollectionItem style={styles.itemContainer}
           insideStyle={styles.itemContainer}
           uri={collections.default > 2 ? collections.default.pictureURL : null}
           radius={8}
-          title={'Default'}
-          onPress={() => collections.default && this.props.onWishList(collections.default)}
+          title={'All Stories'}
+          onPress={() => false && collections.default && this.props.onViewItem(collections.default)}
         />
         <CollectionItem style={styles.itemContainer}
           insideStyle={styles.itemContainer}

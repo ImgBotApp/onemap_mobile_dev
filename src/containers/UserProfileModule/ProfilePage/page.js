@@ -124,10 +124,8 @@ class ProfileComponent extends Component {
           <View style={styles.collectionItems}>
             <Collections
               collections={this.state.collections}
-              onHearted={this.onHearted.bind(this)}
-              onCheckIns={this.onCheckIns.bind(this)}
-              onWishList={this.onWishList.bind(this)}
-              onViewAll={this.onViewAll.bind(this)}
+              onViewItem={this.onViewCollectionItem}
+              onViewAll={this.onViewCollectionsAll}
             />
           </View>
         </View>
@@ -143,68 +141,19 @@ class ProfileComponent extends Component {
         </View>
       </ScrollView>
     );
+  }
 
-  }
-  onHearted = () => {
-    /*
+  onViewCollectionItem = (item) => {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
       title: I18n.t('DRAWER_STORIES'),
-      animated: true
-    })
-    */
-    this.props.navigator.push({
-      screen: SCREEN.FEED_ALL_COLLECTION,
-      title: I18n.t('COLLECTION_TITLE'),
       animated: true,
       passProps: {
-        collections: this.state.collections,
-        refresh: this.onRefresh
+        collection: item
       }
     })
   }
-  onCheckIns = () => {
-    /*
-    this.props.navigator.push({
-      screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
-      animated: true
-    })
-    */
-    this.props.navigator.push({
-      screen: SCREEN.FEED_ALL_COLLECTION,
-      title: I18n.t('COLLECTION_TITLE'),
-      animated: true,
-      passProps: {
-        collections: this.state.collections,
-        refresh: this.onRefresh
-      }
-    })
-  }
-  onWishList = () => {
-    /*
-    this.props.navigator.push({
-      screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
-      animated: true
-    })
-    */
-    this.props.navigator.push({
-      screen: SCREEN.FEED_ALL_COLLECTION,
-      title: I18n.t('COLLECTION_TITLE'),
-      animated: true,
-      passProps: {
-        collections: this.state.collections,
-        refresh: this.onRefresh
-      }
-    })
-  }
-  onViewAll = () => {
-    // this.props.navigator.push({
-    //   screen: SCREEN.COLLECTIONS_PAGE,
-    //   title: I18n.t('DRAWER_COLLECTION_TITLE'),
-    //   animated: true
-    // })
+  onViewCollectionsAll = () => {
     this.props.navigator.push({
       screen: SCREEN.FEED_ALL_COLLECTION,
       title: I18n.t('COLLECTION_TITLE'),
