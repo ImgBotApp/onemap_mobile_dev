@@ -17,6 +17,8 @@ import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
 import { SMALL_FONT_SIZE } from '@theme/fonts';
 
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 const data = {
   id: 'test',
   createdAt: new Date(),
@@ -80,6 +82,7 @@ const data = {
     },
   ]
 }
+
 // create a component
 class ProfileComponent extends Component {
   static navigatorButtons = {
@@ -93,6 +96,15 @@ class ProfileComponent extends Component {
   };
   constructor(props) {
     super(props)
+    Ionicons.getImageSource('ios-settings-outline', 30, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        rightButtons: [{
+          icon,
+          id: 'Setting',
+          disableIconTint: true
+        }]
+      })
+    })
     this.state = {
       ...props.user,
       displayName: props.user.displayName || props.user.firstName + " " + props.user.lastName,
