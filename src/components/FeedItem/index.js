@@ -38,7 +38,7 @@ class FeedItem extends Component {
         <View style={styles.userInfo}>
           <TouchableOpacity onPress={this._onUserInformation.bind(this)}>
             <View style={styles.user}>
-              <CircleImage style={styles.profileImage} uri={this.props.data.user.uri ? this.props.data.user.uri : EMPTY_IMG} radius={getDeviceWidth(70)} />
+              <CircleImage style={styles.profileImage} uri={this.props.data.user.photoURL ? this.props.data.user.photoURL : EMPTY_IMG} radius={getDeviceWidth(70)} />
               <View style={styles.userDescription}>
                 <Text numberOfLines={1} style={[styles.name, DFonts.DFontFamily]}>{this.props.data.user.displayName}</Text>
                 <Text style={[styles.update, DFonts.DFontFamily]}>{calculateDuration(this.props.data.user.updated)}</Text>

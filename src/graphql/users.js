@@ -324,6 +324,7 @@ export const GET_FOLLOWERS = gql`
         count
       }
       followers(orderBy: $orderBy, skip: $skip, first: $first) {
+        id
         email
         username
         firstName

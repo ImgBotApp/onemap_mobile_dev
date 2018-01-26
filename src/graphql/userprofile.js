@@ -11,6 +11,7 @@ export const GET_FOLLOWERS = gql`
         count
       }
       followers(skip: $skip, first: $first) {
+        id
         email
         username
         firstName
@@ -106,6 +107,7 @@ export const GET_FOLLOWS = gql`
         count
       }
       follows( skip: $skip, first: $first) {
+        id
         email
         username
         firstName

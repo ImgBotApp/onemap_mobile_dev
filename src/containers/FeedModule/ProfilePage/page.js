@@ -12,7 +12,7 @@ import CircleImage from '@components/CircleImage'
 import TitleImage from '@components/TitledImage'
 import styles from './styles'
 import I18n from '@language'
-import { getDeviceWidth, getDeviceHeight, calculateCount } from '@global'
+import { getDeviceWidth, getDeviceHeight, calculateCount, clone } from '@global'
 import * as SCREEN from '@global/screenName'
 import { BLUE_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import DFonts from '@theme/fonts'
@@ -81,10 +81,23 @@ class ProfilePage extends Component {
     }).catch(err => alert(err))
   }
 
+  onFollow(willFollow) {
+    let follows = clone(this.props.follows);
+    if (willFollow) {
+      follows.push({
+        id: this.state.user.id
+      });
+    } else {
+      const index = follows.map(item => item.id).indexOf(this.state.user.id);
+      follows.splice(index, 1);
+    }
+    this.props.saveUserFollows(follows);
+  }
+
   onCampaignPress(id) {
     alert(id)
   }
-  
+
   onViewCollectionItem = (item) => {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
@@ -135,23 +148,23 @@ class ProfilePage extends Component {
         <View style={styles.userInformationContainer}>
           <View style={styles.userInformation}>
             <View style={{ flexDirection: 'row' }}>
-              <CircleImage uri={user.uri} style={styles.userImage} radius={getDeviceWidth(177)} />
+              <CircleImage uri={user.photoURL} style={styles.userImage} radius={getDeviceWidth(177)} />
               <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage} />
             </View>
             <View style={styles.userInfo}>
               <View>
                 <Text style={styles.userName}>{user.displayName}</Text>
-                <Text style={styles.userId}>{user.name}</Text>
+                <Text style={styles.userId}>{user.username}</Text>
               </View>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => this.onFollow(!followed)}>
                 <View style={styles.FollowingButton}>
-                  <Text style={styles.FollowingText}>{followed ? I18n.t('PROFILE_FOLLOWING') : I18n.t('FEED_FOLLOW')}</Text>
+                  <Text style={styles.FollowingText}>{followed ? I18n.t('UNFOLLOW') : I18n.t('FEED_FOLLOW')}</Text>
                 </View>
               </TouchableOpacity>
             </View>
           </View>
           <View style={styles.propertyContainer}>
-            <View style={styles.propertyView}>
+            <View style={[styles.propertyView, {height: 25}]}>
               <Text style={styles.pText}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWED')}</Text>
               {followed && <Entypo name="user" size={12} color={BLUE_COLOR} />}
             </View>

@@ -17,42 +17,44 @@ class FollowingList extends Component {
     if (!this.props.data.loading) {
       followingUsers = this.props.data.User.follows.map((user) => {
         return {
-          id:user.id,
-          displayName:user.displayName,
-          email:user.email,
-          bio:user.bio?user.bio:"",
-          photoURL:user.photoURL ? user.photoURL:'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+          id: user.id,
+          displayName: user.displayName,
+          email: user.email,
+          bio: user.bio ? user.bio : "",
+          photoURL: user.photoURL ? user.photoURL : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
         }
       });
     }
     return (
       <View style={styles.container}>
-        <FlatList 
+        <FlatList
           keyExtractor={this._keyExtractor}
           data={followingUsers}
-          renderItem={(data) => 
-          <View style={styles.userRow}>
-            <View style={styles.mainItem}>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <CircleImage style={styles.itemImage} uri={data.item.photoURL} radius={getDeviceWidth(88)}/>
-                <View style={styles.itemInfo}>
-                  <Text style={styles.username}>{data.item.displayName}</Text>
-                  <Text style={styles.bio} numberOfLines={2}>{data.item.bio}</Text>
-                </View>
-              </View>
-              { 
-                (
-                <View style={styles.labelContainer}>
-                  <TouchableOpacity onPress={() => this.props.onFollowing(data)}>
-                    <View style={styles.followText}>
-                      <Text style={styles.followButton}>Follwoing</Text>
-                    </View>
+          renderItem={({item}) =>
+            <View style={styles.userRow}>
+              <View style={styles.mainItem}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <TouchableOpacity onPress={() => this.props.onPress(item)}>
+                    <CircleImage style={styles.itemImage} uri={item.photoURL} radius={getDeviceWidth(88)} />
                   </TouchableOpacity>
+                  <View style={styles.itemInfo}>
+                    <Text style={styles.username}>{item.displayName}</Text>
+                    <Text style={styles.bio} numberOfLines={2}>{item.bio}</Text>
+                  </View>
                 </View>
-                )
-              }
-            </View>
-          </View>}
+                {
+                  (
+                    <View style={styles.labelContainer}>
+                      <TouchableOpacity onPress={() => this.props.onFollowing(item)}>
+                        <View style={styles.followText}>
+                          <Text style={styles.followButton}>Follwoing</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  )
+                }
+              </View>
+            </View>}
         />
       </View>
     );

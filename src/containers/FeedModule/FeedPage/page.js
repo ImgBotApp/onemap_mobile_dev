@@ -59,9 +59,9 @@ class FeedPage extends Component {
         data: users.data.allUsers.map((user) => {
           return {
             id: user.id,
-            name: user.username,
+            username: user.username,
             displayName: user.displayName,
-            uri: user.photoURL,
+            photoURL: user.photoURL,
           }
         })
       };
@@ -82,8 +82,8 @@ class FeedPage extends Component {
           user: {
             id: place.createdBy.id,
             displayName: place.createdBy.displayName,
-            name: place.createdBy.username,
-            uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+            username: place.createdBy.username,
+            photoURL: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
             updated: new Date(place.updatedAt)
           },
           feedTitle: place.placeName,
