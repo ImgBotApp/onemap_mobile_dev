@@ -30,6 +30,7 @@ const LATTITUDE_DELTA = 0.002;
 const LONGTITUDE_DELTA = LATTITUDE_DELTA * ASPECT_RATIO
 
 class SearchPage extends Component {
+  watchID;
   constructor(props) {
     super(props)
     this.state = {
@@ -53,10 +54,8 @@ class SearchPage extends Component {
         latitudeDelta: LATTITUDE_DELTA,
         longitudeDelta: LONGTITUDE_DELTA,
       },
-      initialMarker: {
-        latitude: 0,
-        longitude: 0,
-      },
+      initialMarker:null,
+      myPosition:null
     }
     props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
@@ -79,27 +78,63 @@ class SearchPage extends Component {
   }
   componentDidMount() {
     _this = this;
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({myPosition:position.coords});
+        this.updateMapView();
+        
+      },
+      (error) => alert(JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 0,distanceFilter:0.1}
+    );
+    this.watchID = navigator.geolocation.watchPosition((position) => {
+      this.setState({myPosition:position.coords});
+      this.updateMapView();
+     
+   },{enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1});
+  }
+  componentWillUnmount (){
+    if(this.watchID != null)
+      navigator.geolocation.clearWatch(this.watchID);
   }
   componentWillMount() {
     
   }
+  updateMapView(){
+    var getInitialRegion = {
+      latitude: this.state.myPosition.latitude,
+      longitude: this.state.myPosition.longitude,
+      latitudeDelta: LATTITUDE_DELTA,
+      longitudeDelta: LONGTITUDE_DELTA,
+    }
+    var getInitialRegionMaker = {
+      latitude: this.state.myPosition.latitude,
+      longitude: this.state.myPosition.longitude,
+    }
+    this.setState({
+      initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
+    })
+  }
   onSearchNearByPlace(){
     RNGooglePlaces.getCurrentPlace()
             .then((results) => {
-              var getInitialRegion = {
-                latitude: results[0].latitude,
-                longitude: results[0].longitude,
-                latitudeDelta: LATTITUDE_DELTA,
-                longitudeDelta: LONGTITUDE_DELTA,
+              if(!this.state.initialMarker)
+              {
+                var getInitialRegion = {
+                  latitude: results[0].latitude,
+                  longitude: results[0].longitude,
+                  latitudeDelta: LATTITUDE_DELTA,
+                  longitudeDelta: LONGTITUDE_DELTA,
+                }
+                var getInitialRegionMaker = {
+                  latitude: results[0].latitude,
+                  longitude: results[0].longitude,
+                }
+                this.setState({
+                  initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
+                  title: results[0].name, address: results[0].address,
+                })
               }
-              var getInitialRegionMaker = {
-                latitude: results[0].latitude,
-                longitude: results[0].longitude,
-              }
-              this.setState({
-                initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
-                title: results[0].name, address: results[0].address,
-              })
               // this.setPinLocation(results);
               var getNearByLocationsPin = [];
               for (var i = 0; i < results.length; i++) {
@@ -129,7 +164,9 @@ class SearchPage extends Component {
     if(this.state.isFeaching)
       this.onCreatePlace();
 
-    //let curr_position ="lat:"+this.state.initialMarker.latitude+" long:"+this.state.initialMarker.longitude;
+    let curr_position;
+    if(this.state.myPosition)
+      curr_position="lat:"+this.state.myPosition.latitude+" lng:"+this.state.myPosition.longitude;
               
     return (
       <View style={styles.container}>
@@ -158,30 +195,32 @@ class SearchPage extends Component {
                 showsBuildings={true}
               >
                 {this.state.nearByPlacesPin.map((marker, key) => (
-                  key == 0 ?
-                    <Marker
-                      key={key}
-                      image={require('@assets/images/greenPin.png')}
-                      coordinate={this.state.initialMarker}
-                      zIndex = {this.state.nearByPlacesPin.length+1000}
-                    >
-                      <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
-                        <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
-                      </Callout>
-                    </Marker>
-                    :
+                  
                     <Marker
                       key={key} 
-                      image={require('@assets/images/marker.png')}
                       coordinate={marker.coordinates}
                       zIndex = {key}
                     >
+                      <Image source={require('@assets/images/marker.png')} style = {styles.mapmarker} />
                       <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
                         <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
                       </Callout>
                     </Marker>
                 ))}
-
+              {
+                this.state.myPosition?(
+                  <Marker
+                      coordinate={this.state.myPosition}
+                      zIndex = {this.state.nearByPlacesPin.length+1000}
+                      style = {styles.mapmarker}
+                    >
+                      <Image source={require('@assets/images/greenPin.png')} style = {styles.mapmarker} />
+                      <Callout style={styles.customView}>
+                        <Text style={{ flexWrap: "nowrap" }}>{curr_position}</Text>
+                      </Callout>
+                    </Marker>
+                ):null
+              }
               </MapView>
             </View>
             {/* } */}
