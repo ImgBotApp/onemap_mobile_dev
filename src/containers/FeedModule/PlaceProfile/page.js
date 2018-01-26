@@ -60,7 +60,7 @@ class PlaceProfile extends PureComponent {
       {
         title: '',
         buttonColor: DARK_GRAY_COLOR,
-        id:'more',
+        id: 'more',
         disableIconTint: true
       }
     ]
@@ -92,7 +92,9 @@ class PlaceProfile extends PureComponent {
         information: {},
         image: [],
         map: {},
-        interests: {},
+        heartedIds: [],
+        checkedInIds: [],
+        collectionIds: [],
         keywords: [],
         comments: [],
       },
@@ -150,15 +152,12 @@ class PlaceProfile extends PureComponent {
             website: data.website,
             openingHours: [data.openingHrs]
           },
-          interests: {
-            hearted: data._usersLikeMeta.count,
-            checkIns: data._userCheckedInMeta.count,
-            bookmark: data._collectionsMeta.count
-          },
+          heartedIds: data.usersLike.map(item => item.id),
+          checkedInIds: data.userCheckedIn.map(item => item.id),
+          collectionIds: this.props.place ? this.props.place.collectionIds : [],
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
           comments: data.stories.filter(item => item.createdBy.id !== this.props.user.id),
           bookmark: this.props.place ? this.props.place.bookmark : false,
-          collectionIds: this.props.place ? this.props.place.collectionIds : null
         },
         myStory: myStories.length ? myStories[0] : this.state.myStory,
         storyImages: myStories.length ? [...myStories[0].pictureURL.map(item => ({ uri: item })), ...this.state.storyImages] : this.state.storyImages
@@ -314,6 +313,29 @@ class PlaceProfile extends PureComponent {
     })
   }
 
+  onHeartClick() {
+    let placeData = clone(this.state.placeData);
+    let hearts = placeData.heartedIds;
+    const index = hearts.indexOf(this.props.user.id);
+    if (index < 0) {
+      hearts.push(this.props.user.id);
+    } else {
+      hearts.splice(index, 1);
+    }
+    this.setState({ placeData });
+  }
+
+  onCheckInClick() {
+    let placeData = clone(this.state.placeData);
+    let checks = placeData.checkedInIds;
+    checks.push(this.props.user.id);
+    this.setState({ placeData });
+  }
+
+  onShareClick() {
+
+  }
+
   renderTitle() {
     return (
       <View style={styles.titleContainer}>
@@ -397,19 +419,19 @@ class PlaceProfile extends PureComponent {
             <Foundation name="marker" size={12} color={BLUE_COLOR} />
             <Foundation name="bookmark" size={12} color={RED_COLOR} />
           </View>
-          <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.hearted)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
-          <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.checkIns)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
-          <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.bookmark)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
+          <Text style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
+          <Text style={styles.interestText}>{calculateCount(this.state.placeData.checkedInIds.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
+          <Text style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
         </View>
         <View style={styles.serparate}></View>
         <View style={styles.buttonInterest}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.onHeartClick.bind(this)}>
             <Foundation name="heart" size={35} color={RED_COLOR} />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.onCheckInClick.bind(this)}>
             <Foundation name="marker" size={35} color={BLUE_COLOR} />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.onShareClick.bind(this)}>
             <Foundation name="share" size={35} color={GREEN_COLOR} />
           </TouchableOpacity>
         </View>

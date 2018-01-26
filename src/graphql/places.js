@@ -110,6 +110,12 @@ export const GET_PLACE_PROFILE = gql`
         }
         updatedAt
       }
+      userCheckedIn {
+        id
+      }
+      usersLike {
+        id
+      }
       _userCheckedInMeta {
         count
       }
