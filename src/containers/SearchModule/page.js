@@ -20,6 +20,7 @@ import { Marker, Callout } from 'react-native-maps';
 import Permissions from 'react-native-permissions'
 import { Places } from 'google-places-web'
 import { PLACES_APIKEY } from '@global/const';
+import Toast, { DURATION } from 'react-native-easy-toast'
 
 Places.apiKey = PLACES_APIKEY;
 Places.debug = true;
@@ -55,7 +56,8 @@ class SearchPage extends Component {
         longitudeDelta: LONGTITUDE_DELTA,
       },
       initialMarker:null,
-      myPosition:null
+      myPosition:null,
+      isCallingAPI:false,
     }
     props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
@@ -114,10 +116,16 @@ class SearchPage extends Component {
     this.setState({
       initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
     })
+    this.onSearchNearByPlace();
   }
   onSearchNearByPlace(){
+    if(this.state.isCallingAPI)
+      return;
+    this.setState({isCallingAPI:true});
     RNGooglePlaces.getCurrentPlace()
             .then((results) => {
+              this.setState({isCallingAPI:false})
+              //this.refs.toast.show('nearby search updated')
               if(!this.state.initialMarker)
               {
                 var getInitialRegion = {
@@ -158,7 +166,7 @@ class SearchPage extends Component {
               results.shift();
               this.setState({ nearByPlaces: results })
             })
-            .catch((error) => alert(error.message));
+            .catch((error) => this.setState({isCallingAPI:false}));
   }
   render() {
     if(this.state.isFeaching)
@@ -262,6 +270,7 @@ class SearchPage extends Component {
         {
           this.state.loading ? (<LoadingSpinner />) : null
         }
+        <Toast ref="toast" />
       </View>
     );
   }
