@@ -50,6 +50,8 @@
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>whatsapp</string>
+		<string>mailto</string>
 		<string>fbapi</string>
 		<string>fb-messenger-share-api</string>
 		<string>fbauth2</string>
@@ -74,21 +76,21 @@
 				<key>NSIncludesSubdomains</key>
 				<true/>
 			</dict>
-      <key>facebook.com</key>
-      <dict>
-        <key>NSIncludesSubdomains</key>
-        <true/>
-        <key>NSExceptionRequiresForwardSecrecy</key>
-        <false/>
-      </dict>
-      <key>fbcdn.net</key>
-      <dict>
-        <key>NSIncludesSubdomains</key>
-        <true/>
-        <key>NSExceptionRequiresForwardSecrecy</key>
-        <false/>
-      </dict>
-      <key>res.cloudinary.com</key>
+			<key>facebook.com</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+			</dict>
+			<key>fbcdn.net</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+			</dict>
+			<key>res.cloudinary.com</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>

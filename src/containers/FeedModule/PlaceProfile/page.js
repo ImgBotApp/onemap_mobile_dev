@@ -7,6 +7,7 @@ import ImagePicker from 'react-native-image-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; import Modal from 'react-native-modalbox';
 import Overlay from 'react-native-modal-overlay';
+import Share from 'react-native-share';
 import TagInput from 'react-native-tag-input';
 import Foundation from 'react-native-vector-icons/Foundation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -333,7 +334,13 @@ class PlaceProfile extends PureComponent {
   }
 
   onShareClick() {
-
+    const shareOptions = {
+      // title: this.state.placeData.title,
+      message: this.state.placeData.title,
+      // url: this.state.placeData.image[0].uri
+    };
+    Share.open(shareOptions)
+      .catch(err => console.log(err));
   }
 
   renderTitle() {
