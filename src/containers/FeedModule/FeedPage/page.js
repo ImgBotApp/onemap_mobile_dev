@@ -152,15 +152,15 @@ class FeedPage extends Component {
     this.setState({ selectedCollections: tmp });
   }
   addBookmarks() {
+    let tmpPlace = clone(this.state.selectedPlace);
+    tmpPlace.bookmark = true;
+    tmpPlace.collectionIds = [...tmpPlace.collectionIds, ...this.state.selectedCollections];
     this.props.addCollectionToPlace({
       variables: {
         id: this.state.selectedPlace.id,
-        collectionIds: this.state.selectedCollections
+        collectionIds: tmpPlace.collectionIds
       }
     }).then(places => {
-      let tmpPlace = this.state.selectedPlace;
-      tmpPlace.bookmark = true;
-      tmpPlace.collectionIds = this.state.selectedCollections;
       let items = clone(this.state.items);
       items[this.state.selectedPlaceIndex] = tmpPlace;
       this.setState({ items, collectionModal: false });
@@ -324,14 +324,18 @@ class FeedPage extends Component {
   }
 
   onPressUserProfile(userInfo) {
-    this.props.navigator.push({
-      screen: SCREEN.USERS_PROFILE_PAGE,
-      title: I18n.t('PROFILE_PAGE_TITLE'),
-      animated: true,
-      passProps: {
-        userInfo
-      }
-    })
+    if (userInfo.id === this.props.user.id) {
+      this.props.navigator.switchToTab({ tabIndex: 2 });
+    } else {
+      this.props.navigator.push({
+        screen: SCREEN.USERS_PROFILE_PAGE,
+        title: I18n.t('PROFILE_PAGE_TITLE'),
+        animated: true,
+        passProps: {
+          userInfo
+        }
+      })
+    }
   }
 
   onPlace(data, index) {

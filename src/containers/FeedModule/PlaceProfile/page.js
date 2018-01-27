@@ -129,6 +129,7 @@ class PlaceProfile extends PureComponent {
         id: this.state.currentPlaceID
       }
     }).then((place) => {
+      alert(this.props.place.collectionIds.length)
       let data = place.data.Place;
       let myStories = data.stories.filter(item => item.createdBy.id === this.props.user.id);
       this.setState({
@@ -153,9 +154,9 @@ class PlaceProfile extends PureComponent {
             website: data.website,
             openingHours: [data.openingHrs]
           },
-          heartedIds: data.usersLike.map(item => item.id),
-          checkedInIds: data.userCheckedIn.map(item => item.id),
-          collectionIds: this.props.place ? this.props.place.collectionIds : [],
+          heartedIds: data.usersLike,
+          checkedInIds: data.userCheckedIn,
+          collectionIds: this.props.place ? this.props.place.collectionIds : data.collections,
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
           comments: data.stories.filter(item => item.createdBy.id !== this.props.user.id),
           bookmark: this.props.place ? this.props.place.bookmark : false,
@@ -212,21 +213,20 @@ class PlaceProfile extends PureComponent {
     this.forceUpdate();
   }
   addBookmarks() {
+    let placeData = clone(this.state.placeData);
+    placeData.bookmark = true;
+    placeData.collectionIds = [...placeData.collectionIds, ...this.state.selectedCollections];
     this.props.addCollectionToPlace({
       variables: {
         id: this.state.currentPlaceID,
-        collectionIds: this.state.selectedCollections
+        collectionIds: placeData.collectionIds
       }
     }).then(places => {
-      let placeData = clone(this.state.placeData);
-      placeData.bookmark = true;
-      placeData.collectionIds = this.state.selectedCollections;
       this.setState({ placeData, collectionModal: false, selectedCollections: [] });
-
       if (this.props.onPlaceUpdate) {
         let place = clone(this.props.place);
         place.bookmark = true;
-        place.collectionIds = this.state.selectedCollections;
+        place.collectionIds = placeData.collectionIds;
         this.props.onPlaceUpdate(place);
       }
     });
@@ -786,9 +786,9 @@ class PlaceProfile extends PureComponent {
   }
 
   _renderCommentStory() {
-    return this.state.placeData.comments.map(dataItem => {
+    return this.state.placeData.comments.map((dataItem, index) => {
       return (
-        <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
+        <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
           <View style={{ flexDirection: 'row' }}>
             <CircleImage style={styles.storyWriterImage} uri={dataItem.createdBy.photoURL} radius={getDeviceWidth(67)} />
             <View>

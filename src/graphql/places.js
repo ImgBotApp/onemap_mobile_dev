@@ -116,11 +116,8 @@ export const GET_PLACE_PROFILE = gql`
       usersLike {
         id
       }
-      _userCheckedInMeta {
-        count
-      }
-      _collectionsMeta {
-        count
+      collections {
+        id
       }
     }
   }
