@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import { CREATE_KEYWORD, DELETE_KEYWORD } from "@graphql/keywords";
 import { ADD_COLLECTION_TO_PLACE, REMOVE_COLLECTION_FROM_PLACE } from "@graphql/places";
-import { CREATE_STORY, UPDATE_STORY } from "@graphql/users";
+import { CREATE_STORY, UPDATE_STORY } from "@graphql/stories";
 import page from './page'
 
 function mapStateToProps(state) {

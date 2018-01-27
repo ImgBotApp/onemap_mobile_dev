@@ -25,7 +25,8 @@ import { client } from '@root/main'
 import { graphql } from "react-apollo";
 
 import { PLACES_PAGINATED } from "@graphql/places";
-import { SUGGEST_USERS, GET_FOLLOW_USERS } from '@graphql/users'
+import { SUGGEST_USERS } from '@graphql/users'
+import { GET_FOLLOWS } from '@graphql/userprofile'
 import { GET_USER_COLLECTIONS, GET_MY_COLLECTIONS } from '@graphql/collections'
 
 // create a component
@@ -195,7 +196,7 @@ class FeedPage extends Component {
   }
   getMyFollows = () => {
     client.query({
-      query: GET_FOLLOW_USERS,
+      query: GET_FOLLOWS,
       variables: {
         userId: this.props.user.id,
         blockUsersIds: []

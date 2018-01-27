@@ -62,7 +62,7 @@ class FollowerList extends Component {
                       {/* <View style={styles.followText}>
                       <Text style={styles.followButton}>Follow</Text>
                     </View> */}
-                      <Text style={{ color: LIGHT_GRAY_COLOR }}> ••• </Text>
+                      {/* <Text style={{ color: LIGHT_GRAY_COLOR }}> ••• </Text> */}
                     </View>
                   )
                 }
