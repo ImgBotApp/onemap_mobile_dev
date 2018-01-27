@@ -25,6 +25,10 @@ export default function app(state = initialState, action = {}) {
       return state.merge({
         follows: action.follows
       });
+    case types.STORE_USER_FOLLOWERS:
+      return state.merge({
+        follows: action.followers
+      });
     default:
       return state;
   }

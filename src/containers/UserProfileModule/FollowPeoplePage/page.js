@@ -7,6 +7,7 @@ import Search from 'react-native-search-box'
 import Tabs from 'react-native-tabs'
 import FollowerList from '@components/FollowersList'
 import FollowingItem from '@components/FollowingItem'
+import { clone } from '@global'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
@@ -40,7 +41,8 @@ class FollowerPeople extends Component {
     this.state = {
       page: 'followers',
       isFollowerDialog: false,
-      isFollowingDialog: false
+      isFollowingDialog: false,
+      selectedIndex: 0
     }
   }
   onNavigatorEvent = (event) => {
@@ -53,21 +55,36 @@ class FollowerPeople extends Component {
     }
   }
 
-  onPressUserProfile(userInfo) {
+  onPressUserProfile(index) {
     this.props.navigator.push({
       screen: SCREEN.USERS_PROFILE_PAGE,
       title: I18n.t('PROFILE_PAGE_TITLE'),
       animated: true,
       passProps: {
-        userInfo
+        userInfo: this.props.follows[index]
       }
     })
   }
-  onFollow(index) {
+  onFollowingPressed(index) {
     this.setState({
-      isFollowingDialog: true
+      isFollowingDialog: true,
+      selectedIndex: index
     })
   }
+  onUnfollow() {
+    let followsIds = clone(this.props.follows.map(item => item.id));
+    followsIds.splice(this.state.selectedIndex, 1);
+
+    this.props.unfollowUser({
+      variables: {
+        id: this.props.user.id,
+        followsIds
+      }
+    }).then(({ data }) => {
+      this.props.saveUserFollows(data.updateUser.follows);
+    }).catch(err => alert(err));
+  }
+
   onFollowerBlock = (userData) => {
     this.setState({
       isFollowerDialog: true
@@ -79,7 +96,7 @@ class FollowerPeople extends Component {
       <FollowingItem
         data={item}
         onPress={() => this.onPressUserProfile(index)}
-        onFollow={() => this.onFollow(index)}
+        onFollow={() => this.onFollowingPressed(index)}
       />
     )
   }
@@ -152,7 +169,10 @@ class FollowerPeople extends Component {
         </View>
         <View style={styles.FollowerBottom}>
           <View style={styles.modalButton}>
-            <TouchableOpacity onPress={() => this.setState({ isFollowingDialog: false })}>
+            <TouchableOpacity onPress={() => {
+              this.setState({ isFollowingDialog: false });
+              this.onUnfollow();
+            }}>
               <Text style={styles.blockStr}>{I18n.t('UNFOLLOW')}</Text>
             </TouchableOpacity>
           </View>
