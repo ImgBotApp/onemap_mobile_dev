@@ -324,3 +324,37 @@ export const GET_BLOCKUSRS = gql`
   }
 `
 
+export const FOLLOW_USER = gql`
+ mutation FollowUser (
+    $id: ID!
+    $followsIds: [ID!]
+  ) {
+    updateUser(
+      id: $id
+      followsIds: $followsIds
+    ) {
+      id
+      follows {
+        id
+        email
+        username
+        firstName
+        lastName
+        displayName
+        bio
+        gender
+        birthdate
+        mobile
+        mobileVerification
+        city
+        country
+        photoURL
+        loginMethod
+        registrationDate
+        group
+        accountStatus
+        isSuggest
+      }
+    }
+  } 
+`

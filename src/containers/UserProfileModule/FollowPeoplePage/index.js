@@ -3,8 +3,10 @@ import { connect } from 'react-redux'
 
 
 function mapStateToProps(state) {
+  const { follows } = state.app;
   return {
-    user: state.User
+    user: state.User,
+    follows,
   }
 }
 

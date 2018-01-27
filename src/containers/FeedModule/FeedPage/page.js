@@ -26,7 +26,6 @@ import { graphql } from "react-apollo";
 
 import { PLACES_PAGINATED } from "@graphql/places";
 import { SUGGEST_USERS } from '@graphql/users'
-import { GET_FOLLOWS } from '@graphql/userprofile'
 import { GET_USER_COLLECTIONS, GET_MY_COLLECTIONS } from '@graphql/collections'
 
 // create a component
@@ -68,7 +67,6 @@ class FeedPage extends Component {
       };
     })
     this.getMyCollections();
-    this.getMyFollows();
   }
   componentWillReceiveProps(nextProps) {
     if (!this.props.placeUpdated && nextProps.placeUpdated) {
@@ -193,17 +191,6 @@ class FeedPage extends Component {
     }).then(collections => {
       this.props.saveCollections(collections.data.allCollections);
     })
-  }
-  getMyFollows = () => {
-    client.query({
-      query: GET_FOLLOWS,
-      variables: {
-        userId: this.props.user.id,
-        blockUsersIds: []
-      }
-    }).then(({ data }) => {
-      this.props.saveUserFollows(data.User.follows);
-    }).catch(err => alert(err))
   }
   closeSuggest() {
     this.setState({

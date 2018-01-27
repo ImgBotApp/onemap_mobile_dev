@@ -18,6 +18,9 @@ import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
 import { SMALL_FONT_SIZE } from '@theme/fonts';
 
+import { client } from '@root/main'
+import { GET_FOLLOWS } from '@graphql/userprofile';
+
 class ProfileComponent extends Component {
   static navigatorButtons = {
     rightButtons: [
@@ -45,12 +48,30 @@ class ProfileComponent extends Component {
     }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      ...nextProps.user,
-      displayName: nextProps.user.displayName || nextProps.user.firstName + " " + nextProps.user.lastName
-    })
+  componentWillMount() {
+    this.getMyFollows();
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.user != this.props.user) {
+      this.setState({
+        ...nextProps.user,
+        displayName: nextProps.user.displayName || nextProps.user.firstName + " " + nextProps.user.lastName
+      });
+    }
+  }
+
+  getMyFollows = () => {
+    client.query({
+      query: GET_FOLLOWS,
+      variables: {
+        userId: this.props.user.id,
+        blockUsersIds: []
+      }
+    }).then(({ data }) => {
+      this.props.saveUserFollows(data.User.follows);
+    }).catch(err => alert(err))
+  }
+
   onNavigatorEvent = (event) => {
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'Setting') {
@@ -78,7 +99,7 @@ class ProfileComponent extends Component {
     })
   }
   render() {
-    const { data: { loading, error, allStories }, GetFollowingList, GetFollowersList } = this.props;
+    const { data: { loading, error, allStories }, GetFollowersList, follows } = this.props;
     if (loading) {
       return (
         <ActivityIndicator />
@@ -87,13 +108,13 @@ class ProfileComponent extends Component {
     if (!loading && error) {
       return <Text>{error}</Text>
     }
-    var follower_cnt = 0;
+
+    let follow_cnt = follows.length;
+    
+    let follower_cnt = 0;
     if (!GetFollowersList.loading && GetFollowersList.User.followers)
       follower_cnt = GetFollowersList.User.followers.length;
 
-    var follow_cnt = 0;
-    if (!GetFollowingList.loading && GetFollowingList.User.followers)
-      follower_cnt = GetFollowingList.User.followers.length;
     return (
       <ScrollView style={styles.container}>
         <View style={styles.infoView}>

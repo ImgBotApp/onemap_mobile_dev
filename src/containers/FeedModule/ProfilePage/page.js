@@ -82,16 +82,22 @@ class ProfilePage extends Component {
   }
 
   onFollow(willFollow) {
-    let follows = clone(this.props.follows);
+    let followsIds = clone(this.props.follows.map(item => item.id));
     if (willFollow) {
-      follows.push({
-        id: this.state.user.id
-      });
+      followsIds.push(this.state.user.id);
     } else {
-      const index = follows.map(item => item.id).indexOf(this.state.user.id);
-      follows.splice(index, 1);
+      const index = followsIds.indexOf(this.state.user.id);
+      followsIds.splice(index, 1);
     }
-    this.props.saveUserFollows(follows);
+
+    this.props.followUser({
+      variables: {
+        id: this.props.user.id,
+        followsIds
+      }
+    }).then(({ data }) => {
+      this.props.saveUserFollows(data.updateUser.follows);
+    }).catch(err => alert(err));
   }
 
   onCampaignPress(id) {
@@ -164,7 +170,7 @@ class ProfilePage extends Component {
             </View>
           </View>
           <View style={styles.propertyContainer}>
-            <View style={[styles.propertyView, {height: 25}]}>
+            <View style={[styles.propertyView, { height: 25 }]}>
               <Text style={styles.pText}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWED')}</Text>
               {followed && <Entypo name="user" size={12} color={BLUE_COLOR} />}
             </View>

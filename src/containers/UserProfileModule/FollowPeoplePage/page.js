@@ -1,12 +1,12 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Modal from 'react-native-modalbox'
 import Search from 'react-native-search-box'
 import Tabs from 'react-native-tabs'
 import FollowerList from '@components/FollowersList'
-import FollowingList from '@components/FollowingList'
+import FollowingItem from '@components/FollowingItem'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
@@ -52,6 +52,7 @@ class FollowerPeople extends Component {
       }
     }
   }
+
   onPressUserProfile(userInfo) {
     this.props.navigator.push({
       screen: SCREEN.USERS_PROFILE_PAGE,
@@ -62,12 +63,57 @@ class FollowerPeople extends Component {
       }
     })
   }
+  onFollow(index) {
+    this.setState({
+      isFollowingDialog: true
+    })
+  }
   onFollowerBlock = (userData) => {
     this.setState({
       isFollowerDialog: true
     })
   }
 
+  renderFollowItem = ({ item, index }) => {
+    return (
+      <FollowingItem
+        data={item}
+        onPress={() => this.onPressUserProfile(index)}
+        onFollow={() => this.onFollow(index)}
+      />
+    )
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={{ position: 'relative' }}>
+          <Tabs selected={this.state.page} style={{ backgroundColor: 'white', position: 'relative' }}
+            selectedStyle={{ color: 'red' }} onSelect={el => this.setState({ page: el.props.name })} >
+            <Text name="followers"> Followers </Text>
+            <Text name="following"> Following </Text>
+          </Tabs>
+        </View>
+        <View style={{ height: '100%' }}>
+          {/* <Search /> */}
+          {
+            this.state.page == 'followers' ?
+              <FollowerList
+                onPress={this.onPressUserProfile.bind(this)}
+                onItemPress={this.onFollowerBlock.bind(this)}
+                userid={this.props.user.id}
+              /> :
+              <FlatList
+                keyExtractor={(item, index) => index}
+                data={this.props.follows}
+                renderItem={this.renderFollowItem}
+              />
+          }
+        </View>
+        {this._renderFollowerModal()}
+        {this._renderFollowingModal()}
+      </View>
+    );
+  }
   _renderFollowerModal() {
     return (
       <Modal style={styles.modalContainer} backdrop={true} position={'center'}
@@ -113,47 +159,6 @@ class FollowerPeople extends Component {
         </View>
       </Modal>
     )
-  }
-  onFollowingItem = (data) => {
-    this.setState({
-      isFollowingDialog: true
-    })
-  }
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={{ position: 'relative' }}>
-          <Tabs selected={this.state.page} style={{ backgroundColor: 'white', position: 'relative' }}
-            selectedStyle={{ color: 'red' }} onSelect={el => this.setState({ page: el.props.name })} >
-            <Text name="followers"> Followers </Text>
-            <Text name="following"> Following </Text>
-          </Tabs>
-        </View>
-        <View style={{ height: '100%' }}>
-          {/* <Search /> */}
-          {
-            this.state.page == 'followers' ?
-              <FollowerList
-                onPress={this.onPressUserProfile.bind(this)}
-                onItemPress={this.onFollowerBlock.bind(this)}
-                userid={this.props.user.id}
-              /> :
-              <FollowingList
-                onPress={this.onPressUserProfile.bind(this)}
-                onFollowing={this.onFollowingItem.bind(this)}
-                userid={this.props.user.id}
-              />
-          }
-        </View>
-        {
-          this._renderFollowerModal()
-        }
-        {
-          this._renderFollowingModal()
-        }
-      </View>
-
-    );
   }
 }
 
