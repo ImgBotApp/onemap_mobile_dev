@@ -129,7 +129,6 @@ class PlaceProfile extends PureComponent {
         id: this.state.currentPlaceID
       }
     }).then((place) => {
-      alert(this.props.place.collectionIds.length)
       let data = place.data.Place;
       let myStories = data.stories.filter(item => item.createdBy.id === this.props.user.id);
       this.setState({
@@ -154,12 +153,12 @@ class PlaceProfile extends PureComponent {
             website: data.website,
             openingHours: [data.openingHrs]
           },
-          heartedIds: data.usersLike,
-          checkedInIds: data.userCheckedIn,
-          collectionIds: this.props.place ? this.props.place.collectionIds : data.collections,
+          heartedIds: data.usersLike.map(item => item.id),
+          checkedInIds: data.userCheckedIn.map(item => item.id),
+          collectionIds: this.props.place && this.props.place.collectionIds ? this.props.place.collectionIds : data.collections.map(item => item.id),
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
           comments: data.stories.filter(item => item.createdBy.id !== this.props.user.id),
-          bookmark: this.props.place ? this.props.place.bookmark : false,
+          bookmark: this.isBookmarked(data.collections),
         },
         myStory: myStories.length ? myStories[0] : this.state.myStory,
         storyImages: myStories.length ? [...myStories[0].pictureURL.map(item => ({ uri: item })), ...this.state.storyImages] : this.state.storyImages
@@ -202,9 +201,18 @@ class PlaceProfile extends PureComponent {
       });
     }
   }
+  isBookmarked(collections) {
+    let marked = false;
+    collections.forEach(collection => {
+      if (this.props.collections.map(item => item.id).includes(collection.id)) {
+        marked = true;
+      }
+    });
+    return marked;
+  }
   addBookmark(id) {
-    let tmp = this.state.selectedCollections;
-    if (this.state.selectedCollections.includes(id)) {
+    let tmp = clone(this.state.selectedCollections);
+    if (tmp.includes(id)) {
       tmp.splice(tmp.indexOf(id), 1);
     } else {
       tmp.push(id);
@@ -229,6 +237,7 @@ class PlaceProfile extends PureComponent {
         place.collectionIds = placeData.collectionIds;
         this.props.onPlaceUpdate(place);
       }
+      client.resetStore();
     });
   }
   removeBookmark() {
@@ -251,6 +260,7 @@ class PlaceProfile extends PureComponent {
         place.collectionIds = collectionIds;
         this.props.onPlaceUpdate(place);
       }
+      client.resetStore();
     });
   }
   onNaviagtorEvent(event) {
