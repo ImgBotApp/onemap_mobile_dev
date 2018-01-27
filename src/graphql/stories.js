@@ -54,6 +54,7 @@ query getUserStories(
     }
 }
 `
+
 export const CREATE_STORY = gql`
   mutation CreateStory(
     $title: String!

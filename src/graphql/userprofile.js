@@ -157,7 +157,7 @@ export const UPDATE_USER = gql`#unused
  * Get followers incloud counter
  */
 export const GET_FOLLOWERS = gql`
-  query GetFollowers ($userId: ID!,$skip: Int!,$first: Int) {
+  query GetFollowers ($userId: ID!, $skip: Int, $first: Int) {
     User(id: $userId) {
       id
       _followersMeta {
