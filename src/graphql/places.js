@@ -102,15 +102,22 @@ export const GET_PLACE_PROFILE = gql`
         pictureURL
         place {
           id
+          address
           description
+          locationLat
+          locationLong
+          pictureURL
         }
         updatedAt
       }
-      _userCheckedInMeta {
-        count
+      userCheckedIn {
+        id
       }
-      _collectionsMeta {
-        count
+      usersLike {
+        id
+      }
+      collections {
+        id
       }
     }
   }
@@ -200,6 +207,34 @@ export const REMOVE_COLLECTION_FROM_PLACE = gql`
     updatePlace(
       id: $id,
       collectionsIds: $collectionIds
+    ) {
+      id
+    }
+  }
+`
+
+export const LIKE_PLACE = gql`
+  mutation (
+    $id: ID!,
+    $heartedIds: [ID!]
+  ) {
+    updatePlace(
+      id: $id,
+      usersLikeIds: $heartedIds
+    ) {
+      id
+    }
+  }
+`
+
+export const CHECK_IN_PLACE = gql`
+  mutation (
+    $id: ID!,
+    $checkedIds: [ID!]
+  ) {
+    updatePlace(
+      id: $id,
+      userCheckedInIds: $checkedIds
     ) {
       id
     }

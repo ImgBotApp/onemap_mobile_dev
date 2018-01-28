@@ -35,28 +35,28 @@ class Collections extends Component {
           uri={collections.hearted ? collections.hearted.pictureURL : null}
           radius={8}
           title={'Hearted'}
-          onPress={() => collections.hearted && this.props.onViewItem(collections.hearted)}
+          onPress={() => this.props.onViewItem('like')}
         />
         <CollectionItem style={styles.itemContainer}
           insideStyle={styles.itemContainer}
           uri={collections.checkedin ? collections.checkedin.pictureURL : null}
           radius={8}
           title={'Check-Ins'}
-          onPress={() => collections.checkedin && this.props.onViewItem(collections.checkedin)}
+          onPress={() => this.props.onViewItem('check')}
         />
         <CollectionItem style={styles.itemContainer}
           insideStyle={styles.itemContainer}
           uri={collections.default > 2 ? collections.default.pictureURL : null}
           radius={8}
           title={'All Stories'}
-          onPress={() => false && collections.default && this.props.onViewItem(collections.default)}
+          onPress={this.props.onViewStories}
         />
         <CollectionItem style={styles.itemContainer}
           insideStyle={styles.itemContainer}
           uri={''}
           radius={8}
           title={'+\nView all\nCollections'}
-          onPress={() => this.props.onViewAll()}
+          onPress={this.props.onViewAll}
         />
       </View>
     );

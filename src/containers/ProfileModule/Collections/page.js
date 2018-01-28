@@ -3,22 +3,21 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Tabs from 'react-native-tabs';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
-import { PROVIDER_GOOGLE } from 'react-native-maps';
-
 import MapView from 'react-native-map-clustering';
-import { Marker, Callout } from 'react-native-maps';
+import { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import styles from './styles'
 import { getDeviceWidth, getDeviceHeight } from '@global'
-import { DARK_GRAY_COLOR } from '../../../theme/colors';
-import * as SCREEN from '../../../global/screenName'
+import { DARK_GRAY_COLOR } from '@theme/colors';
+import * as SCREEN from '@global/screenName'
 import { clone } from '@global';
 import I18n from '@language'
+import styles from './styles'
 
 import { client } from '@root/main';
 import { graphql } from "react-apollo";
 import { GET_COLLECTION_WITH_PLACES } from '@graphql/collections';
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import { GET_USER_WITH_CHECKED_PLACES, GET_USER_WITH_LIKED_PLACES } from '@graphql/userprofile'
 
 const PLACES_PER_PAGE = 20;
 
@@ -54,14 +53,24 @@ class Collections extends Component {
     })
     this.state = {
       page: 'Grid View',
-      places: [],
-      loading: true
+      places: props.places ? props.places : [],
+      loading: false
     }
-    this.props.navigator.setTitle({ title: props.collection ? props.collection.name : "Collection" });
+    if (props.collection) {
+      this.props.navigator.setTitle({ title: props.collection.name });
+    }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
   componentWillMount() {
-    this.getCollectionPlaces();
+    if (!this.state.places.length) {
+      if (this.props.type === 'check') {
+        this.getCheckedPlaces();
+      } else if (this.props.type === 'like') {
+        this.getLikedPlaces();
+      } else if (this.props.collections) {
+        this.getCollectionPlaces();
+      }
+    }
   }
   onNavigatorEvent(event) {
     if (event.type == 'NavBarButtonPress') {
@@ -71,7 +80,30 @@ class Collections extends Component {
     }
   }
 
+  getLikedPlaces() {
+    this.setState({ loading: true });
+    client.query({
+      query: GET_USER_WITH_LIKED_PLACES,
+      variables: {
+        userId: this.props.userId ? this.props.userId : this.props.user.id,
+      }
+    }).then(({ data }) => {
+      this.setState({ places: data.User.likePlaces, loading: false });
+    }).catch(err => alert(err))
+  }
+  getCheckedPlaces() {
+    this.setState({ loading: true });
+    client.query({
+      query: GET_USER_WITH_CHECKED_PLACES,
+      variables: {
+        userId: this.props.userId ? this.props.userId : this.props.user.id,
+      }
+    }).then(({ data }) => {
+      this.setState({ places: data.User.checkedIn, loading: false });
+    }).catch(err => alert(err))
+  }
   getCollectionPlaces() {
+    this.setState({ loading: true });
     client.query({
       query: GET_COLLECTION_WITH_PLACES,
       variables: {
@@ -79,9 +111,8 @@ class Collections extends Component {
         first: 50,
         skip: 0
       }
-    }).then(collections => {
-      this.setState({ places: collections.data.Collection.places, loading: false });
-      client.resetStore();
+    }).then(({ data }) => {
+      this.setState({ places: data.Collection.places, loading: false });
     }).catch(err => alert(err))
   }
 
@@ -207,8 +238,8 @@ class Collections extends Component {
       </View>
     )
   }
-  openPlaceProfile(id) {
 
+  openPlaceProfile(id) {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       title: I18n.t('PLACE_TITLE'),

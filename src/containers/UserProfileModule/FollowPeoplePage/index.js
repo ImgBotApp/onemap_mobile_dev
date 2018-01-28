@@ -1,16 +1,26 @@
-import EditProfile from './page'
 import { connect } from 'react-redux'
-
+import { graphql } from 'react-apollo'
+import { FOLLOW_USER } from "@graphql/userprofile";
+import { saveUserFollows } from '@reducers/app/actions'
+import page from './page'
 
 function mapStateToProps(state) {
+  const { follows, followers } = state.app;
   return {
-    user: state.User
+    user: state.User,
+    follows,
+    followers
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-
+    saveUserFollows: data => {
+      dispatch(saveUserFollows(data))
+    }
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfile)
+
+let container = graphql(FOLLOW_USER, { name: 'unfollowUser' })(page);
+
+export default connect(mapStateToProps, mapDispatchToProps)(container)

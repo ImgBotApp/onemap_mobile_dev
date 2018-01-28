@@ -1,21 +1,29 @@
 import page from './page'
 import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
-import { GET_USER_STORIES, GET_FOLLOWERS, GET_FOLLOW_USERS } from '@graphql/users'
-import { saveProfileInfo } from '@actions/userLogIn'
+import { GET_USER_STORIES } from '@graphql/stories'
+import { GET_FOLLOWERS, GET_FOLLOWS } from '@graphql/userprofile'
 
-function mapStateToProps (state) {
+import { saveProfileInfo } from '@actions/userLogIn'
+import { saveUserFollows } from '@reducers/app/actions'
+
+function mapStateToProps(state) {
+  const { collections, follows } = state.app;
   return {
     user: state.User,
-    collections: state.app.collections
+    follows,
+    collections,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   // return bindActionCreators(Actions, dispatch)
   return {
     saveProfileInfo: data => {
       dispatch(saveProfileInfo(data))
+    },
+    saveUserFollows: data => {
+      dispatch(saveUserFollows(data))
     }
   }
 }
@@ -26,13 +34,13 @@ export default compose(
     mapDispatchToProps
   ),
   graphql(
-   GET_USER_STORIES, {
-     options(props) {
-       return {
-         variables: { userId: props.user.id },
-       }
-    },
-  }),
+    GET_USER_STORIES, {
+      options(props) {
+        return {
+          variables: { userId: props.user.id },
+        }
+      },
+    }),
   graphql(
     GET_FOLLOWERS, {
       name: 'GetFollowersList',
@@ -44,18 +52,18 @@ export default compose(
       },
     }
   ),
-  graphql(
-    GET_FOLLOW_USERS, {
-      name: 'GetFollowingList',
-      options(props) {
-        const { user: { id } } = props
-        return {
-          variables: {
-            userId: id,
-            blockUsersIds: [],
-          },
-        }
-      },
-    }
-  )
+  // graphql(//used
+  //   GET_FOLLOWS, {
+  //     name: 'GetFollowingList',
+  //     options(props) {
+  //       const { user: { id } } = props
+  //       return {
+  //         variables: {
+  //           userId: id,
+  //           blockUsersIds: [],
+  //         },
+  //       }
+  //     },
+  //   }
+  // )
 )(page)

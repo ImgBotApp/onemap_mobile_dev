@@ -7,6 +7,7 @@ import ImagePicker from 'react-native-image-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; import Modal from 'react-native-modalbox';
 import Overlay from 'react-native-modal-overlay';
+import Share from 'react-native-share';
 import TagInput from 'react-native-tag-input';
 import Foundation from 'react-native-vector-icons/Foundation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -60,7 +61,7 @@ class PlaceProfile extends PureComponent {
       {
         title: '',
         buttonColor: DARK_GRAY_COLOR,
-        id:'more',
+        id: 'more',
         disableIconTint: true
       }
     ]
@@ -92,7 +93,9 @@ class PlaceProfile extends PureComponent {
         information: {},
         image: [],
         map: {},
-        interests: {},
+        heartedIds: [],
+        checkedInIds: [],
+        collectionIds: [],
         keywords: [],
         comments: [],
       },
@@ -150,15 +153,12 @@ class PlaceProfile extends PureComponent {
             website: data.website,
             openingHours: [data.openingHrs]
           },
-          interests: {
-            hearted: data._usersLikeMeta.count,
-            checkIns: data._userCheckedInMeta.count,
-            bookmark: data._collectionsMeta.count
-          },
+          heartedIds: data.usersLike.map(item => item.id),
+          checkedInIds: data.userCheckedIn.map(item => item.id),
+          collectionIds: this.props.place && this.props.place.collectionIds ? this.props.place.collectionIds : data.collections.map(item => item.id),
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
           comments: data.stories.filter(item => item.createdBy.id !== this.props.user.id),
-          bookmark: this.props.place ? this.props.place.bookmark : false,
-          collectionIds: this.props.place ? this.props.place.collectionIds : null
+          bookmark: this.isBookmarked(data.collections),
         },
         myStory: myStories.length ? myStories[0] : this.state.myStory,
         storyImages: myStories.length ? [...myStories[0].pictureURL.map(item => ({ uri: item })), ...this.state.storyImages] : this.state.storyImages
@@ -201,9 +201,18 @@ class PlaceProfile extends PureComponent {
       });
     }
   }
+  isBookmarked(collections) {
+    let marked = false;
+    collections.forEach(collection => {
+      if (this.props.collections.map(item => item.id).includes(collection.id)) {
+        marked = true;
+      }
+    });
+    return marked;
+  }
   addBookmark(id) {
-    let tmp = this.state.selectedCollections;
-    if (this.state.selectedCollections.includes(id)) {
+    let tmp = clone(this.state.selectedCollections);
+    if (tmp.includes(id)) {
       tmp.splice(tmp.indexOf(id), 1);
     } else {
       tmp.push(id);
@@ -212,23 +221,23 @@ class PlaceProfile extends PureComponent {
     this.forceUpdate();
   }
   addBookmarks() {
+    let placeData = clone(this.state.placeData);
+    placeData.bookmark = true;
+    placeData.collectionIds = [...placeData.collectionIds, ...this.state.selectedCollections];
     this.props.addCollectionToPlace({
       variables: {
         id: this.state.currentPlaceID,
-        collectionIds: this.state.selectedCollections
+        collectionIds: placeData.collectionIds
       }
     }).then(places => {
-      let placeData = clone(this.state.placeData);
-      placeData.bookmark = true;
-      placeData.collectionIds = this.state.selectedCollections;
       this.setState({ placeData, collectionModal: false, selectedCollections: [] });
-
       if (this.props.onPlaceUpdate) {
         let place = clone(this.props.place);
         place.bookmark = true;
-        place.collectionIds = this.state.selectedCollections;
+        place.collectionIds = placeData.collectionIds;
         this.props.onPlaceUpdate(place);
       }
+      client.resetStore();
     });
   }
   removeBookmark() {
@@ -251,6 +260,7 @@ class PlaceProfile extends PureComponent {
         place.collectionIds = collectionIds;
         this.props.onPlaceUpdate(place);
       }
+      client.resetStore();
     });
   }
   onNaviagtorEvent(event) {
@@ -312,6 +322,53 @@ class PlaceProfile extends PureComponent {
         map: this.state.placeData.map
       }
     })
+  }
+
+  onHeartClick(hearted) {
+    let placeData = clone(this.state.placeData);
+    let hearts = placeData.heartedIds;
+    if (hearted) {
+      hearts.push(this.props.user.id);
+    } else {
+      const index = hearts.indexOf(this.props.user.id);
+      hearts.splice(index, 1);
+    }
+
+    this.props.likePlace({
+      variables: {
+        id: placeData.id,
+        heartedIds: hearts
+      }
+    }).then(({ data }) => {
+      this.setState({ placeData });
+      client.resetStore();
+    }).catch(err => alert(err));
+  }
+
+  onCheckInClick() {
+    let placeData = clone(this.state.placeData);
+    let checks = placeData.checkedInIds;
+    checks.push(this.props.user.id);
+
+    this.props.checkInPlace({
+      variables: {
+        id: placeData.id,
+        checkedIds: checks
+      }
+    }).then(({ data }) => {
+      this.setState({ placeData });
+      client.resetStore();
+    }).catch(err => alert(err));
+  }
+
+  onShareClick() {
+    const shareOptions = {
+      // title: this.state.placeData.title,
+      message: this.state.placeData.title,
+      // url: this.state.placeData.image[0].uri
+    };
+    Share.open(shareOptions)
+      .catch(err => console.log(err));
   }
 
   renderTitle() {
@@ -389,6 +446,7 @@ class PlaceProfile extends PureComponent {
   }
 
   renderInterest() {
+    const liked = this.state.placeData.heartedIds.includes(this.props.user.id);
     return (
       <View style={styles.interestContainer}>
         <View style={styles.interestInformation}>
@@ -397,19 +455,19 @@ class PlaceProfile extends PureComponent {
             <Foundation name="marker" size={12} color={BLUE_COLOR} />
             <Foundation name="bookmark" size={12} color={RED_COLOR} />
           </View>
-          <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.hearted)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
-          <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.checkIns)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
-          <Text style={styles.interestText}>{calculateCount(this.state.placeData.interests.bookmark)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
+          <Text style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
+          <Text style={styles.interestText}>{calculateCount(this.state.placeData.checkedInIds.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
+          <Text style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
         </View>
         <View style={styles.serparate}></View>
         <View style={styles.buttonInterest}>
-          <TouchableOpacity>
-            <Foundation name="heart" size={35} color={RED_COLOR} />
+          <TouchableOpacity onPress={() => this.onHeartClick(!liked)}>
+            <Foundation name="heart" size={35} color={liked ? RED_COLOR : LIGHT_GRAY_COLOR} />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.onCheckInClick.bind(this)}>
             <Foundation name="marker" size={35} color={BLUE_COLOR} />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.onShareClick.bind(this)}>
             <Foundation name="share" size={35} color={GREEN_COLOR} />
           </TouchableOpacity>
         </View>
@@ -757,9 +815,9 @@ class PlaceProfile extends PureComponent {
   }
 
   _renderCommentStory() {
-    return this.state.placeData.comments.map(dataItem => {
+    return this.state.placeData.comments.map((dataItem, index) => {
       return (
-        <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
+        <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
           <View style={{ flexDirection: 'row' }}>
             <CircleImage style={styles.storyWriterImage} uri={dataItem.createdBy.photoURL} radius={getDeviceWidth(67)} />
             <View>

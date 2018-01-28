@@ -25,7 +25,7 @@ import { client } from '@root/main'
 import { graphql } from "react-apollo";
 
 import { PLACES_PAGINATED } from "@graphql/places";
-import { SUGGEST_USERS, GET_FOLLOW_USERS } from '@graphql/users'
+import { SUGGEST_USERS } from '@graphql/users'
 import { GET_USER_COLLECTIONS, GET_MY_COLLECTIONS } from '@graphql/collections'
 
 // create a component
@@ -44,7 +44,8 @@ class FeedPage extends Component {
       },
       loading: false,
       refreshing: false,
-      selectedCollections: []
+      selectedCollections: [],
+      loading: true
     };
     this.onEndReached = this.onEndReached.bind(this)
     this.onRefresh = this.onRefresh.bind(this)
@@ -59,15 +60,14 @@ class FeedPage extends Component {
         data: users.data.allUsers.map((user) => {
           return {
             id: user.id,
-            name: user.username,
+            username: user.username,
             displayName: user.displayName,
-            uri: user.photoURL,
+            photoURL: user.photoURL,
           }
         })
       };
     })
     this.getMyCollections();
-    this.getMyFollows();
   }
   componentWillReceiveProps(nextProps) {
     if (!this.props.placeUpdated && nextProps.placeUpdated) {
@@ -82,8 +82,8 @@ class FeedPage extends Component {
           user: {
             id: place.createdBy.id,
             displayName: place.createdBy.displayName,
-            name: place.createdBy.username,
-            uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+            username: place.createdBy.username,
+            photoURL: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
             updated: new Date(place.updatedAt)
           },
           feedTitle: place.placeName,
@@ -93,7 +93,7 @@ class FeedPage extends Component {
           collectionIds: place.collections.map(collection => collection.id)//will be removed later
         }
       });
-      this.setState({ items: [this.suggestUsers, ...graphcoolData] });
+      this.setState({ items: [this.suggestUsers, ...graphcoolData], loading: false });
     }
   }
   fetchFeedItems = () => {//unused
@@ -152,15 +152,15 @@ class FeedPage extends Component {
     this.setState({ selectedCollections: tmp });
   }
   addBookmarks() {
+    let tmpPlace = clone(this.state.selectedPlace);
+    tmpPlace.bookmark = true;
+    tmpPlace.collectionIds = [...tmpPlace.collectionIds, ...this.state.selectedCollections];
     this.props.addCollectionToPlace({
       variables: {
         id: this.state.selectedPlace.id,
-        collectionIds: this.state.selectedCollections
+        collectionIds: tmpPlace.collectionIds
       }
     }).then(places => {
-      let tmpPlace = this.state.selectedPlace;
-      tmpPlace.bookmark = true;
-      tmpPlace.collectionIds = this.state.selectedCollections;
       let items = clone(this.state.items);
       items[this.state.selectedPlaceIndex] = tmpPlace;
       this.setState({ items, collectionModal: false });
@@ -192,17 +192,6 @@ class FeedPage extends Component {
     }).then(collections => {
       this.props.saveCollections(collections.data.allCollections);
     })
-  }
-  getMyFollows = () => {
-    client.query({
-      query: GET_FOLLOW_USERS,
-      variables: {
-        userId: this.props.user.id,
-        blockUsersIds: []
-      }
-    }).then(({ data }) => {
-      this.props.saveUserFollows(data.User.follows);
-    }).catch(err => alert(err))
   }
   closeSuggest() {
     this.setState({
@@ -324,14 +313,18 @@ class FeedPage extends Component {
   }
 
   onPressUserProfile(userInfo) {
-    this.props.navigator.push({
-      screen: SCREEN.USERS_PROFILE_PAGE,
-      title: I18n.t('PROFILE_PAGE_TITLE'),
-      animated: true,
-      passProps: {
-        userInfo
-      }
-    })
+    if (userInfo.id === this.props.user.id) {
+      this.props.navigator.switchToTab({ tabIndex: 2 });
+    } else {
+      this.props.navigator.push({
+        screen: SCREEN.USERS_PROFILE_PAGE,
+        title: I18n.t('PROFILE_PAGE_TITLE'),
+        animated: true,
+        passProps: {
+          userInfo
+        }
+      })
+    }
   }
 
   onPlace(data, index) {
@@ -409,6 +402,12 @@ class FeedPage extends Component {
     })
   }
   render() {
+    if (this.state.loading)
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <ActivityIndicator size="large" color="#dddddd" />
+        </View>
+      );
     return (
       <View style={styles.container}>
         <FlatList

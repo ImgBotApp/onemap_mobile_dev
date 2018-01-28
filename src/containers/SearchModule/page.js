@@ -1,12 +1,12 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList,Dimensions,Image,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity } from 'react-native';
 import RNPlaces from 'react-native-google-places'
 import RNGooglePlaces from 'react-native-google-places'
 import Search from '@components/SearchBar';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import SearchResult from '@components/SearchResult'
-import { getDeviceWidth,getDeviceHeight } from '@global'
+import { getDeviceWidth, getDeviceHeight } from '@global'
 import styles from './styles'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
@@ -37,9 +37,9 @@ class SearchPage extends Component {
     this.state = {
       result: false,
       keyword: '',
-      isFeaching:false,
-      pictureURLS:[],
-      loading:false,
+      isFeaching: false,
+      pictureURLS: [],
+      loading: false,
 
       nearByPlaces: [],
       newNearByPlaces: [],
@@ -62,14 +62,11 @@ class SearchPage extends Component {
     props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
   onNavigatorEvent(event) { // this is the onPress handler for the two buttons together
-    if(event.id == "bottomTabSelected")
-    {
+    if (event.id == "bottomTabSelected") {
       Permissions.check('location').then(response => {
-        if(response != 'authorized')
-        {
+        if (response != 'authorized') {
           Permissions.request('location').then(response => {
-            if(response == 'authorized')
-            {
+            if (response == 'authorized') {
               this.onSearchNearByPlace();
             }
           })
@@ -100,7 +97,7 @@ class SearchPage extends Component {
       navigator.geolocation.clearWatch(this.watchID);
   }
   componentWillMount() {
-    
+
   }
   updateMapView(){
     var getInitialRegion = {
@@ -169,13 +166,12 @@ class SearchPage extends Component {
             .catch((error) => this.setState({isCallingAPI:false}));
   }
   render() {
-    if(this.state.isFeaching)
+    if (this.state.isFeaching)
       this.onCreatePlace();
 
     let curr_position;
     if(this.state.myPosition)
       curr_position="lat:"+this.state.myPosition.latitude+" lng:"+this.state.myPosition.longitude;
-              
     return (
       <View style={styles.container}>
         <Search
@@ -251,21 +247,19 @@ class SearchPage extends Component {
                           </TouchableOpacity>
                         </View>
                       </View>
-                    </View>
+                    }
+                  />
                 </View>
-              }
-            />
-            </View>
-          )
-          :
-          (
-            <SearchResult keyword={this.state.keyword}
-              coordinate={this.state.initialMarker}
-              onUser={this.onUserItem.bind(this)}
-              onKeywordItem={this.onKeywordItem.bind(this)}
-              onPlace={this.onPlaceProfile.bind(this)} />
-          )
-        }
+              )
+              :
+              (
+                <SearchResult keyword={this.state.keyword}
+                  coordinate={this.state.initialMarker}
+                  onUser={this.onUserItem.bind(this)}
+                  onKeywordItem={this.onKeywordItem.bind(this)}
+                  onPlace={this.onPlaceProfile.bind(this)} />
+              )
+          }
         </View>
         {
           this.state.loading ? (<LoadingSpinner />) : null
@@ -274,7 +268,7 @@ class SearchPage extends Component {
       </View>
     );
   }
-  onUserItem(id) {
+  onUserItem(id) {//TODO
     this.props.navigator.push({
       screen: SCREEN.USERS_PROFILE_PAGE,
       title: I18n.t('USERPROFILE_TITLE'),
@@ -293,31 +287,29 @@ class SearchPage extends Component {
     })
   }
   onPlaceProfile(placeID) {
-    if(!placeID) return;
+    if (!placeID) return;
     var ret_photos;
-    this.setState({loading:true});
-    RNPlaces.lookUpPlaceByID(placeID).then((result) =>
-      {
-        this.setState({placeInf:result});
-        return Places.details({ placeid: placeID });
-      }
-    ).then((place)=>{
-        ret_photos=  place.photos;
-        return client.resetStore().then(()=>{
-            return client.query({
-              query: GET_PLACES_FROM_GOOGLEId,
-              variables: {
-                sourceId: placeID
-              },
-            })
+    this.setState({ loading: true });
+    RNPlaces.lookUpPlaceByID(placeID).then((result) => {
+      this.setState({ placeInf: result });
+      return Places.details({ placeid: placeID });
+    }
+    ).then((place) => {
+      ret_photos = place.photos;
+      return client.resetStore().then(() => {
+        return client.query({
+          query: GET_PLACES_FROM_GOOGLEId,
+          variables: {
+            sourceId: placeID
+          },
         })
-      }
-    ).then( place =>
-      {
-        if ( !place.data.allPlaces || place.data.allPlaces.length <= 0 ) {
-          this.onFetchGooglePictures(ret_photos?ret_photos:[]);
+      })
+    }
+      ).then(place => {
+        if (!place.data.allPlaces || place.data.allPlaces.length <= 0) {
+          this.onFetchGooglePictures(ret_photos ? ret_photos : []);
         } else {
-          this.setState({loading:false});
+          this.setState({ loading: false });
           this.props.navigator.push({
             screen: SCREEN.PLACE_PROFILE_PAGE,
             title: I18n.t('PLACE_TITLE'),
@@ -328,23 +320,23 @@ class SearchPage extends Component {
           })
         }
       }
-    ).catch((error) => this.setState({loading:false}));
+      ).catch((error) => this.setState({ loading: false }));
   }
-  async onFetchGooglePictures(ret_photos){
+  async onFetchGooglePictures(ret_photos) {
     let redrictURLS = [];
     await Promise.all(
-      ret_photos.map(photo => fetch("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference="+photo.photo_reference+"&key="+Places.apiKey)
+      ret_photos.map(photo => fetch("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + Places.apiKey)
         .then(response => {
           redrictURLS.push(response.url);
           Promise.resolve();
         })
-        .catch(err => this.setState({loading:false}))
+        .catch(err => this.setState({ loading: false }))
       )
     ).then(() => {
-      this.setState({pictureURLS:redrictURLS,isFeaching:true});
-    }, err => { this.setState({loading:false}); })
+      this.setState({ pictureURLS: redrictURLS, isFeaching: true });
+    }, err => { this.setState({ loading: false }); })
   }
-  async onCreatePlace(){
+  async onCreatePlace() {
     this.props.createPlace({
       variables: {
         createdById: this.props.user.id,
@@ -370,19 +362,19 @@ class SearchPage extends Component {
         //openingHrs: String
         pictureURL: this.state.pictureURLS,// # leave blank [] if no picture
         //placeOwner: String
-        },
-      }).then(result => {
-        this.setState({isFeaching:false});
-        this.setState({loading:false});
-        this.props.navigator.push({
-          screen: SCREEN.PLACE_PROFILE_PAGE,
-          title: I18n.t('PLACE_TITLE'),
-          animated: true,
-          passProps: {
-            place: result.data.createPlace
-          }
-        })
-      }).catch((error) => this.setState({loading:false}));
+      },
+    }).then(result => {
+      this.setState({ isFeaching: false });
+      this.setState({ loading: false });
+      this.props.navigator.push({
+        screen: SCREEN.PLACE_PROFILE_PAGE,
+        title: I18n.t('PLACE_TITLE'),
+        animated: true,
+        passProps: {
+          place: result.data.createPlace
+        }
+      })
+    }).catch((error) => this.setState({ loading: false }));
   }
   onShowResult(val) {
     this.setState({

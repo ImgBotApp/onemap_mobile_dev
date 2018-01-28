@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import { ADD_COLLECTION_TO_PLACE, REMOVE_COLLECTION_FROM_PLACE } from "@graphql/places";
-import { saveCollections, placeUpdated, saveUserFollows } from '@reducers/app/actions'
+import { saveCollections, placeUpdated } from '@reducers/app/actions'
 import page from './page'
 
 function mapStateToProps(state) {
@@ -19,9 +19,6 @@ function mapDispatchToProps(dispatch) {
     },
     placeUpdate: (data) => {
       dispatch(placeUpdated(data))
-    },
-    saveUserFollows: (data) => {
-      dispatch(saveUserFollows(data))
     },
   }
 }

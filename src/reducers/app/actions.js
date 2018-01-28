@@ -45,3 +45,10 @@ export function saveUserFollows(follows) {
     follows
   }
 }
+
+export function saveUserFollowers(followers) {
+  return {
+    type: types.STORE_USER_FOLLOWERS,
+    followers
+  }
+}

@@ -29,7 +29,7 @@ class BlockedUser extends Component {
       }
     ]
   };
-  constructor (props) {
+  constructor(props) {
     super(props)
     Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
       props.navigator.setButtons({
@@ -46,8 +46,8 @@ class BlockedUser extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
   onNavigatorEvent(event) {
-    if(event.type == 'NavBarButtonPress') {
-      if(event.id == 'backButton') {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'backButton') {
         this.props.navigator.pop()
       }
     }
@@ -56,18 +56,18 @@ class BlockedUser extends Component {
     return (
       <View style={styles.modalFrame}>
         <View style={styles.modalBody}>
-          <Text style={{fontSize: 20, marginBottom: getDeviceHeight(47)}}> {I18n.t('BLOCKED_STR')}: </Text>
-          <Text style={{color: '#a1a1a1', textAlign: 'center', padding: 5, fontSize: 12}}>{I18n.t('SETTING_BLOCKED_USER_DESCRIPTION')}</Text>
+          <Text style={{ fontSize: 20, marginBottom: getDeviceHeight(47) }}> {I18n.t('BLOCKED_STR')}: </Text>
+          <Text style={{ color: '#a1a1a1', textAlign: 'center', padding: 5, fontSize: 12 }}>{I18n.t('SETTING_BLOCKED_USER_DESCRIPTION')}</Text>
         </View>
         <View style={styles.modalFooter}>
           <TouchableOpacity onPress={this._modalHide.bind(this)}>
             <View style={styles.footerButton}>
-              <Text style={{fontSize: 20, color: '#007aff'}}>{I18n.t('CANCEL_STR')}</Text>
+              <Text style={{ fontSize: 20, color: '#007aff' }}>{I18n.t('CANCEL_STR')}</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={this._modalHide.bind(this)}>
             <View style={styles.footerButton}>
-              <Text style={{fontSize: 20, color: '#fc5151'}}>{I18n.t('BLOCKED_STR')}</Text>
+              <Text style={{ fontSize: 20, color: '#fc5151' }}>{I18n.t('BLOCKED_STR')}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -81,44 +81,44 @@ class BlockedUser extends Component {
   }
   _keyExtractor = (item, index) => index;
   render() {
-    
+
     let blockUsers = [];
     if (!this.props.data.loading) {
       blockUsers = this.props.data.User.blockUsers.map((user) => {
         return {
-          id:user.id,
-          displayName:user.displayName,
-          email:user.email,
-          bio:user.bio?user.bio:"",
-          photoURL:user.photoURL ? user.photoURL:'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+          id: user.id,
+          displayName: user.displayName,
+          email: user.email,
+          bio: user.bio ? user.bio : "",
+          photoURL: user.photoURL ? user.photoURL : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
         }
       });
     }
     return (
       <View style={styles.container}>
-        <SwipeListView 
+        <SwipeListView
           keyExtractor={this._keyExtractor}
           useFlatList
           style={styles.userList}
-          data = {blockUsers}
-          renderItem={ (data,rowMap) => (
+          data={blockUsers}
+          renderItem={(data, rowMap) => (
             <View style={styles.userRow}>
               <View style={styles.mainItem}>
-                <View style={{flexDirection: 'row'}}>
-                <CircleImage style={styles.itemImage} uri={data.item.photoURL} radius={getDeviceWidth(88)}/>
-                <View style={styles.itemInfo}>
-                  <Text style={styles.username}>{data.item.displayName}</Text>
-                  <Text style={styles.bio}>{data.item.bio}</Text>
-                </View>
+                <View style={{ flexDirection: 'row' }}>
+                  <CircleImage style={styles.itemImage} uri={data.item.photoURL} radius={getDeviceWidth(88)} />
+                  <View style={styles.itemInfo}>
+                    <Text style={styles.username}>{data.item.displayName}</Text>
+                    <Text style={styles.bio}>{data.item.bio}</Text>
+                  </View>
                 </View>
               </View>
             </View>
           )}
-          renderHiddenItem={ (data, rowMap) => (
+          renderHiddenItem={(data, rowMap) => (
             <View>
               <Text>Left</Text>
               <View style={styles.rightHidden}>
-                <TouchableOpacity style={{width: '100%', height: '100%', justifyContent: 'center'}} onPress={() => {
+                <TouchableOpacity style={{ width: '100%', height: '100%', justifyContent: 'center' }} onPress={() => {
                   this.setState({
                     modalVisible: true
                   })
@@ -131,7 +131,7 @@ class BlockedUser extends Component {
           leftOpenValue={70}
           disableRightSwipe={true}
           rightOpenValue={-75}
-          onRowOpen={(data,secId, rowId) => {
+          onRowOpen={(data, secId, rowId) => {
           }}
         />
         <Modal isVisible={this.state.modalVisible}>
@@ -141,14 +141,14 @@ class BlockedUser extends Component {
     );
   }
 }
-  
+
 const ComponentWithQueries = graphql(GET_BLOCKUSRS, {
   options: (props) => ({
-    variables: { 
+    variables: {
       userId: props.user.id,
       skip: 0,
       first: BLOCKUSERS_PER_PAGE
-   },
+    },
   }),
 })
   (BlockedUser);

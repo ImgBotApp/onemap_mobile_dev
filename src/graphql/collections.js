@@ -134,3 +134,34 @@ export const REMOVE_PLACE_FROM_COLLECTION = gql`
       }
     }
 `
+
+export const LIST_USER_COLLECTIONS = gql`#unused
+  query GetUserCollections(
+    $userId: ID!,
+    $type: CollectionTypes, #  DEFAULT, CHECKED_IN or HEARTED # remove this line for get all types
+    $skip: Int,
+    $first: Int
+  ) {
+    allCollections(
+      skip: $skip,
+      first: $first,
+      filter: {
+        AND: [
+          { type: $type }, # remove this line for get all types
+          {
+            user: {
+            	id: $userId
+          	}
+          }
+        ]
+      }
+    ) {
+      id
+      name
+      privacy
+      pictureURL
+      type
+    }
+  }
+  `
+  

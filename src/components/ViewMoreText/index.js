@@ -155,7 +155,6 @@ ViewMoreText.propTypes = {
   afterCollapse: PropTypes.func,
   afterExpand: PropTypes.func,
   numberOfLines: PropTypes.number.isRequired,
-  textStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
 
 ViewMoreText.defaultProps = {
