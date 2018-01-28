@@ -324,23 +324,41 @@ class PlaceProfile extends PureComponent {
     })
   }
 
-  onHeartClick() {
+  onHeartClick(hearted) {
     let placeData = clone(this.state.placeData);
     let hearts = placeData.heartedIds;
-    const index = hearts.indexOf(this.props.user.id);
-    if (index < 0) {
+    if (hearted) {
       hearts.push(this.props.user.id);
     } else {
+      const index = hearts.indexOf(this.props.user.id);
       hearts.splice(index, 1);
     }
-    this.setState({ placeData });
+
+    this.props.likePlace({
+      variables: {
+        id: placeData.id,
+        heartedIds: hearts
+      }
+    }).then(({ data }) => {
+      this.setState({ placeData });
+      client.resetStore();
+    }).catch(err => alert(err));
   }
 
   onCheckInClick() {
     let placeData = clone(this.state.placeData);
     let checks = placeData.checkedInIds;
     checks.push(this.props.user.id);
-    this.setState({ placeData });
+
+    this.props.checkInPlace({
+      variables: {
+        id: placeData.id,
+        checkedIds: checks
+      }
+    }).then(({ data }) => {
+      this.setState({ placeData });
+      client.resetStore();
+    }).catch(err => alert(err));
   }
 
   onShareClick() {
@@ -428,6 +446,7 @@ class PlaceProfile extends PureComponent {
   }
 
   renderInterest() {
+    const liked = this.state.placeData.heartedIds.includes(this.props.user.id);
     return (
       <View style={styles.interestContainer}>
         <View style={styles.interestInformation}>
@@ -442,8 +461,8 @@ class PlaceProfile extends PureComponent {
         </View>
         <View style={styles.serparate}></View>
         <View style={styles.buttonInterest}>
-          <TouchableOpacity onPress={this.onHeartClick.bind(this)}>
-            <Foundation name="heart" size={35} color={RED_COLOR} />
+          <TouchableOpacity onPress={() => this.onHeartClick(!liked)}>
+            <Foundation name="heart" size={35} color={liked ? RED_COLOR : LIGHT_GRAY_COLOR} />
           </TouchableOpacity>
           <TouchableOpacity onPress={this.onCheckInClick.bind(this)}>
             <Foundation name="marker" size={35} color={BLUE_COLOR} />

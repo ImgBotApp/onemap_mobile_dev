@@ -44,7 +44,8 @@ class FeedPage extends Component {
       },
       loading: false,
       refreshing: false,
-      selectedCollections: []
+      selectedCollections: [],
+      loading: true
     };
     this.onEndReached = this.onEndReached.bind(this)
     this.onRefresh = this.onRefresh.bind(this)
@@ -92,7 +93,7 @@ class FeedPage extends Component {
           collectionIds: place.collections.map(collection => collection.id)//will be removed later
         }
       });
-      this.setState({ items: [this.suggestUsers, ...graphcoolData] });
+      this.setState({ items: [this.suggestUsers, ...graphcoolData], loading: false });
     }
   }
   fetchFeedItems = () => {//unused
@@ -401,6 +402,12 @@ class FeedPage extends Component {
     })
   }
   render() {
+    if (this.state.loading)
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <ActivityIndicator size="large" color="#dddddd" />
+        </View>
+      );
     return (
       <View style={styles.container}>
         <FlatList

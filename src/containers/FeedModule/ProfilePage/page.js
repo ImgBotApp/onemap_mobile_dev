@@ -110,7 +110,8 @@ class ProfilePage extends Component {
       title: I18n.t('DRAWER_STORIES'),
       animated: true,
       passProps: {
-        collection: item
+        type: item,
+        userId: this.state.user.id
       }
     })
   }
@@ -120,7 +121,7 @@ class ProfilePage extends Component {
       title: I18n.t('COLLECTION_TITLE'),
       animated: true,
       passProps: {
-        collections: this.state.collections
+        collections: this.state.collections,
       }
     })
   }

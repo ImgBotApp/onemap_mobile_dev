@@ -358,3 +358,73 @@ export const FOLLOW_USER = gql`
     }
   } 
 `
+
+export const GET_USER_WITH_CHECKED_PLACES = gql`
+query GetCheckedPlaces($userId: ID!) {
+  User(id: $userId) {
+    id
+    checkedIn {
+      id
+      createdAt
+      updatedAt
+      description
+      source
+      sourceId
+      createSide
+      placeName
+      locationLat
+      locationLong
+      addressAreaDistrict
+      addressCityTown
+      addressStateProvince
+      addressCountry
+      addressPostalCode
+      addressStreet
+      address
+      phoneNumber
+      website
+      facebook
+      line
+      openingHrs
+      pictureURL
+      status
+      placeOwner
+    }
+  }
+}
+`
+
+export const GET_USER_WITH_LIKED_PLACES = gql`
+query GetLikedPlaces($userId: ID!) {
+  User(id: $userId) {
+    id
+    likePlaces {
+      id
+      createdAt
+      updatedAt
+      description
+      source
+      sourceId
+      createSide
+      placeName
+      locationLat
+      locationLong
+      addressAreaDistrict
+      addressCityTown
+      addressStateProvince
+      addressCountry
+      addressPostalCode
+      addressStreet
+      address
+      phoneNumber
+      website
+      facebook
+      line
+      openingHrs
+      pictureURL
+      status
+      placeOwner
+    }
+  }
+}
+`

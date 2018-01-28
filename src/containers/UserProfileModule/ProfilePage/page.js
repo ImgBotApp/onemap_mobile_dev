@@ -109,11 +109,11 @@ class ProfileComponent extends Component {
       return <Text>{error}</Text>
     }
 
-    let follow_cnt = follows.length;
-    
+    let follow_cnt = follows ? follows.length : 0;
+
     let follower_cnt = 0;
     if (!GetFollowersList.loading && GetFollowersList.User.followers)
-      follower_cnt = GetFollowersList.User.followers.length;
+      follower_cnt = GetFollowersList.User.followers ? GetFollowersList.User.followers.length : 0;
 
     return (
       <ScrollView style={styles.container}>
@@ -181,7 +181,7 @@ class ProfileComponent extends Component {
       title: I18n.t('DRAWER_STORIES'),
       animated: true,
       passProps: {
-        collection: item
+        type: item
       }
     })
   }
