@@ -423,11 +423,11 @@ class PlaceProfile extends PureComponent {
             region={this.state.placeData.map}
           >
             <MapView.Marker
-              style={styles.mapmarker}
               title={this.state.placeData.title}
-              image={require('@assets/images/marker.png')}
               coordinate={this.state.placeData.map}
-            />
+            >
+            <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
+            </MapView.Marker>
           </MapView>
         </View>
       </TouchableOpacity>

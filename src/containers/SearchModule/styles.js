@@ -50,8 +50,9 @@ backArrow: {
     height: '100%'
   },
   mapmarker: {
-    width: getDeviceWidth(79),
-    height: getDeviceHeight(95),
+    width: getDeviceWidth(140),
+    height: getDeviceHeight(140),
+    resizeMode: 'contain'
   },
   placeImage: {
     width: getDeviceWidth(140),

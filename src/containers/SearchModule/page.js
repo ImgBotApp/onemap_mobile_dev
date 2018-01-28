@@ -205,7 +205,7 @@ class SearchPage extends Component {
                       coordinate={marker.coordinates}
                       zIndex = {key}
                     >
-                      <Image source={require('@assets/images/marker.png')} style = {styles.mapmarker} />
+                      <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
                       <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
                         <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
                       </Callout>
@@ -218,7 +218,7 @@ class SearchPage extends Component {
                       zIndex = {this.state.nearByPlacesPin.length+1000}
                       style = {styles.mapmarker}
                     >
-                      <Image source={require('@assets/images/greenPin.png')} style = {styles.mapmarker} />
+                      <Image source={require('@assets/images/map_position.png')} style = {styles.mapmarker} />
                       <Callout style={styles.customView}>
                         <Text style={{ flexWrap: "nowrap" }}>{curr_position}</Text>
                       </Callout>
@@ -247,7 +247,9 @@ class SearchPage extends Component {
                           </TouchableOpacity>
                         </View>
                       </View>
-                    }
+                    </View>
+                  </View>
+                }
                   />
                 </View>
               )

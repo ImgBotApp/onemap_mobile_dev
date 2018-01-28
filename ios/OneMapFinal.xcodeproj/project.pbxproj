@@ -45,7 +45,6 @@
 		6DFB7C3D054B410F8CE9D2B0 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B30CD1DA368D405FBFCCD715 /* SimpleLineIcons.ttf */; };
 		7ABD31C5B5FE4F7F902564D6 /* Comfortaa-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D678FC3CA1C446D803117BD /* Comfortaa-Regular.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		841BD225201AC893006FBC13 /* libRNShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 841BD223201AC87B006FBC13 /* libRNShare.a */; };
 		8426B86E20029C6000C7E6EA /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B83220029C5F00C7E6EA /* Bolts.framework */; };
 		8426B86F20029C6000C7E6EA /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B86B20029C5F00C7E6EA /* FBSDKCoreKit.framework */; };
 		8426B87020029C6000C7E6EA /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B86C20029C5F00C7E6EA /* FBSDKLoginKit.framework */; };
@@ -585,7 +584,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				841BD225201AC893006FBC13 /* libRNShare.a in Frameworks */,
 				D287880720173DE60096D5BD /* libReactNativePermissions.a in Frameworks */,
 				D2C24F682015E1B2007B9D14 /* libimageCropPicker.a in Frameworks */,
 				D2C24F672015E19A007B9D14 /* libRNVectorIcons.a in Frameworks */,
