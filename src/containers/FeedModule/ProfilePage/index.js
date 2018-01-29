@@ -1,5 +1,7 @@
 import { connect } from 'react-redux' 
-
+import { graphql } from 'react-apollo'
+import { FOLLOW_USER } from "@graphql/userprofile";
+import { saveUserFollows } from '@reducers/app/actions'
 import page from './page'
 
 function mapStateToProps(state) {
@@ -11,8 +13,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-
+    saveUserFollows: (data) => {
+      dispatch(saveUserFollows(data))
+    },
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(page)
+let container = graphql(FOLLOW_USER, { name: 'followUser' })(page);
+
+export default connect(mapStateToProps, mapDispatchToProps)(container)

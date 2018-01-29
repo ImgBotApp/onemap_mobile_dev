@@ -90,6 +90,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 0,
   },
+  mapmarker: {
+    width: getDeviceWidth(140),
+    height: getDeviceHeight(140),
+    resizeMode: 'contain'
+  },
 });
 
 export default styles

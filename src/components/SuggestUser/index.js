@@ -18,18 +18,18 @@ class SuggestUser extends Component {
     // this.props.onPress(this.props.id)
   }
   render() {
-    const { uri, name, displayName } = this.props.data;
+    const { photoURL, username, displayName } = this.props.data;
     return (
       <CardView style={styles.container} cardElevation={5} cardMaxElevation={2} cornerRadius={10}>
         <TouchableOpacity onPress={this.props.onPress}>
-          <CircleImage style={styles.profileImage} uri={uri} radius={getDeviceWidth(152)} />
+          <CircleImage style={styles.profileImage} uri={photoURL} radius={getDeviceWidth(152)} />
         </TouchableOpacity>
         <View style={styles.info}>
           <View style={{ alignItems: 'center' }}>
             <TouchableOpacity onPress={this.props.onPress}>
               <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.name, fontStyles.DFontFamily]}>{displayName}</Text>
             </TouchableOpacity>
-            <Text style={[fontStyles.DFontFamily, styles.id]}>{name}</Text>
+            <Text style={[fontStyles.DFontFamily, styles.id]}>{username}</Text>
             <View style={styles.separate}></View>
           </View>
           <View style={{ alignItems: 'center' }}>
