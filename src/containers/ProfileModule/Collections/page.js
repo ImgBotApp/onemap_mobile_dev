@@ -67,7 +67,7 @@ class Collections extends Component {
         this.getCheckedPlaces();
       } else if (this.props.type === 'like') {
         this.getLikedPlaces();
-      } else if (this.props.collections) {
+      } else if (this.props.collection) {
         this.getCollectionPlaces();
       }
     }
