@@ -807,7 +807,7 @@ class PlaceProfile extends PureComponent {
             style={[styles.imageFlatList, { marginTop: 10 }]}
             horizontal
             data={dataItem.pictureURL}
-            renderItem={({ index }) => this._renderItem(dataItem.pictureURL, index)}
+            renderItem={({ index }) => this._renderItem(dataItem.pictureURL.map(item => ({ uri: item })), index)}
           />
           <Text style={styles.commentTitle}>{dataItem.title}</Text>
           <Text style={styles.commentDescription}>{dataItem.story}</Text>
