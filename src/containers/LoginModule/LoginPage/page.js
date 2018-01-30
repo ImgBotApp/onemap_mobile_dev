@@ -154,7 +154,7 @@ class LoginPage extends Component {
               updatedAt: new Date().toLocaleDateString(),
               loginMethod: data.loginMethod,
               bio: data.bio,
-              gender: data.gender.toUpperCase(),
+              gender: data.gender ? data.gender.toUpperCase() : '',
               city: data.city,
               country: data.country,
               photoURL: data.photoURL,
