@@ -55,9 +55,9 @@ class SearchPage extends Component {
         latitudeDelta: LATTITUDE_DELTA,
         longitudeDelta: LONGTITUDE_DELTA,
       },
-      initialMarker:null,
-      myPosition:null,
-      isCallingAPI:false,
+      initialMarker: null,
+      myPosition: null,
+      isCallingAPI: false,
     }
     props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
@@ -79,27 +79,27 @@ class SearchPage extends Component {
     _this = this;
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        this.setState({myPosition:position.coords});
+        this.setState({ myPosition: position.coords });
         this.updateMapView();
-        
+
       },
       (error) => alert(JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 0,distanceFilter:0.1}
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 }
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
-      this.setState({myPosition:position.coords});
+      this.setState({ myPosition: position.coords });
       this.updateMapView();
-     
-   },{enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1});
+
+    }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 });
   }
-  componentWillUnmount (){
-    if(this.watchID != null)
+  componentWillUnmount() {
+    if (this.watchID != null)
       navigator.geolocation.clearWatch(this.watchID);
   }
   componentWillMount() {
 
   }
-  updateMapView(){
+  updateMapView() {
     var getInitialRegion = {
       latitude: this.state.myPosition.latitude,
       longitude: this.state.myPosition.longitude,
@@ -115,63 +115,61 @@ class SearchPage extends Component {
     })
     this.onSearchNearByPlace();
   }
-  onSearchNearByPlace(){
-    if(this.state.isCallingAPI)
+  onSearchNearByPlace() {
+    if (this.state.isCallingAPI)
       return;
-    this.setState({isCallingAPI:true});
+    this.setState({ isCallingAPI: true });
     RNGooglePlaces.getCurrentPlace()
-            .then((results) => {
-              this.setState({isCallingAPI:false})
-              //this.refs.toast.show('nearby search updated')
-              if(!this.state.initialMarker)
-              {
-                var getInitialRegion = {
-                  latitude: results[0].latitude,
-                  longitude: results[0].longitude,
-                  latitudeDelta: LATTITUDE_DELTA,
-                  longitudeDelta: LONGTITUDE_DELTA,
-                }
-                var getInitialRegionMaker = {
-                  latitude: results[0].latitude,
-                  longitude: results[0].longitude,
-                }
-                this.setState({
-                  initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
-                  title: results[0].name, address: results[0].address,
-                })
-              }
-              // this.setPinLocation(results);
-              var getNearByLocationsPin = [];
-              for (var i = 0; i < results.length; i++) {
-                if(results[i].latitude && results[i].longitude)
-                {
-                  var obj = {
-                    coordinates: {
-                      latitude: results[i].latitude,
-                      longitude: results[i].longitude,
-                    },
-                    title: results[i].name,
-                    address: results[i].address,
-                    placeID: results[i].placeID
-                  }
-                  getNearByLocationsPin.push(obj);
-                }
-              }
-              this.setState({
-                nearByPlacesPin: getNearByLocationsPin
-              })
-              results.shift();
-              this.setState({ nearByPlaces: results })
-            })
-            .catch((error) => this.setState({isCallingAPI:false}));
+      .then((results) => {
+        this.setState({ isCallingAPI: false })
+        //this.refs.toast.show('nearby search updated')
+        if (!this.state.initialMarker) {
+          var getInitialRegion = {
+            latitude: results[0].latitude,
+            longitude: results[0].longitude,
+            latitudeDelta: LATTITUDE_DELTA,
+            longitudeDelta: LONGTITUDE_DELTA,
+          }
+          var getInitialRegionMaker = {
+            latitude: results[0].latitude,
+            longitude: results[0].longitude,
+          }
+          this.setState({
+            initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
+            title: results[0].name, address: results[0].address,
+          })
+        }
+        // this.setPinLocation(results);
+        var getNearByLocationsPin = [];
+        for (var i = 0; i < results.length; i++) {
+          if (results[i].latitude && results[i].longitude) {
+            var obj = {
+              coordinates: {
+                latitude: results[i].latitude,
+                longitude: results[i].longitude,
+              },
+              title: results[i].name,
+              address: results[i].address,
+              placeID: results[i].placeID
+            }
+            getNearByLocationsPin.push(obj);
+          }
+        }
+        this.setState({
+          nearByPlacesPin: getNearByLocationsPin
+        })
+        results.shift();
+        this.setState({ nearByPlaces: results })
+      })
+      .catch((error) => this.setState({ isCallingAPI: false }));
   }
   render() {
     if (this.state.isFeaching)
       this.onCreatePlace();
 
     let curr_position;
-    if(this.state.myPosition)
-      curr_position="lat:"+this.state.myPosition.latitude+" lng:"+this.state.myPosition.longitude;
+    if (this.state.myPosition)
+      curr_position = "lat:" + this.state.myPosition.latitude + " lng:" + this.state.myPosition.longitude;
     return (
       <View style={styles.container}>
         <Search
@@ -183,73 +181,72 @@ class SearchPage extends Component {
           onCancel={this.onDismissResult.bind(this)}
         />
         <View>
-        {
-          this.state.result == false ?
-          (
-            <View style={{ width: '100%' }}>
-            <View style={styles.mapView}>
-              <MapView
-                // showsUserLocation={true}
-                provider={PROVIDER_GOOGLE}
-                style={styles.map}
-                initialRegion={this.state.initialPosition}
-                region={this.state.initialPosition}
-                showsCompass={true}
-                loadingEnabled={true}
-                showsBuildings={true}
-              >
-                {this.state.nearByPlacesPin.map((marker, key) => (
-                  
-                    <Marker
-                      key={key} 
-                      coordinate={marker.coordinates}
-                      zIndex = {key}
+          {
+            this.state.result == false ?
+              (
+                <View style={{ width: '100%' }}>
+                  <View style={styles.mapView}>
+                    <MapView
+                      // showsUserLocation={true}
+                      provider={PROVIDER_GOOGLE}
+                      style={styles.map}
+                      initialRegion={this.state.initialPosition}
+                      region={this.state.initialPosition}
+                      showsCompass={true}
+                      loadingEnabled={true}
+                      showsBuildings={true}
                     >
-                      <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
-                      <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
-                        <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
-                      </Callout>
-                    </Marker>
-                ))}
-              {
-                this.state.myPosition?(
-                  <Marker
-                      coordinate={this.state.myPosition}
-                      zIndex = {this.state.nearByPlacesPin.length+1000}
-                      style = {styles.mapmarker}
-                    >
-                      <Image source={require('@assets/images/map_position.png')} style = {styles.mapmarker} />
-                      <Callout style={styles.customView}>
-                        <Text style={{ flexWrap: "nowrap" }}>{curr_position}</Text>
-                      </Callout>
-                    </Marker>
-                ):null
-              }
-              </MapView>
-            </View>
-            {/* } */}
-            <FlatList
-              keyExtractor={(item, index) => index}
-              style = {{paddingTop:getDeviceHeight(50)}}
-              data={this.state.nearByPlaces}
-              renderItem={({ item }) =>
-                <View>
-                    <View style={styles.item}>
-                      <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
-                      <View style={styles.infomation}>
-                        <View>
-                          <TouchableOpacity onPress={() => this.onPlaceProfile(item.placeID)}>
-                            <Text style={styles.name}>{item.name}</Text>
-                            {this.state.isSelected ?
-                              <Text style={styles.following}>{item.vicinity}</Text>
-                              : <Text style={styles.following}>{item.address}</Text>
-                            }
-                          </TouchableOpacity>
+                      {this.state.nearByPlacesPin.map((marker, key) => (
+
+                        <Marker
+                          key={key}
+                          coordinate={marker.coordinates}
+                          zIndex={key}
+                        >
+                          <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
+                          <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
+                            <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
+                          </Callout>
+                        </Marker>
+                      ))}
+                      {
+                        this.state.myPosition ? (
+                          <Marker
+                            coordinate={this.state.myPosition}
+                            zIndex={this.state.nearByPlacesPin.length + 1000}
+                          >
+                            <Image source={require('@assets/images/map_position.png')} style={styles.mapmarker} />
+                            <Callout style={styles.customView}>
+                              <Text style={{ flexWrap: "nowrap" }}>{curr_position}</Text>
+                            </Callout>
+                          </Marker>
+                        ) : null
+                      }
+                    </MapView>
+                  </View>
+                  {/* } */}
+                  <FlatList
+                    keyExtractor={(item, index) => index}
+                    style={{ paddingTop: getDeviceHeight(50) }}
+                    data={this.state.nearByPlaces}
+                    renderItem={({ item }) =>
+                      <View>
+                        <View style={styles.item}>
+                          <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
+                          <View style={styles.infomation}>
+                            <View>
+                              <TouchableOpacity onPress={() => this.onPlaceProfile(item.placeID)}>
+                                <Text style={styles.name}>{item.name}</Text>
+                                {this.state.isSelected ?
+                                  <Text style={styles.following}>{item.vicinity}</Text>
+                                  : <Text style={styles.following}>{item.address}</Text>
+                                }
+                              </TouchableOpacity>
+                            </View>
+                          </View>
                         </View>
                       </View>
-                    </View>
-                  </View>
-                }
+                    }
                   />
                 </View>
               )

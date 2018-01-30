@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import styles from './style'
@@ -29,7 +29,7 @@ class MapDetailPage extends Component {
       }
     ]
   };
-  constructor (props) {
+  constructor(props) {
     super(props)
     Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
       props.navigator.setButtons({
@@ -45,7 +45,7 @@ class MapDetailPage extends Component {
 
   onNavigatorEvent(event) {
     if (event.type == 'NavBarButtonPress') {
-      if(event.id == 'backButton') {
+      if (event.id == 'backButton') {
         this.props.navigator.pop()
       }
     }
@@ -66,7 +66,7 @@ class MapDetailPage extends Component {
               title={this.props.title}
               coordinate={this.props.map}
             >
-            <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
+              <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
             </MapView.Marker>
           </MapView>
         </View>

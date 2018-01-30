@@ -426,7 +426,7 @@ class PlaceProfile extends PureComponent {
               title={this.state.placeData.title}
               coordinate={this.state.placeData.map}
             >
-            <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
+              <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
             </MapView.Marker>
           </MapView>
         </View>
