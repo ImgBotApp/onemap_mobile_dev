@@ -103,7 +103,7 @@ class SearchPage extends Component {
         this.setState({myPosition:position.coords});
         this.updateMapView();
       },
-      (error) => alert(JSON.stringify(error)),
+      (error) => console.log(error),
       {enableHighAccuracy: true, timeout: 20000,distanceFilter:0.1}
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
@@ -132,7 +132,7 @@ class SearchPage extends Component {
     if(this.state.isCallingAPI)
       return;
     this.setState({isCallingAPI:true});
-    RNGooglePlaces.getCurrentPlace()
+    RNPlaces.getCurrentPlace()
             .then((results) => {
               this.setState({isCallingAPI:false})
               //this.refs.toast.show('nearby search updated')
