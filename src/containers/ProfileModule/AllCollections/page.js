@@ -108,22 +108,20 @@ class AllCollections extends Component {
       <ScrollView style={styles.main}>
         <View style={styles.container}>
           {
-            collections
-              // .filter(collection => collection.type === 'USER')
-              .map((item, index) => {
-                return (
-                  <CollectionItem
-                    key={index}
-                    style={styles.cell}
-                    insideStyle={styles.collection}
-                    uri={item.pictureURL ? item.pictureURL : imagePlaceholder}
-                    title={item.name}
-                    radius={8}
-                    onPress={() => this.onItemPress(item)}
-                    onLongPress={() => !this.props.collections && item.type === 'USER' && this.onItemRemove(item)}
-                  />
-                )
-              })
+            collections.map((item, index) => {
+              return (
+                <CollectionItem
+                  key={index}
+                  style={styles.cell}
+                  insideStyle={styles.collection}
+                  uri={item.pictureURL ? item.pictureURL : imagePlaceholder}
+                  title={item.name}
+                  radius={8}
+                  onPress={() => this.onItemPress(item)}
+                  onLongPress={() => this.props.myCollections && this.onItemRemove(item)}
+                />
+              )
+            })
           }
         </View>
       </ScrollView>

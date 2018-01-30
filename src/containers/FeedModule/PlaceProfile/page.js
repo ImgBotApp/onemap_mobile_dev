@@ -28,7 +28,6 @@ import DFonts from '@theme/fonts'
 import I18n from '@language'
 import { client } from '@root/main'
 
-import { GET_USER_COLLECTIONS, GET_MY_COLLECTIONS } from '@graphql/collections'
 import { GET_KEYWORD } from '@graphql/keywords'
 import { GET_PLACE_PROFILE } from '@graphql/places'
 
@@ -164,31 +163,6 @@ class PlaceProfile extends PureComponent {
         storyImages: myStories.length ? [...myStories[0].pictureURL.map(item => ({ uri: item })), ...this.state.storyImages] : this.state.storyImages
       })
     });
-    if (this.state.collections == null) {
-      //this.getUserCollections();
-      this.getMyCollections();
-    }
-  }
-
-  getUserCollections = () => {
-    client.query({
-      query: GET_USER_COLLECTIONS,
-      variables: {
-        id: this.props.user.id
-      }
-    }).then(collections => {
-      this.setState({ collections: collections.data.allCollections });
-    })
-  }
-  getMyCollections = () => {
-    client.query({
-      query: GET_MY_COLLECTIONS,
-      variables: {
-        id: this.props.user.id
-      }
-    }).then(collections => {
-      this.setState({ collections: collections.data.allCollections });
-    })
   }
 
   onBookMarker = () => {
@@ -516,7 +490,6 @@ class PlaceProfile extends PureComponent {
         <View style={styles.separatebar}></View>
         <ScrollView horizontal={true} style={styles.Collections}>
           {this.props.collections
-            .filter(collection => collection.type === 'USER')
             .map((collection, index) => (
               <TouchableOpacity key={index} style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>
                 <TitleImage

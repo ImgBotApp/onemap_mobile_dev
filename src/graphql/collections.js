@@ -1,42 +1,16 @@
 import { gql } from 'react-apollo'
 
-export const GET_ALL_COLLECTIONS = gql`
-  query AllCollectionsQuery {
-    allCollections {
-      id
-      createdAt
-      name
-      pictureURL
-      privacy
-      type
-      updatedAt
-    }
-  }
-`
-
-export const GET_USER_COLLECTIONS = gql`
-  query UserCollectionsQuery($id: ID!) {
-    allCollections(filter: {
-      AND: [{
-        user: {id: $id}
-      }, {
-        type: USER
-      }]
-    }) {
-      id
-      createdAt
-      name
-      pictureURL
-      privacy
-      type
-      updatedAt
-    }
-  }
-`
-
-export const GET_MY_COLLECTIONS = gql`
-  query MyCollectionsQuery($id: ID!) {
-    allCollections(filter: {user: {id: $id}}) {
+export const GET_MY_COLLECTIONS = gql` #sample code format
+query MyCollectionsQuery($id: ID!) {
+  allCollections(
+    filter: {
+      type: USER
+      user: {
+        id: $id
+      }
+    },
+    orderBy: createdAt_DESC
+  ) {
       id
       createdAt
       name
