@@ -55,7 +55,7 @@ class Collections extends Component {
           insideStyle={styles.itemContainer}
           uri={''}
           radius={8}
-          title={'+\nView all\nCollections'}
+          title={this.props.allText ? this.props.allText : '+\nView all\nCollections'}
           onPress={this.props.onViewAll}
         />
       </View>
