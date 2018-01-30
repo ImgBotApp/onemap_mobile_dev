@@ -129,7 +129,11 @@ class PlaceProfile extends PureComponent {
       }
     }).then((place) => {
       let data = place.data.Place;
-      let myStories = data.stories.filter(item => item.createdBy.id === this.props.user.id);
+
+      const myStories = data.stories.filter(item => item.createdBy.id === this.props.user.id);
+      const ownerStories = data.stories.filter(item => item.createdBy.id === data.createdBy.id);
+      const otherStories = data.stories.filter(item => !myStories.includes(item) && !ownerStories.includes(item));
+
       this.setState({
         placeData: {
           id: data.id,
@@ -156,7 +160,7 @@ class PlaceProfile extends PureComponent {
           checkedInIds: data.userCheckedIn.map(item => item.id),
           collectionIds: this.props.place && this.props.place.collectionIds ? this.props.place.collectionIds : data.collections.map(item => item.id),
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
-          comments: data.stories.filter(item => item.createdBy.id !== this.props.user.id),
+          comments: Object.assign(ownerStories, otherStories),
           bookmark: this.isBookmarked(data.collections),
         },
         myStory: myStories.length ? myStories[0] : this.state.myStory,
