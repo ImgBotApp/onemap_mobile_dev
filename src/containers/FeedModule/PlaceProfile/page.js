@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, 
 
 import CardView from 'react-native-cardview';
 import ImagePicker from 'react-native-image-picker';
+import ImageCropPicker from 'react-native-image-crop-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; import Modal from 'react-native-modalbox';
 import Overlay from 'react-native-modal-overlay';
@@ -709,18 +710,44 @@ class PlaceProfile extends PureComponent {
   }
   addImageToStory() {
     if (!this.state.storyEditable) return;
-    ImagePicker.showImagePicker({
-      ...ImagePickerOption,
-      mediaType: 'mixed',
-      maxWidth: 1080,
-      maxHeight: 1920,
-    }, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        alert(response.error)
-        console.log('ImagePicker Error: ', response.error);
-      } else {
+
+    if (true) {//TODO: should determine reasonable picker type
+      //Image Picker
+      ImagePicker.showImagePicker({
+        ...ImagePickerOption,
+        mediaType: 'mixed',
+        maxWidth: 1080,
+        maxHeight: 1920,
+      }, (response) => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          alert(response.error)
+          console.log('ImagePicker Error: ', response.error);
+        } else {
+          let source = { uri: response.uri };
+          var storyImages = clone(this.state.storyImages);
+          storyImages.pop();
+          storyImages.push(source);
+          storyImages.push({ type: 'add' });
+          this.setState({ storyImages, imageUploading: true });
+          uploadImage(response.data, '#story').then(url => {
+            if (url) {
+              this.state.storyImages[this.state.storyImages.length - 2].uri = url;
+            }
+            this.setState({ imageUploading: false });
+          });
+        }
+      });
+    } else {
+      //Image Crop Picker
+      ImageCropPicker.openPicker({
+        compressImageMaxWidth: 1080,
+        compressImageMaxHeight: 1920,
+        includeBase64: true,
+        mediaType: 'any',
+        path: 'images'
+      }).then(response => {
         let source = { uri: response.uri };
         var storyImages = clone(this.state.storyImages);
         storyImages.pop();
@@ -733,8 +760,8 @@ class PlaceProfile extends PureComponent {
           }
           this.setState({ imageUploading: false });
         });
-      }
-    });
+      }).catch(err => console.log(err));
+    }
   }
   deleteImageFromStory(index) {
     if (this.state.storyEditable) {
