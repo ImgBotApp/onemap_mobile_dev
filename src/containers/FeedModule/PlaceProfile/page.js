@@ -633,13 +633,13 @@ class PlaceProfile extends PureComponent {
   }
 
   _renderWriteStory() {
-    const { storyEditable } = this.state;
+    const { imageUploading, storyEditable } = this.state;
     return (
       <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
         <View style={{ flexDirection: 'row' }}>
           <CircleImage style={styles.storyWriterImage} uri={this.props.user.photoURL} radius={getDeviceWidth(67)} />
           <Text style={styles.storyWriterName}>{this.props.user.displayName}</Text>
-          <TouchableOpacity onPress={() => {
+          <TouchableOpacity disabled={imageUploading} onPress={() => {
             if (storyEditable) {
               this.saveStory();
             } else {
@@ -722,13 +722,12 @@ class PlaceProfile extends PureComponent {
         storyImages.pop();
         storyImages.push(source);
         storyImages.push({ type: 'add' });
-        this.setState({ storyImages });
-        this.state.imageUploading = true;
-        uploadMedia(response.uri, '#story').then(url => {
+        this.setState({ storyImages, imageUploading: true });
+        uploadImage(response.data, '#story').then(url => {
           if (url) {
             this.state.storyImages[this.state.storyImages.length - 2].uri = url;
           }
-          this.state.imageUploading = false;
+          this.setState({ imageUploading: false });
         });
       }
     });
