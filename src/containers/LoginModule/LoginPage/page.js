@@ -40,6 +40,24 @@ class LoginPage extends Component {
       if ( result.gender == 'female') 
         gender = 'FEMALE'
       
+      this.props.navigator.push({
+        screen: SCREEN.ACCOUNT_CREATE_PAGE,
+        title: 'Create Account',
+        passProps: {
+          mode: ACCOUNT_MODE.facebook,
+          info: {
+            ...result,
+            userId: this.state.id
+          }
+        },
+        animated: true,
+        navigatorStyle: {
+          navBarTextColor: DARK_GRAY_COLOR,
+          navBarTextFontFamily: 'Comfortaa-Regular',
+          naviBarComponentAlignment: 'center'
+        },
+      })     
+      /*
       let UserExist = await client.query({
         query: GET_PROFILE,
         variables: {
@@ -89,6 +107,7 @@ class LoginPage extends Component {
           })        
         }
       })
+      */
       // var user = await this.props.updateFacebookUser({
       //   variables: {
       //     id: this.state.id,

@@ -63,6 +63,7 @@ class SearchPage extends Component {
   }
   onNavigatorEvent(event) { // this is the onPress handler for the two buttons together
     if (event.id == "bottomTabSelected") {
+      /*
       Permissions.check('location').then(response => {
         if (response != 'authorized') {
           Permissions.request('location').then(response => {
@@ -73,10 +74,30 @@ class SearchPage extends Component {
         }
         else this.onSearchNearByPlace();
       })
+      */
     }
   }
   componentDidMount() {
     _this = this;
+    Permissions.check('location').then(response => {
+      if (response != 'authorized') {
+        Permissions.request('location').then(response => {
+          if (response == 'authorized') {
+            this.setGeoPositionEvent();
+          }
+        })
+      }
+      else this.setGeoPositionEvent();
+    })
+  }
+  componentWillUnmount (){
+    if(this.watchID != null)
+      navigator.geolocation.clearWatch(this.watchID);
+  }
+  componentWillMount() {
+
+  }
+  setGeoPositionEvent(){
     navigator.geolocation.getCurrentPosition(
       (position) => {
         this.setState({myPosition:position.coords});
@@ -91,13 +112,6 @@ class SearchPage extends Component {
       this.updateMapView();
      
    },{enableHighAccuracy: false, timeout: 20000, maximumAge: 0, distanceFilter: 0.1});
-  }
-  componentWillUnmount (){
-    if(this.watchID != null)
-      navigator.geolocation.clearWatch(this.watchID);
-  }
-  componentWillMount() {
-
   }
   updateMapView(){
     var getInitialRegion = {
@@ -163,7 +177,10 @@ class SearchPage extends Component {
               results.shift();
               this.setState({ nearByPlaces: results })
             })
-            .catch((error) => this.setState({isCallingAPI:false}));
+            .catch((error) =>{
+              console.log("error:"+error); 
+              this.setState({isCallingAPI:false})}
+            );
   }
   render() {
     if (this.state.isFeaching)
