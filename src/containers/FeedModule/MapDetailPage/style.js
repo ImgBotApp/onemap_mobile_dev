@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../../theme/colors';
 import { BIG_FONT_SIZE, NORMAL_FONT_SIZE } from '../../../theme/fonts';
 
-import { getDeviceWidth, getDeviceHeight} from '@global'
+import { getDeviceWidth, getDeviceHeight } from '@global'
 // define your styles
 const styles = StyleSheet.create({
   container: {

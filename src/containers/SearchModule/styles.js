@@ -1,8 +1,8 @@
 import { StyleSheet, Platform } from 'react-native'
 import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../theme/colors';
-import { BIG_FONT_SIZE, NORMAL_FONT_SIZE,SMALL_FONT_SIZE } from '../../theme/fonts';
+import { BIG_FONT_SIZE, NORMAL_FONT_SIZE, SMALL_FONT_SIZE } from '../../theme/fonts';
 
-import {getDeviceWidth, getDeviceHeight} from '@global'
+import { getDeviceWidth, getDeviceHeight } from '@global'
 // define your styles
 const styles = StyleSheet.create({
   container: {
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
   SectionStyle: {
     // position:'absolute',
-    height:50,
+    height: 50,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -20,27 +20,27 @@ const styles = StyleSheet.create({
     // top:15,
     // zIndex:99,
     // marginHorizontal: 20
-},
-ImageStyle: {
-  padding: 10,
-  marginLeft: 10,
-  height: 25,
-  width: 25,
-  resizeMode : 'stretch',
-  alignItems: 'center'
-},
-backArrow: {
-  padding: 10,
-  marginLeft: 10,
-  marginRight: 10,
-  height: 25,
-  width: 25,
-  resizeMode : 'stretch',
-  alignItems: 'center'
-},
+  },
+  ImageStyle: {
+    padding: 10,
+    marginLeft: 10,
+    height: 25,
+    width: 25,
+    resizeMode: 'stretch',
+    alignItems: 'center'
+  },
+  backArrow: {
+    padding: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    height: 25,
+    width: 25,
+    resizeMode: 'stretch',
+    alignItems: 'center'
+  },
   textInput: {
-    flex:1,
-},
+    flex: 1,
+  },
   mapView: {
     width: '100%',
     height: getDeviceHeight(1000)
@@ -57,19 +57,19 @@ backArrow: {
   placeImage: {
     width: getDeviceWidth(140),
     height: getDeviceHeight(140),
-    marginBottom:getDeviceHeight(80),
+    marginBottom: getDeviceHeight(80),
     resizeMode: 'contain'
   },
   nearPlaceImage: {
-    marginRight:'3%',
+    marginRight: '3%',
     width: getDeviceWidth(120),
     height: getDeviceHeight(120),
     resizeMode: 'contain'
   },
-  selectLocation:{
-    paddingTop:getDeviceHeight(20),
-    paddingBottom:getDeviceHeight(20),
-    marginLeft:getDeviceWidth(50),
+  selectLocation: {
+    paddingTop: getDeviceHeight(20),
+    paddingBottom: getDeviceHeight(20),
+    marginLeft: getDeviceWidth(50),
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -82,8 +82,8 @@ backArrow: {
   },
   infomation: {
     marginLeft: getDeviceWidth(60),
-    paddingBottom:'1%',
-    marginBottom:'5%',
+    paddingBottom: '1%',
+    marginBottom: '5%',
     width: getDeviceWidth(980),
     borderBottomWidth: 1,
     borderBottomColor: LIGHT_GRAY_COLOR,
@@ -96,13 +96,13 @@ backArrow: {
   name: {
     fontSize: NORMAL_FONT_SIZE,
     color: DARK_GRAY_COLOR,
-    marginBottom :getDeviceHeight(10),
-    fontFamily      : 'Comfortaa-Regular',
+    marginBottom: getDeviceHeight(10),
+    fontFamily: 'Comfortaa-Regular',
   },
   following: {
     fontSize: SMALL_FONT_SIZE,
     color: LIGHT_GRAY_COLOR,
-    fontFamily      : 'Comfortaa-Light',
+    fontFamily: 'Comfortaa-Light',
   },
   customView: {
     width: 160,

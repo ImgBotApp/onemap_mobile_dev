@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#efeeee',
   },
   profileImage: {
-    width : GLOBAL.getDeviceWidth(342),
+    width: GLOBAL.getDeviceWidth(342),
     height: GLOBAL.getDeviceHeight(342),
     marginLeft: GLOBAL.getDeviceWidth(86),
     marginTop: GLOBAL.getDeviceHeight(86),
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   nameView: {
     marginLeft: GLOBAL.getDeviceWidth(57),
-    marginTop : GLOBAL.getDeviceHeight(107),
+    marginTop: GLOBAL.getDeviceHeight(107),
     justifyContent: 'space-between'
   },
   bigName: {
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     // width: GLOBAL.getDeviceWidth(567)   
   },
   bioText: {
-    marginLeft: GLOBAL.getDeviceWidth(86)    
+    marginLeft: GLOBAL.getDeviceWidth(86)
   },
   spec: {
     marginLeft: GLOBAL.getDeviceWidth(145),

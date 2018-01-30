@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity,ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Tabs from 'react-native-tabs';
 import CircleImage from '@components/CircleImage'
 
@@ -27,44 +27,43 @@ class SearchResult extends Component {
       places: [],
       keywords: [],
       users: [],
-      loading:false
+      loading: false
     };
   }
   componentWillMount() {
-    if(this.props.keyword)
+    if (this.props.keyword)
       this.onTextSearchPlace();
   }
   componentWillReceiveProps(nextProps) {
     this.onTextSearchPlace();
   }
   onTextSearchPlace() {
-    this.setState({loading:true});
+    this.setState({ loading: true });
     const radius = 50000;
     const language = 'en';
     const query = this.props.keyword.replace(/\s/g, "+");
 
-    const placeTextSearchURL = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+this.props.keyword+"&location="+this.props.coordinate.latitude+","+this.props.coordinate.longitude+"&radius="+radius+"&key="+PLACES_APIKEY;
+    const placeTextSearchURL = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + this.props.keyword + "&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius + "&key=" + PLACES_APIKEY;
 
-    console.log("----------------------:"+placeTextSearchURL);
-    fetch(placeTextSearchURL, { 
+    console.log("----------------------:" + placeTextSearchURL);
+    fetch(placeTextSearchURL, {
       method: 'GET',
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
     })
-    .then((response) => response.json())
-    .then((responseData) =>
-    {
-      //set your data here
-      this.setState({loading:false})
-      if(responseData.results)
-        this.setState({
-          places: responseData.results
-        })
-    })
-    .catch((error) => {
-      this.setState({loading:false})
-    });
-    
+      .then((response) => response.json())
+      .then((responseData) => {
+        //set your data here
+        this.setState({ loading: false })
+        if (responseData.results)
+          this.setState({
+            places: responseData.results
+          })
+      })
+      .catch((error) => {
+        this.setState({ loading: false })
+      });
+
     /*
     RNGooglePlaces.getAutocompletePredictions(nextProps.keyword,{type: 'noFilter',radius: 10000}).then((results) => {
       this.setState({
@@ -164,18 +163,18 @@ class SearchResult extends Component {
     }
   }
   //this.state.places.sort(this.compareValues('name', 'asc')
-  compareValues(key, order='asc') {
-    return function(a, b) {
-      if(!a.hasOwnProperty(key) || 
-         !b.hasOwnProperty(key)) {
-        return 0; 
+  compareValues(key, order = 'asc') {
+    return function (a, b) {
+      if (!a.hasOwnProperty(key) ||
+        !b.hasOwnProperty(key)) {
+        return 0;
       }
-      
-      const varA = (typeof a[key] === 'string') ? 
+
+      const varA = (typeof a[key] === 'string') ?
         a[key].toUpperCase() : a[key];
-      const varB = (typeof b[key] === 'string') ? 
+      const varB = (typeof b[key] === 'string') ?
         b[key].toUpperCase() : b[key];
-        
+
       let comparison = 0;
       if (varA > varB) {
         comparison = 1;
@@ -183,44 +182,44 @@ class SearchResult extends Component {
         comparison = -1;
       }
       return (
-        (order == 'desc') ? 
-        (comparison * -1) : comparison
+        (order == 'desc') ?
+          (comparison * -1) : comparison
       );
     };
   }
   _renderPlaces() {
     return (
       <FlatList
-          keyExtractor={(item, index) => index}
-          style={styles.scrollView}
-          data={this.state.places}
-          renderItem={({ item }) => this._onPlaceItem(item)}
-        />
-      
+        keyExtractor={(item, index) => index}
+        style={styles.scrollView}
+        data={this.state.places}
+        renderItem={({ item }) => this._onPlaceItem(item)}
+      />
+
     )
   }
   _renderKeywords() {
     return (
-      
-        <FlatList
-          keyExtractor={(item, index) => index}
-          style={styles.scrollView}
-          data={this.state.keywords}
-          renderItem={({ item }) => this._onKeywordItem(item)}
-        />
-      
+
+      <FlatList
+        keyExtractor={(item, index) => index}
+        style={styles.scrollView}
+        data={this.state.keywords}
+        renderItem={({ item }) => this._onKeywordItem(item)}
+      />
+
     )
   }
   _renderUsers() {
     return (
-      
-        <FlatList
-          keyExtractor={(item, index) => index}
-          style={styles.scrollView}
-          data={this.state.users}
-          renderItem={({ item }) => this._onUserItem(item)}
-        />
-     
+
+      <FlatList
+        keyExtractor={(item, index) => index}
+        style={styles.scrollView}
+        data={this.state.users}
+        renderItem={({ item }) => this._onUserItem(item)}
+      />
+
     )
   }
   render() {
@@ -235,7 +234,7 @@ class SearchResult extends Component {
           </Tabs>
         </View>
         {
-          this.state.loading?(<ActivityIndicator style={{marginTop:10}} size="small" color="#aaa" />):null
+          this.state.loading ? (<ActivityIndicator style={{ marginTop: 10 }} size="small" color="#aaa" />) : null
         }
         {
           this.state.page == 'Places' ? this._renderPlaces() : null

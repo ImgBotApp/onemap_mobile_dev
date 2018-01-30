@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
   TabText: {
     color: LIGHT_GRAY_COLOR,
-    fontSize:  BIG_FONT_SIZE
+    fontSize: BIG_FONT_SIZE
   },
   TabSelected: {
     borderBottomWidth: 1,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   calloutcontainer: {
     flexDirection: 'column',
-    bottom:0,
+    bottom: 0,
   },
   bubble: {
     width: 160,

@@ -234,24 +234,24 @@ const styles = StyleSheet.create({
     color: DARK_GRAY_COLOR,
     fontSize: BIGGER_FONT_SIZE,
   },
-  overlayContainer:{
+  overlayContainer: {
     position: 'absolute',
     justifyContent: 'center',
     flex: 1,
     backgroundColor: 'rgba(153,153,153,0)',
-    padding:0,
+    padding: 0,
   },
-  overlayWrapper:{
-    
+  overlayWrapper: {
+
   },
-  playButton:{
-    position:"absolute",
-    backgroundColor:"transparent",
-    color:"white",
-    fontSize:20,
-    right:5,
-    bottom:5,
-    fontWeight:"100"
+  playButton: {
+    position: "absolute",
+    backgroundColor: "transparent",
+    color: "white",
+    fontSize: 20,
+    right: 5,
+    bottom: 5,
+    fontWeight: "100"
   }
 });
 

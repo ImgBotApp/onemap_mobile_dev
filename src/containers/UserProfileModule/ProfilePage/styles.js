@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#efeeee',
   },
   profileImage: {
-    width : GLOBAL.getDeviceWidth(342),
+    width: GLOBAL.getDeviceWidth(342),
     height: GLOBAL.getDeviceHeight(342),
   },
   checkImage: {
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     marginTop: GLOBAL.getDeviceHeight(50)
   },
   bioText: {
-    marginLeft: GLOBAL.getDeviceWidth(86)    
+    marginLeft: GLOBAL.getDeviceWidth(86)
   },
   spec: {
     alignItems: 'center',
