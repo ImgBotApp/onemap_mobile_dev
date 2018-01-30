@@ -111,6 +111,7 @@ class AllCollections extends Component {
             collections
               // .filter(collection => collection.type === 'USER')
               .map((item, index) => {
+                if(item == null) return null;
                 return (
                   <CollectionItem
                     key={index}

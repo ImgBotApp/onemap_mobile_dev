@@ -154,6 +154,7 @@ class SearchResult extends Component {
     )
   }
   _onRenderItem(item) {
+    if(item == null)return;
     switch (item.type) {
       case 'user':
         return this._onUserItem(item)

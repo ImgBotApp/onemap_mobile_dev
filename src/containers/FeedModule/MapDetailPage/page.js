@@ -65,8 +65,8 @@ class MapDetailPage extends Component {
             <MapView.Marker
               title={this.props.title}
               coordinate={this.props.map}
+              image = {require('@assets/images/map_pin.png')}
             >
-            <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
             </MapView.Marker>
           </MapView>
         </View>

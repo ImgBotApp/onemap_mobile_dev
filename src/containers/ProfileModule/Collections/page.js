@@ -227,8 +227,8 @@ class Collections extends Component {
             <Marker
               key={index}
               coordinate={{ latitude: item.locationLat, longitude: item.locationLong }}
+              image = {require('@assets/images/map_pin.png')}
             >
-              <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
               <Callout style={styles.customView} onPress={() => this.openPlaceProfile(item.id)}>
                 <Text style={{ flexWrap: "nowrap" }}>{item.address}</Text>
               </Callout>

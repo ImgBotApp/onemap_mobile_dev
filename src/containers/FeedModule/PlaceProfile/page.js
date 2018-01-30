@@ -281,7 +281,7 @@ class PlaceProfile extends PureComponent {
   }
   _renderItem(data, index) {
     const item = data[index];
-    if (item.type === 'add') {
+    if (item && item.type === 'add') {
       return (
         <TouchableOpacity onPress={this.addImageToStory.bind(this)}>
           <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
@@ -425,8 +425,8 @@ class PlaceProfile extends PureComponent {
             <MapView.Marker
               title={this.state.placeData.title}
               coordinate={this.state.placeData.map}
+              image = {require('@assets/images/map_pin.png')}
             >
-            <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
             </MapView.Marker>
           </MapView>
         </View>

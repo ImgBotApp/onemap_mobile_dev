@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity,Platform } from 'react-native';
 import RNPlaces from 'react-native-google-places'
 import RNGooglePlaces from 'react-native-google-places'
 import Search from '@components/SearchBar';
@@ -102,16 +102,15 @@ class SearchPage extends Component {
       (position) => {
         this.setState({myPosition:position.coords});
         this.updateMapView();
-        
       },
       (error) => alert(JSON.stringify(error)),
-      {enableHighAccuracy: false, timeout: 20000, maximumAge: 0,distanceFilter:0.1}
+      {enableHighAccuracy: true, timeout: 20000,distanceFilter:0.1}
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
       this.setState({myPosition:position.coords});
       this.updateMapView();
      
-   },{enableHighAccuracy: false, timeout: 20000, maximumAge: 0, distanceFilter: 0.1});
+   },{enableHighAccuracy: true, timeout: 20000,distanceFilter:0.1});
   }
   updateMapView(){
     var getInitialRegion = {
@@ -129,7 +128,7 @@ class SearchPage extends Component {
     })
     this.onSearchNearByPlace();
   }
-  onSearchNearByPlace(){
+  async onSearchNearByPlace(){
     if(this.state.isCallingAPI)
       return;
     this.setState({isCallingAPI:true});
@@ -221,8 +220,8 @@ class SearchPage extends Component {
                       key={key} 
                       coordinate={marker.coordinates}
                       zIndex = {key}
+                      image = {require('@assets/images/map_pin.png')} 
                     >
-                      <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
                       <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
                         <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
                       </Callout>
@@ -233,9 +232,8 @@ class SearchPage extends Component {
                   <Marker
                       coordinate={this.state.myPosition}
                       zIndex = {this.state.nearByPlacesPin.length+1000}
-                      style = {styles.mapmarker}
+                      image = {require('@assets/images/map_position.png')} 
                     >
-                      <Image source={require('@assets/images/map_position.png')} style = {styles.mapmarker} />
                       <Callout style={styles.customView}>
                         <Text style={{ flexWrap: "nowrap" }}>{curr_position}</Text>
                       </Callout>

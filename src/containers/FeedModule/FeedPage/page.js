@@ -296,7 +296,7 @@ class FeedPage extends Component {
     )
   }
   _renderItem = ({ item, index }) => {
-    if (item.type) {
+    if (item &&item.type) {
       switch (item.type) {
         case 'users':
           return this._renderSuggestedList(item.data)
