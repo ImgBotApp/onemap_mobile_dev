@@ -5,7 +5,8 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, 
 import CardView from 'react-native-cardview';
 import ImagePicker from 'react-native-image-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; import Modal from 'react-native-modalbox';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; 
+import Modal from 'react-native-modalbox';
 import Overlay from 'react-native-modal-overlay';
 import Share from 'react-native-share';
 import TagInput from 'react-native-tag-input';
@@ -92,7 +93,7 @@ class PlaceProfile extends PureComponent {
         description: props.place ? props.place.description : '',
         information: {},
         image: [],
-        map: {},
+        map: null,
         heartedIds: [],
         checkedInIds: [],
         collectionIds: [],
@@ -422,12 +423,15 @@ class PlaceProfile extends PureComponent {
             initialRegion={this.state.placeData.map}
             region={this.state.placeData.map}
           >
-            <MapView.Marker
-              title={this.state.placeData.title}
-              coordinate={this.state.placeData.map}
-              image = {require('@assets/images/map_pin.png')}
-            >
-            </MapView.Marker>
+          {
+            this.state.placeData.map?(
+              <MapView.Marker
+                title={this.state.placeData.title}
+                coordinate={this.state.placeData.map}
+                image = {require('@assets/images/map_pin.png')}
+              >
+              </MapView.Marker>):null
+          }
           </MapView>
         </View>
       </TouchableOpacity>
