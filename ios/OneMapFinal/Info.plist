@@ -36,14 +36,14 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb519021981830054</string>
+				<string>fb163236004399299</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>18013107</string>
+	<string>18013110</string>
 	<key>FacebookAppID</key>
-	<string>519021981830054</string>
+	<string>163236004399299</string>
 	<key>FacebookDisplayName</key>
 	<string>malakOneMap</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
