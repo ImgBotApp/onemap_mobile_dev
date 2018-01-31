@@ -65,31 +65,31 @@ query GetCollectionWithPlaces($id: ID!, $first: Int, $skip: Int) {
     pictureURL
     type
     places(first: $first, skip: $skip) {
-        id
-        createdAt
-        updatedAt
-        description
-        source
-        sourceId
-        createSide
-        placeName
-        locationLat
-        locationLong
-        addressAreaDistrict
-        addressCityTown
-        addressStateProvince
-        addressCountry
-        addressPostalCode
-        addressStreet
-        address
-        phoneNumber
-        website
-        facebook
-        line
-        openingHrs
-        pictureURL
-        status
-        placeOwner
+      id
+      createdAt
+      updatedAt
+      description
+      source
+      sourceId
+      createSide
+      placeName
+      locationLat
+      locationLong
+      addressAreaDistrict
+      addressCityTown
+      addressStateProvince
+      addressCountry
+      addressPostalCode
+      addressStreet
+      address
+      phoneNumber
+      website
+      facebook
+      line
+      openingHrs
+      pictureURL
+      status
+      placeOwner
   	}
   }
 }
@@ -108,6 +108,48 @@ export const REMOVE_PLACE_FROM_COLLECTION = gql`
       }
     }
 `
+
+export const GET_COLLECTIONS_WITH_PLACES = gql`
+query BookmarkCollectionsQuery($id: ID!, $first: Int, $skip: Int) {
+  allCollections(
+    filter: {
+      type: USER
+      user: {
+        id: $id
+      }
+    },
+    orderBy: createdAt_DESC
+  ) {
+    id
+    places(first: $first, skip: $skip) {
+      id
+      createdAt
+      updatedAt
+      description
+      source
+      sourceId
+      createSide
+      placeName
+      locationLat
+      locationLong
+      addressAreaDistrict
+      addressCityTown
+      addressStateProvince
+      addressCountry
+      addressPostalCode
+      addressStreet
+      address
+      phoneNumber
+      website
+      facebook
+      line
+      openingHrs
+      pictureURL
+      status
+      placeOwner
+    }
+  }
+}`
 
 export const LIST_USER_COLLECTIONS = gql`#unused
   query GetUserCollections(

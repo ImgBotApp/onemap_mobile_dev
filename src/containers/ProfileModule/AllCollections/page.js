@@ -107,7 +107,14 @@ class AllCollections extends Component {
     })
   }
   onViewCollectionsAll = () => {
-    //TODO:
+    this.props.navigator.push({
+      screen: SCREEN.COLLECTIONS_PAGE,
+      title: I18n.t('DRAWER_STORIES'),
+      animated: true,
+      passProps: {
+        type: 'bookmark'
+      }
+    })
   }
   onViewStories = () => {
     this.props.navigator.push({
