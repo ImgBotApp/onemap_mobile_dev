@@ -112,8 +112,9 @@ class AllCollections extends Component {
       title: I18n.t('DRAWER_STORIES'),
       animated: true,
       passProps: {
-        type: 'bookmark'
-      }
+        type: 'bookmark',
+        userId: this.props.userId
+      },
     })
   }
   onViewStories = () => {
