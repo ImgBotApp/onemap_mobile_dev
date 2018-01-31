@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderRadius: 5,
     position: 'absolute',
-    bottom: 84,
+    bottom: 64,
     left: 4,
     right: 4,
     flexDirection: 'row',

@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity,Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity,Platform,PermissionsAndroid } from 'react-native';
 import RNPlaces from 'react-native-google-places'
 import RNGooglePlaces from 'react-native-google-places'
 import Search from '@components/SearchBar';
@@ -21,6 +21,7 @@ import Permissions from 'react-native-permissions'
 import { Places } from 'google-places-web'
 import { PLACES_APIKEY } from '@global/const';
 import Toast, { DURATION } from 'react-native-easy-toast'
+import axios from 'axios';
 
 Places.apiKey = PLACES_APIKEY;
 Places.debug = true;
@@ -79,25 +80,52 @@ class SearchPage extends Component {
   }
   componentDidMount() {
     _this = this;
+    
     Permissions.check('location').then(response => {
       if (response != 'authorized') {
-        Permissions.request('location').then(response => {
-          if (response == 'authorized') {
-            this.setGeoPositionEvent();
-          }
-        })
+        if(Platform.OS == 'android')
+        {
+          //this.requestLocationPermissionForAndroid();
+        }
+        else{
+          Permissions.request('location').then(response => {
+            if (response == 'authorized') {
+              this.setGeoPositionEvent();
+            }
+          })
+        }
       }
       else this.setGeoPositionEvent();
     })
+    //this.setGeoPositionEvent();
   }
   componentWillUnmount (){
     if(this.watchID != null)
       navigator.geolocation.clearWatch(this.watchID);
   }
   componentWillMount() {
-
+    
   }
-  setGeoPositionEvent(){
+  async requestLocationPermissionForAndroid() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          'title': 'Request Location Permission',
+          'message': 'Are you enable Location Service?'
+        }
+      )
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        this.setGeoPositionEvent();
+        console.log("You can get the Location")
+      } else {
+        console.log("Location permission denied")
+      }
+    } catch (err) {
+      console.warn(err)
+    }
+  }
+  async setGeoPositionEvent(){
     navigator.geolocation.getCurrentPosition(
       (position) => {
         this.setState({myPosition:position.coords});
@@ -215,7 +243,6 @@ class SearchPage extends Component {
                 showsBuildings={true}
               >
                 {this.state.nearByPlacesPin.map((marker, key) => (
-                  
                     <Marker
                       key={key} 
                       coordinate={marker.coordinates}
@@ -326,6 +353,7 @@ class SearchPage extends Component {
         if (!place.data.allPlaces || place.data.allPlaces.length <= 0) {
           this.onFetchGooglePictures(ret_photos ? ret_photos : []);
         } else {
+          
           this.setState({ loading: false });
           this.props.navigator.push({
             screen: SCREEN.PLACE_PROFILE_PAGE,
@@ -337,23 +365,25 @@ class SearchPage extends Component {
           })
         }
       }
-      ).catch((error) => this.setState({ loading: false }));
+      ).catch((error) => {this.setState({ loading: false })});
   }
   async onFetchGooglePictures(ret_photos) {
     let redrictURLS = [];
     await Promise.all(
-      ret_photos.map(photo => fetch("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + Places.apiKey)
-        .then(response => {
-          redrictURLS.push(response.url);
-          Promise.resolve();
+      ret_photos.map(photo => 
+        axios.get("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + Places.apiKey)
+        .then(function (response) {
+          redrictURLS.push(response.config.url);
         })
-        .catch(err => this.setState({ loading: false }))
+        .catch(function (error) {
+          this.setState({ loading: false })
+        })
       )
     ).then(() => {
       this.setState({ pictureURLS: redrictURLS, isFeaching: true });
-    }, err => { this.setState({ loading: false }); })
+    }, err => {this.setState({ loading: false }); })
   }
-  async onCreatePlace() {
+  onCreatePlace() {
     this.props.createPlace({
       variables: {
         createdById: this.props.user.id,
@@ -388,10 +418,12 @@ class SearchPage extends Component {
         title: I18n.t('PLACE_TITLE'),
         animated: true,
         passProps: {
-          place: result.data.createPlace
+          placeID: result.data.createPlace.id
         }
       })
-    }).catch((error) => this.setState({ loading: false }));
+    }).catch((error) => {
+      this.setState({ loading: false })
+    });
   }
   onShowResult(val) {
     this.setState({

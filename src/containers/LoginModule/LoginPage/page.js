@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage,PermissionsAndroid,Platform } from 'react-native'
 import FBSDK, { Loginmanager, LoginManager } from 'react-native-fbsdk'
 import I18n from '@language'
 import styles from './styles'
@@ -26,6 +26,25 @@ class LoginPage extends Component {
     this.state = {
       id: '',
       loading: false
+    }
+  }
+  componentDidMount() {
+    if(Platform.OS == 'android')
+      this.requestLocationPermissionForAndroid();
+  }
+  async requestLocationPermissionForAndroid() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        
+      )
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can get the Location")
+      } else {
+        console.log("Location permission denied")
+      }
+    } catch (err) {
+      console.warn(err)
     }
   }
   async _responseInfoCallback(error, result) {

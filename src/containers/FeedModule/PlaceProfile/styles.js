@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet,Platform } from 'react-native'
 import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR } from '../../../theme/colors';
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
@@ -249,8 +249,8 @@ const styles = StyleSheet.create({
     backgroundColor:"transparent",
     color:"white",
     fontSize:20,
-    right:5,
-    bottom:5,
+    right: Platform.OS=='android'? 15:5,
+    bottom: Platform.OS=='android'? 18:5,
     fontWeight:"100"
   }
 });
