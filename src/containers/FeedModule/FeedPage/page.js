@@ -190,8 +190,7 @@ class FeedPage extends Component {
       }
     }).then(places => {
       let items = clone(this.state.items);
-      items[index].bookmark = false;
-      items[index].collectionIds = collectionIds;
+      items[index] = { bookmark: false, collectionIds };
       this.setState({ items, collectionModal: false, selectedCollections: [] });
       client.resetStore();
     });
