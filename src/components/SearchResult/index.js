@@ -102,7 +102,7 @@ class SearchResult extends Component {
 
   _onUserItem(item) {
     return (
-      <TouchableOpacity onPress={() => this.props.onUser(item.id)} >
+      <TouchableOpacity onPress={() => this.props.onUser(item)} >
         <View style={styles.item}>
           <CircleImage style={styles.profileImage} uri={item.photoURL} radius={getDeviceWidth(70)} />
           <View style={styles.infomation}>
