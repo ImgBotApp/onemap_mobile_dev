@@ -588,7 +588,7 @@ class PlaceProfile extends PureComponent {
     const parseWhen = [',', ' ', ';', '\n'];
 
     if (parseWhen.indexOf(lastTyped) > -1) {
-      if (this.state.keywordText && !this.state.placeData.keywords.includes(this.state.keywordText)) {
+      if (this.state.keywordText && !this.state.placeData.keywords.map(item => item.name).includes(this.state.keywordText)) {
         this.saveKeyword(this.state.keywordText);
       }
     } else {
@@ -602,7 +602,7 @@ class PlaceProfile extends PureComponent {
   }
   onChangeTags = (tags) => {
     let keywords = this.state.placeData.keywords.map(item => item.name);
-    let keyword = keywords.filter(item => tags.indexOf(item) === -1)[0];
+    let keyword = keywords.filter(item => tags.indexOf(item) < 0)[0];
     if (keyword) this.deleteKeyword(keywords.indexOf(keyword));
   }
   saveKeyword(name) {

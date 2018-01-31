@@ -267,11 +267,14 @@ class SearchPage extends Component {
       </View>
     );
   }
-  onUserItem(id) {//TODO
+  onUserItem(userInfo) {
     this.props.navigator.push({
       screen: SCREEN.USERS_PROFILE_PAGE,
       title: I18n.t('USERPROFILE_TITLE'),
-      animated: true
+      animated: true,
+      passProps: {
+        userInfo
+      }
     })
   }
   onKeywordItem(id) {
