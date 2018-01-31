@@ -596,13 +596,14 @@ class PlaceProfile extends PureComponent {
     }
   }
   onSubmitEditing = () => {
-    if (this.state.keywordText && !this.state.placeData.keywords.includes(this.state.keywordText)) {
+    const keywords = this.state.placeData.keywords.map(item => item.name);
+    if (this.state.keywordText && !keywords.includes(this.state.keywordText)) {
       this.saveKeyword(this.state.keywordText);
     }
   }
   onChangeTags = (tags) => {
-    let keywords = this.state.placeData.keywords.map(item => item.name);
-    let keyword = keywords.filter(item => tags.indexOf(item) < 0)[0];
+    const keywords = this.state.placeData.keywords.map(item => item.name);
+    const keyword = keywords.filter(item => tags.indexOf(item) < 0)[0];
     if (keyword) this.deleteKeyword(keywords.indexOf(keyword));
   }
   saveKeyword(name) {
