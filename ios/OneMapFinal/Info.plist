@@ -41,7 +41,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>18011819</string>
+	<string>18013107</string>
 	<key>FacebookAppID</key>
 	<string>519021981830054</string>
 	<key>FacebookDisplayName</key>
@@ -69,26 +69,26 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>facebook.com</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>fbcdn.net</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 				<key>NSIncludesSubdomains</key>
 				<true/>
-			</dict>
-			<key>facebook.com</key>
-			<dict>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<false/>
-			</dict>
-			<key>fbcdn.net</key>
-			<dict>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<false/>
 			</dict>
 			<key>res.cloudinary.com</key>
 			<dict>
@@ -99,6 +99,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Media Library Usage</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Bluetooth Usage</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Calendars Usage</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera Usage</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -109,10 +115,14 @@
 	<string>This app always requires location tracking</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Mic Usage</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Motion Usage</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Photo Library</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photo Library</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Speech Recognition Usage</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
