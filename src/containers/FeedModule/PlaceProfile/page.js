@@ -585,7 +585,7 @@ class PlaceProfile extends PureComponent {
   }
   onChangeTagText = (text) => {
     const lastTyped = text.charAt(text.length - 1);
-    const parseWhen = [',', ' ', ';', '\n'];
+    const parseWhen = [',', ';', '\n'];
 
     if (parseWhen.indexOf(lastTyped) > -1) {
       if (this.state.keywordText && !this.state.placeData.keywords.map(item => item.name).includes(this.state.keywordText)) {
