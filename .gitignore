@@ -31,6 +31,10 @@ build/
 .gradle
 local.properties
 *.iml
+*.apk
+assets_*
+*.bundle*
+*.keystore
 
 # node.js
 #

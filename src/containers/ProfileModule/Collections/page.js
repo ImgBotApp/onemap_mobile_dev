@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity, Alert, ActivityIndicator,Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity, Alert, ActivityIndicator, Image, Platform } from 'react-native';
 import Tabs from 'react-native-tabs';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import MapView from 'react-native-map-clustering';
@@ -227,8 +227,11 @@ class Collections extends Component {
             <Marker
               key={index}
               coordinate={{ latitude: item.locationLat, longitude: item.locationLong }}
+              image={Platform.OS == 'android' ? require('@assets/images/map_pin_android.png') : null}
             >
-              <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
+              {Platform.OS === 'ios' && (
+                <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
+              )}
               <Callout style={styles.customView} onPress={() => this.openPlaceProfile(item.id)}>
                 <Text style={{ flexWrap: "nowrap" }}>{item.address}</Text>
               </Callout>

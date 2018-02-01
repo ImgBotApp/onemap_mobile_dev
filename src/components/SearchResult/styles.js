@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native'
 import { BACKGROUNDCOLOR,LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '../../theme/colors';
 import { NORMAL_FONT_SIZE, BIG_FONT_SIZE, SMALL_FONT_SIZE } from '../../theme/fonts';
 import { getDeviceHeight, getDeviceWidth } from '@global'
+import { Platform } from 'react-native';
 
 // define your styles
 const styles = StyleSheet.create({
@@ -10,7 +11,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'white',
-    marginTop:50,
   },
   TabText: {
     color: LIGHT_GRAY_COLOR,
@@ -25,12 +25,15 @@ const styles = StyleSheet.create({
     color: DARK_GRAY_COLOR
   },
   mainContainer: {
-    top:0
+    top:50
   },
   tabHeader: {
     borderColor: 'transparent',
     borderBottomWidth: 0,
     backgroundColor: 'white'
+  },
+  tabbody:{
+    marginTop:50
   },
   scrollView: {
     width: '100%',
@@ -38,13 +41,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: 'transparent',
     backgroundColor: 'white',
-    paddingTop:getDeviceHeight(50)
+    
   },
   item: {
-    height: getDeviceHeight(192),
+    height: Platform.OS=='android'? 60:getDeviceHeight(192),
     marginLeft: getDeviceWidth(69),
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    
   },
   profileImage: {
     width: getDeviceWidth(140),
@@ -71,7 +75,7 @@ const styles = StyleSheet.create({
     width: getDeviceWidth(140),
     height: getDeviceHeight(140),
     resizeMode: 'contain',
-    marginBottom:getDeviceHeight(80),
+    marginBottom: 5,
   }
 });
 

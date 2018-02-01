@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage,PermissionsAndroid,Platform } from 'react-native'
 import FBSDK, { Loginmanager, LoginManager } from 'react-native-fbsdk'
 import I18n from '@language'
 import styles from './styles'
@@ -28,6 +28,25 @@ class LoginPage extends Component {
       loading: false
     }
   }
+  componentDidMount() {
+    if(Platform.OS == 'android')
+      this.requestLocationPermissionForAndroid();
+  }
+  async requestLocationPermissionForAndroid() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        
+      )
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can get the Location")
+      } else {
+        console.log("Location permission denied")
+      }
+    } catch (err) {
+      console.warn(err)
+    }
+  }
   async _responseInfoCallback(error, result) {
     if (error) {
       // alert('Error fetching data: ' + error.toString());
@@ -40,6 +59,24 @@ class LoginPage extends Component {
       if ( result.gender == 'female') 
         gender = 'FEMALE'
       
+      this.props.navigator.push({
+        screen: SCREEN.ACCOUNT_CREATE_PAGE,
+        title: 'Create Account',
+        passProps: {
+          mode: ACCOUNT_MODE.facebook,
+          info: {
+            ...result,
+            userId: this.state.id
+          }
+        },
+        animated: true,
+        navigatorStyle: {
+          navBarTextColor: DARK_GRAY_COLOR,
+          navBarTextFontFamily: 'Comfortaa-Regular',
+          naviBarComponentAlignment: 'center'
+        },
+      })     
+      /*
       let UserExist = await client.query({
         query: GET_PROFILE,
         variables: {
@@ -89,6 +126,7 @@ class LoginPage extends Component {
           })        
         }
       })
+      */
       // var user = await this.props.updateFacebookUser({
       //   variables: {
       //     id: this.state.id,
