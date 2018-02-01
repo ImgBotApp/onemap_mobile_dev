@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet,Platform } from 'react-native'
 import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR } from '../../../theme/colors';
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
@@ -239,19 +239,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     backgroundColor: 'rgba(153,153,153,0)',
-    padding: 0,
+    padding:0,
   },
-  overlayWrapper: {
-
+  overlayWrapper:{
+    
   },
-  playButton: {
-    position: "absolute",
-    backgroundColor: "transparent",
-    color: "white",
-    fontSize: 20,
-    right: 5,
-    bottom: 5,
-    fontWeight: "100"
+  playButton:{
+    position:"absolute",
+    backgroundColor:"transparent",
+    color:"white",
+    fontSize:20,
+    right: Platform.OS=='android'? 15:5,
+    bottom: Platform.OS=='android'? 18:5,
+    fontWeight:"100"
   }
 });
 

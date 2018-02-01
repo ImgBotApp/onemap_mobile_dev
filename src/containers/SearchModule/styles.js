@@ -1,9 +1,8 @@
 import { StyleSheet, Platform } from 'react-native'
 import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../theme/colors';
-import { BIG_FONT_SIZE, NORMAL_FONT_SIZE, SMALL_FONT_SIZE } from '../../theme/fonts';
-
+import { BIG_FONT_SIZE, NORMAL_FONT_SIZE,SMALL_FONT_SIZE } from '../../theme/fonts';
 import { getDeviceWidth, getDeviceHeight } from '@global'
-// define your styles
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -57,8 +56,9 @@ const styles = StyleSheet.create({
   placeImage: {
     width: getDeviceWidth(140),
     height: getDeviceHeight(140),
-    marginBottom: getDeviceHeight(80),
-    resizeMode: 'contain'
+    marginBottom:getDeviceHeight(80),
+    resizeMode: 'contain',
+    marginBottom: Platform.OS=='android'? 5:getDeviceHeight(80),
   },
   nearPlaceImage: {
     marginRight: '3%',
@@ -74,9 +74,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   item: {
-    // height: getDeviceHeight(192),
+    height: Platform.OS=='android'? 60:getDeviceHeight(192),
     marginLeft: getDeviceWidth(60),
-    height: getDeviceHeight(192),
     alignItems: 'center',
     flexDirection: 'row'
   },

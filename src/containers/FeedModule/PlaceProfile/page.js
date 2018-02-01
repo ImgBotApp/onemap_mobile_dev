@@ -6,7 +6,8 @@ import CardView from 'react-native-cardview';
 import ImagePicker from 'react-native-image-picker';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; import Modal from 'react-native-modalbox';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import Modal from 'react-native-modalbox';
 import Overlay from 'react-native-modal-overlay';
 import Share from 'react-native-share';
 import TagInput from 'react-native-tag-input';
@@ -92,7 +93,7 @@ class PlaceProfile extends PureComponent {
         description: props.place ? props.place.description : '',
         information: {},
         image: [],
-        map: {},
+        map: null,
         heartedIds: [],
         checkedInIds: [],
         collectionIds: [],
@@ -260,7 +261,7 @@ class PlaceProfile extends PureComponent {
   }
   _renderItem(data, index) {
     const item = data[index];
-    if (item.type === 'add') {
+    if (item && item.type === 'add') {
       return (
         <TouchableOpacity onPress={this.addImageToStory.bind(this)}>
           <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
@@ -396,19 +397,25 @@ class PlaceProfile extends PureComponent {
       <TouchableOpacity onPress={this.goMapDetail.bind(this)}>
         <View style={styles.mapView}>
           {this.state.placeData.map.latitude &&
-            <MapView
-              provider={PROVIDER_GOOGLE}
-              style={styles.map}
-              initialRegion={this.state.placeData.map}
-              region={this.state.placeData.map}
-            >
-              <MapView.Marker
-                title={this.state.placeData.title}
-                coordinate={this.state.placeData.map}
-              >
-                <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
-              </MapView.Marker>
-            </MapView>}
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            style={styles.map}
+            initialRegion={this.state.placeData.map}
+            region={this.state.placeData.map}
+          >
+            {
+              this.state.placeData.map ? (
+                <MapView.Marker
+                  title={this.state.placeData.title}
+                  coordinate={this.state.placeData.map}
+                  image={Platform.OS == 'android' ? require('@assets/images/map_pin_android.png') : null}
+                >
+                  {Platform.OS === 'ios' && (
+                    <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
+                  )}
+                </MapView.Marker>) : null
+            }
+          </MapView>}
         </View>
       </TouchableOpacity>
     )

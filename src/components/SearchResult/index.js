@@ -27,7 +27,8 @@ class SearchResult extends Component {
       places: [],
       keywords: [],
       users: [],
-      loading: false
+      loading:false,
+      prevQuery:null
     };
   }
   componentWillMount() {
@@ -38,41 +39,39 @@ class SearchResult extends Component {
     this.onTextSearchPlace();
   }
   onTextSearchPlace() {
-    this.setState({ loading: true });
+    if(this.props.keyword == this.state.prevQuery)
+      return;
+    this.setState({loading:true});
     const radius = 50000;
     const language = 'en';
     const query = this.props.keyword.replace(/\s/g, "+");
 
-    const placeTextSearchURL = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + this.props.keyword + "&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius + "&key=" + PLACES_APIKEY;
+    if(this.props.coordinate == null) return;
+    const placeTextSearchURL = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+this.props.keyword+"&location="+this.props.coordinate.latitude+","+this.props.coordinate.longitude+"&radius="+radius+"&key="+PLACES_APIKEY;
 
-    console.log("----------------------:" + placeTextSearchURL);
-    fetch(placeTextSearchURL, {
+    fetch(placeTextSearchURL, { 
       method: 'GET',
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
     })
-      .then((response) => response.json())
-      .then((responseData) => {
-        //set your data here
-        this.setState({ loading: false })
-        if (responseData.results)
-          this.setState({
-            places: responseData.results
-          })
-      })
-      .catch((error) => {
-        this.setState({ loading: false })
-      });
+    .then((response) => response.json())
+    .then((responseData) =>
+    {
+      //set your data here
+      let query = this.props.keyword;
+      this.setState({prevQuery:query});
 
-    /*
-    RNGooglePlaces.getAutocompletePredictions(nextProps.keyword,{type: 'noFilter',radius: 10000}).then((results) => {
-      this.setState({
-        places: results
-      })
-    }).catch((error) => {
-      console.log(error)
+      this.setState({loading:false})
+      if(responseData.results)
+        this.setState({
+          places: responseData.results
+        })
     })
-    */
+    .catch((error) => {
+      this.setState({loading:false})
+    });
+    
+
     client.query({
       query: GET_FILTER_KEYWORDS,
       variables: {
@@ -153,6 +152,7 @@ class SearchResult extends Component {
     )
   }
   _onRenderItem(item) {
+    if(item == null)return;
     switch (item.type) {
       case 'user':
         return this._onUserItem(item)
@@ -233,24 +233,20 @@ class SearchResult extends Component {
             {this._renderTabHeader('Keywords')}
           </Tabs>
         </View>
-        {
-          this.state.loading ? (<ActivityIndicator style={{ marginTop: 10 }} size="small" color="#aaa" />) : null
-        }
-        {
-          this.state.page == 'Places' ? this._renderPlaces() : null
-        }
-        {
-          this.state.page == 'Keywords' ? this._renderKeywords() : null
-        }
-        {
-          this.state.page == 'People' ? this._renderUsers() : null
-        }
-        {/* <View style={styles.scrollView}>
-          <FlatList style={styles.scrollView} 
-            data={data}
-            renderItem={({item}) => this._onRenderItem(item)}
-          />
-        </View> */}
+        <View style={styles.tabbody}>
+          {
+            this.state.loading?(<ActivityIndicator style={{marginTop:10}} size="small" color="#aaa" />):null
+          }
+          {
+            this.state.page == 'Places' ? this._renderPlaces() : null
+          }
+          {
+            this.state.page == 'Keywords' ? this._renderKeywords() : null
+          }
+          {
+            this.state.page == 'People' ? this._renderUsers() : null
+          }
+        </View>
       </View>
     );
   }

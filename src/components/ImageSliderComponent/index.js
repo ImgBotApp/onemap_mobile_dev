@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, Button,Platform } from 'react-native';
 import ImageSliderView from 'react-native-image-slider';
 import PropTypes from 'prop-types';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -28,13 +28,14 @@ class ImageSlider extends Component {
   onPress() {
     this.props.onPress();
   }
-
-  componentDidMount() {
+  componentWillMount() {
     Orientation.unlockAllOrientations();
-    Orientation.addOrientationListener(this._orientationDidChange);
+  }
+  componentDidMount() {
     Orientation.getOrientation((err, orientation) => {
       this.onlayoutOrientation(orientation);
     });
+    //Orientation.addOrientationListener(this._orientationDidChange.bind(this));
   }
 
   _orientationDidChange = (orientation) => {
@@ -49,6 +50,13 @@ class ImageSlider extends Component {
     // Remember to remove listener
     Orientation.removeOrientationListener(this._orientationDidChange);
     Orientation.lockToPortrait();
+  }
+
+  _onLayout(){
+    Orientation.getOrientation((err, orientation) => {
+      console.log("did change layout orientaion:"+orientation);
+      this.onlayoutOrientation(orientation);
+    });
   }
 
   onlayoutOrientation(orientation) {
@@ -67,7 +75,7 @@ class ImageSlider extends Component {
         itemWidth: Math.max(dim.width, dim.height),
       });
     }
-    this.forceUpdate()
+    //this.forceUpdate()
   }
 
   _renderItemWithParallax({ item, index }, parallaxProps) {
@@ -83,11 +91,12 @@ class ImageSlider extends Component {
   }
   _onSnapToItem(index) {
     this.setState({ slider1ActiveSlide: index });
+    this.forceUpdate();
   }
   render() {
     const { slider1ActiveSlide, slider1Ref } = this.state;
     return (
-      <View style={styles.container} supportedOrientations={['portrait', 'landscape']}>
+      <View style={styles.container} supportedOrientations={['portrait', 'landscape']} onLayout={this._onLayout.bind(this)}>
         <Carousel
           ref={(c) => { if (!this.state.slider1Ref) { this.setState({ slider1Ref: c }); } }}
           data={this.props.data}

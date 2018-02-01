@@ -35,12 +35,10 @@ export function uploadImage(imgdata, tag) {
                 alert(data.error.message);
                 return null;
             } else {
-                console.log("+++++++++++++++++++++++++" + data.url);
                 return data.url;
             }
         })
         .catch((err) => {
-            console.log("--------------------" + err);
             return null;
         });
 }

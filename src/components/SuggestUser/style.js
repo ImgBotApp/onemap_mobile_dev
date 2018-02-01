@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet,Platform } from 'react-native'
 import { getDeviceHeight, getDeviceWidth } from '@global'
 
 import * as color from '@theme/colors'
@@ -10,7 +10,7 @@ import { BIG_FONT_SIZE, NORMAL_FONT_SIZE } from '../../theme/fonts';
 const styles = StyleSheet.create({
   container: {
     width: getDeviceWidth(890),
-    height: getDeviceHeight(376),
+    height: Platform.OS=='android'?getDeviceHeight(410):getDeviceHeight(376),
     marginBottom: 10,
     flexDirection: 'row',
     padding: getDeviceWidth(39),

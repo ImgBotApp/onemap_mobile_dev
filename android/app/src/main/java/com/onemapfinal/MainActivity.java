@@ -3,8 +3,9 @@ package com.onemapfinal;
 import com.facebook.react.ReactActivity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import com.reactnativenavigation.controllers.SplashActivity;
 
-public class MainActivity extends ReactActivity {
+public class MainActivity extends SplashActivity {
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -15,10 +16,7 @@ public class MainActivity extends ReactActivity {
         super.onActivityResult(requestCode, resultCode, data);
         MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data);
     }
-    @Override
-    protected String getMainComponentName() {
-        return "OneMapFinal";
-    }
+
     @Override
       public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -26,4 +24,5 @@ public class MainActivity extends ReactActivity {
         intent.putExtra("newConfig", newConfig);
         this.sendBroadcast(intent);
     }
+
 }

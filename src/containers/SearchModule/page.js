@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity, Platform, PermissionsAndroid } from 'react-native';
 import RNPlaces from 'react-native-google-places'
 import RNGooglePlaces from 'react-native-google-places'
 import Search from '@components/SearchBar';
@@ -21,6 +21,7 @@ import Permissions from 'react-native-permissions'
 import { Places } from 'google-places-web'
 import { PLACES_APIKEY } from '@global/const';
 import Toast, { DURATION } from 'react-native-easy-toast'
+import axios from 'axios';
 
 Places.apiKey = PLACES_APIKEY;
 Places.debug = true;
@@ -63,6 +64,7 @@ class SearchPage extends Component {
   }
   onNavigatorEvent(event) { // this is the onPress handler for the two buttons together
     if (event.id == "bottomTabSelected") {
+      /*
       Permissions.check('location').then(response => {
         if (response != 'authorized') {
           Permissions.request('location').then(response => {
@@ -73,30 +75,52 @@ class SearchPage extends Component {
         }
         else this.onSearchNearByPlace();
       })
+      */
     }
   }
   componentDidMount() {
     _this = this;
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        this.setState({ myPosition: position.coords });
-        this.updateMapView();
+    Permissions.check('location').then(response => {
+      if (response != 'authorized') {
+        if (Platform.OS == 'android') {
 
-      },
-      (error) => alert(JSON.stringify(error)),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 }
-    );
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      this.setState({ myPosition: position.coords });
-      this.updateMapView();
-
-    }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 });
+        }
+        else {
+          Permissions.request('location').then(response => {
+            if (response == 'authorized') {
+              this.setGeoPositionEvent();
+            }
+          })
+        }
+      }
+      else this.setGeoPositionEvent();
+    })
+    //this.setGeoPositionEvent();
   }
   componentWillUnmount() {
     if (this.watchID != null)
       navigator.geolocation.clearWatch(this.watchID);
   }
   componentWillMount() {
+
+  }
+
+  setGeoPositionEvent() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({ myPosition: position.coords });
+        this.updateMapView();
+        console.log("current position:" + position.coords.latitude);
+      },
+      (error) => console.log(error),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 }
+    );
+
+    this.watchID = navigator.geolocation.watchPosition((position) => {
+      console.log("watch position:" + position.coords.latitude);
+      this.setState({ myPosition: position.coords });
+      this.updateMapView();
+    }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 });
 
   }
   updateMapView() {
@@ -115,11 +139,11 @@ class SearchPage extends Component {
     })
     this.onSearchNearByPlace();
   }
-  onSearchNearByPlace() {
+  async onSearchNearByPlace() {
     if (this.state.isCallingAPI)
       return;
     this.setState({ isCallingAPI: true });
-    RNGooglePlaces.getCurrentPlace()
+    RNPlaces.getCurrentPlace()
       .then((results) => {
         this.setState({ isCallingAPI: false })
         //this.refs.toast.show('nearby search updated')
@@ -161,7 +185,11 @@ class SearchPage extends Component {
         results.shift();
         this.setState({ nearByPlaces: results })
       })
-      .catch((error) => this.setState({ isCallingAPI: false }));
+      .catch((error) => {
+        console.log("error:" + error);
+        this.setState({ isCallingAPI: false })
+      }
+      );
   }
   render() {
     if (this.state.isFeaching)
@@ -197,13 +225,15 @@ class SearchPage extends Component {
                       showsBuildings={true}
                     >
                       {this.state.nearByPlacesPin.map((marker, key) => (
-
                         <Marker
                           key={key}
                           coordinate={marker.coordinates}
                           zIndex={key}
+                          image={Platform.OS == 'android' ? require('@assets/images/map_pin_android.png') : null}
                         >
-                          <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
+                          {Platform.OS === 'ios' && (
+                            <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
+                          )}
                           <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
                             <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
                           </Callout>
@@ -214,8 +244,11 @@ class SearchPage extends Component {
                           <Marker
                             coordinate={this.state.myPosition}
                             zIndex={this.state.nearByPlacesPin.length + 1000}
+                            image={Platform.OS == 'android' ? require('@assets/images/map_position_android.png') : null}
                           >
-                            <Image source={require('@assets/images/map_position.png')} style={styles.mapmarker} />
+                            {Platform.OS === 'ios' && (
+                              <Image source={require('@assets/images/map_position.png')} style={styles.mapmarker} />
+                            )}
                             <Callout style={styles.customView}>
                               <Text style={{ flexWrap: "nowrap" }}>{curr_position}</Text>
                             </Callout>
@@ -322,23 +355,25 @@ class SearchPage extends Component {
           })
         }
       }
-      ).catch((error) => this.setState({ loading: false }));
+      ).catch((error) => { this.setState({ loading: false }) });
   }
   async onFetchGooglePictures(ret_photos) {
     let redrictURLS = [];
     await Promise.all(
-      ret_photos.map(photo => fetch("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + Places.apiKey)
-        .then(response => {
-          redrictURLS.push(response.url);
-          Promise.resolve();
-        })
-        .catch(err => this.setState({ loading: false }))
+      ret_photos.map(photo =>
+        axios.get("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + Places.apiKey)
+          .then(function (response) {
+            redrictURLS.push(response.config.url);
+          })
+          .catch(function (error) {
+            this.setState({ loading: false })
+          })
       )
     ).then(() => {
       this.setState({ pictureURLS: redrictURLS, isFeaching: true });
     }, err => { this.setState({ loading: false }); })
   }
-  async onCreatePlace() {
+  onCreatePlace() {
     this.props.createPlace({
       variables: {
         createdById: this.props.user.id,
@@ -373,10 +408,12 @@ class SearchPage extends Component {
         title: I18n.t('PLACE_TITLE'),
         animated: true,
         passProps: {
-          place: result.data.createPlace
+          placeID: result.data.createPlace.id
         }
       })
-    }).catch((error) => this.setState({ loading: false }));
+    }).catch((error) => {
+      this.setState({ loading: false })
+    });
   }
   onShowResult(val) {
     this.setState({
