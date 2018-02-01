@@ -80,12 +80,11 @@ class SearchPage extends Component {
   }
   componentDidMount() {
     _this = this;
-    
     Permissions.check('location').then(response => {
       if (response != 'authorized') {
         if(Platform.OS == 'android')
         {
-          //this.requestLocationPermissionForAndroid();
+
         }
         else{
           Permissions.request('location').then(response => {
@@ -104,41 +103,26 @@ class SearchPage extends Component {
       navigator.geolocation.clearWatch(this.watchID);
   }
   componentWillMount() {
-    
+
   }
-  async requestLocationPermissionForAndroid() {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          'title': 'Request Location Permission',
-          'message': 'Are you enable Location Service?'
-        }
-      )
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        this.setGeoPositionEvent();
-        console.log("You can get the Location")
-      } else {
-        console.log("Location permission denied")
-      }
-    } catch (err) {
-      console.warn(err)
-    }
-  }
-  async setGeoPositionEvent(){
+
+  setGeoPositionEvent(){
     navigator.geolocation.getCurrentPosition(
       (position) => {
         this.setState({myPosition:position.coords});
         this.updateMapView();
+        console.log("current position:"+position.coords.latitude);
       },
       (error) => console.log(error),
-      {enableHighAccuracy: true, timeout: 20000,distanceFilter:0.1}
+      {enableHighAccuracy: true, timeout: 20000,maximumAge: 0,distanceFilter:0.1}
     );
+
     this.watchID = navigator.geolocation.watchPosition((position) => {
+      console.log("watch position:"+position.coords.latitude);
       this.setState({myPosition:position.coords});
       this.updateMapView();
-     
-   },{enableHighAccuracy: true, timeout: 20000,distanceFilter:0.1});
+   },{enableHighAccuracy: true, timeout: 20000,maximumAge: 0,distanceFilter:0.1});
+
   }
   updateMapView(){
     var getInitialRegion = {
@@ -205,7 +189,7 @@ class SearchPage extends Component {
               this.setState({ nearByPlaces: results })
             })
             .catch((error) =>{
-              console.log("error:"+error); 
+              console.log("error:"+error);
               this.setState({isCallingAPI:false})}
             );
   }
@@ -244,11 +228,14 @@ class SearchPage extends Component {
               >
                 {this.state.nearByPlacesPin.map((marker, key) => (
                     <Marker
-                      key={key} 
+                      key={key}
                       coordinate={marker.coordinates}
                       zIndex = {key}
-                      image = {require('@assets/images/map_pin.png')} 
+                      image= {Platform.OS=='android' ? require('@assets/images/map_pin_android.png') : null}
                     >
+                      {Platform.OS === 'ios' && (
+                        <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
+                      )}
                       <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
                         <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
                       </Callout>
@@ -259,8 +246,11 @@ class SearchPage extends Component {
                   <Marker
                       coordinate={this.state.myPosition}
                       zIndex = {this.state.nearByPlacesPin.length+1000}
-                      image = {require('@assets/images/map_position.png')} 
+                      image= {Platform.OS=='android' ? require('@assets/images/map_position_android.png') : null}
                     >
+                      {Platform.OS === 'ios' && (
+                        <Image source={require('@assets/images/map_position.png')} style = {styles.mapmarker} />
+                      )}
                       <Callout style={styles.customView}>
                         <Text style={{ flexWrap: "nowrap" }}>{curr_position}</Text>
                       </Callout>
@@ -353,7 +343,7 @@ class SearchPage extends Component {
         if (!place.data.allPlaces || place.data.allPlaces.length <= 0) {
           this.onFetchGooglePictures(ret_photos ? ret_photos : []);
         } else {
-          
+
           this.setState({ loading: false });
           this.props.navigator.push({
             screen: SCREEN.PLACE_PROFILE_PAGE,
@@ -370,7 +360,7 @@ class SearchPage extends Component {
   async onFetchGooglePictures(ret_photos) {
     let redrictURLS = [];
     await Promise.all(
-      ret_photos.map(photo => 
+      ret_photos.map(photo =>
         axios.get("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + Places.apiKey)
         .then(function (response) {
           redrictURLS.push(response.config.url);

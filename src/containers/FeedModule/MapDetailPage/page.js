@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,Image } from 'react-native';
+import { View, Text, StyleSheet,Image,Platform } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import styles from './style'
@@ -65,8 +65,11 @@ class MapDetailPage extends Component {
             <MapView.Marker
               title={this.props.title}
               coordinate={this.props.map}
-              image = {require('@assets/images/map_pin.png')}
+              image= {Platform.OS=='android' ? require('@assets/images/map_pin_android.png') : null}
             >
+            {Platform.OS === 'ios' && (
+              <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
+            )}
             </MapView.Marker>
           </MapView>
         </View>

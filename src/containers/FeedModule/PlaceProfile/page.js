@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, 
 import CardView from 'react-native-cardview';
 import ImagePicker from 'react-native-image-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; 
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import Modal from 'react-native-modalbox';
 import Overlay from 'react-native-modal-overlay';
 import Share from 'react-native-share';
@@ -428,8 +428,11 @@ class PlaceProfile extends PureComponent {
               <MapView.Marker
                 title={this.state.placeData.title}
                 coordinate={this.state.placeData.map}
-                image = {require('@assets/images/map_pin.png')}
+                image= {Platform.OS=='android' ? require('@assets/images/map_pin_android.png') : null}
               >
+              {Platform.OS === 'ios' && (
+                <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
+              )}
               </MapView.Marker>):null
           }
           </MapView>

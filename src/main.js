@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 import * as reducers from './reducers'
 import * as appActions from './reducers/app/actions'
 
-import { registerScreens } from './registerScreens' 
+import { registerScreens } from './registerScreens'
 
 // import TestSceen from '@containers/Test'
 
@@ -127,7 +127,7 @@ export default class App {
           console.log(error);
         })
         return;
-      default: 
+      default:
         alert('unknown app root')
     }
   }
