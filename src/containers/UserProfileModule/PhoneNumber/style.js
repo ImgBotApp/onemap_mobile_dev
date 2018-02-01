@@ -15,21 +15,21 @@ const styles = StyleSheet.create({
 		color: '#575858'
 	},
 	navContainer: {
-    height: '100%',
-    justifyContent: 'center'
+		height: '100%',
+		justifyContent: 'center'
 	},
 	leftNav: {
-    marginLeft: getDeviceWidth(38),
-    width: getDeviceWidth(60),
-    height: getDeviceHeight(47),
-    resizeMode: 'contain'
-  },
-  rightNavText: {
-    marginRight: getDeviceWidth(45),
-    fontFamily: 'Comfortaa-regular',
-    color: '#575858',
-    // fontSize: 14,
-    fontWeight: 'bold'
+		marginLeft: getDeviceWidth(38),
+		width: getDeviceWidth(60),
+		height: getDeviceHeight(47),
+		resizeMode: 'contain'
+	},
+	rightNavText: {
+		marginRight: getDeviceWidth(45),
+		fontFamily: 'Comfortaa-regular',
+		color: '#575858',
+		// fontSize: 14,
+		fontWeight: 'bold'
 	},
 	element: {
 		width: getDeviceWidth(966),
@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row'
 	},
 	fontAweSome: {
-    width: getDeviceHeight(97),
-    height: '100%',
+		width: getDeviceHeight(97),
+		height: '100%',
 	},
 	phoneInput: {
 		marginLeft: 10,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 		height: 100,
 	},
 	text: {
-		fontFamily: 'Comfortaa-regular',		
+		fontFamily: 'Comfortaa-regular',
 		color: '#575858',
 		textAlign: 'center'
 	}

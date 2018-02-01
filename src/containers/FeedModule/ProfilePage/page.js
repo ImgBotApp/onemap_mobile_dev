@@ -122,6 +122,10 @@ class ProfilePage extends Component {
       animated: true,
       passProps: {
         collections: this.state.collections,
+        data: {
+          allStories: this.state.stories
+        },
+        userId: this.state.user.id
       }
     })
   }

@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity, Alert, ActivityIndicator,Image,Platform } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity, Alert, ActivityIndicator, Image, Platform } from 'react-native';
 import Tabs from 'react-native-tabs';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import MapView from 'react-native-map-clustering';
@@ -16,7 +16,7 @@ import styles from './styles'
 
 import { client } from '@root/main';
 import { graphql } from "react-apollo";
-import { GET_COLLECTION_WITH_PLACES } from '@graphql/collections';
+import { GET_COLLECTION_WITH_PLACES, GET_COLLECTIONS_WITH_PLACES } from '@graphql/collections';
 import { GET_USER_WITH_CHECKED_PLACES, GET_USER_WITH_LIKED_PLACES } from '@graphql/userprofile'
 
 const PLACES_PER_PAGE = 20;
@@ -69,6 +69,8 @@ class Collections extends Component {
         this.getLikedPlaces();
       } else if (this.props.collection) {
         this.getCollectionPlaces();
+      } else if (this.props.type === 'bookmark') {
+        this.getBookmarkedPlaces();
       }
     }
   }
@@ -113,6 +115,23 @@ class Collections extends Component {
       }
     }).then(({ data }) => {
       this.setState({ places: data.Collection.places, loading: false });
+    }).catch(err => alert(err))
+  }
+  getBookmarkedPlaces() {
+    this.setState({ loading: true });
+    client.query({
+      query: GET_COLLECTIONS_WITH_PLACES,
+      variables: {
+        id: this.props.userId ? this.props.userId : this.props.user.id,
+        first: 50,
+        skip: 0
+      }
+    }).then(({ data }) => {
+      let places = [];
+      data.allCollections.forEach(item => {
+        places = [...places, ...item.places];
+      });
+      this.setState({ places, loading: false });
     }).catch(err => alert(err))
   }
 
@@ -227,10 +246,10 @@ class Collections extends Component {
             <Marker
               key={index}
               coordinate={{ latitude: item.locationLat, longitude: item.locationLong }}
-              image= {Platform.OS=='android' ? require('@assets/images/map_pin_android.png') : null}
+              image={Platform.OS == 'android' ? require('@assets/images/map_pin_android.png') : null}
             >
               {Platform.OS === 'ios' && (
-                <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
+                <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
               )}
               <Callout style={styles.customView} onPress={() => this.openPlaceProfile(item.id)}>
                 <Text style={{ flexWrap: "nowrap" }}>{item.address}</Text>

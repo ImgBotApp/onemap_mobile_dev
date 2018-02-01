@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity,Platform,PermissionsAndroid } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity, Platform, PermissionsAndroid } from 'react-native';
 import RNPlaces from 'react-native-google-places'
 import RNGooglePlaces from 'react-native-google-places'
 import Search from '@components/SearchBar';
@@ -56,9 +56,9 @@ class SearchPage extends Component {
         latitudeDelta: LATTITUDE_DELTA,
         longitudeDelta: LONGTITUDE_DELTA,
       },
-      initialMarker:null,
-      myPosition:null,
-      isCallingAPI:false,
+      initialMarker: null,
+      myPosition: null,
+      isCallingAPI: false,
     }
     props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
@@ -82,11 +82,10 @@ class SearchPage extends Component {
     _this = this;
     Permissions.check('location').then(response => {
       if (response != 'authorized') {
-        if(Platform.OS == 'android')
-        {
+        if (Platform.OS == 'android') {
 
         }
-        else{
+        else {
           Permissions.request('location').then(response => {
             if (response == 'authorized') {
               this.setGeoPositionEvent();
@@ -98,33 +97,33 @@ class SearchPage extends Component {
     })
     //this.setGeoPositionEvent();
   }
-  componentWillUnmount (){
-    if(this.watchID != null)
+  componentWillUnmount() {
+    if (this.watchID != null)
       navigator.geolocation.clearWatch(this.watchID);
   }
   componentWillMount() {
 
   }
 
-  setGeoPositionEvent(){
+  setGeoPositionEvent() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        this.setState({myPosition:position.coords});
+        this.setState({ myPosition: position.coords });
         this.updateMapView();
-        console.log("current position:"+position.coords.latitude);
+        console.log("current position:" + position.coords.latitude);
       },
       (error) => console.log(error),
-      {enableHighAccuracy: true, timeout: 20000,maximumAge: 0,distanceFilter:0.1}
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 }
     );
 
     this.watchID = navigator.geolocation.watchPosition((position) => {
-      console.log("watch position:"+position.coords.latitude);
-      this.setState({myPosition:position.coords});
+      console.log("watch position:" + position.coords.latitude);
+      this.setState({ myPosition: position.coords });
       this.updateMapView();
-   },{enableHighAccuracy: true, timeout: 20000,maximumAge: 0,distanceFilter:0.1});
+    }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 });
 
   }
-  updateMapView(){
+  updateMapView() {
     var getInitialRegion = {
       latitude: this.state.myPosition.latitude,
       longitude: this.state.myPosition.longitude,
@@ -140,11 +139,11 @@ class SearchPage extends Component {
     })
     this.onSearchNearByPlace();
   }
-  async onSearchNearByPlace(){
-    if(this.state.isCallingAPI)
+  async onSearchNearByPlace() {
+    if (this.state.isCallingAPI)
       return;
     this.setState({isCallingAPI:true});
-    //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=YOUR_API_KEY
+    
     if(this.state.myPosition == null) return;
     const radius = 50000;
     const placeNearSearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+this.state.myPosition.latitude+","+this.state.myPosition.longitude+"&radius="+radius+"&key="+PLACES_APIKEY;
@@ -214,8 +213,8 @@ class SearchPage extends Component {
       this.onCreatePlace();
 
     let curr_position;
-    if(this.state.myPosition)
-      curr_position="lat:"+this.state.myPosition.latitude+" lng:"+this.state.myPosition.longitude;
+    if (this.state.myPosition)
+      curr_position = "lat:" + this.state.myPosition.latitude + " lng:" + this.state.myPosition.longitude;
     return (
       <View style={styles.container}>
         <Search
@@ -227,77 +226,77 @@ class SearchPage extends Component {
           onCancel={this.onDismissResult.bind(this)}
         />
         <View>
-        {
-          this.state.result == false ?
-          (
-            <View style={{ width: '100%' }}>
-            <View style={styles.mapView}>
-              <MapView
-                // showsUserLocation={true}
-                provider={PROVIDER_GOOGLE}
-                style={styles.map}
-                initialRegion={this.state.initialPosition}
-                region={this.state.initialPosition}
-                showsCompass={true}
-                loadingEnabled={true}
-                showsBuildings={true}
-              >
-                {this.state.nearByPlacesPin.map((marker, key) => (
-                    <Marker
-                      key={key}
-                      coordinate={marker.coordinates}
-                      zIndex = {key}
-                      image= {Platform.OS=='android' ? require('@assets/images/map_pin_android.png') : null}
+          {
+            this.state.result == false ?
+              (
+                <View style={{ width: '100%' }}>
+                  <View style={styles.mapView}>
+                    <MapView
+                      // showsUserLocation={true}
+                      provider={PROVIDER_GOOGLE}
+                      style={styles.map}
+                      initialRegion={this.state.initialPosition}
+                      region={this.state.initialPosition}
+                      showsCompass={true}
+                      loadingEnabled={true}
+                      showsBuildings={true}
                     >
-                      {Platform.OS === 'ios' && (
-                        <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
-                      )}
-                      <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
-                        <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
-                      </Callout>
-                    </Marker>
-                ))}
-              {
-                this.state.myPosition?(
-                  <Marker
-                      coordinate={this.state.myPosition}
-                      zIndex = {this.state.nearByPlacesPin.length+1000}
-                      image= {Platform.OS=='android' ? require('@assets/images/map_position_android.png') : null}
-                    >
-                      {Platform.OS === 'ios' && (
-                        <Image source={require('@assets/images/map_position.png')} style = {styles.mapmarker} />
-                      )}
-                      <Callout style={styles.customView}>
-                        <Text style={{ flexWrap: "nowrap" }}>{curr_position}</Text>
-                      </Callout>
-                    </Marker>
-                ):null
-              }
-              </MapView>
-            </View>
-            {/* } */}
-            <FlatList
-              keyExtractor={(item, index) => index}
-              style = {{paddingTop:getDeviceHeight(50)}}
-              data={this.state.nearByPlaces}
-              renderItem={({ item }) =>
-                <View>
-                    <View style={styles.item}>
-                      <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
-                      <View style={styles.infomation}>
-                        <View>
-                          <TouchableOpacity onPress={() => this.onPlaceProfile(item.place_id)}>
-                            <Text style={styles.name}>{item.name}</Text>
-                            {this.state.isSelected ?
-                              <Text style={styles.following}>{item.vicinity}</Text>
-                              : <Text style={styles.following}>{item.address}</Text>
-                            }
-                          </TouchableOpacity>
+                      {this.state.nearByPlacesPin.map((marker, key) => (
+                        <Marker
+                          key={key}
+                          coordinate={marker.coordinates}
+                          zIndex={key}
+                          image={Platform.OS == 'android' ? require('@assets/images/map_pin_android.png') : null}
+                        >
+                          {Platform.OS === 'ios' && (
+                            <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
+                          )}
+                          <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
+                            <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
+                          </Callout>
+                        </Marker>
+                      ))}
+                      {
+                        this.state.myPosition ? (
+                          <Marker
+                            coordinate={this.state.myPosition}
+                            zIndex={this.state.nearByPlacesPin.length + 1000}
+                            image={Platform.OS == 'android' ? require('@assets/images/map_position_android.png') : null}
+                          >
+                            {Platform.OS === 'ios' && (
+                              <Image source={require('@assets/images/map_position.png')} style={styles.mapmarker} />
+                            )}
+                            <Callout style={styles.customView}>
+                              <Text style={{ flexWrap: "nowrap" }}>{curr_position}</Text>
+                            </Callout>
+                          </Marker>
+                        ) : null
+                      }
+                    </MapView>
+                  </View>
+                  {/* } */}
+                  <FlatList
+                    keyExtractor={(item, index) => index}
+                    style={{ paddingTop: getDeviceHeight(50) }}
+                    data={this.state.nearByPlaces}
+                    renderItem={({ item }) =>
+                      <View>
+                        <View style={styles.item}>
+                          <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
+                          <View style={styles.infomation}>
+                            <View>
+                              <TouchableOpacity onPress={() => this.onPlaceProfile(item.place_id)}>
+                                <Text style={styles.name}>{item.name}</Text>
+                                {this.state.isSelected ?
+                                  <Text style={styles.following}>{item.vicinity}</Text>
+                                  : <Text style={styles.following}>{item.address}</Text>
+                                }
+                              </TouchableOpacity>
+                            </View>
+                          </View>
                         </View>
                       </View>
-                    </View>
-                  </View>
-                }
+                    }
                   />
                 </View>
               )
@@ -318,11 +317,14 @@ class SearchPage extends Component {
       </View>
     );
   }
-  onUserItem(id) {//TODO
+  onUserItem(userInfo) {
     this.props.navigator.push({
       screen: SCREEN.USERS_PROFILE_PAGE,
       title: I18n.t('USERPROFILE_TITLE'),
-      animated: true
+      animated: true,
+      passProps: {
+        userInfo
+      }
     })
   }
   onKeywordItem(id) {
@@ -359,7 +361,6 @@ class SearchPage extends Component {
         if (!place.data.allPlaces || place.data.allPlaces.length <= 0) {
           this.onFetchGooglePictures(ret_photos ? ret_photos : []);
         } else {
-
           this.setState({ loading: false });
           this.props.navigator.push({
             screen: SCREEN.PLACE_PROFILE_PAGE,
@@ -371,23 +372,23 @@ class SearchPage extends Component {
           })
         }
       }
-      ).catch((error) => {this.setState({ loading: false })});
+      ).catch((error) => { this.setState({ loading: false }) });
   }
   async onFetchGooglePictures(ret_photos) {
     let redrictURLS = [];
     await Promise.all(
       ret_photos.map(photo =>
         axios.get("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + Places.apiKey)
-        .then(function (response) {
-          redrictURLS.push(response.config.url);
-        })
-        .catch(function (error) {
-          this.setState({ loading: false })
-        })
+          .then(function (response) {
+            redrictURLS.push(response.config.url);
+          })
+          .catch(function (error) {
+            this.setState({ loading: false })
+          })
       )
     ).then(() => {
       this.setState({ pictureURLS: redrictURLS, isFeaching: true });
-    }, err => {this.setState({ loading: false }); })
+    }, err => { this.setState({ loading: false }); })
   }
   onCreatePlace() {
     this.props.createPlace({

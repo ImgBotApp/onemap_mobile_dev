@@ -71,7 +71,7 @@ class NewCollection extends Component {
       }
     }).then(collection => {
       let collections = clone(this.props.collections);
-      collections.push({
+      collections.unshift({
         id: collection.data.createCollection.id,
         type: 'USER',
         ...data

@@ -1,23 +1,16 @@
-
-//import liraries
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
 import GridView from 'react-native-gridview'
-import TitleImage from '@components/TitledImage'
-import CollectionItem from '@components/CollectionItem'
-import styles from './styles'
-import { DARK_GRAY_COLOR } from '../../../theme/colors';
-import * as SCREEN from '@global/screenName';
-import { clone } from '@global';
-import I18n from '@language';
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import CollectionItem from '@components/CollectionItem'
+import Collections from '@components/Collections'
+import TitleImage from '@components/TitledImage'
+import { clone } from '@global';
+import * as SCREEN from '@global/screenName';
+import I18n from '@language';
+import { DARK_GRAY_COLOR } from '@theme/colors';
+import styles from './styles'
 
-const itemsPerRow = 3
-
-const imagePlaceholder = 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg';
-
-var $this
-// create a component
 class AllCollections extends Component {
   static navigatorButtons = {
     leftButtons: [
@@ -102,30 +95,68 @@ class AllCollections extends Component {
       this.props.saveCollections(collections);
     }).catch(err => alert(err));
   }
+
+  onViewCollectionItem = (item) => {
+    this.props.navigator.push({
+      screen: SCREEN.COLLECTIONS_PAGE,
+      title: I18n.t('DRAWER_STORIES'),
+      animated: true,
+      passProps: {
+        type: item
+      }
+    })
+  }
+  onViewCollectionsAll = () => {
+    this.props.navigator.push({
+      screen: SCREEN.COLLECTIONS_PAGE,
+      title: I18n.t('DRAWER_STORIES'),
+      animated: true,
+      passProps: {
+        type: 'bookmark',
+        userId: this.props.userId
+      },
+    })
+  }
+  onViewStories = () => {
+    this.props.navigator.push({
+      screen: SCREEN.COLLECTIONS_PAGE,
+      title: I18n.t('DRAWER_STORIES'),
+      animated: true,
+      passProps: {
+        places: this.props.data.allStories.map(item => item.place)
+      }
+    })
+  }
+
   render() {
     const collections = this.props.collections ? this.props.collections : this.props.myCollections;
     return (
       <ScrollView style={styles.main}>
-        <View style={styles.container}>
-          {
-            collections
-              // .filter(collection => collection.type === 'USER')
-              .map((item, index) => {
-                if(item == null) return null;
-                return (
-                  <CollectionItem
-                    key={index}
-                    style={styles.cell}
-                    insideStyle={styles.collection}
-                    uri={item.pictureURL ? item.pictureURL : imagePlaceholder}
-                    title={item.name}
-                    radius={8}
-                    onPress={() => this.onItemPress(item)}
-                    onLongPress={() => !this.props.collections && item.type === 'USER' && this.onItemRemove(item)}
-                  />
-                )
-              })
-          }
+        <View>
+          <View style={styles.firstContainer}>
+            <Collections
+              allText={'+\nAll'}
+              onViewItem={this.onViewCollectionItem}
+              onViewStories={this.onViewStories}
+              onViewAll={this.onViewCollectionsAll}
+            />
+          </View>
+          <View style={styles.container}>
+            {collections.map((item, index) => {
+              return (
+                <CollectionItem
+                  key={index}
+                  style={styles.cell}
+                  insideStyle={styles.collection}
+                  uri={item.pictureURL}
+                  title={item.name}
+                  radius={8}
+                  onPress={() => this.onItemPress(item)}
+                  onLongPress={() => this.props.myCollections && this.onItemRemove(item)}
+                />
+              )
+            })}
+          </View>
         </View>
       </ScrollView>
     );

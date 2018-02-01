@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   FollowerBottom: {
     height: getDeviceHeight(169),
-    alignSelf:'flex-end',
+    alignSelf: 'flex-end',
     width: '100%',
     borderColor: LIGHT_GRAY_COLOR,
     borderTopWidth: 1,
@@ -52,12 +52,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   cancelStr: {
-    color:  BLUE_COLOR,
+    color: BLUE_COLOR,
     fontSize: BIG_FONT_SIZE
   },
   blockStr: {
     color: RED_COLOR,
-    fontSize: BIG_FONT_SIZE    
+    fontSize: BIG_FONT_SIZE
   }
 });
 

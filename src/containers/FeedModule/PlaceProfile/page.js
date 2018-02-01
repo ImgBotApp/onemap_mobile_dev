@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, 
 
 import CardView from 'react-native-cardview';
 import ImagePicker from 'react-native-image-picker';
+import ImageCropPicker from 'react-native-image-crop-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import Modal from 'react-native-modalbox';
@@ -29,7 +30,6 @@ import DFonts from '@theme/fonts'
 import I18n from '@language'
 import { client } from '@root/main'
 
-import { GET_USER_COLLECTIONS, GET_MY_COLLECTIONS } from '@graphql/collections'
 import { GET_KEYWORD } from '@graphql/keywords'
 import { GET_PLACE_PROFILE } from '@graphql/places'
 
@@ -131,7 +131,11 @@ class PlaceProfile extends PureComponent {
       }
     }).then((place) => {
       let data = place.data.Place;
-      let myStories = data.stories.filter(item => item.createdBy.id === this.props.user.id);
+
+      const myStories = data.stories.filter(item => item.createdBy.id === this.props.user.id);
+      const ownerStories = data.stories.filter(item => item.createdBy.id === data.createdBy.id);
+      const otherStories = data.stories.filter(item => !myStories.includes(item) && !ownerStories.includes(item));
+
       this.setState({
         placeData: {
           id: data.id,
@@ -158,38 +162,13 @@ class PlaceProfile extends PureComponent {
           checkedInIds: data.userCheckedIn.map(item => item.id),
           collectionIds: this.props.place && this.props.place.collectionIds ? this.props.place.collectionIds : data.collections.map(item => item.id),
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
-          comments: data.stories.filter(item => item.createdBy.id !== this.props.user.id),
+          comments: Object.assign(ownerStories, otherStories),
           bookmark: this.isBookmarked(data.collections),
         },
         myStory: myStories.length ? myStories[0] : this.state.myStory,
         storyImages: myStories.length ? [...myStories[0].pictureURL.map(item => ({ uri: item })), ...this.state.storyImages] : this.state.storyImages
       })
     });
-    if (this.state.collections == null) {
-      //this.getUserCollections();
-      this.getMyCollections();
-    }
-  }
-
-  getUserCollections = () => {
-    client.query({
-      query: GET_USER_COLLECTIONS,
-      variables: {
-        id: this.props.user.id
-      }
-    }).then(collections => {
-      this.setState({ collections: collections.data.allCollections });
-    })
-  }
-  getMyCollections = () => {
-    client.query({
-      query: GET_MY_COLLECTIONS,
-      variables: {
-        id: this.props.user.id
-      }
-    }).then(collections => {
-      this.setState({ collections: collections.data.allCollections });
-    })
   }
 
   onBookMarker = () => {
@@ -417,25 +396,26 @@ class PlaceProfile extends PureComponent {
     return (
       <TouchableOpacity onPress={this.goMapDetail.bind(this)}>
         <View style={styles.mapView}>
+          {this.state.placeData.map.latitude &&
           <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             initialRegion={this.state.placeData.map}
             region={this.state.placeData.map}
           >
-          {
-            this.state.placeData.map?(
-              <MapView.Marker
-                title={this.state.placeData.title}
-                coordinate={this.state.placeData.map}
-                image= {Platform.OS=='android' ? require('@assets/images/map_pin_android.png') : null}
-              >
-              {Platform.OS === 'ios' && (
-                <Image source={require('@assets/images/map_pin.png')} style = {styles.mapmarker} />
-              )}
-              </MapView.Marker>):null
-          }
-          </MapView>
+            {
+              this.state.placeData.map ? (
+                <MapView.Marker
+                  title={this.state.placeData.title}
+                  coordinate={this.state.placeData.map}
+                  image={Platform.OS == 'android' ? require('@assets/images/map_pin_android.png') : null}
+                >
+                  {Platform.OS === 'ios' && (
+                    <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
+                  )}
+                </MapView.Marker>) : null
+            }
+          </MapView>}
         </View>
       </TouchableOpacity>
     )
@@ -522,7 +502,6 @@ class PlaceProfile extends PureComponent {
         <View style={styles.separatebar}></View>
         <ScrollView horizontal={true} style={styles.Collections}>
           {this.props.collections
-            .filter(collection => collection.type === 'USER')
             .map((collection, index) => (
               <TouchableOpacity key={index} style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>
                 <TitleImage
@@ -613,10 +592,10 @@ class PlaceProfile extends PureComponent {
   }
   onChangeTagText = (text) => {
     const lastTyped = text.charAt(text.length - 1);
-    const parseWhen = [',', ' ', ';', '\n'];
+    const parseWhen = [',', ';', '\n'];
 
     if (parseWhen.indexOf(lastTyped) > -1) {
-      if (this.state.keywordText && !this.state.placeData.keywords.includes(this.state.keywordText)) {
+      if (this.state.keywordText && !this.state.placeData.keywords.map(item => item.name).includes(this.state.keywordText)) {
         this.saveKeyword(this.state.keywordText);
       }
     } else {
@@ -624,13 +603,14 @@ class PlaceProfile extends PureComponent {
     }
   }
   onSubmitEditing = () => {
-    if (this.state.keywordText && !this.state.placeData.keywords.includes(this.state.keywordText)) {
+    const keywords = this.state.placeData.keywords.map(item => item.name);
+    if (this.state.keywordText && !keywords.includes(this.state.keywordText)) {
       this.saveKeyword(this.state.keywordText);
     }
   }
   onChangeTags = (tags) => {
-    let keywords = this.state.placeData.keywords.map(item => item.name);
-    let keyword = keywords.filter(item => tags.indexOf(item) === -1)[0];
+    const keywords = this.state.placeData.keywords.map(item => item.name);
+    const keyword = keywords.filter(item => tags.indexOf(item) < 0)[0];
     if (keyword) this.deleteKeyword(keywords.indexOf(keyword));
   }
   saveKeyword(name) {
@@ -666,13 +646,13 @@ class PlaceProfile extends PureComponent {
   }
 
   _renderWriteStory() {
-    const { storyEditable } = this.state;
+    const { imageUploading, storyEditable } = this.state;
     return (
       <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
         <View style={{ flexDirection: 'row' }}>
           <CircleImage style={styles.storyWriterImage} uri={this.props.user.photoURL} radius={getDeviceWidth(67)} />
           <Text style={styles.storyWriterName}>{this.props.user.displayName}</Text>
-          <TouchableOpacity onPress={() => {
+          <TouchableOpacity disabled={imageUploading} onPress={() => {
             if (storyEditable) {
               this.saveStory();
             } else {
@@ -738,33 +718,58 @@ class PlaceProfile extends PureComponent {
   }
   addImageToStory() {
     if (!this.state.storyEditable) return;
-    ImagePicker.showImagePicker({
-      ...ImagePickerOption,
-      mediaType: 'mixed',
-      maxWidth: 1080,
-      maxHeight: 1920,
-    }, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        alert(response.error)
-        console.log('ImagePicker Error: ', response.error);
-      } else {
+
+    if (true) {//TODO: should determine reasonable picker type
+      //Image Picker
+      ImagePicker.showImagePicker({
+        ...ImagePickerOption,
+        mediaType: 'mixed',
+        maxWidth: 1080,
+        maxHeight: 1920,
+      }, (response) => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          alert(response.error)
+          console.log('ImagePicker Error: ', response.error);
+        } else {
+          let source = { uri: response.uri };
+          var storyImages = clone(this.state.storyImages);
+          storyImages.pop();
+          storyImages.push(source);
+          storyImages.push({ type: 'add' });
+          this.setState({ storyImages, imageUploading: true });
+          uploadImage(response.data, '#story').then(url => {
+            if (url) {
+              this.state.storyImages[this.state.storyImages.length - 2].uri = url;
+            }
+            this.setState({ imageUploading: false });
+          });
+        }
+      });
+    } else {
+      //Image Crop Picker
+      ImageCropPicker.openPicker({
+        compressImageMaxWidth: 1080,
+        compressImageMaxHeight: 1920,
+        includeBase64: true,
+        mediaType: 'any',
+        path: 'images'
+      }).then(response => {
         let source = { uri: response.uri };
         var storyImages = clone(this.state.storyImages);
         storyImages.pop();
         storyImages.push(source);
         storyImages.push({ type: 'add' });
-        this.setState({ storyImages });
-        this.state.imageUploading = true;
-        uploadMedia(response.uri, '#story').then(url => {
+        this.setState({ storyImages, imageUploading: true });
+        uploadImage(response.data, '#story').then(url => {
           if (url) {
             this.state.storyImages[this.state.storyImages.length - 2].uri = url;
           }
-          this.state.imageUploading = false;
+          this.setState({ imageUploading: false });
         });
-      }
-    });
+      }).catch(err => console.log(err));
+    }
   }
   deleteImageFromStory(index) {
     if (this.state.storyEditable) {
@@ -837,7 +842,7 @@ class PlaceProfile extends PureComponent {
             style={[styles.imageFlatList, { marginTop: 10 }]}
             horizontal
             data={dataItem.pictureURL}
-            renderItem={({ index }) => this._renderItem(dataItem.pictureURL, index)}
+            renderItem={({ index }) => this._renderItem(dataItem.pictureURL.map(item => ({ uri: item })), index)}
           />
           <Text style={styles.commentTitle}>{dataItem.title}</Text>
           <Text style={styles.commentDescription}>{dataItem.story}</Text>

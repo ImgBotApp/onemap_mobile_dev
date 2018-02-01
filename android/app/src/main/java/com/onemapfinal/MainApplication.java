@@ -43,15 +43,12 @@ public class MainApplication extends NavigationApplication implements ReactAppli
     return BuildConfig.DEBUG;
   }
 
-  @Override
-  public List<ReactPackage> createAdditionalReactPackages() {
-    return getPackages();
-  }
-
-
   protected List<ReactPackage> getPackages() {
+    // Add additional packages you require here
+    // No need to add RnnPackage and MainReactPackage
     return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RNSharePackage(),
             new PickerPackage(),
             new ReactVideoPackage(),
             new OrientationPackage(),
@@ -61,9 +58,13 @@ public class MainApplication extends NavigationApplication implements ReactAppli
             new RNI18nPackage(),
             new RNGooglePlacesPackage(),
             new FBSDKPackage(mCallbackManager),
-            new RNCardViewPackage(),
-            new RNSharePackage()
+            new RNCardViewPackage()
     );
+  }
+
+  @Override
+  public List<ReactPackage> createAdditionalReactPackages() {
+    return getPackages();
   }
 
 
