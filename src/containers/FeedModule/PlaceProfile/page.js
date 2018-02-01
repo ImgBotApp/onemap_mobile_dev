@@ -396,7 +396,7 @@ class PlaceProfile extends PureComponent {
     return (
       <TouchableOpacity onPress={this.goMapDetail.bind(this)}>
         <View style={styles.mapView}>
-          {this.state.placeData.map.latitude &&
+          {this.state.placeData.map && this.state.placeData.map.latitude &&
           <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}

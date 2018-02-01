@@ -81,6 +81,3 @@ public class MainApplication extends NavigationApplication implements ReactAppli
     SoLoader.init(this, /* native exopackage */ false);
   }
 }
-
-
-
