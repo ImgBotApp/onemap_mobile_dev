@@ -11,14 +11,8 @@ import RNGooglePlaces from 'react-native-google-places'
 import { client } from '@root/main'
 import { GET_FILTER_KEYWORDS } from '@graphql/keywords'
 import { FILER_USERS } from '@graphql/users'
-
-import { Places } from 'google-places-web'
 import { PLACES_APIKEY } from '@global/const';
 
-Places.apiKey = PLACES_APIKEY;
-Places.debug = true;
-
-// create a component
 class SearchResult extends Component {
   constructor(props) {
     super(props);

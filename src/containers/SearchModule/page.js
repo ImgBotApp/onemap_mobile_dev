@@ -18,7 +18,7 @@ import LoadingSpinner from '@components/LoadingSpinner'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker, Callout } from 'react-native-maps';
 import Permissions from 'react-native-permissions'
-import { Places } from 'google-places-web'
+import Places from 'google-places-web'
 import { PLACES_APIKEY } from '@global/const';
 import Toast, { DURATION } from 'react-native-easy-toast'
 import axios from 'axios';
@@ -378,7 +378,7 @@ class SearchPage extends Component {
     let redrictURLS = [];
     await Promise.all(
       ret_photos.map(photo =>
-        axios.get("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + Places.apiKey)
+        axios.get("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + PLACES_APIKEY)
           .then(function (response) {
             redrictURLS.push(response.config.url);
           })
