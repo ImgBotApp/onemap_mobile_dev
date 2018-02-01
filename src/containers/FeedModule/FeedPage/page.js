@@ -26,7 +26,7 @@ import { graphql } from "react-apollo";
 
 import { PLACES_PAGINATED } from "@graphql/places";
 import { SUGGEST_USERS } from '@graphql/users'
-import { GET_USER_COLLECTIONS, GET_MY_COLLECTIONS } from '@graphql/collections'
+import { GET_MY_COLLECTIONS } from '@graphql/collections'
 
 // create a component
 class FeedPage extends Component {
@@ -51,22 +51,7 @@ class FeedPage extends Component {
     this.onRefresh = this.onRefresh.bind(this)
   }
   componentWillMount() {
-    client.query({
-      query: SUGGEST_USERS
-    }).then((users) => {
-      this.suggestUsers = {
-        id: 'a1',
-        type: 'users',
-        data: users.data.allUsers.map((user) => {
-          return {
-            id: user.id,
-            username: user.username,
-            displayName: user.displayName,
-            photoURL: user.photoURL,
-          }
-        })
-      };
-    })
+    this.getSuggestUsers();
     this.getMyCollections();
   }
   componentWillReceiveProps(nextProps) {
@@ -95,6 +80,34 @@ class FeedPage extends Component {
       });
       this.setState({ items: [this.suggestUsers, ...graphcoolData], loading: false });
     }
+  }
+  getSuggestUsers() {
+    client.query({
+      query: SUGGEST_USERS
+    }).then((users) => {
+      this.suggestUsers = {
+        id: 'a1',
+        type: 'users',
+        data: users.data.allUsers.map((user) => {
+          return {
+            id: user.id,
+            username: user.username,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+          }
+        })
+      };
+    })
+  }
+  getMyCollections() {
+    client.query({
+      query: GET_MY_COLLECTIONS,
+      variables: {
+        id: this.props.user.id
+      }
+    }).then(collections => {
+      this.props.saveCollections(collections.data.allCollections);
+    })
   }
   fetchFeedItems = () => {//unused
     client.query({
@@ -177,21 +190,10 @@ class FeedPage extends Component {
       }
     }).then(places => {
       let items = clone(this.state.items);
-      items[index].bookmark = false;
-      items[index].collectionIds = collectionIds;
+      items[index] = { bookmark: false, collectionIds };
       this.setState({ items, collectionModal: false, selectedCollections: [] });
       client.resetStore();
     });
-  }
-  getMyCollections = () => {
-    client.query({
-      query: GET_MY_COLLECTIONS,
-      variables: {
-        id: this.props.user.id
-      }
-    }).then(collections => {
-      this.props.saveCollections(collections.data.allCollections);
-    })
   }
   closeSuggest() {
     this.setState({
@@ -443,7 +445,6 @@ class FeedPage extends Component {
           <View style={styles.separatebar}></View>
           <ScrollView horizontal={true} style={styles.Collections}>
             {this.props.collections
-              .filter(collection => collection.type === 'USER')
               .map((collection, index) => (
                 <TouchableOpacity key={index} style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>
                   <TitleImage

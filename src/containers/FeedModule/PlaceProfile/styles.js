@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     color: DARK_GRAY_COLOR,
     fontSize: BIGGER_FONT_SIZE,
   },
-  overlayContainer:{
+  overlayContainer: {
     position: 'absolute',
     justifyContent: 'center',
     flex: 1,

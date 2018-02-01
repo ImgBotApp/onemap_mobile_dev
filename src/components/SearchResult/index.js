@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity,ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Tabs from 'react-native-tabs';
 import CircleImage from '@components/CircleImage'
 
@@ -32,7 +32,7 @@ class SearchResult extends Component {
     };
   }
   componentWillMount() {
-    if(this.props.keyword)
+    if (this.props.keyword)
       this.onTextSearchPlace();
   }
   componentWillReceiveProps(nextProps) {
@@ -71,6 +71,7 @@ class SearchResult extends Component {
       this.setState({loading:false})
     });
     
+
     client.query({
       query: GET_FILTER_KEYWORDS,
       variables: {
@@ -100,7 +101,7 @@ class SearchResult extends Component {
 
   _onUserItem(item) {
     return (
-      <TouchableOpacity onPress={() => this.props.onUser(item.id)} >
+      <TouchableOpacity onPress={() => this.props.onUser(item)} >
         <View style={styles.item}>
           <CircleImage style={styles.profileImage} uri={item.photoURL} radius={getDeviceWidth(70)} />
           <View style={styles.infomation}>
@@ -162,18 +163,18 @@ class SearchResult extends Component {
     }
   }
   //this.state.places.sort(this.compareValues('name', 'asc')
-  compareValues(key, order='asc') {
-    return function(a, b) {
-      if(!a.hasOwnProperty(key) || 
-         !b.hasOwnProperty(key)) {
-        return 0; 
+  compareValues(key, order = 'asc') {
+    return function (a, b) {
+      if (!a.hasOwnProperty(key) ||
+        !b.hasOwnProperty(key)) {
+        return 0;
       }
-      
-      const varA = (typeof a[key] === 'string') ? 
+
+      const varA = (typeof a[key] === 'string') ?
         a[key].toUpperCase() : a[key];
-      const varB = (typeof b[key] === 'string') ? 
+      const varB = (typeof b[key] === 'string') ?
         b[key].toUpperCase() : b[key];
-        
+
       let comparison = 0;
       if (varA > varB) {
         comparison = 1;
@@ -181,44 +182,44 @@ class SearchResult extends Component {
         comparison = -1;
       }
       return (
-        (order == 'desc') ? 
-        (comparison * -1) : comparison
+        (order == 'desc') ?
+          (comparison * -1) : comparison
       );
     };
   }
   _renderPlaces() {
     return (
       <FlatList
-          keyExtractor={(item, index) => index}
-          style={styles.scrollView}
-          data={this.state.places}
-          renderItem={({ item }) => this._onPlaceItem(item)}
-        />
-      
+        keyExtractor={(item, index) => index}
+        style={styles.scrollView}
+        data={this.state.places}
+        renderItem={({ item }) => this._onPlaceItem(item)}
+      />
+
     )
   }
   _renderKeywords() {
     return (
-      
-        <FlatList
-          keyExtractor={(item, index) => index}
-          style={styles.scrollView}
-          data={this.state.keywords}
-          renderItem={({ item }) => this._onKeywordItem(item)}
-        />
-      
+
+      <FlatList
+        keyExtractor={(item, index) => index}
+        style={styles.scrollView}
+        data={this.state.keywords}
+        renderItem={({ item }) => this._onKeywordItem(item)}
+      />
+
     )
   }
   _renderUsers() {
     return (
-      
-        <FlatList
-          keyExtractor={(item, index) => index}
-          style={styles.scrollView}
-          data={this.state.users}
-          renderItem={({ item }) => this._onUserItem(item)}
-        />
-     
+
+      <FlatList
+        keyExtractor={(item, index) => index}
+        style={styles.scrollView}
+        data={this.state.users}
+        renderItem={({ item }) => this._onUserItem(item)}
+      />
+
     )
   }
   render() {
