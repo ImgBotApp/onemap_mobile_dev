@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     height: getDeviceHeight(140),
     marginBottom:getDeviceHeight(80),
     resizeMode: 'contain',
-    marginBottom: Platform.OS=='android'? 5:getDeviceHeight(80),
+    marginBottom: Platform.OS=='android'? 20:getDeviceHeight(80),
   },
   nearPlaceImage: {
     marginRight: '3%',

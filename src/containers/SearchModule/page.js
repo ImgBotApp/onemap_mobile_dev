@@ -28,7 +28,7 @@ Places.debug = true;
 
 const { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
-const LATTITUDE_DELTA = 0.002;
+const LATTITUDE_DELTA = 0.01;
 const LONGTITUDE_DELTA = LATTITUDE_DELTA * ASPECT_RATIO
 
 class SearchPage extends Component {
@@ -47,7 +47,7 @@ class SearchPage extends Component {
       title: '',
       address: '',
       isSearching: false,
-      isSelected: false,
+      isSelected: true,
       searched: null,
       nearByPlacesPin: [],
       initialPosition: {
@@ -142,54 +142,71 @@ class SearchPage extends Component {
   async onSearchNearByPlace() {
     if (this.state.isCallingAPI)
       return;
-    this.setState({ isCallingAPI: true });
-    RNPlaces.getCurrentPlace()
-      .then((results) => {
-        this.setState({ isCallingAPI: false })
-        //this.refs.toast.show('nearby search updated')
-        if (!this.state.initialMarker) {
-          var getInitialRegion = {
-            latitude: results[0].latitude,
-            longitude: results[0].longitude,
-            latitudeDelta: LATTITUDE_DELTA,
-            longitudeDelta: LONGTITUDE_DELTA,
+    this.setState({isCallingAPI:true});
+    
+    if(this.state.myPosition == null) return;
+    const radius = 50000;
+    const placeNearSearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+this.state.myPosition.latitude+","+this.state.myPosition.longitude+"&radius="+radius+"&key="+PLACES_APIKEY;
+
+    fetch(placeNearSearchURL, {
+      method: 'GET',
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+    })
+    .then((response) => response.json())
+    .then((responseData) =>
+    {
+      //set your data here
+      let results = responseData.results;
+      this.setState({isCallingAPI:false})
+
+      // this.setPinLocation(results);
+      var maxDiff_lat=0,maxDiff_lng=0;
+      var getNearByLocationsPin = [];
+      for (var i = 0; i < results.length; i++) {
+        if(results[0].geometry.location.lat && results[0].geometry.location.lng)
+        {
+          var obj = {
+            coordinates: {
+              latitude: results[i].geometry.location.lat,
+              longitude: results[i].geometry.location.lng,
+            },
+            title: results[i].name,
+            address: results[i].vicinity,
+            placeID: results[i].place_id
           }
-          var getInitialRegionMaker = {
-            latitude: results[0].latitude,
-            longitude: results[0].longitude,
-          }
-          this.setState({
-            initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
-            title: results[0].name, address: results[0].address,
-          })
+          getNearByLocationsPin.push(obj);
+
+          maxDiff_lat = Math.max(maxDiff_lat,Math.abs(this.state.myPosition.latitude-results[i].geometry.location.lat));
+          maxDiff_lng = Math.max(maxDiff_lng,Math.abs(this.state.myPosition.longitude-results[i].geometry.location.lng));
         }
-        // this.setPinLocation(results);
-        var getNearByLocationsPin = [];
-        for (var i = 0; i < results.length; i++) {
-          if (results[i].latitude && results[i].longitude) {
-            var obj = {
-              coordinates: {
-                latitude: results[i].latitude,
-                longitude: results[i].longitude,
-              },
-              title: results[i].name,
-              address: results[i].address,
-              placeID: results[i].placeID
-            }
-            getNearByLocationsPin.push(obj);
-          }
-        }
-        this.setState({
-          nearByPlacesPin: getNearByLocationsPin
-        })
-        results.shift();
-        this.setState({ nearByPlaces: results })
-      })
-      .catch((error) => {
-        console.log("error:" + error);
-        this.setState({ isCallingAPI: false })
       }
-      );
+
+      var getInitialRegion = {
+        latitude: this.state.myPosition?this.state.myPosition.latitude:results[0].geometry.location.lat,
+        longitude: this.state.myPosition?this.state.myPosition.longitude:results[0].geometry.location.lng,
+        latitudeDelta: maxDiff_lat<=0?LATTITUDE_DELTA:maxDiff_lat,
+        longitudeDelta: maxDiff_lng<=0?LONGTITUDE_DELTA:maxDiff_lng,
+      }
+      var getInitialRegionMaker = {
+        latitude: results[0].geometry.location.lat,
+        longitude: results[0].geometry.location.lng,
+      }
+      this.setState({
+        initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
+        title: results[0].name, address: results[0].vicinity,
+      })
+
+
+      this.setState({
+        nearByPlacesPin: getNearByLocationsPin
+      })
+      results.shift();
+      this.setState({ nearByPlaces: results })
+    })
+    .catch((error) => {
+      this.setState({isCallingAPI:false})
+    });
   }
   render() {
     if (this.state.isFeaching)
@@ -268,7 +285,7 @@ class SearchPage extends Component {
                           <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
                           <View style={styles.infomation}>
                             <View>
-                              <TouchableOpacity onPress={() => this.onPlaceProfile(item.placeID)}>
+                              <TouchableOpacity onPress={() => this.onPlaceProfile(item.place_id)}>
                                 <Text style={styles.name}>{item.name}</Text>
                                 {this.state.isSelected ?
                                   <Text style={styles.following}>{item.vicinity}</Text>
