@@ -2055,8 +2055,8 @@ google-libphonenumber@^2.0.9:
   resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-2.0.19.tgz#a6d5ff60412aa33b161bb830d70aa39682583054"
 
 google-places-web@^0.1.1:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/google-places-web/-/google-places-web-0.1.2.tgz#ffa4249cb694088167460bfac8855fb429b73b13"
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/google-places-web/-/google-places-web-0.1.4.tgz#dcbbc3c9de09055484899b83e50442f03ed7aef6"
   dependencies:
     axios "^0.17.1"
     query-string "^5.0.1"
