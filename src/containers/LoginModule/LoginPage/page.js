@@ -281,7 +281,7 @@ class LoginPage extends Component {
               null,
               (error, result) => this._responseInfoCallback(error, result),
             );
-            // new GraphRequestManager().addRequest(infoRequest).start();
+            new GraphRequestManager().addRequest(infoRequest).start();
           })
           .catch((err) => {
             alert(JSON.stringify(err))
