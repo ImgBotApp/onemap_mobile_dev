@@ -10,7 +10,7 @@ import DFonts from '@theme/fonts'
 import { RED_COLOR, LIGHT_GRAY_COLOR } from '@theme/colors';
 import { getDeviceWidth, getDeviceHeight, calculateDuration } from '@global'
 import { EMPTY_IMG } from '@global/const';
-import { getThumlnailFromVideoURL, getMediatTypeFromURL } from '@global/const';
+import { getThumlnailFromVideoURL, getMediaTypeFromURL } from '@global/const';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // create a component
@@ -65,7 +65,7 @@ class FeedItem extends Component {
                 <TouchableOpacity onPress={this._onPlaceImagePress.bind(this)}>
                   <Image source={{ uri: getThumlnailFromVideoURL(item.uri) }} style={styles.feedItemImage} />
                   {
-                    getMediatTypeFromURL(item.uri) ?
+                    getMediaTypeFromURL(item.uri) ?
                       (
                         <Icon name="play-circle-outline" style={styles.playButton} />
                       ) : null

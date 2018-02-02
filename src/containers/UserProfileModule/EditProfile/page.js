@@ -175,7 +175,7 @@ class EditProfile extends Component {
       this.onProfileImagePickerFromLibrary();
     }
     else if (i == 1) {
-      this.onProfileImagePickerFromCamear();
+      this.onProfileImagePickerFromCamera();
     }
   }
   onProfileImagePickerFromLibrary() {
@@ -193,7 +193,7 @@ class EditProfile extends Component {
       } else this.setState({ processing: false });
     }).catch(e => this.setState({ processing: false }));
   }
-  onProfileImagePickerFromCamear() {
+  onProfileImagePickerFromCamera() {
     this.setState({ processing: true });
     ImagePicker.openCamera(imagePickerOptions).then(image => {
       if (image != null) {
@@ -242,7 +242,7 @@ class EditProfile extends Component {
               <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(236)}/>
               <Image style={styles.cameraImage} source={require('@assets/images/icon/camera.png')} />
             </TouchableOpacity>
-            
+
             {/* Name */}
             <View style={styles.inputElement}>
               <View style={styles.fontAweSome}>
@@ -250,7 +250,7 @@ class EditProfile extends Component {
               </View>
               <TextInput style={styles.textInput} value={this.state.displayName} onChangeText={(val) => this.setState({displayName: val})}/>
             </View>
-            
+
             {/* gender */}
             <View style={styles.genderElement}>
               <View style={styles.genderAwesome}>
@@ -297,7 +297,7 @@ class EditProfile extends Component {
         <Toast position="center" ref="toast" />
       </View>
       );
-    
+
   }
 }
 

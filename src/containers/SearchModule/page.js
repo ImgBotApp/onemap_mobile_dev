@@ -246,7 +246,7 @@ class SearchPage extends Component {
                           key={key}
                           coordinate={marker.coordinates}
                           zIndex={key}
-                          image={Platform.OS == 'android' ? require('@assets/images/map_pin_android.png') : null}
+                          image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
                         >
                           {Platform.OS === 'ios' && (
                             <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
@@ -261,7 +261,7 @@ class SearchPage extends Component {
                           <Marker
                             coordinate={this.state.myPosition}
                             zIndex={this.state.nearByPlacesPin.length + 1000}
-                            image={Platform.OS == 'android' ? require('@assets/images/map_position_android.png') : null}
+                            image={Platform.OS == 'android' ? require('@assets/images/map_position.png') : null}
                           >
                             {Platform.OS === 'ios' && (
                               <Image source={require('@assets/images/map_position.png')} style={styles.mapmarker} />

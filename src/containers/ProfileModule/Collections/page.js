@@ -246,7 +246,7 @@ class Collections extends Component {
             <Marker
               key={index}
               coordinate={{ latitude: item.locationLat, longitude: item.locationLong }}
-              image={Platform.OS == 'android' ? require('@assets/images/map_pin_android.png') : null}
+              image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
             >
               {Platform.OS === 'ios' && (
                 <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />

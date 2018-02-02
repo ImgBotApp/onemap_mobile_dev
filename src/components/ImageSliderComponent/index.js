@@ -9,7 +9,7 @@ import styles, { sliderWidth, itemWidth, landWidth } from './styles'
 
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
 import Orientation from 'react-native-orientation';
-import { getMediatTypeFromURL } from '@global/const';
+import { getMediaTypeFromURL } from '@global/const';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('screen');
 
@@ -148,7 +148,7 @@ class SliderEntry extends Component {
   get image() {
     const { data: { uri }, parallax, parallaxProps, even } = this.props;
 
-    if (getMediatTypeFromURL(uri)) {
+    if (getMediaTypeFromURL(uri)) {
       return (
         <VideoPlayer videourl={uri} {...this.props} />
         //<VideoPlayer videourl={"https://www.w3schools.com/html/mov_bbb.mp4"} {...this.props}/>
