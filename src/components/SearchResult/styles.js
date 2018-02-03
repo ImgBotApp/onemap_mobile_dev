@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     width: getDeviceWidth(140),
     height: getDeviceHeight(140),
     resizeMode: 'contain',
-    marginBottom: Platform.OS=='android'? 5:getDeviceHeight(80),
+    marginBottom: 5,
   }
 });
 

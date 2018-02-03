@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>OneMapFinal</string>
+	<string>OneMap</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -36,14 +36,14 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1566813393372580</string>
+				<string>fb163236004399299</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>18011819</string>
 	<key>FacebookAppID</key>
-	<string>1566813393372580</string>
+	<string>163236004399299</string>
 	<key>FacebookDisplayName</key>
 	<string>OneMap</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
@@ -67,6 +67,20 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>facebook.com</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>fbcdn.net</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
@@ -74,21 +88,7 @@
 				<key>NSIncludesSubdomains</key>
 				<true/>
 			</dict>
-      <key>facebook.com</key>
-      <dict>
-        <key>NSIncludesSubdomains</key>
-        <true/>
-        <key>NSExceptionRequiresForwardSecrecy</key>
-        <false/>
-      </dict>
-      <key>fbcdn.net</key>
-      <dict>
-        <key>NSIncludesSubdomains</key>
-        <true/>
-        <key>NSExceptionRequiresForwardSecrecy</key>
-        <false/>
-      </dict>
-      <key>res.cloudinary.com</key>
+			<key>res.cloudinary.com</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
