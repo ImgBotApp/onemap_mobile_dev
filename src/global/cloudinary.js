@@ -35,7 +35,7 @@ export function uploadImage(imgdata, tag) {
                 alert(data.error.message);
                 return null;
             } else {
-                return data.url;
+              return data.url;
             }
         })
         .catch((err) => {
@@ -43,30 +43,37 @@ export function uploadImage(imgdata, tag) {
         });
 }
 
-export function uploadMedia(uri, tag) {
-    var url = 'https://api.cloudinary.com/v1_1/' + cloud_name + '/media/upload';
+export function uploadMedia(videoData, tag) {
+    var url = 'https://api.cloudinary.com/v1_1/' + cloud_name + '/video/upload';
 
-    let timestamp = (Date.now() / 1000 | 0).toString();
+    var timestamp = Date.now();
     let signature = sha1("tags=" + tag + "&timestamp=" + timestamp + cloud_api_secret);
 
-    let formdata = new FormData()
-    formdata.append('file', {uri: uri, type: 'image/*', name: timestamp})
-    formdata.append('timestamp', timestamp)
-    formdata.append('api_key', cloud_api_key)
-    formdata.append('signature', signature)
+    var movVideo = {
+      uri: videoData.uri,
+      type: 'video/mp4',
+      name: signature+'.mp4',
+    };
 
-    const config = {
-        method: 'POST',
-        body: formdata
-    }
+    var body = new FormData();
+    body.append('file', movVideo);
+    body.append('api_key', cloud_api_key)
+    body.append('upload_preset','bztfvbid');
 
-    return fetch(url, config)
-    .then(res => res.json())
-    .then(res => {
-        console.log(res)
-        return res.url
-    })
-    .catch((err) => {
-        console.log(err)
-    })
+    return fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'multipart/form-data'
+      },
+      body: body,
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        //only the first frame of the video got uploaded
+        console.log(responseJson.url);
+        return responseJson.url;
+    }).catch(error =>{
+      return null;
+    });
+
 }

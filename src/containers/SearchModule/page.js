@@ -18,7 +18,7 @@ import LoadingSpinner from '@components/LoadingSpinner'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker, Callout } from 'react-native-maps';
 import Permissions from 'react-native-permissions'
-import Places from 'google-places-web'
+import {Places} from 'google-places-web'
 import { PLACES_APIKEY } from '@global/const';
 import Toast, { DURATION } from 'react-native-easy-toast'
 import axios from 'axios';
@@ -143,7 +143,7 @@ class SearchPage extends Component {
     if (this.state.isCallingAPI)
       return;
     this.setState({isCallingAPI:true});
-    
+
     if(this.state.myPosition == null) return;
     const radius = 50000;
     const placeNearSearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+this.state.myPosition.latitude+","+this.state.myPosition.longitude+"&radius="+radius+"&key="+PLACES_APIKEY;
@@ -246,7 +246,7 @@ class SearchPage extends Component {
                           key={key}
                           coordinate={marker.coordinates}
                           zIndex={key}
-                          image={Platform.OS == 'android' ? require('@assets/images/map_pin_android.png') : null}
+                          image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
                         >
                           {Platform.OS === 'ios' && (
                             <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
@@ -261,7 +261,7 @@ class SearchPage extends Component {
                           <Marker
                             coordinate={this.state.myPosition}
                             zIndex={this.state.nearByPlacesPin.length + 1000}
-                            image={Platform.OS == 'android' ? require('@assets/images/map_position_android.png') : null}
+                            image={Platform.OS == 'android' ? require('@assets/images/map_position.png') : null}
                           >
                             {Platform.OS === 'ios' && (
                               <Image source={require('@assets/images/map_position.png')} style={styles.mapmarker} />

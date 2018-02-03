@@ -23,12 +23,13 @@ import TitleImage from '@components/TitledImage'
 import ViewMoreText from '@components/ViewMoreText';
 import { calculateCount, clone, getDeviceWidth, calculateDuration } from '@global'
 import { uploadImage, uploadMedia } from '@global/cloudinary';
-import { getThumlnailFromVideoURL, getMediatTypeFromURL } from '@global/const';
+import { getThumlnailFromVideoURL, getMediaTypeFromURL } from '@global/const';
 import * as SCREEN from '@global/screenName'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import DFonts from '@theme/fonts'
 import I18n from '@language'
 import { client } from '@root/main'
+import ActionSheet from 'react-native-actionsheet'
 
 import { GET_KEYWORD } from '@graphql/keywords'
 import { GET_PLACE_PROFILE } from '@graphql/places'
@@ -36,12 +37,20 @@ import { GET_PLACE_PROFILE } from '@graphql/places'
 import styles from './styles'
 
 const ImagePickerOption = {
-  title: 'Select Image',
+  title: 'Take Media',
+  takePhotoButtonTitle:'Take Camera...',
+  chooseFromLibraryButtonTitle:'Choose from Library...',
   storageOptions: {
     skipBackup: true,
     path: 'images'
   }
 }
+
+const CANCEL_INDEX = 0
+const DESTRUCTIVE_INDEX = 4
+const options = ['Cancel', 'Photo', 'Video']
+const title = 'Select Media Type'
+
 const user = {
   name: 'Minna Hamilton',
   photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
@@ -121,6 +130,8 @@ class PlaceProfile extends PureComponent {
     }
     console.log(this.props.user)
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
+    this.handlePress = this.handlePress.bind(this)
+    this.showActionSheet = this.showActionSheet.bind(this)
   }
 
   componentWillMount() {
@@ -263,11 +274,10 @@ class PlaceProfile extends PureComponent {
     const item = data[index];
     if (item && item.type === 'add') {
       return (
-        <TouchableOpacity onPress={this.addImageToStory.bind(this)}>
+        <TouchableOpacity onPress={this.showActionSheet.bind(this)}>
           <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
             <Image source={require('@assets/images/blankImage.png')} style={styles.imageItem} />
           </CardView>
-          {/* {this.state.imageUploading && <LoadingSpinner />} */}
         </TouchableOpacity>
       )
     }
@@ -279,7 +289,7 @@ class PlaceProfile extends PureComponent {
         >
           <Image source={{ uri: getThumlnailFromVideoURL(item.uri) }} style={styles.imageItem} />
           {
-            getMediatTypeFromURL(item.uri) ?
+            getMediaTypeFromURL(item.uri) ?
               (
                 <MaterialCommunityIcons name="play-circle-outline" style={styles.playButton} />
               ) : null
@@ -407,7 +417,7 @@ class PlaceProfile extends PureComponent {
                 <MapView.Marker
                   title={this.state.placeData.title}
                   coordinate={this.state.placeData.map}
-                  image={Platform.OS == 'android' ? require('@assets/images/map_pin_android.png') : null}
+                  image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
                 >
                   {Platform.OS === 'ios' && (
                     <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
@@ -680,7 +690,7 @@ class PlaceProfile extends PureComponent {
           {
             this.state.storyImages.length && this.state.storyImages[0].type === 'add' ?
               (
-                <TouchableOpacity disabled={!storyEditable} onPress={this.addImageToStory.bind(this)}>
+                <TouchableOpacity disabled={!storyEditable} onPress={this.showActionSheet.bind(this)}>
                   <Image style={styles.myImages} source={require('@assets/images/blankImage.png')} />
                   {/* {this.state.imageUploading && <LoadingSpinner />} */}
                 </TouchableOpacity>
@@ -715,14 +725,28 @@ class PlaceProfile extends PureComponent {
       </CardView>
     )
   }
-  addImageToStory() {
+  showActionSheet() {
     if (!this.state.storyEditable) return;
+    this.ActionSheet.show()
+  }
 
+  handlePress(i) {
+    this.setState({
+      selected: i
+    })
+    if (i == 2) {
+      this.addMediaToStory('video');
+    }
+    else if (i == 1) {
+      this.addMediaToStory('photo');
+    }
+  }
+  addMediaToStory(type) {
     if (true) {//TODO: should determine reasonable picker type
       //Image Picker
       ImagePicker.showImagePicker({
         ...ImagePickerOption,
-        mediaType: 'mixed',
+        mediaType: type,
         maxWidth: 1080,
         maxHeight: 1920,
       }, (response) => {
@@ -732,18 +756,37 @@ class PlaceProfile extends PureComponent {
           alert(response.error)
           console.log('ImagePicker Error: ', response.error);
         } else {
-          let source = { uri: response.uri };
-          var storyImages = clone(this.state.storyImages);
-          storyImages.pop();
-          storyImages.push(source);
-          storyImages.push({ type: 'add' });
-          this.setState({ storyImages, imageUploading: true });
-          uploadImage(response.data, '#story').then(url => {
-            if (url) {
-              this.state.storyImages[this.state.storyImages.length - 2].uri = url;
-            }
-            this.setState({ imageUploading: false });
-          });
+          if(type == 'photo')
+          {
+            let source = { uri: response.uri };
+            var storyImages = clone(this.state.storyImages);
+            storyImages.pop();
+            storyImages.push(source);
+            storyImages.push({ type: 'add' });
+            this.setState({ storyImages, imageUploading: true });
+            uploadImage(response.data, '#story').then(url => {
+              if (url) {
+                this.state.storyImages[this.state.storyImages.length - 2].uri = url;
+              }
+              this.setState({ imageUploading: false });
+            });
+          }else{
+            this.setState({ imageUploading: true });
+            uploadMedia(response,'#storyVideo').then(
+              url=>{
+                if(url){
+                  console.log("uploading video success!");
+                  var storyImages = clone(this.state.storyImages);
+                  storyImages.pop();
+                  storyImages.push({'uri':url});
+                  storyImages.push({ type: 'add' });
+                  this.setState({ storyImages });
+                  //this.state.storyImages[this.state.storyImages.length - 2].uri = url;
+                }
+                this.setState({ imageUploading: false });
+              }
+            );
+          }
         }
       });
     } else {
@@ -792,6 +835,7 @@ class PlaceProfile extends PureComponent {
     const { myStory, imageUploading } = this.state;
     if (imageUploading) return;
     if (myStory.id) {
+      this.setState({ imageUploading: true });
       this.props.updateStory({
         variables: {
           id: myStory.id,
@@ -806,8 +850,10 @@ class PlaceProfile extends PureComponent {
       }).then(res => {
         this.setState({ myStory: res.data.updateStory });
         client.resetStore();
-      }).catch(err => alert(err))
+        this.setState({ imageUploading: false });
+      }).catch(err => this.setState({ imageUploading: false }))
     } else {
+      this.setState({ imageUploading: true });
       this.props.createStory({
         variables: {
           title: myStory.title,
@@ -821,7 +867,8 @@ class PlaceProfile extends PureComponent {
       }).then(res => {
         this.setState({ myStory: res.data.createStory });
         client.resetStore();
-      }).catch(err => alert(err))
+        this.setState({ imageUploading: false });
+      }).catch(err => this.setState({ imageUploading: false }))
     }
   }
 
@@ -878,6 +925,15 @@ class PlaceProfile extends PureComponent {
 
         {this.renderSliderShow()}
         {this.renderCollectionModal()}
+        <ActionSheet
+            ref={o => this.ActionSheet = o}
+            title={title}
+            options={options}
+            cancelButtonIndex={CANCEL_INDEX}
+            destructiveButtonIndex={DESTRUCTIVE_INDEX}
+            onPress={this.handlePress}
+          />
+        {this.state.imageUploading && <LoadingSpinner />}
       </View>
     );
   }
