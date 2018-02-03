@@ -17,7 +17,6 @@ import { getDeviceWidth } from '@global'
 import I18n from '@language'
 import { DARK_GRAY_COLOR } from '../../../theme/colors';
 import * as SCREEN from '@global/screenName'
-import { saveUserInfo } from '@reducers/user/actions'
 
 import LoadingSpinner from '@components/LoadingSpinner'
 import { uploadImage } from '@global/cloudinary';
@@ -91,7 +90,7 @@ class EditProfile extends Component {
           this.refs.toast.show('User Name is required!')
           return;
         }
-        this.props.dispatch(saveUserInfo({
+        this.props.saveUserInfo({
           id: this.state.id,
           createdAt: new Date().toLocaleDateString(),
           updatedAt: new Date().toLocaleDateString(),
@@ -105,7 +104,7 @@ class EditProfile extends Component {
           lastName: this.state.lastName,
           displayName: this.state.displayName,
           username: this.state.username
-        }))
+        });
         this.props.updateUser({
           variables: {
             id: this.state.id,
@@ -120,7 +119,7 @@ class EditProfile extends Component {
             bio: this.state.bio,
             username: this.state.username
           }
-        })
+        });
         this.props.navigator.pop({})
       }
     }
@@ -235,11 +234,11 @@ class EditProfile extends Component {
       value: I18n.t('NOT_SPECIFIC'),
     }];
     return (
-      <View style={{height: '100%', flex: 1,backgroundColor: '#efefef'}}>
+      <View style={{ height: '100%', flex: 1, backgroundColor: '#efefef' }}>
         <KeyboardAwareScrollView>
           <View style={styles.container}>
             <TouchableOpacity style={styles.avatarView} onPress={this.showActionSheet.bind(this)}>
-              <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(236)}/>
+              <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(236)} />
               <Image style={styles.cameraImage} source={require('@assets/images/icon/camera.png')} />
             </TouchableOpacity>
 
@@ -248,7 +247,7 @@ class EditProfile extends Component {
               <View style={styles.fontAweSome}>
                 <EvilIcons name="user" size={24} color="#0a91ed" />
               </View>
-              <TextInput style={styles.textInput} value={this.state.displayName} onChangeText={(val) => this.setState({displayName: val})}/>
+              <TextInput style={styles.textInput} value={this.state.displayName} onChangeText={(val) => this.setState({ displayName: val })} />
             </View>
 
             {/* gender */}
@@ -261,9 +260,9 @@ class EditProfile extends Component {
                   ref="gender"
                   label='Gender'
                   style={styles.gender}
-                  itemTextStyle = {styles.genderItem}
+                  itemTextStyle={styles.genderItem}
                   value={
-                    I18n.t(this.state.gender)?I18n.t(this.state.gender):I18n.t("NOT_SPECIFIC")
+                    I18n.t(this.state.gender) ? I18n.t(this.state.gender) : I18n.t("NOT_SPECIFIC")
                   }
                   data={Genderdata}
                   onChangeText={this._onGenderSelect.bind(this)}
@@ -275,11 +274,11 @@ class EditProfile extends Component {
               <View style={styles.fontAweSome}>
                 <EvilIcons name="tag" size={24} color="#0a91ed" />
               </View>
-              <TextInput style={styles.textInput} value={this.state.username} onChangeText={(val) => this.onChangeUserName(val)}/>
+              <TextInput style={styles.textInput} value={this.state.username} onChangeText={(val) => this.onChangeUserName(val)} />
             </View>
             {/* bio */}
             <View style={styles.bioInput}>
-              <TextInput style={styles.bioText} underlineColorAndroid={'transparent'} multiline = {true} numberOfLines = {4} editable={true} value={this.state.bio} onChangeText={(val) => this.setState({bio: val})}/>
+              <TextInput style={styles.bioText} underlineColorAndroid={'transparent'} multiline={true} numberOfLines={4} editable={true} value={this.state.bio} onChangeText={(val) => this.setState({ bio: val })} />
             </View>
           </View>
         </KeyboardAwareScrollView>
@@ -287,16 +286,16 @@ class EditProfile extends Component {
           this.state.processing ? (<LoadingSpinner />) : null
         }
         <ActionSheet
-            ref={o => this.ActionSheet = o}
-            title={title}
-            options={options}
-            cancelButtonIndex={CANCEL_INDEX}
-            destructiveButtonIndex={DESTRUCTIVE_INDEX}
-            onPress={this.handlePress}
-          />
+          ref={o => this.ActionSheet = o}
+          title={title}
+          options={options}
+          cancelButtonIndex={CANCEL_INDEX}
+          destructiveButtonIndex={DESTRUCTIVE_INDEX}
+          onPress={this.handlePress}
+        />
         <Toast position="center" ref="toast" />
       </View>
-      );
+    );
 
   }
 }

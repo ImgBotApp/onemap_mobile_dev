@@ -10,7 +10,6 @@ import styles from './style'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as Actions from '@actions'
 
 import { requestVerify } from '@apis/phoneVerify'
 import { DARK_GRAY_COLOR } from '../../../theme/colors';
@@ -42,7 +41,7 @@ class PhoneNumberPage extends Component {
       }
     ]
   };
-  constructor (props) {
+  constructor(props) {
     super(props)
     Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
       props.navigator.setButtons({
@@ -77,26 +76,23 @@ class PhoneNumberPage extends Component {
 
   onNavigatorEvent(event) {
     if (event.type == 'NavBarButtonPress') {
-      if(event.id == 'backButton') {
-       this.onBackButtonPress()
+      if (event.id == 'backButton') {
+        this.onBackButtonPress()
       }
-      if(event.id == 'goVerify') {
+      if (event.id == 'goVerify') {
         this._onCheckPhoneNumberValidation()
       }
     }
   }
-  componentWillMount () {
+  componentWillMount() {
     // this.props.navigation.setParams({onCheck: this._onCheckPhoneNumberValidation})
   }
-  async _onCheckPhoneNumberValidation () {
+  async _onCheckPhoneNumberValidation() {
     var valid = this.refs.phone.isValidNumber()
     var phoneNumber = this.refs.phone.getValue()
-    // this.props.savePhoneNumberStore({
-    //   phoneNumber: phoneNumber
-    // })
     var countryCode = this.refs.phone.getCountryCode()
-    phoneNumber = phoneNumber.slice(countryCode.length+ 1)
-    if ( valid == false) {
+    phoneNumber = phoneNumber.slice(countryCode.length + 1)
+    if (valid == false) {
       alert('Please input valid phone number')
     } else {
       // var ret = await requestVerify({
@@ -131,7 +127,7 @@ class PhoneNumberPage extends Component {
       <View style={styles.container}>
         <Text style={styles.enterText}>{I18n.t('INPUT_PHONE_NUMBER')}</Text>
         <View style={styles.PhoneInputContainer}>
-          <PhoneInput ref='phone' confirmText={'Confirm'}/>
+          <PhoneInput ref='phone' confirmText={'Confirm'} />
         </View>
         <Text style={[styles.description, styles.belowDistance]}>{I18n.t('LOGIN_PHONE_NUMBER_DESCRIPTION1')}</Text>
         <Text style={styles.description}>{I18n.t('LOGIN_PHONE_NUMBER_DESCRIPTION2')}
@@ -145,13 +141,13 @@ class PhoneNumberPage extends Component {
 
 // define your styles
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     user: state.userReducers
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return bindActionCreators(Actions, dispatch)
 }
 //make this component available to the app

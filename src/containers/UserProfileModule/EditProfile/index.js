@@ -2,9 +2,8 @@ import EditProfile from './page'
 import { connect } from 'react-redux'
 
 import { graphql } from 'react-apollo'
-import { 
-  UPDATE_PROFILE
-} from '@graphql/userprofile'
+import { UPDATE_PROFILE } from '@graphql/userprofile'
+import { saveUserInfo } from '@reducers/user/actions'
 
 function mapStateToProps(state) {
   return {
@@ -12,6 +11,14 @@ function mapStateToProps(state) {
   }
 }
 
-let container = graphql(UPDATE_PROFILE, {name: 'updateUser'})(EditProfile);
+function mapDispatchToProps(dispatch) {
+  return {
+    saveUserInfo: data => {
+      dispatch(saveUserInfo(data))
+    }
+  }
+}
 
-export default connect(mapStateToProps)(container)
+let container = graphql(UPDATE_PROFILE, { name: 'updateUser' })(EditProfile);
+
+export default connect(mapStateToProps, mapDispatchToProps)(container)

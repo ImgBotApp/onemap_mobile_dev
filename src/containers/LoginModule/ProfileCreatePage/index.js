@@ -1,7 +1,8 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, KeyBoard, Keyboard, Picker, TouchableOpacity, Image, 
-  AsyncStorage} from 'react-native';
+import {
+  View, Text, StyleSheet, TextInput, KeyBoard, Keyboard, Picker, TouchableOpacity, Image, AsyncStorage
+} from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Dropdown } from 'react-native-material-dropdown';
@@ -16,7 +17,6 @@ import { NavigationActions } from 'react-navigation'
 // Redux 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as Actions from '@actions'
 
 import * as appActions from '@reducers/app/actions'
 import { saveUserInfo } from '@reducers/user/actions'
@@ -24,9 +24,7 @@ import { saveUserInfo } from '@reducers/user/actions'
 import { DARK_GRAY_COLOR } from '@theme/colors'
 import { graphql } from 'react-apollo'
 import { getDeviceWidth } from '@global'
-import { 
-  UPDATE_PROFILE
-} from '@graphql/userprofile'
+import { UPDATE_PROFILE } from '@graphql/userprofile'
 
 import ImagePicker from 'react-native-image-crop-picker'
 import ActionSheet from 'react-native-actionsheet'
@@ -35,11 +33,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import PhoneInput from 'react-native-phone-input'
 import LoadingSpinner from '@components/LoadingSpinner'
-import {uploadImage} from '@global/cloudinary';
+import { uploadImage } from '@global/cloudinary';
 
 const CANCEL_INDEX = 0
 const DESTRUCTIVE_INDEX = 4
-const options = [ 'Cancel', 'Take Photo...','Choose from Library...']
+const options = ['Cancel', 'Take Photo...', 'Choose from Library...']
 const title = 'Select Avatar'
 
 const imagePickerOptions = {
@@ -70,7 +68,7 @@ class ProfileCreatePage extends Component {
       }
     ]
   };
-  constructor (props) {
+  constructor(props) {
     super(props)
     Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
       props.navigator.setButtons({
@@ -83,11 +81,11 @@ class ProfileCreatePage extends Component {
     })
 
     var today = new Date().toLocaleDateString();
-    var user= "@"+this.props.info.first_name+this.props.info.last_name;
+    var user = "@" + this.props.info.first_name + this.props.info.last_name;
     this.state = {
       username: user,
       displayName: this.props.info.first_name + " " + this.props.info.last_name,
-      photoURL : this.props.info.picture.data.url,
+      photoURL: this.props.info.picture.data.url,
       country: 'Thailand',
       city: 'Thailand',
       birthday: today,
@@ -96,8 +94,8 @@ class ProfileCreatePage extends Component {
       loginMethod: this.props.mode == ACCOUNT_MODE.facebook ? 'FACEBOOK' : 'PHONE',
       isDateTimePickerVisible: false,
       success: false,
-      userId : this.props.info.userId || '',
-      processing:false,
+      userId: this.props.info.userId || '',
+      processing: false,
     }
 
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
@@ -105,12 +103,12 @@ class ProfileCreatePage extends Component {
     this.showActionSheet = this.showActionSheet.bind(this)
   }
 
-  onNavigatorEvent (event) {
+  onNavigatorEvent(event) {
     if (event.type == 'NavBarButtonPress') {
-      if(event.id == 'backButton') {
-       this.onBackButtonPress()
+      if (event.id == 'backButton') {
+        this.onBackButtonPress()
       }
-      if(event.id == 'createAccount') {
+      if (event.id == 'createAccount') {
         // this.props.navigator.push({
         //   screen: SCREEN.ACCOUNT_CREATE_PAGE,
         //   title: I18n.t('CREATE_ACCOUNT'),
@@ -119,28 +117,28 @@ class ProfileCreatePage extends Component {
         //   }
         // })
         var valid = this.checkValidation()
-        if ( valid ) {
+        if (valid) {
           this.setState({
             success: true
           })
-          this.props.dispatch(saveUserInfo({
+          this.props.saveUserInfo({
             id: this.state.userId,
             country: this.state.country,
             city: this.state.city,
             displayName: this.state.displayName,
-            email:this.props.info.mail,
+            email: this.props.info.mail,
             username: this.state.username,
-            accountStatus:"ENABLE",
+            accountStatus: "ENABLE",
             bio: this.state.bio,
             firstName: this.props.info.first_name,
             lastName: this.props.info.last_name,
-            birthdate:'',
+            birthdate: '',
             photoURL: this.state.photoURL,
             registrationDate: new Date().toLocaleDateString(),
             mobileVerification: false,
             mobile: "iPhone",
             gender: this.state.gender.toUpperCase(),
-          }))
+          });
           this.props.updateUser({
             variables: {
               id: this.state.userId,
@@ -154,12 +152,12 @@ class ProfileCreatePage extends Component {
               country: this.state.country,
               bio: this.state.bio,
               username: this.state.username
-          }}).then(result=>
-            {
-              if(result)
-                console.log("result ="+result);
             }
-          );
+          }).then(result => {
+            if (result)
+              console.log("result =" + result);
+          }
+            );
           AsyncStorage.setItem(APP_USER_KEY, JSON.stringify({
             id: this.state.userId
           }))
@@ -175,25 +173,25 @@ class ProfileCreatePage extends Component {
     })
   }
 
-  componentWillMount () {
+  componentWillMount() {
     // this.props.navigation.setParams({submitProfile: $this.submitProfile})
     this.onChangeUserName(this.state.username);
-    
+
   }
   _showDatePicker = () => {
-    this.setState({isDateTimePickerVisible: true})
+    this.setState({ isDateTimePickerVisible: true })
     Keyboard.dismiss()
   }
   _hideDatePicker = () => {
-    this.setState({isDateTimePickerVisible: false})
+    this.setState({ isDateTimePickerVisible: false })
   }
   _onConfirmBirthDay = (date) => {
     var dateStr = date.toLocaleDateString();
-    this.setState({birthday: date.toLocaleDateString()})
-    this.setState({isDateTimePickerVisible: false})
+    this.setState({ birthday: date.toLocaleDateString() })
+    this.setState({ isDateTimePickerVisible: false })
   }
-  
-  async submitProfile () {
+
+  async submitProfile() {
     // var complete = $this.checkValidation()
     // if ( complete == false ) return
     var ret = this.props.createProfile({
@@ -211,21 +209,18 @@ class ProfileCreatePage extends Component {
     // $this.props.navigation.navigate('Drawer')
   }
 
-  checkValidation () {
-    if(this.state.username.length <= 1)
-    {
+  checkValidation() {
+    if (this.state.username.length <= 1) {
       this.onShowMessage('Please input Username')
       this.refs.username.focus()
       return false
     }
-    if(this.state.displayName.length <= 0)
-    {
+    if (this.state.displayName.length <= 0) {
       this.refs.toast.show('Please input Full Name')
       this.refs.displayname.focus();
       return false;
     }
-    if (this.state.displayName.indexOf(' ') < 0)
-    { 
+    if (this.state.displayName.indexOf(' ') < 0) {
       this.refs.toast.show('Please input Full Name')
       this.refs.displayname.focus();
       return false;
@@ -233,29 +228,29 @@ class ProfileCreatePage extends Component {
     if (this.state.country == '') {
       this.onShowMessage('Please input country')
       this.refs.country.focus()
-      return  false
+      return false
     }
     if (this.state.city == '') {
       this.onShowMessage('Please input city')
       this.refs.city.focus()
-      return  false
+      return false
     }
     if (this.state.gender == '') {
       this.onShowMessage('Please input gender')
       this.refs.gender.focus()
-      return  false
+      return false
     }
     if (this.state.bio == '') {
       this.onShowMessage('Please input bio')
       this.refs.bio.focus()
-      return  false
+      return false
     }
 
     var subnames = this.state.displayName.split(' ');
-    var lastname ='';
-    for(var i=1; i< subnames.length ;i++)
-     lastname += subnames[i]+' ';
-    this.setState({first_name:subnames[0],last_name:lastname});
+    var lastname = '';
+    for (var i = 1; i < subnames.length; i++)
+      lastname += subnames[i] + ' ';
+    this.setState({ first_name: subnames[0], last_name: lastname });
     return true
   }
   showActionSheet() {
@@ -265,82 +260,77 @@ class ProfileCreatePage extends Component {
     this.setState({
       selected: i
     })
-    if(i==2)
-    {
+    if (i == 2) {
       this.onProfileImagePickerFromLibrary();
     }
-    else if(i==1)
-    {
+    else if (i == 1) {
       this.onProfileImagePickerFromCamear();
     }
   }
-  onProfileImagePickerFromLibrary () {
-    this.setState({processing:true});
+  onProfileImagePickerFromLibrary() {
+    this.setState({ processing: true });
     ImagePicker.openPicker(imagePickerOptions).then(image => {
-      if(image != null){
-        uploadImage(image.data).then(url =>{
-          this.setState({processing:false});
-          if(url)
+      if (image != null) {
+        uploadImage(image.data).then(url => {
+          this.setState({ processing: false });
+          if (url)
             this.setState({
               photoChanged: true,
               photoURL: url
             });
         })
-      }else this.setState({processing:false});
-    }).catch(e => this.setState({processing:false}));
+      } else this.setState({ processing: false });
+    }).catch(e => this.setState({ processing: false }));
   }
-  onProfileImagePickerFromCamear(){
-    this.setState({processing:true});
+  onProfileImagePickerFromCamear() {
+    this.setState({ processing: true });
     ImagePicker.openCamera(imagePickerOptions).then(image => {
-      if(image != null){
-        uploadImage(image.data).then(url =>{
-          this.setState({processing:false});
-          if(url)
+      if (image != null) {
+        uploadImage(image.data).then(url => {
+          this.setState({ processing: false });
+          if (url)
             this.setState({
               photoChanged: true,
               photoURL: url
             });
         })
-      }else this.setState({processing:false});
-    }).catch(e => this.setState({processing:false}));
+      } else this.setState({ processing: false });
+    }).catch(e => this.setState({ processing: false }));
   }
-  onChangeDisplayName(val){
-    let result ="";
-    for(var i=0; i< val.length; i++)
-    {
-      var lastChar=val[i];
-      if((lastChar>='a' && lastChar <= 'z')||
-        (lastChar>='A' && lastChar <= 'Z') ||
-        (lastChar>='0' && lastChar <= '9') || lastChar == ' '
-        )
-        result+=lastChar;
+  onChangeDisplayName(val) {
+    let result = "";
+    for (var i = 0; i < val.length; i++) {
+      var lastChar = val[i];
+      if ((lastChar >= 'a' && lastChar <= 'z') ||
+        (lastChar >= 'A' && lastChar <= 'Z') ||
+        (lastChar >= '0' && lastChar <= '9') || lastChar == ' '
+      )
+        result += lastChar;
     }
-    this.setState({displayName:result});
+    this.setState({ displayName: result });
   }
-  onChangeUserName(val){
-    if(val.length <= 1)
-      this.setState({username:"@"});
-    else{
-      let result ="@";
-      for(var i=1; i< val.length; i++)
-      {
-        var lastChar=val[i];
-        if((lastChar>='a' && lastChar <= 'z')||
-          (lastChar>='A' && lastChar <= 'Z') ||
-          (lastChar>='0' && lastChar <= '9')
-          )
-          result+=lastChar;
+  onChangeUserName(val) {
+    if (val.length <= 1)
+      this.setState({ username: "@" });
+    else {
+      let result = "@";
+      for (var i = 1; i < val.length; i++) {
+        var lastChar = val[i];
+        if ((lastChar >= 'a' && lastChar <= 'z') ||
+          (lastChar >= 'A' && lastChar <= 'Z') ||
+          (lastChar >= '0' && lastChar <= '9')
+        )
+          result += lastChar;
       }
-      this.setState({username:result});
+      this.setState({ username: result });
     }
   }
   _onGenderSelect = (value, index, data) => {
-    switch(index)
-    {
-      case 0: this.setState({gender: "MALE"});break;
-      case 1: this.setState({gender: "FEMALE"});break;
-      case 2: this.setState({gender: "NOT_SPECIFIC"});break;
-      default: this.setState({gender: "NOT_SPECIFIC"});break;
+    switch (index) {
+      case 0: this.setState({ gender: "MALE" }); break;
+      case 1: this.setState({ gender: "FEMALE" }); break;
+      case 2: this.setState({ gender: "NOT_SPECIFIC" }); break;
+      default: this.setState({ gender: "NOT_SPECIFIC" }); break;
     }
   }
   render() {
@@ -353,15 +343,15 @@ class ProfileCreatePage extends Component {
     }];
 
     return (
-      <View style={{height: '100%', flex: 1,backgroundColor: '#efefef'}}>
-        <KeyboardAwareScrollView> 
+      <View style={{ height: '100%', flex: 1, backgroundColor: '#efefef' }}>
+        <KeyboardAwareScrollView>
           <View style={styles.container}>
             {/*
             <Text numberOfLines={2} style={styles.enterText}>{I18n.t('INPUT_YOUR_DETAILS')}</Text>
             */}
             <View style={styles.avatarView}>
               <TouchableOpacity style={styles.avatarView} onPress={this.showActionSheet.bind(this)}>
-                <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(236)}/>
+                <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(236)} />
                 <Image style={styles.cameraImage} source={require('@assets/images/icon/camera.png')} />
               </TouchableOpacity>
             </View>
@@ -371,7 +361,7 @@ class ProfileCreatePage extends Component {
               <View style={styles.fontAweSome}>
                 <EvilIcons name="user" size={24} color="#0a91ed" />
               </View>
-              <TextInput ref="displayname" style={styles.textInput} value={this.state.displayName} onChangeText={(val) => this.onChangeDisplayName(val)}/>
+              <TextInput ref="displayname" style={styles.textInput} value={this.state.displayName} onChangeText={(val) => this.onChangeDisplayName(val)} />
             </View>
 
             {/*
@@ -413,9 +403,9 @@ class ProfileCreatePage extends Component {
                   ref="gender"
                   label='Gender'
                   style={styles.gender}
-                  itemTextStyle = {styles.genderItem}
+                  itemTextStyle={styles.genderItem}
                   value={
-                    I18n.t(this.state.gender)?I18n.t(this.state.gender):I18n.t("NOT_SPECIFIC")
+                    I18n.t(this.state.gender) ? I18n.t(this.state.gender) : I18n.t("NOT_SPECIFIC")
                   }
                   data={Genderdata}
                   onChangeText={this._onGenderSelect.bind(this)}
@@ -427,14 +417,14 @@ class ProfileCreatePage extends Component {
               <View style={styles.fontAweSome}>
                 <EvilIcons name="tag" size={24} color="#0a91ed" />
               </View>
-              <TextInput ref="username" style={styles.textInput} value={this.state.username} onChangeText={(val) => this.onChangeUserName(val)}/>
+              <TextInput ref="username" style={styles.textInput} value={this.state.username} onChangeText={(val) => this.onChangeUserName(val)} />
             </View>
             {/* bio */}
             <View style={styles.inputElement}>
               <Text style={styles.biolabel}>{I18n.t('CREATE_PROFILE_BIO')}</Text>
             </View>
             <View style={styles.bioInput}>
-              <TextInput ref="bio" style={styles.bioText} underlineColorAndroid={'transparent'} multiline = {true} numberOfLines = {4} editable={true} value={this.state.bio} onChangeText={(val) => this.setState({bio: val})}/>
+              <TextInput ref="bio" style={styles.bioText} underlineColorAndroid={'transparent'} multiline={true} numberOfLines={4} editable={true} value={this.state.bio} onChangeText={(val) => this.setState({ bio: val })} />
             </View>
 
             {/*
@@ -450,18 +440,18 @@ class ProfileCreatePage extends Component {
           this.state.processing ? (<LoadingSpinner />) : null
         }
         <ActionSheet
-            ref={o => this.ActionSheet = o}
-            title={title}
-            options={options}
-            cancelButtonIndex={CANCEL_INDEX}
-            destructiveButtonIndex={DESTRUCTIVE_INDEX}
-            onPress={this.handlePress}
-          />
+          ref={o => this.ActionSheet = o}
+          title={title}
+          options={options}
+          cancelButtonIndex={CANCEL_INDEX}
+          destructiveButtonIndex={DESTRUCTIVE_INDEX}
+          onPress={this.handlePress}
+        />
         <Toast ref="toast" />
       </View>
     );
   }
-  _showSuccess () {
+  _showSuccess() {
     if (this.state.success) {
       return (
         <Image style={styles.success} source={require('@assets/images/login/create.png')} />
@@ -476,13 +466,22 @@ class ProfileCreatePage extends Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     user: state.userReducers
   }
 }
-let container = graphql(UPDATE_PROFILE, {name: 'updateUser'})(ProfileCreatePage);
+
+function mapDispatchToProps(dispatch) {
+  return {
+    saveUserInfo: data => {
+      dispatch(saveUserInfo(data))
+    }
+  }
+}
+
+let container = graphql(UPDATE_PROFILE, { name: 'updateUser' })(ProfileCreatePage);
 
 //make this component available to the app
 // export default ProfileCreatePage;
-export default connect(mapStateToProps)(container);
+export default connect(mapStateToProps, mapDispatchToProps)(container);

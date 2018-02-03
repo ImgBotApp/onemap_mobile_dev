@@ -14,7 +14,6 @@ import * as appActions from '@reducers/app/actions'
 
 import { EXIST_FACEBOOK_USER } from '@graphql/users'
 import { client } from '@root/main'
-import { saveUserInfo } from '@reducers/user/actions'
 import { GET_PROFILE } from '@graphql/userprofile';
 
 const { GraphRequest, GraphRequestManager, AccessToken } = FBSDK
@@ -156,15 +155,6 @@ class LoginPage extends Component {
       //   // navigatorButtons: {}
       // })
       // var userInfo = user.data.updateUser
-      // this.props.saveProfileInfo({
-      //   username: userInfo.id,
-      //   name: userInfo.displayName,
-      //   gender: userInfo.gender,
-      //   photoURL: userInfo.photoURL,
-      //   first_name: result.first_name,
-      //   last_name: result.last_name,
-      //   registrationDate: userInfo.registrationDate
-      // })
       this.setState({ loading: false })
       // alert('success')
       //   this.props.navigation.navigate('Drawer',this.props.user)
@@ -176,8 +166,7 @@ class LoginPage extends Component {
       const value = await AsyncStorage.getItem(APP_USER_KEY);
       let val = JSON.parse(value);
       if (val !== null && val.id !== null) {
-        // We have data!!
-        let UserExist = await client.query({
+        client.query({
           query: GET_PROFILE,
           variables: {
             userId: val.id
@@ -186,7 +175,6 @@ class LoginPage extends Component {
           this.setState({ loading: false })
           var data = user.data.User
           if (data.username) {
-
             this.props.saveUserInfo({
               id: data.id,
               createdAt: new Date().toLocaleDateString(),
@@ -203,58 +191,9 @@ class LoginPage extends Component {
               username: data.username
             });
             this.props.saveUserFollows(data.follows);
-
             this.props.login();
           }
-          else {
-            // this.props.navigator.push({
-            //   screen: SCREEN.ACCOUNT_CREATE_PAGE,
-            //   title: 'Create Account',
-            //   passProps: {
-            //     mode: ACCOUNT_MODE.facebook,
-            //     info: {
-
-            //       userId: this.state.id
-            //     }
-            //   },
-            //   animated: true,
-            //   navigatorStyle: {
-            //     navBarTextColor: DARK_GRAY_COLOR,
-            //     navBarTextFontFamily: 'Comfortaa-Regular',
-            //     naviBarComponentAlignment: 'center'
-            //   },
-            // })
-            LoginManager.logOut();
-            LoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_about_me', 'user_birthday', 'user_hometown', 'user_location'])
-              .then((result) => {
-                if (result.isCancelled) {
-                  // alert('cancelled')
-                } else {
-                  this.setState({ loading: true })
-                  return AccessToken.getCurrentAccessToken()
-                }
-              }).then((data) => {
-                const token = data.accessToken.toString()
-                return Promise.all([this.props.FacebookLogin({
-                  variables: { facebookToken: token }
-                }),
-                  token])
-              }).then((data) => {
-                var gctoken = data[0]
-                var fbtoken = data[1]
-                this.setState({ id: gctoken.data.authenticateFBUser.id })
-                this.props.saveUserId(gctoken.data.authenticateFBUser.id, gctoken.data.authenticateFBUser.token)
-                const infoRequest = new GraphRequest(
-                  '/me?fields=id,first_name,last_name,picture.height(1000),email,gender,address,about',
-                  null,
-                  (error, result) => this._responseInfoCallback(error, result),
-                );
-                new GraphRequestManager().addRequest(infoRequest).start();
-              })
-              .catch((err) => {
-                console.log(err)
-                this.setState({ loading: false })
-              })
+          else {//user doesn't exist
           }
         })
       } else {

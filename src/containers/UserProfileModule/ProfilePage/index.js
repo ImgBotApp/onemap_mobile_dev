@@ -4,7 +4,6 @@ import { compose, graphql } from 'react-apollo'
 import { GET_USER_STORIES } from '@graphql/stories'
 import { GET_FOLLOWERS, GET_FOLLOWS } from '@graphql/userprofile'
 
-import { saveProfileInfo } from '@actions/userLogIn'
 import { saveUserFollows } from '@reducers/app/actions'
 
 function mapStateToProps(state) {
@@ -17,11 +16,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  // return bindActionCreators(Actions, dispatch)
   return {
-    saveProfileInfo: data => {
-      dispatch(saveProfileInfo(data))
-    },
     saveUserFollows: data => {
       dispatch(saveUserFollows(data))
     }

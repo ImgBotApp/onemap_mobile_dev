@@ -1,12 +1,6 @@
 import { graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 
-import { 
-  createUserwithFacebook, 
-  saveUserId, 
-  saveProfileInfo 
-} from '@actions/userLogIn'
-
 import * as appActions from '@reducers/app/actions'
 
 import { saveUserInfo } from '@reducers/user/actions'
@@ -26,17 +20,7 @@ function mapStateToProps (state) {
 }
 
 function mapDispatchToProps (dispatch) {
-  // return bindActionCreators(Actions, dispatch)
   return {
-    createUser: token => {
-      dispatch(createUserwithFacebook(token))
-    },
-    saveUserId: (id, token) => {
-      dispatch(saveUserId(id, token))
-    },
-    saveProfileInfo: data => {
-      dispatch(saveProfileInfo(data))
-    },
     login: () => {
       dispatch(appActions.login())
     },
