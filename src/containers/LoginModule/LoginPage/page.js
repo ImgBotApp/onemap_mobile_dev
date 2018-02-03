@@ -10,7 +10,6 @@ import LoadingSpinner from '@components/LoadingSpinner'
 import * as SCREEN from '@global/screenName'
 import { ACCOUNT_MODE, APP_USER_KEY } from '@global/const'
 import { DARK_GRAY_COLOR } from '../../../theme/colors';
-import * as appActions from '@reducers/app/actions'
 
 import { EXIST_FACEBOOK_USER } from '@graphql/users'
 import { client } from '@root/main'
@@ -75,8 +74,8 @@ class LoginPage extends Component {
           naviBarComponentAlignment: 'center'
         },
       })
-      /*
-      let UserExist = await client.query({
+
+      client.query({
         query: GET_PROFILE,
         variables: {
           userId: this.state.id
@@ -100,7 +99,6 @@ class LoginPage extends Component {
             username: data.username
           });
           this.props.saveUserFollows(data.follows);
-          // this.props.dispatch(appActions.login())
           AsyncStorage.setItem(APP_USER_KEY, JSON.stringify({
             id: this.state.id
           }))
@@ -126,8 +124,8 @@ class LoginPage extends Component {
           })
         }
       })
-      */
-      // var user = await this.props.updateFacebookUser({
+
+      // let user = await this.props.updateUser({
       //   variables: {
       //     id: this.state.id,
       //     first_name: result.first_name,
@@ -155,9 +153,7 @@ class LoginPage extends Component {
       //   // navigatorButtons: {}
       // })
       // var userInfo = user.data.updateUser
-      this.setState({ loading: false })
-      // alert('success')
-      //   this.props.navigation.navigate('Drawer',this.props.user)
+      this.setState({ loading: false });
     }
   }
   async _fbAuth() {
@@ -193,7 +189,7 @@ class LoginPage extends Component {
             this.props.saveUserFollows(data.follows);
             this.props.login();
           }
-          else {//user doesn't exist
+          else {//user doesn't exist, maybe admin removed your account
           }
         })
       } else {
@@ -216,7 +212,6 @@ class LoginPage extends Component {
             var gctoken = data[0]
             var fbtoken = data[1]
             this.setState({ id: gctoken.data.authenticateFBUser.id })
-            this.props.saveUserId(gctoken.data.authenticateFBUser.id, gctoken.data.authenticateFBUser.token)
             const infoRequest = new GraphRequest(
               '/me?fields=id,first_name,last_name,picture.height(1000),email,gender,address,about',
               null,

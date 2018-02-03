@@ -1,7 +1,7 @@
 
 import page from './page'
 import { connect } from 'react-redux'
-import { logout } from '@reducers/app/actions'
+import { logout } from '@reducers/user/actions'
 
 function mapStateToProps (state) {
   return {

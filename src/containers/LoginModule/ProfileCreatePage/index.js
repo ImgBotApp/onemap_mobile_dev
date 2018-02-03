@@ -13,13 +13,10 @@ import styles from './styles'
 import I18n from '@language'
 import { ACCOUNT_MODE, APP_USER_KEY } from '@global/const'
 
-import { NavigationActions } from 'react-navigation'
 // Redux 
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import * as appActions from '@reducers/app/actions'
-import { saveUserInfo } from '@reducers/user/actions'
+import { login, saveUserInfo } from '@reducers/user/actions'
 
 import { DARK_GRAY_COLOR } from '@theme/colors'
 import { graphql } from 'react-apollo'
@@ -161,7 +158,7 @@ class ProfileCreatePage extends Component {
           AsyncStorage.setItem(APP_USER_KEY, JSON.stringify({
             id: this.state.userId
           }))
-          this.props.dispatch(appActions.login())
+          this.props.login();
         }
       }
     }
@@ -198,15 +195,6 @@ class ProfileCreatePage extends Component {
       type: 'test'
     });
     alert(JSON.stringify(ret))
-    // const resetAction = NavigationActions.reset({
-    //   index: 0,
-    //   actions: [
-    //     NavigationActions.navigate({routeName: 'LoginPage'})
-    //     // $this.props.navigation.navigate('Drawer')
-    //   ]
-    // })
-    // $this.props.navigation.dispatch(resetAction);
-    // $this.props.navigation.navigate('Drawer')
   }
 
   checkValidation() {
@@ -474,6 +462,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    login: () => {
+      dispatch(login())
+    },
     saveUserInfo: data => {
       dispatch(saveUserInfo(data))
     }
