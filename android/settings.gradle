@@ -1,4 +1,4 @@
-rootProject.name = 'OneMapFinal'
+rootProject.name = 'OneMap'
 include ':react-native-image-picker'
 project(':react-native-image-picker').projectDir = new File(rootProject.projectDir, './lib/react-native-image-picker/android')
 
