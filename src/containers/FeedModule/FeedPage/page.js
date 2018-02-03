@@ -473,10 +473,14 @@ class FeedPage extends Component {
 }
 
 const ComponentWithQueries = graphql(PLACES_PAGINATED, {
-  options: {
-    variables: {
-      skip: 0,
-      first: PLACES_PER_PAGE
+  options: (props) => {
+    return {
+      variables: {
+        userId: props.user.id,
+        followsIds: props.follows.map(item => item.id),
+        skip: 0,
+        first: PLACES_PER_PAGE
+      }
     }
   }
 })

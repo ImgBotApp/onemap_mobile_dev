@@ -42,6 +42,9 @@ function mapDispatchToProps (dispatch) {
     },
     saveUserInfo: (data) => {
       dispatch(saveUserInfo(data))
+    },
+    saveUserFollows: data => {
+      dispatch(appActions.saveUserFollows(data))
     }
   }
 }
