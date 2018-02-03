@@ -78,7 +78,7 @@ class AllCollections extends Component {
   onItemRemove(item) {
     Alert.alert(
       item.name,
-      'Do you want to remove this?',
+      'Do you want to remove ' + item.name + '?',
       [
         { text: 'OK', onPress: () => this.deleteUserCollection(item.id) },
         { text: 'Cancel', style: 'cancel' }

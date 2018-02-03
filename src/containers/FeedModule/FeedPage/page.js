@@ -42,7 +42,6 @@ class FeedPage extends Component {
         type: 'users',
         data: []
       },
-      loading: false,
       refreshing: false,
       selectedCollections: [],
       loading: true
@@ -59,7 +58,8 @@ class FeedPage extends Component {
       this.onRefresh();
       // this.fetchFeedItems();
       this.props.placeUpdate(false);
-    } else if (nextProps.data.allPlaces != this.props.data.allPlaces) {
+    } else if (nextProps.data.allPlaces &&
+      (nextProps.data.allPlaces != this.props.data.allPlaces || this.state.loading)) {
       let graphcoolData = nextProps.data.allPlaces.map((place) => {
         return {
           id: place.id,
@@ -109,43 +109,43 @@ class FeedPage extends Component {
       this.props.saveCollections(collections.data.allCollections);
     })
   }
-  fetchFeedItems = () => {//unused
-    client.query({
-      query: PLACES_PAGINATED,
-      variables: {
-        first: 10,
-        skip: this.state.skip
-      }
-    }).then((places) => {
-      items = places.data.allPlaces.map((place) => {
-        return {
-          id: place.id,
-          type: 'item',
-          user: {
-            name: place.createdBy.username,
-            id: place.createdBy.id,
-            uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-            updated: new Date(place.updatedAt)
-          },
-          feedTitle: place.placeName,
-          images: place.pictureURL.map(item => { return { uri: item } }),
-          place: '',
-          description: place.description || '',
-          bookmark: this.isBookmarked(place),
-          collectionIds: place.collections.map(collection => collection.id)//will be removed later
-        }
-      });
-      this.setState({
-        items: [this.suggestUsers, ...items],
-        loading: false,
-        refreshing: false
-      })
-    }).catch(error => {
-      this.setState({
-        loading: false
-      })
-    })
-  }
+  // fetchFeedItems = () => {//unused
+  //   client.query({
+  //     query: PLACES_PAGINATED,
+  //     variables: {
+  //       first: 10,
+  //       skip: this.state.skip
+  //     }
+  //   }).then((places) => {
+  //     items = places.data.allPlaces.map((place) => {
+  //       return {
+  //         id: place.id,
+  //         type: 'item',
+  //         user: {
+  //           name: place.createdBy.username,
+  //           id: place.createdBy.id,
+  //           uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+  //           updated: new Date(place.updatedAt)
+  //         },
+  //         feedTitle: place.placeName,
+  //         images: place.pictureURL.map(item => { return { uri: item } }),
+  //         place: '',
+  //         description: place.description || '',
+  //         bookmark: this.isBookmarked(place),
+  //         collectionIds: place.collections.map(collection => collection.id)//will be removed later
+  //       }
+  //     });
+  //     this.setState({
+  //       items: [this.suggestUsers, ...items],
+  //       loading: false,
+  //       refreshing: false
+  //     })
+  //   }).catch(error => {
+  //     this.setState({
+  //       loading: false
+  //     })
+  //   })
+  // }
   isBookmarked(place) {
     let marked = false;
     place.collections.forEach(collection => {
@@ -392,17 +392,18 @@ class FeedPage extends Component {
       </View>
     )
   };
-  handleLoadMore = () => {//unused
-    this.setState({
-      skip: this.state.skip + 10,
-      refreshing: true
-    }, () => {
-      this.fetchFeedItems();
-      this.setState({
-        refreshing: false
-      })
-    })
-  }
+  // handleLoadMore = () => {//unused
+  //   this.setState({
+  //     skip: this.state.skip + 10,
+  //     refreshing: true
+  //   }, () => {
+  //     this.fetchFeedItems();
+  //     this.setState({
+  //       refreshing: false
+  //     })
+  //   })
+  // }
+
   render() {
     if (this.state.loading)
       return (

@@ -1,19 +1,18 @@
-//import liraries
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage, PermissionsAndroid, Platform } from 'react-native'
-import FBSDK, { Loginmanager, LoginManager } from 'react-native-fbsdk'
-import I18n from '@language'
-import styles from './styles'
+import FBSDK, { LoginManager } from 'react-native-fbsdk'
 
 import RoundButton from '@components/RoundButton'
 import LoadingSpinner from '@components/LoadingSpinner'
 import * as SCREEN from '@global/screenName'
 import { ACCOUNT_MODE, APP_USER_KEY } from '@global/const'
-import { DARK_GRAY_COLOR } from '../../../theme/colors';
+import I18n from '@language'
+import { DARK_GRAY_COLOR } from '@theme/colors';
+import styles from './styles'
 
-import { EXIST_FACEBOOK_USER } from '@graphql/users'
 import { client } from '@root/main'
 import { GET_PROFILE } from '@graphql/userprofile';
+import { EXIST_FACEBOOK_USER } from '@graphql/users'
 
 const { GraphRequest, GraphRequestManager, AccessToken } = FBSDK
 
@@ -57,24 +56,6 @@ class LoginPage extends Component {
       if (result.gender == 'female')
         gender = 'FEMALE'
 
-      this.props.navigator.push({
-        screen: SCREEN.ACCOUNT_CREATE_PAGE,
-        title: 'Create Account',
-        passProps: {
-          mode: ACCOUNT_MODE.facebook,
-          info: {
-            ...result,
-            userId: this.state.id
-          }
-        },
-        animated: true,
-        navigatorStyle: {
-          navBarTextColor: DARK_GRAY_COLOR,
-          navBarTextFontFamily: 'Comfortaa-Regular',
-          naviBarComponentAlignment: 'center'
-        },
-      })
-
       client.query({
         query: GET_PROFILE,
         variables: {
@@ -83,6 +64,20 @@ class LoginPage extends Component {
       }).then((user) => {
         var data = user.data.User
         if (data.username) {
+
+          // wheter to sync with facebook or not
+          // this.props.updateUser({
+          //   variables: {
+          //     id: this.state.id,
+          //     first_name: result.first_name,
+          //     last_name: result.last_name,
+          //     gender: gender,
+          //     photoURL: result.picture.data.url,
+          //     displayName: result.first_name + " " + result.last_name,
+          //     registrationDate: new Date().toLocaleDateString()
+          //   }
+          // })
+
           this.props.saveUserInfo({
             id: this.state.id,
             createdAt: new Date().toLocaleDateString(),
@@ -101,9 +96,8 @@ class LoginPage extends Component {
           this.props.saveUserFollows(data.follows);
           AsyncStorage.setItem(APP_USER_KEY, JSON.stringify({
             id: this.state.id
-          }))
+          }));
           this.props.login();
-
         } else {
           this.props.navigator.push({
             screen: SCREEN.ACCOUNT_CREATE_PAGE,
@@ -123,36 +117,7 @@ class LoginPage extends Component {
             },
           })
         }
-      })
-
-      // let user = await this.props.updateUser({
-      //   variables: {
-      //     id: this.state.id,
-      //     first_name: result.first_name,
-      //     last_name: result.last_name,
-      //     gender: gender,
-      //     photoURL: result.picture.data.url,
-      //     displayName: result.first_name + " " + result.last_name,
-      //     registrationDate: new Date().toLocaleDateString()
-      //   }
-      // })
-      // this.props.navigator.push({
-      //   screen: SCREEN.ACCOUNT_CREATE_PAGE,
-      //   title: 'Create Account',
-      //   passProps: {
-      //     mode: ACCOUNT_MODE.create
-      //   },
-      //   animated: true,
-      //   // animationType: 'fade',
-      //   navigatorStyle: {
-      //     // navBarHidden: true
-      //     navBarTextColor: DARK_GRAY_COLOR,
-      //     navBarTextFontFamily: 'Comfortaa-Regular',
-      //     naviBarComponentAlignment: 'center'
-      //   },
-      //   // navigatorButtons: {}
-      // })
-      // var userInfo = user.data.updateUser
+      });
       this.setState({ loading: false });
     }
   }
@@ -193,7 +158,6 @@ class LoginPage extends Component {
           }
         })
       } else {
-        LoginManager.logOut();
         LoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_about_me', 'user_birthday', 'user_hometown', 'user_location'])
           .then((result) => {
             if (result.isCancelled) {
@@ -224,7 +188,6 @@ class LoginPage extends Component {
             this.setState({ loading: false })
           })
       }
-      return;
     } catch (error) {
       alert(error)
       // Error retrieving data
