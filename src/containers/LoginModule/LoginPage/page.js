@@ -324,7 +324,10 @@ class LoginPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image style={styles.marker} source={require('@assets/images/login/mark.png')} />
+        <Image resizeMode={'contain'}
+          style={styles.marker}
+          source={require('@assets/images/login/mark.png')}
+        />
         {/*
         <Text style={[styles.login_str, styles.first_line]}>{I18n.t('SIGN_LOGIN_STR')}</Text>
         <Text style={[styles.login_str, styles.second_line]}>{I18n.t('WITH_STR')}</Text>
