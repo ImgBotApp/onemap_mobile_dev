@@ -38,8 +38,8 @@ import styles from './styles'
 
 const ImagePickerOption = {
   title: 'Take Media',
-  takePhotoButtonTitle:'Take Camera...',
-  chooseFromLibraryButtonTitle:'Choose from Library...',
+  takePhotoButtonTitle: 'Take Camera...',
+  chooseFromLibraryButtonTitle: 'Choose from Library...',
   storageOptions: {
     skipBackup: true,
     path: 'images'
@@ -756,8 +756,7 @@ class PlaceProfile extends PureComponent {
           alert(response.error)
           console.log('ImagePicker Error: ', response.error);
         } else {
-          if(type == 'photo')
-          {
+          if (type == 'photo') {
             let source = { uri: response.uri };
             var storyImages = clone(this.state.storyImages);
             storyImages.pop();
@@ -770,15 +769,15 @@ class PlaceProfile extends PureComponent {
               }
               this.setState({ imageUploading: false });
             });
-          }else{
+          } else {
             this.setState({ imageUploading: true });
-            uploadMedia(response,'#storyVideo').then(
-              url=>{
-                if(url){
+            uploadMedia(response, '#storyVideo').then(
+              url => {
+                if (url) {
                   console.log("uploading video success!");
                   var storyImages = clone(this.state.storyImages);
                   storyImages.pop();
-                  storyImages.push({'uri':url});
+                  storyImages.push({ 'uri': url });
                   storyImages.push({ type: 'add' });
                   this.setState({ storyImages });
                   //this.state.storyImages[this.state.storyImages.length - 2].uri = url;
@@ -926,13 +925,13 @@ class PlaceProfile extends PureComponent {
         {this.renderSliderShow()}
         {this.renderCollectionModal()}
         <ActionSheet
-            ref={o => this.ActionSheet = o}
-            title={title}
-            options={options}
-            cancelButtonIndex={CANCEL_INDEX}
-            destructiveButtonIndex={DESTRUCTIVE_INDEX}
-            onPress={this.handlePress}
-          />
+          ref={o => this.ActionSheet = o}
+          title={title}
+          options={options}
+          cancelButtonIndex={CANCEL_INDEX}
+          destructiveButtonIndex={DESTRUCTIVE_INDEX}
+          onPress={this.handlePress}
+        />
         {this.state.imageUploading && <LoadingSpinner />}
       </View>
     );

@@ -247,7 +247,7 @@ class FeedPage extends Component {
           data={data}
           horizontal
           renderItem={({ item }) =>
-            <View style={{ marginRight: 15}}>
+            <View style={{ marginRight: 15 }}>
               <SuggestUser
                 data={item}
                 onPress={() => this.onPressUserProfile(item)}
@@ -298,7 +298,7 @@ class FeedPage extends Component {
     )
   }
   _renderItem = ({ item, index }) => {
-    if (item &&item.type) {
+    if (item && item.type) {
       switch (item.type) {
         case 'users':
           return this._renderSuggestedList(item.data)

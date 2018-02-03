@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage,PermissionsAndroid,Platform } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage, PermissionsAndroid, Platform } from 'react-native'
 import FBSDK, { Loginmanager, LoginManager } from 'react-native-fbsdk'
 import I18n from '@language'
 import styles from './styles'
@@ -29,14 +29,14 @@ class LoginPage extends Component {
     }
   }
   componentDidMount() {
-    if(Platform.OS == 'android')
+    if (Platform.OS == 'android')
       this.requestLocationPermissionForAndroid();
   }
   async requestLocationPermissionForAndroid() {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        
+
       )
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log("You can get the Location")
@@ -58,7 +58,7 @@ class LoginPage extends Component {
         gender = 'MALE'
       if (result.gender == 'female')
         gender = 'FEMALE'
-      
+
       this.props.navigator.push({
         screen: SCREEN.ACCOUNT_CREATE_PAGE,
         title: 'Create Account',
@@ -75,7 +75,7 @@ class LoginPage extends Component {
           navBarTextFontFamily: 'Comfortaa-Regular',
           naviBarComponentAlignment: 'center'
         },
-      })     
+      })
       /*
       let UserExist = await client.query({
         query: GET_PROFILE,
@@ -284,7 +284,6 @@ class LoginPage extends Component {
             new GraphRequestManager().addRequest(infoRequest).start();
           })
           .catch((err) => {
-            alert(JSON.stringify(err))
             console.log(err)
             this.setState({ loading: false })
           })
