@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     marginLeft: getDeviceWidth(76),
     marginRight: getDeviceWidth(76),
     marginTop: getDeviceHeight(89),
-    height: getDeviceHeight(283)
+    height: getDeviceHeight(323)
   },
   map: {
     width: '100%',
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   },
   writeStoryMain: {
     width: getDeviceWidth(1178),
-    padding: getDeviceWidth(30),
+    padding: Platform.OS=='android'?getDeviceWidth(60):getDeviceWidth(30),
     marginTop: getDeviceHeight(89),
   },
   storyWriterImage: {
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     color: DARK_GRAY_COLOR,
     fontSize: BIGGER_FONT_SIZE,
   },
-  overlayContainer:{
+  overlayContainer: {
     position: 'absolute',
     justifyContent: 'center',
     flex: 1,
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     padding:0,
   },
   overlayWrapper:{
-    
+
   },
   playButton:{
     position:"absolute",

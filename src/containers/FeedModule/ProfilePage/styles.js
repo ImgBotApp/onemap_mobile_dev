@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   about: {
     marginTop: getDeviceHeight(97),
-    fontSize:  SMALL_FONT_SIZE,
+    fontSize: SMALL_FONT_SIZE,
     color: DARK_GRAY_COLOR
   },
   collectionText: {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   StoryText: {
     marginTop: getDeviceHeight(76),
     fontSize: BIG_FONT_SIZE,
-    color: DARK_GRAY_COLOR    
+    color: DARK_GRAY_COLOR
   },
   StoryContainer: {
     flexDirection: 'row',

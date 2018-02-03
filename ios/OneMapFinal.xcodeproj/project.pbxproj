@@ -280,6 +280,13 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+		841BD222201AC87B006FBC13 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 841BD1EE201AC87B006FBC13 /* RNShare.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNShare;
+		};
 		8426B7B5200298E100C7E6EA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
@@ -492,6 +499,9 @@
 		795A42D188BC4B9C9FEB8A7B /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		7A8A3086F18343EF94D8BF22 /* libRNI18n.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNI18n.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		841BD1EE201AC87B006FBC13 /* RNShare.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNShare.xcodeproj; path = "../node_modules/react-native-share/ios/RNShare.xcodeproj"; sourceTree = "<group>"; };
+		841BD226201AC8AC006FBC13 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		841BD227201AC8B9006FBC13 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		8426B83220029C5F00C7E6EA /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../../onemap_mobile_dev/ios/Bolts.framework; sourceTree = "<group>"; };
 		8426B86B20029C5F00C7E6EA /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../onemap_mobile_dev/ios/FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		8426B86C20029C5F00C7E6EA /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../onemap_mobile_dev/ios/FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -760,6 +770,8 @@
 		21574105C3BB5B1E9D8C0EEB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				841BD227201AC8B9006FBC13 /* MessageUI.framework */,
+				841BD226201AC8AC006FBC13 /* Social.framework */,
 				D2C24FB22016E368007B9D14 /* MapKit.framework */,
 				D2DBCA5820108EEB001D3571 /* libreact-native-google-maps.a */,
 				B7DC52AAC7D86D803DFFC0FD /* libPods-OneMapFinal.a */,
@@ -813,6 +825,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				841BD1EE201AC87B006FBC13 /* RNShare.xcodeproj */,
 				D28787D120173DD40096D5BD /* ReactNativePermissions.xcodeproj */,
 				84925E55200F82F6001FC858 /* RCTVideo.xcodeproj */,
 				84F71604200F7D7C003B5A10 /* RCTOrientation.xcodeproj */,
@@ -875,6 +888,14 @@
 				00E356EE1AD99517003FC87E /* OneMapFinalTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* OneMapFinal-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* OneMapFinal-tvOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		841BD1EF201AC87B006FBC13 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				841BD223201AC87B006FBC13 /* libRNShare.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1268,6 +1289,10 @@
 					ProjectRef = 8481345D66BD4268B44E6FBA /* RNImagePicker.xcodeproj */;
 				},
 				{
+					ProductGroup = 841BD1EF201AC87B006FBC13 /* Products */;
+					ProjectRef = 841BD1EE201AC87B006FBC13 /* RNShare.xcodeproj */;
+				},
+				{
 					ProductGroup = 8426B7D1200298E100C7E6EA /* Products */;
 					ProjectRef = F0108B3728804CCEA028240D /* RNVectorIcons.xcodeproj */;
 				},
@@ -1456,6 +1481,13 @@
 			fileType = archive.ar;
 			path = libRCTText.a;
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		841BD223201AC87B006FBC13 /* libRNShare.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNShare.a;
+			remoteRef = 841BD222201AC87B006FBC13 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		8426B7B6200298E100C7E6EA /* libRCTBlob-tvOS.a */ = {
@@ -1721,7 +1753,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
@@ -1748,6 +1780,8 @@
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
 				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/QBImagePickerController/QBImagePicker.bundle,
+				"${PODS_ROOT}/RSKImageCropper/RSKImageCropper/RSKImageCropperStrings.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (

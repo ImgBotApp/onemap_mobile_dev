@@ -36,20 +36,30 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
+<<<<<<< HEAD
 				<string>fb163236004399299</string>
+=======
+				<string>fb519021981830054</string>
+>>>>>>> 3d6cef8a80e1e8730344f86dfef2133bd6f6c62b
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>18011819</string>
+	<string>18013110</string>
 	<key>FacebookAppID</key>
+<<<<<<< HEAD
 	<string>163236004399299</string>
+=======
+	<string>519021981830054</string>
+>>>>>>> 3d6cef8a80e1e8730344f86dfef2133bd6f6c62b
 	<key>FacebookDisplayName</key>
-	<string>OneMap</string>
+	<string>Mod</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>whatsapp</string>
+		<string>mailto</string>
 		<string>fbapi</string>
 		<string>fb-messenger-share-api</string>
 		<string>fbauth2</string>
@@ -97,6 +107,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Media Library Usage</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Bluetooth Usage</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Calendars Usage</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera Usage</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -107,10 +123,14 @@
 	<string>This app always requires location tracking</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Mic Usage</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Motion Usage</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Photo Library</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photo Library</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Speech Recognition Usage</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>

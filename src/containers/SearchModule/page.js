@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity,Platform,PermissionsAndroid } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity, Platform, PermissionsAndroid } from 'react-native';
 import RNPlaces from 'react-native-google-places'
 import RNGooglePlaces from 'react-native-google-places'
 import Search from '@components/SearchBar';
@@ -18,7 +18,7 @@ import LoadingSpinner from '@components/LoadingSpinner'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker, Callout } from 'react-native-maps';
 import Permissions from 'react-native-permissions'
-import { Places } from 'google-places-web'
+import {Places} from 'google-places-web'
 import { PLACES_APIKEY } from '@global/const';
 import Toast, { DURATION } from 'react-native-easy-toast'
 import axios from 'axios';
@@ -28,7 +28,7 @@ Places.debug = true;
 
 const { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
-const LATTITUDE_DELTA = 0.002;
+const LATTITUDE_DELTA = 0.01;
 const LONGTITUDE_DELTA = LATTITUDE_DELTA * ASPECT_RATIO
 
 class SearchPage extends Component {
@@ -47,7 +47,7 @@ class SearchPage extends Component {
       title: '',
       address: '',
       isSearching: false,
-      isSelected: false,
+      isSelected: true,
       searched: null,
       nearByPlacesPin: [],
       initialPosition: {
@@ -56,9 +56,9 @@ class SearchPage extends Component {
         latitudeDelta: LATTITUDE_DELTA,
         longitudeDelta: LONGTITUDE_DELTA,
       },
-      initialMarker:null,
-      myPosition:null,
-      isCallingAPI:false,
+      initialMarker: null,
+      myPosition: null,
+      isCallingAPI: false,
     }
     props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
@@ -80,14 +80,12 @@ class SearchPage extends Component {
   }
   componentDidMount() {
     _this = this;
-    
     Permissions.check('location').then(response => {
       if (response != 'authorized') {
-        if(Platform.OS == 'android')
-        {
-          //this.requestLocationPermissionForAndroid();
+        if (Platform.OS == 'android') {
+
         }
-        else{
+        else {
           Permissions.request('location').then(response => {
             if (response == 'authorized') {
               this.setGeoPositionEvent();
@@ -99,48 +97,33 @@ class SearchPage extends Component {
     })
     //this.setGeoPositionEvent();
   }
-  componentWillUnmount (){
-    if(this.watchID != null)
+  componentWillUnmount() {
+    if (this.watchID != null)
       navigator.geolocation.clearWatch(this.watchID);
   }
   componentWillMount() {
-    
+
   }
-  async requestLocationPermissionForAndroid() {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          'title': 'Request Location Permission',
-          'message': 'Are you enable Location Service?'
-        }
-      )
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        this.setGeoPositionEvent();
-        console.log("You can get the Location")
-      } else {
-        console.log("Location permission denied")
-      }
-    } catch (err) {
-      console.warn(err)
-    }
-  }
-  async setGeoPositionEvent(){
+
+  setGeoPositionEvent() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        this.setState({myPosition:position.coords});
+        this.setState({ myPosition: position.coords });
         this.updateMapView();
+        console.log("current position:" + position.coords.latitude);
       },
       (error) => console.log(error),
-      {enableHighAccuracy: true, timeout: 20000,distanceFilter:0.1}
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 }
     );
+
     this.watchID = navigator.geolocation.watchPosition((position) => {
-      this.setState({myPosition:position.coords});
+      console.log("watch position:" + position.coords.latitude);
+      this.setState({ myPosition: position.coords });
       this.updateMapView();
-     
-   },{enableHighAccuracy: true, timeout: 20000,distanceFilter:0.1});
+    }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 });
+
   }
-  updateMapView(){
+  updateMapView() {
     var getInitialRegion = {
       latitude: this.state.myPosition.latitude,
       longitude: this.state.myPosition.longitude,
@@ -156,66 +139,82 @@ class SearchPage extends Component {
     })
     this.onSearchNearByPlace();
   }
-  async onSearchNearByPlace(){
-    if(this.state.isCallingAPI)
+  async onSearchNearByPlace() {
+    if (this.state.isCallingAPI)
       return;
     this.setState({isCallingAPI:true});
-    RNPlaces.getCurrentPlace()
-            .then((results) => {
-              this.setState({isCallingAPI:false})
-              //this.refs.toast.show('nearby search updated')
-              if(!this.state.initialMarker)
-              {
-                var getInitialRegion = {
-                  latitude: results[0].latitude,
-                  longitude: results[0].longitude,
-                  latitudeDelta: LATTITUDE_DELTA,
-                  longitudeDelta: LONGTITUDE_DELTA,
-                }
-                var getInitialRegionMaker = {
-                  latitude: results[0].latitude,
-                  longitude: results[0].longitude,
-                }
-                this.setState({
-                  initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
-                  title: results[0].name, address: results[0].address,
-                })
-              }
-              // this.setPinLocation(results);
-              var getNearByLocationsPin = [];
-              for (var i = 0; i < results.length; i++) {
-                if(results[i].latitude && results[i].longitude)
-                {
-                  var obj = {
-                    coordinates: {
-                      latitude: results[i].latitude,
-                      longitude: results[i].longitude,
-                    },
-                    title: results[i].name,
-                    address: results[i].address,
-                    placeID: results[i].placeID
-                  }
-                  getNearByLocationsPin.push(obj);
-                }
-              }
-              this.setState({
-                nearByPlacesPin: getNearByLocationsPin
-              })
-              results.shift();
-              this.setState({ nearByPlaces: results })
-            })
-            .catch((error) =>{
-              console.log("error:"+error); 
-              this.setState({isCallingAPI:false})}
-            );
+
+    if(this.state.myPosition == null) return;
+    const radius = 50000;
+    const placeNearSearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+this.state.myPosition.latitude+","+this.state.myPosition.longitude+"&radius="+radius+"&key="+PLACES_APIKEY;
+
+    fetch(placeNearSearchURL, {
+      method: 'GET',
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+    })
+    .then((response) => response.json())
+    .then((responseData) =>
+    {
+      //set your data here
+      let results = responseData.results;
+      this.setState({isCallingAPI:false})
+
+      // this.setPinLocation(results);
+      var maxDiff_lat=0,maxDiff_lng=0;
+      var getNearByLocationsPin = [];
+      for (var i = 0; i < results.length; i++) {
+        if(results[0].geometry.location.lat && results[0].geometry.location.lng)
+        {
+          var obj = {
+            coordinates: {
+              latitude: results[i].geometry.location.lat,
+              longitude: results[i].geometry.location.lng,
+            },
+            title: results[i].name,
+            address: results[i].vicinity,
+            placeID: results[i].place_id
+          }
+          getNearByLocationsPin.push(obj);
+
+          maxDiff_lat = Math.max(maxDiff_lat,Math.abs(this.state.myPosition.latitude-results[i].geometry.location.lat));
+          maxDiff_lng = Math.max(maxDiff_lng,Math.abs(this.state.myPosition.longitude-results[i].geometry.location.lng));
+        }
+      }
+
+      var getInitialRegion = {
+        latitude: this.state.myPosition?this.state.myPosition.latitude:results[0].geometry.location.lat,
+        longitude: this.state.myPosition?this.state.myPosition.longitude:results[0].geometry.location.lng,
+        latitudeDelta: maxDiff_lat<=0?LATTITUDE_DELTA:maxDiff_lat,
+        longitudeDelta: maxDiff_lng<=0?LONGTITUDE_DELTA:maxDiff_lng,
+      }
+      var getInitialRegionMaker = {
+        latitude: results[0].geometry.location.lat,
+        longitude: results[0].geometry.location.lng,
+      }
+      this.setState({
+        initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
+        title: results[0].name, address: results[0].vicinity,
+      })
+
+
+      this.setState({
+        nearByPlacesPin: getNearByLocationsPin
+      })
+      results.shift();
+      this.setState({ nearByPlaces: results })
+    })
+    .catch((error) => {
+      this.setState({isCallingAPI:false})
+    });
   }
   render() {
     if (this.state.isFeaching)
       this.onCreatePlace();
 
     let curr_position;
-    if(this.state.myPosition)
-      curr_position="lat:"+this.state.myPosition.latitude+" lng:"+this.state.myPosition.longitude;
+    if (this.state.myPosition)
+      curr_position = "lat:" + this.state.myPosition.latitude + " lng:" + this.state.myPosition.longitude;
     return (
       <View style={styles.container}>
         <Search
@@ -227,71 +226,77 @@ class SearchPage extends Component {
           onCancel={this.onDismissResult.bind(this)}
         />
         <View>
-        {
-          this.state.result == false ?
-          (
-            <View style={{ width: '100%' }}>
-            <View style={styles.mapView}>
-              <MapView
-                // showsUserLocation={true}
-                provider={PROVIDER_GOOGLE}
-                style={styles.map}
-                initialRegion={this.state.initialPosition}
-                region={this.state.initialPosition}
-                showsCompass={true}
-                loadingEnabled={true}
-                showsBuildings={true}
-              >
-                {this.state.nearByPlacesPin.map((marker, key) => (
-                    <Marker
-                      key={key} 
-                      coordinate={marker.coordinates}
-                      zIndex = {key}
-                      image = {require('@assets/images/map_pin.png')} 
+          {
+            this.state.result == false ?
+              (
+                <View style={{ width: '100%' }}>
+                  <View style={styles.mapView}>
+                    <MapView
+                      // showsUserLocation={true}
+                      provider={PROVIDER_GOOGLE}
+                      style={styles.map}
+                      initialRegion={this.state.initialPosition}
+                      region={this.state.initialPosition}
+                      showsCompass={true}
+                      loadingEnabled={true}
+                      showsBuildings={true}
                     >
-                      <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
-                        <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
-                      </Callout>
-                    </Marker>
-                ))}
-              {
-                this.state.myPosition?(
-                  <Marker
-                      coordinate={this.state.myPosition}
-                      zIndex = {this.state.nearByPlacesPin.length+1000}
-                      image = {require('@assets/images/map_position.png')} 
-                    >
-                      <Callout style={styles.customView}>
-                        <Text style={{ flexWrap: "nowrap" }}>{curr_position}</Text>
-                      </Callout>
-                    </Marker>
-                ):null
-              }
-              </MapView>
-            </View>
-            {/* } */}
-            <FlatList
-              keyExtractor={(item, index) => index}
-              style = {{paddingTop:getDeviceHeight(50)}}
-              data={this.state.nearByPlaces}
-              renderItem={({ item }) =>
-                <View>
-                    <View style={styles.item}>
-                      <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
-                      <View style={styles.infomation}>
-                        <View>
-                          <TouchableOpacity onPress={() => this.onPlaceProfile(item.placeID)}>
-                            <Text style={styles.name}>{item.name}</Text>
-                            {this.state.isSelected ?
-                              <Text style={styles.following}>{item.vicinity}</Text>
-                              : <Text style={styles.following}>{item.address}</Text>
-                            }
-                          </TouchableOpacity>
+                      {this.state.nearByPlacesPin.map((marker, key) => (
+                        <Marker
+                          key={key}
+                          coordinate={marker.coordinates}
+                          zIndex={key}
+                          image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
+                        >
+                          {Platform.OS === 'ios' && (
+                            <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
+                          )}
+                          <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
+                            <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
+                          </Callout>
+                        </Marker>
+                      ))}
+                      {
+                        this.state.myPosition ? (
+                          <Marker
+                            coordinate={this.state.myPosition}
+                            zIndex={this.state.nearByPlacesPin.length + 1000}
+                            image={Platform.OS == 'android' ? require('@assets/images/map_position.png') : null}
+                          >
+                            {Platform.OS === 'ios' && (
+                              <Image source={require('@assets/images/map_position.png')} style={styles.mapmarker} />
+                            )}
+                            <Callout style={styles.customView}>
+                              <Text style={{ flexWrap: "nowrap" }}>{curr_position}</Text>
+                            </Callout>
+                          </Marker>
+                        ) : null
+                      }
+                    </MapView>
+                  </View>
+                  {/* } */}
+                  <FlatList
+                    keyExtractor={(item, index) => index}
+                    style={{ paddingTop: getDeviceHeight(50) }}
+                    data={this.state.nearByPlaces}
+                    renderItem={({ item }) =>
+                      <View>
+                        <View style={styles.item}>
+                          <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
+                          <View style={styles.infomation}>
+                            <View>
+                              <TouchableOpacity onPress={() => this.onPlaceProfile(item.place_id)}>
+                                <Text style={styles.name}>{item.name}</Text>
+                                {this.state.isSelected ?
+                                  <Text style={styles.following}>{item.vicinity}</Text>
+                                  : <Text style={styles.following}>{item.address}</Text>
+                                }
+                              </TouchableOpacity>
+                            </View>
+                          </View>
                         </View>
                       </View>
-                    </View>
-                  </View>
-                }
+                    }
                   />
                 </View>
               )
@@ -312,11 +317,14 @@ class SearchPage extends Component {
       </View>
     );
   }
-  onUserItem(id) {//TODO
+  onUserItem(userInfo) {
     this.props.navigator.push({
       screen: SCREEN.USERS_PROFILE_PAGE,
       title: I18n.t('USERPROFILE_TITLE'),
-      animated: true
+      animated: true,
+      passProps: {
+        userInfo
+      }
     })
   }
   onKeywordItem(id) {
@@ -353,7 +361,6 @@ class SearchPage extends Component {
         if (!place.data.allPlaces || place.data.allPlaces.length <= 0) {
           this.onFetchGooglePictures(ret_photos ? ret_photos : []);
         } else {
-          
           this.setState({ loading: false });
           this.props.navigator.push({
             screen: SCREEN.PLACE_PROFILE_PAGE,
@@ -365,23 +372,23 @@ class SearchPage extends Component {
           })
         }
       }
-      ).catch((error) => {this.setState({ loading: false })});
+      ).catch((error) => { this.setState({ loading: false }) });
   }
   async onFetchGooglePictures(ret_photos) {
     let redrictURLS = [];
     await Promise.all(
-      ret_photos.map(photo => 
-        axios.get("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + Places.apiKey)
-        .then(function (response) {
-          redrictURLS.push(response.config.url);
-        })
-        .catch(function (error) {
-          this.setState({ loading: false })
-        })
+      ret_photos.map(photo =>
+        axios.get("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + PLACES_APIKEY)
+          .then(function (response) {
+            redrictURLS.push(response.config.url);
+          })
+          .catch(function (error) {
+            this.setState({ loading: false })
+          })
       )
     ).then(() => {
       this.setState({ pictureURLS: redrictURLS, isFeaching: true });
-    }, err => {this.setState({ loading: false }); })
+    }, err => { this.setState({ loading: false }); })
   }
   onCreatePlace() {
     this.props.createPlace({

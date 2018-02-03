@@ -1,27 +1,33 @@
 import { StyleSheet } from 'react-native'
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
-// define your styles
+
+const itemWidth = 335;
+
 const styles = StyleSheet.create({
   main: {
     // alignItems: 'center'
+  },
+  firstContainer: {
+    alignItems: 'center',
+    marginTop: getDeviceHeight(94),
   },
   container: {
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
-    marginTop: getDeviceHeight(94),
-    width: getDeviceWidth(1328),
-    alignSelf: 'center'
+    width: getDeviceWidth(itemWidth * 4),
+    alignSelf: 'center',
+    marginTop: getDeviceHeight(20)
   },
   cell: {
-    width: getDeviceWidth(332),
-    height: getDeviceHeight(332)
+    width: getDeviceWidth(itemWidth),
+    height: getDeviceHeight(itemWidth)
   },
   collection: {
-    width: getDeviceWidth(305),
-    height: getDeviceHeight(305)
+    width: getDeviceWidth(293),
+    height: getDeviceHeight(293)
   }
 });
 

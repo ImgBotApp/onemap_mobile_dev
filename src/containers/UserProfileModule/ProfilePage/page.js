@@ -154,10 +154,9 @@ class ProfileComponent extends Component {
           <Text style={styles.collectionTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
           <View style={styles.collectionItems}>
             <Collections
-              collections={this.state.collections}
               onViewItem={this.onViewCollectionItem}
-              onViewAll={this.onViewCollectionsAll}
               onViewStories={this.onViewStories}
+              onViewAll={this.onViewCollectionsAll}
             />
           </View>
         </View>
@@ -190,6 +189,11 @@ class ProfileComponent extends Component {
       screen: SCREEN.FEED_ALL_COLLECTION,
       title: I18n.t('COLLECTION_TITLE'),
       animated: true,
+      passProps: {
+        data: {
+          allStories: this.props.data.allStories
+        }
+      }
     })
   }
   onViewStories = () => {

@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 import * as reducers from './reducers'
 import * as appActions from './reducers/app/actions'
 
-import { registerScreens } from './registerScreens' 
+import { registerScreens } from './registerScreens'
 
 // import TestSceen from '@containers/Test'
 
@@ -22,14 +22,16 @@ import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-client-preset'
 
 import * as SCREEN from './global/screenName'
 
-const httpLink = new HttpLink({ uri: 'https://api.graph.cool/simple/v1/cjb30vkvv434c0146sjjn4d4w' })
+const httpLink = new HttpLink({
+  uri: 'https://api.graph.cool/simple/v1/' + (true ? 'cjb30vkvv434c0146sjjn4d4w' : 'cjctwe3gj19zb01051chfehqy')
+})
 export const client = new ApolloClient({
   link: httpLink,
   cache: new InMemoryCache()
 })
 
 
-registerScreens(store, ApolloProvider, {client});
+registerScreens(store, ApolloProvider, { client });
 
 import EntypoIcons from 'react-native-vector-icons/Entypo'
 import FeatherIcons from 'react-native-vector-icons/Feather'
@@ -43,7 +45,7 @@ var SettingIcon;
 var SearchIcon;
 
 export default class App {
-  constructor () {
+  constructor() {
     Orientation.lockToPortrait();
     store.subscribe(this.onStoreUpdate.bind(this));
     store.dispatch(appActions.appInitialized());
@@ -52,7 +54,7 @@ export default class App {
   onStoreUpdate() {
     const { root } = store.getState().app;
 
-    if (this.currentRoot != root ) {
+    if (this.currentRoot != root) {
       this.currentRoot = root;
       this.startApp(root);
     }
@@ -61,11 +63,11 @@ export default class App {
   _populateIcons = function () {
     return new Promise(function (resolve, reject) {
       Promise.all([
-        EntypoIcons.getImageSource('home',26),
-        EntypoIcons.getImageSource('user',26),
-        FeatherIcons.getImageSource('settings',24),
-        FeatherIcons.getImageSource('search',24)
-      ]).then ( (values) => {
+        EntypoIcons.getImageSource('home', 26),
+        EntypoIcons.getImageSource('user', 26),
+        FeatherIcons.getImageSource('settings', 24),
+        FeatherIcons.getImageSource('search', 24)
+      ]).then((values) => {
         HomeIcon = values[0];
         UserIcon = values[1];
         SettingIcon = values[2];
@@ -77,7 +79,7 @@ export default class App {
     });
   }
   startApp(root) {
-    switch(root) {
+    switch (root) {
       case 'login':
         Navigation.startSingleScreenApp({
           screen: {
@@ -127,7 +129,7 @@ export default class App {
           console.log(error);
         })
         return;
-      default: 
+      default:
         alert('unknown app root')
     }
   }

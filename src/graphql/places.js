@@ -61,6 +61,9 @@ export const GET_PLACE_PROFILE = gql`
   query PlaceQuery($id: ID!) {
     Place(id: $id) {
       id
+      createdBy {
+        id
+      }
       updatedAt
       description
       placeName
@@ -90,7 +93,7 @@ export const GET_PLACE_PROFILE = gql`
         }
         name
       }
-      stories {
+      stories(orderBy: updatedAt_DESC) {
         id
         title
         story
