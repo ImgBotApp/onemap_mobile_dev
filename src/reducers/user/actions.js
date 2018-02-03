@@ -1,13 +1,14 @@
 import * as types from './actionType'
+import { changeAppRoot } from '../app/actions'
 
 export function login() {
-  return async function(dispatch, getState) {
+  return async function (dispatch, getState) {
     dispatch(changeAppRoot('main'));
   }
 }
 
 export function logout() {
-  return async function(dispatch, getState) {
+  return async function (dispatch, getState) {
     dispatch(changeAppRoot('login'))
   }
 }
