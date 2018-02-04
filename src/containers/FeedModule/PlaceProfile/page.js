@@ -35,6 +35,7 @@ import { GET_KEYWORD } from '@graphql/keywords'
 import { GET_PLACE_PROFILE } from '@graphql/places'
 
 import styles from './styles'
+import {OptimizedFlatList} from 'react-native-optimized-flatlist'
 
 const ImagePickerOption = {
   title: 'Take Media',
@@ -398,7 +399,7 @@ class PlaceProfile extends PureComponent {
   renderPlaceImages() {
     return (
       <View style={styles.imageContainer}>
-        <FlatList
+        <OptimizedFlatList
           keyExtractor={(item, index) => index}
           extraData={this.state.placeData}
           style={styles.imageFlatList}
@@ -670,7 +671,7 @@ class PlaceProfile extends PureComponent {
                   {/* {this.state.imageUploading && <LoadingSpinner />} */}
                 </TouchableOpacity>
               ) : (
-                <FlatList
+                <OptimizedFlatList
                   keyExtractor={(item, index) => index}
                   horizontal
                   style={styles.myImages}
@@ -845,7 +846,7 @@ class PlaceProfile extends PureComponent {
               <Text style={styles.commentDate}>{calculateDuration(dataItem.updatedAt)}</Text>
             </View>
           </View>
-          <FlatList
+          <OptimizedFlatList
             keyExtractor={(item, index) => index}
             style={[styles.imageFlatList, { marginTop: 10 }]}
             horizontal

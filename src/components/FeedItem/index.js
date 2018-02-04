@@ -12,6 +12,7 @@ import { getDeviceWidth, getDeviceHeight, calculateDuration } from '@global'
 import { EMPTY_IMG } from '@global/const';
 import { getThumlnailFromVideoURL, getMediaTypeFromURL } from '@global/const';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {OptimizedFlatList} from 'react-native-optimized-flatlist'
 
 // create a component
 class FeedItem extends Component {
@@ -56,7 +57,7 @@ class FeedItem extends Component {
         </View>
         {/* Place Image */}
         <View style={styles.feedImages}>
-          <FlatList
+          <OptimizedFlatList
             keyExtractor={(item, index) => index}
             data={this.props.data.images}
             horizontal
