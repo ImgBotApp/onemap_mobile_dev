@@ -264,7 +264,6 @@ class SearchPage extends Component {
                       }
                     </MapView>
                   </View>
-                  {/* } */}
                   <FlatList
                     keyExtractor={(item, index) => index}
                     style={{ paddingTop: getDeviceHeight(50) }}

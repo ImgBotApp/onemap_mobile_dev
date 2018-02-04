@@ -1,6 +1,20 @@
 //import liraries
 import React, { Component, PureComponent } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, Platform, TextInput, Alert, Keyboard } from 'react-native';
+import {
+  Alert,
+  Animated,
+  FlatList,
+  Keyboard,
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Vibration,
+  View,
+} from 'react-native';
 
 import CardView from 'react-native-cardview';
 import ImagePicker from 'react-native-image-picker';
@@ -333,6 +347,7 @@ class PlaceProfile extends PureComponent {
     let placeData = clone(this.state.placeData);
     let hearts = placeData.heartedIds;
     if (hearted) {
+      Vibration.vibrate();
       hearts.push(this.props.user.id);
     } else {
       const index = hearts.indexOf(this.props.user.id);
@@ -351,6 +366,7 @@ class PlaceProfile extends PureComponent {
   }
 
   onCheckInClick() {
+    Vibration.vibrate();
     let placeData = clone(this.state.placeData);
     let checks = placeData.checkedInIds;
     checks.push(this.props.user.id);
