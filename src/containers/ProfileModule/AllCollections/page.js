@@ -68,7 +68,6 @@ class AllCollections extends Component {
   onItemPress(item) {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
       animated: true,
       passProps: {
         collection: item
@@ -99,7 +98,6 @@ class AllCollections extends Component {
   onViewCollectionItem = (item) => {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
       animated: true,
       passProps: {
         type: item
@@ -109,7 +107,6 @@ class AllCollections extends Component {
   onViewCollectionsAll = () => {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
       animated: true,
       passProps: {
         type: 'bookmark',
@@ -120,7 +117,6 @@ class AllCollections extends Component {
   onViewStories = () => {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
       animated: true,
       passProps: {
         places: this.props.data.allStories.map(item => item.place)
