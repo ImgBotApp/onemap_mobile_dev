@@ -20,7 +20,7 @@ import { Marker, Callout } from 'react-native-maps';
 import Permissions from 'react-native-permissions'
 
 //import Places from 'google-places-web'// issue for android
-import { Places } from 'google-places-web'
+import Places from 'google-places-web'
 
 import { PLACES_APIKEY } from '@global/const';
 import Toast, { DURATION } from 'react-native-easy-toast'
@@ -149,54 +149,54 @@ class SearchPage extends Component {
 
     RNPlaces.getCurrentPlace()
       .then((results) => {
-          this.setState({isCallingAPI:false})
-          //this.refs.toast.show('nearby search updated')
+        this.setState({ isCallingAPI: false })
+        //this.refs.toast.show('nearby search updated')
 
-          var maxDiff_lat=0,maxDiff_lng=0;
-          // this.setPinLocation(results);
-          var getNearByLocationsPin = [];
-          for (var i = 0; i < results.length; i++) {
-            if(results[i].latitude && results[i].longitude)
-            {
-              var obj = {
-                  coordinates: {
-                  latitude: results[i].latitude,
-                  longitude: results[i].longitude,
-                  },
-                  title: results[i].name,
-                  address: results[i].address,
-                  placeID: results[i].placeID
-              }
-              getNearByLocationsPin.push(obj);
-              maxDiff_lat = Math.max(maxDiff_lat,Math.abs(this.state.myPosition.latitude-results[i].latitude));
-              maxDiff_lng = Math.max(maxDiff_lng,Math.abs(this.state.myPosition.longitude-results[i].geometry.longitude));
+        var maxDiff_lat = 0, maxDiff_lng = 0;
+        // this.setPinLocation(results);
+        var getNearByLocationsPin = [];
+        for (var i = 0; i < results.length; i++) {
+          if (results[i].latitude && results[i].longitude) {
+            var obj = {
+              coordinates: {
+                latitude: results[i].latitude,
+                longitude: results[i].longitude,
+              },
+              title: results[i].name,
+              address: results[i].address,
+              placeID: results[i].placeID
             }
+            getNearByLocationsPin.push(obj);
+            maxDiff_lat = Math.max(maxDiff_lat, Math.abs(this.state.myPosition.latitude - results[i].latitude));
+            maxDiff_lng = Math.max(maxDiff_lng, Math.abs(this.state.myPosition.longitude - results[i].geometry.longitude));
           }
+        }
 
-          var getInitialRegion = {
-            latitude: this.state.myPosition?this.state.myPosition.latitude:results[0].latitude,
-            longitude: this.state.myPosition?this.state.myPosition.longitude:results[0].longitude,
-            latitudeDelta: maxDiff_lat<=0?LATTITUDE_DELTA:maxDiff_lat,
-            longitudeDelta: maxDiff_lng<=0?LONGTITUDE_DELTA:maxDiff_lng,
-          }
-          var getInitialRegionMaker = {
-            latitude: results[0].latitude,
-            longitude: results[0].longitude,
-          }
-          this.setState({
-            initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
-            title: results[0].name, address: results[0].address,
-          })
-          this.setState({
-            nearByPlacesPin: getNearByLocationsPin
-          })
-          results.shift();
-          this.setState({ nearByPlaces: results })
+        var getInitialRegion = {
+          latitude: this.state.myPosition ? this.state.myPosition.latitude : results[0].latitude,
+          longitude: this.state.myPosition ? this.state.myPosition.longitude : results[0].longitude,
+          latitudeDelta: maxDiff_lat <= 0 ? LATTITUDE_DELTA : maxDiff_lat,
+          longitudeDelta: maxDiff_lng <= 0 ? LONGTITUDE_DELTA : maxDiff_lng,
+        }
+        var getInitialRegionMaker = {
+          latitude: results[0].latitude,
+          longitude: results[0].longitude,
+        }
+        this.setState({
+          initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
+          title: results[0].name, address: results[0].address,
         })
-        .catch((error) =>{
-          console.log("error:"+error);
-          this.setState({isCallingAPI:false})}
-        );
+        this.setState({
+          nearByPlacesPin: getNearByLocationsPin
+        })
+        results.shift();
+        this.setState({ nearByPlaces: results })
+      })
+      .catch((error) => {
+        console.log("error:" + error);
+        this.setState({ isCallingAPI: false })
+      }
+      );
   }
   render() {
     if (this.state.isFeaching)
