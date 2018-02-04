@@ -1,6 +1,20 @@
 //import liraries
 import React, { Component, PureComponent } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, Platform, TextInput, Alert, Keyboard } from 'react-native';
+import {
+  Alert,
+  Animated,
+  FlatList,
+  Keyboard,
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Vibration,
+  View,
+} from 'react-native';
 
 import CardView from 'react-native-cardview';
 import ImagePicker from 'react-native-image-picker';
@@ -52,12 +66,6 @@ const DESTRUCTIVE_INDEX = 4
 const options = ['Cancel', 'Photo', 'Video']
 const title = 'Select Media Type'
 
-const user = {
-  name: 'Minna Hamilton',
-  photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-}
-
-// create a component
 class PlaceProfile extends PureComponent {
   static navigatorButtons = {
     leftButtons: [
@@ -153,7 +161,7 @@ class PlaceProfile extends PureComponent {
   }
 
   getPlaceProfile() {
-    let Place = client.query({
+    client.query({
       query: GET_PLACE_PROFILE,
       variables: {
         id: this.state.currentPlaceID
@@ -166,7 +174,6 @@ class PlaceProfile extends PureComponent {
       const myStories = data.stories.filter(item => item.createdBy.id === this.props.user.id);
       const ownerStories = data.stories.filter(item => item.createdBy.id === data.createdBy.id);
       const otherStories = data.stories.filter(item => !myStories.includes(item) && !ownerStories.includes(item));
-
       this.setState({
         placeData: {
           id: data.id,
@@ -193,13 +200,13 @@ class PlaceProfile extends PureComponent {
           checkedInIds: data.userCheckedIn.map(item => item.id),
           collectionIds: this.props.place && this.props.place.collectionIds ? this.props.place.collectionIds : data.collections.map(item => item.id),
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
-          comments: Object.assign(ownerStories, otherStories),
+          comments: [...ownerStories, ...otherStories],
           bookmark: this.isBookmarked(data.collections),
         },
         myStory: myStories.length ? myStories[0] : this.state.myStory,
         storyImages: myStories.length ? [...myStories[0].pictureURL.map(item => ({ uri: item })), ...this.state.storyImages] : this.state.storyImages
       })
-    });
+    }).catch(err => alert(err));
   }
 
   onBookMarker = () => {
@@ -341,6 +348,7 @@ class PlaceProfile extends PureComponent {
     let placeData = clone(this.state.placeData);
     let hearts = placeData.heartedIds;
     if (hearted) {
+      Vibration.vibrate();
       hearts.push(this.props.user.id);
     } else {
       const index = hearts.indexOf(this.props.user.id);
@@ -359,9 +367,11 @@ class PlaceProfile extends PureComponent {
   }
 
   onCheckInClick() {
+    Vibration.vibrate();
     let placeData = clone(this.state.placeData);
     let checks = placeData.checkedInIds;
     checks.push(this.props.user.id);
+    this.props.saveUserInfo({ ...this.props.user, checkedIn: [...this.props.user.checkedIn, placeData.id] });
 
     this.props.checkInPlace({
       variables: {
@@ -434,6 +444,7 @@ class PlaceProfile extends PureComponent {
             style={styles.map}
             initialRegion={this.state.placeData.map}
             region={this.state.placeData.map}
+            scrollEnabled={false}
           >
             {
               this.state.placeData.map ? (
@@ -542,7 +553,7 @@ class PlaceProfile extends PureComponent {
               <TouchableOpacity key={index} style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>
                 <TitleImage
                   style={styles.collection}
-                  uri={collection.pictureURL ? collection.pictureURL : 'https://placeimg.com/640/480/any'}
+                  uri={collection.pictureURL}
                   title={collection.name}
                   radius={8}
                   vAlign={'center'}

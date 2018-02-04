@@ -9,7 +9,6 @@ import styles from './styles'
 import DFonts from '@theme/fonts'
 import { RED_COLOR, LIGHT_GRAY_COLOR } from '@theme/colors';
 import { getDeviceWidth, getDeviceHeight, calculateDuration } from '@global'
-import { EMPTY_IMG } from '@global/const';
 import { getThumlnailFromVideoURL, getMediaTypeFromURL } from '@global/const';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {OptimizedFlatList} from 'react-native-optimized-flatlist'
@@ -39,7 +38,7 @@ class FeedItem extends Component {
         <View style={styles.userInfo}>
           <TouchableOpacity onPress={this._onUserInformation.bind(this)}>
             <View style={styles.user}>
-              <CircleImage style={styles.profileImage} uri={this.props.data.user.photoURL ? this.props.data.user.photoURL : EMPTY_IMG} radius={getDeviceWidth(70)} />
+              <CircleImage style={styles.profileImage} uri={this.props.data.user.photoURL} radius={getDeviceWidth(70)} />
               <View style={styles.userDescription}>
                 <Text numberOfLines={1} style={[styles.name, DFonts.DFontFamily]}>{this.props.data.user.displayName}</Text>
                 <Text style={[styles.update, DFonts.DFontFamily]}>{calculateDuration(this.props.data.user.updated)}</Text>
