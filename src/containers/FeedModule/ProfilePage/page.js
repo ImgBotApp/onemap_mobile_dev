@@ -73,11 +73,13 @@ class ProfilePage extends Component {
       variables: {
         userId: this.state.user.id
       }
-    }).then(({ data }) => {
+    }).then(({ data: { User } }) => {
       let user = this.state.user;
-      user.bio = data.User.bio;
-      user.followers = data.User._followersMeta.count;
-      this.setState({ user, collections: data.User.collections, stories: data.User.stories });
+      user.bio = User.bio;
+      user.followers = User._followersMeta.count;
+      user.checked = User._checkedInMeta.count;
+      user.accountVerification = User.accountVerification;
+      this.setState({ user, collections: User.collections, stories: User.stories });
     }).catch(err => alert(err))
   }
 
@@ -151,7 +153,7 @@ class ProfilePage extends Component {
 
   render() {
     const { user, collections, stories, campaigns } = this.state;
-    const followed = this.props.follows.map(item => item.id).includes(user.id);
+    const followed = this.props.follows.map(item => item.id).includes(user.id); alert(user.accountVerification)
 
     return (
       <ScrollView style={styles.container}>
@@ -160,7 +162,7 @@ class ProfilePage extends Component {
           <View style={styles.userInformation}>
             <View style={{ flexDirection: 'row' }}>
               <CircleImage uri={user.photoURL} style={styles.userImage} radius={getDeviceWidth(177)} />
-              <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage} />
+              {user.accountVerification === 'YES' && <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage} />}
             </View>
             <View style={styles.userInfo}>
               <View>
@@ -185,7 +187,7 @@ class ProfilePage extends Component {
             </View>
             <View style={styles.propertyView}>
               <Text style={styles.pText}>{I18n.t('FEED_FOLLOWER_PROFILE_VISITED')}</Text>
-              <Text style={styles.pText}>{calculateCount(100)}</Text>
+              <Text style={styles.pText}>{calculateCount(user.checked)}</Text>
             </View>
           </View>
         </View>

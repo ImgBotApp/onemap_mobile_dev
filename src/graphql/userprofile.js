@@ -101,6 +101,10 @@ query GetOneMapperProfile($userId: ID!) {
     _followersMeta {
       count
     }
+    _checkedInMeta {
+      count
+    }
+    accountVerification
     collections {
       id
       type
