@@ -146,7 +146,7 @@ class PlaceProfile extends PureComponent {
   }
 
   getPlaceProfile() {
-    let Place = client.query({
+    client.query({
       query: GET_PLACE_PROFILE,
       variables: {
         id: this.state.currentPlaceID
@@ -191,7 +191,7 @@ class PlaceProfile extends PureComponent {
         myStory: myStories.length ? myStories[0] : this.state.myStory,
         storyImages: myStories.length ? [...myStories[0].pictureURL.map(item => ({ uri: item })), ...this.state.storyImages] : this.state.storyImages
       })
-    });
+    }).catch(err => alert(err));
   }
 
   onBookMarker = () => {
