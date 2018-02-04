@@ -7,6 +7,14 @@ import com.reactnativenavigation.controllers.SplashActivity;
 import com.imagepicker.permissions.OnImagePickerPermissionsCallback;
 import com.facebook.react.modules.core.PermissionListener;
 
+import android.widget.LinearLayout;
+import android.graphics.Color;
+import android.widget.TextView;
+import android.widget.ImageView;
+import android.view.Gravity;
+import android.util.TypedValue;
+import android.view.ViewGroup.LayoutParams;
+
 public class MainActivity extends SplashActivity implements OnImagePickerPermissionsCallback{
 
     /**
@@ -41,5 +49,22 @@ public class MainActivity extends SplashActivity implements OnImagePickerPermiss
         listener.onRequestPermissionsResult(requestCode, permissions, grantResults);
       }
       super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+    @Override
+    public LinearLayout createSplashLayout() {
+        LinearLayout view = new LinearLayout(this);
+        TextView textView = new TextView(this);
+
+        view.setBackgroundColor(Color.parseColor("#ffffff"));
+        view.setGravity(Gravity.CENTER);
+        view.setPadding(60,0,60,0);
+
+        ImageView imageView = new ImageView(this);
+        imageView.setImageResource(R.drawable.mark);
+        LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        imageView.setLayoutParams(lp);
+
+        view.addView(imageView);
+        return view;
     }
 }
