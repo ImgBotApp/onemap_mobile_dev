@@ -18,7 +18,10 @@ import LoadingSpinner from '@components/LoadingSpinner'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker, Callout } from 'react-native-maps';
 import Permissions from 'react-native-permissions'
-import Places from 'google-places-web'
+
+//import Places from 'google-places-web'// issue for android
+import { Places } from 'google-places-web'
+
 import { PLACES_APIKEY } from '@global/const';
 import Toast, { DURATION } from 'react-native-easy-toast'
 import axios from 'axios';
@@ -47,7 +50,7 @@ class SearchPage extends Component {
       title: '',
       address: '',
       isSearching: false,
-      isSelected: true,
+      isSelected: false,
       searched: null,
       nearByPlacesPin: [],
       initialPosition: {
@@ -144,67 +147,56 @@ class SearchPage extends Component {
       return;
     this.setState({ isCallingAPI: true });
 
-    if (this.state.myPosition == null) return;
-    const radius = 50000;
-    const placeNearSearchURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + this.state.myPosition.latitude + "," + this.state.myPosition.longitude + "&radius=" + radius + "&key=" + PLACES_APIKEY;
+    RNPlaces.getCurrentPlace()
+      .then((results) => {
+          this.setState({isCallingAPI:false})
+          //this.refs.toast.show('nearby search updated')
 
-    fetch(placeNearSearchURL, {
-      method: 'GET',
-      'Access-Control-Allow-Origin': '*',
-      'Content-Type': 'application/json',
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        //set your data here
-        let results = responseData.results;
-        this.setState({ isCallingAPI: false })
-
-        // this.setPinLocation(results);
-        var maxDiff_lat = 0, maxDiff_lng = 0;
-        var getNearByLocationsPin = [];
-        for (var i = 0; i < results.length; i++) {
-          if (results[0].geometry.location.lat && results[0].geometry.location.lng) {
-            var obj = {
-              coordinates: {
-                latitude: results[i].geometry.location.lat,
-                longitude: results[i].geometry.location.lng,
-              },
-              title: results[i].name,
-              address: results[i].vicinity,
-              placeID: results[i].place_id
+          var maxDiff_lat=0,maxDiff_lng=0;
+          // this.setPinLocation(results);
+          var getNearByLocationsPin = [];
+          for (var i = 0; i < results.length; i++) {
+            if(results[i].latitude && results[i].longitude)
+            {
+              var obj = {
+                  coordinates: {
+                  latitude: results[i].latitude,
+                  longitude: results[i].longitude,
+                  },
+                  title: results[i].name,
+                  address: results[i].address,
+                  placeID: results[i].placeID
+              }
+              getNearByLocationsPin.push(obj);
+              maxDiff_lat = Math.max(maxDiff_lat,Math.abs(this.state.myPosition.latitude-results[i].latitude));
+              maxDiff_lng = Math.max(maxDiff_lng,Math.abs(this.state.myPosition.longitude-results[i].geometry.longitude));
             }
-            getNearByLocationsPin.push(obj);
-
-            maxDiff_lat = Math.max(maxDiff_lat, Math.abs(this.state.myPosition.latitude - results[i].geometry.location.lat));
-            maxDiff_lng = Math.max(maxDiff_lng, Math.abs(this.state.myPosition.longitude - results[i].geometry.location.lng));
           }
-        }
 
-        var getInitialRegion = {
-          latitude: this.state.myPosition ? this.state.myPosition.latitude : results[0].geometry.location.lat,
-          longitude: this.state.myPosition ? this.state.myPosition.longitude : results[0].geometry.location.lng,
-          latitudeDelta: maxDiff_lat <= 0 ? LATTITUDE_DELTA : maxDiff_lat,
-          longitudeDelta: maxDiff_lng <= 0 ? LONGTITUDE_DELTA : maxDiff_lng,
-        }
-        var getInitialRegionMaker = {
-          latitude: results[0].geometry.location.lat,
-          longitude: results[0].geometry.location.lng,
-        }
-        this.setState({
-          initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
-          title: results[0].name, address: results[0].vicinity,
+          var getInitialRegion = {
+            latitude: this.state.myPosition?this.state.myPosition.latitude:results[0].latitude,
+            longitude: this.state.myPosition?this.state.myPosition.longitude:results[0].longitude,
+            latitudeDelta: maxDiff_lat<=0?LATTITUDE_DELTA:maxDiff_lat,
+            longitudeDelta: maxDiff_lng<=0?LONGTITUDE_DELTA:maxDiff_lng,
+          }
+          var getInitialRegionMaker = {
+            latitude: results[0].latitude,
+            longitude: results[0].longitude,
+          }
+          this.setState({
+            initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
+            title: results[0].name, address: results[0].address,
+          })
+          this.setState({
+            nearByPlacesPin: getNearByLocationsPin
+          })
+          results.shift();
+          this.setState({ nearByPlaces: results })
         })
-
-
-        this.setState({
-          nearByPlacesPin: getNearByLocationsPin
-        })
-        results.shift();
-        this.setState({ nearByPlaces: results })
-      })
-      .catch((error) => {
-        this.setState({ isCallingAPI: false })
-      });
+        .catch((error) =>{
+          console.log("error:"+error);
+          this.setState({isCallingAPI:false})}
+        );
   }
   render() {
     if (this.state.isFeaching)
@@ -283,7 +275,7 @@ class SearchPage extends Component {
                           <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
                           <View style={styles.infomation}>
                             <View>
-                              <TouchableOpacity onPress={() => this.onPlaceProfile(item.place_id)}>
+                              <TouchableOpacity onPress={() => this.onPlaceProfile(item.placeID)}>
                                 <Text style={styles.name}>{item.name}</Text>
                                 {this.state.isSelected ?
                                   <Text style={styles.following}>{item.vicinity}</Text>

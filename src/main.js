@@ -6,8 +6,15 @@ import Orientation from 'react-native-orientation'
 import thunk from 'redux-thunk'
 import * as reducers from './reducers'
 import * as appActions from './reducers/app/actions'
+import * as userActions from './reducers/user/actions';
 
 import { registerScreens } from './registerScreens'
+
+import {AsyncStorage} from 'react-native'
+import { GET_PROFILE } from './graphql/userprofile';
+import { APP_USER_KEY } from './global/const'
+
+// import TestSceen from '@containers/Test'
 
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 const reducer = combineReducers(reducers)
@@ -43,13 +50,14 @@ var SearchIcon;
 export default class App {
   constructor() {
     Orientation.lockToPortrait();
-    store.subscribe(this.onStoreUpdate.bind(this));
-    store.dispatch(appActions.appInitialized());
+    this._fbAuth();
   }
-
+  setAppRoot(root){
+    store.subscribe(this.onStoreUpdate.bind(this));
+    store.dispatch(appActions.changeAppRoot(root));
+  }
   onStoreUpdate() {
     const { root } = store.getState().app;
-
     if (this.currentRoot != root) {
       this.currentRoot = root;
       this.startApp(root);
@@ -74,6 +82,64 @@ export default class App {
       }).done();
     });
   }
+  _fbAuth(root) {
+    try {
+     AsyncStorage.getItem(APP_USER_KEY).then((value) => {
+       let val = JSON.parse(value);
+       if (val !== null && val.id !== null) {
+         // We have data!!
+         let UserExist = client.query({
+           query: GET_PROFILE,
+           variables: {
+             userId: val.id
+           }
+         }).then((user) => {
+           var data = user.data.User
+           if (data.username) {
+
+             store.dispatch(
+                userActions.saveUserInfo({
+                  id: data.id,
+                  createdAt: new Date().toLocaleDateString(),
+                  updatedAt: new Date().toLocaleDateString(),
+                  loginMethod: data.loginMethod,
+                  bio: data.bio,
+                  gender: data.gender ? data.gender.toUpperCase() : '',
+                  city: data.city,
+                  country: data.country,
+                  photoURL: data.photoURL,
+                  firstName: data.firstName,
+                  lastName: data.lastName,
+                  displayName: data.displayName,
+                  username: data.username,
+                  checkedIn: data.checkedIn.map(item => item.id),
+                  blockByUsers: data.blockByUsers
+                })
+              );
+              store.dispatch(
+                appActions.saveUserFollows(data.follows)
+              )
+              this.setAppRoot('main');
+           }
+           else {//if can't get user profile
+            this.setAppRoot('login');
+           }
+         }).catch(err => {
+           this.setAppRoot('login')
+         });
+       } else {//if can't get user api key from local storage
+        this.setAppRoot('login');
+       }
+     }).catch(err => {
+       this.setAppRoot('login')
+     });
+
+   } catch (error) {
+     // Error retrieving data
+     this.startApp('login');
+   }
+
+ }
   startApp(root) {
     switch (root) {
       case 'login':
