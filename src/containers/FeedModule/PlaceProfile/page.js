@@ -360,6 +360,7 @@ class PlaceProfile extends PureComponent {
     let placeData = clone(this.state.placeData);
     let checks = placeData.checkedInIds;
     checks.push(this.props.user.id);
+    this.props.saveUserInfo({ ...this.props.user, checkedIn: [...this.props.user.checkedIn, placeData.id] });
 
     this.props.checkInPlace({
       variables: {

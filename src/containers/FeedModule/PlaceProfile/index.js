@@ -3,6 +3,8 @@ import { graphql } from 'react-apollo'
 import { CREATE_KEYWORD, DELETE_KEYWORD } from "@graphql/keywords";
 import { ADD_COLLECTION_TO_PLACE, REMOVE_COLLECTION_FROM_PLACE, LIKE_PLACE, CHECK_IN_PLACE } from "@graphql/places";
 import { CREATE_STORY, UPDATE_STORY } from "@graphql/stories";
+
+import { saveUserInfo } from '@reducers/user/actions'
 import page from './page'
 
 function mapStateToProps(state) {
@@ -14,7 +16,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-
+    saveUserInfo: data => {
+      dispatch(saveUserInfo(data))
+    }
   }
 }
 
