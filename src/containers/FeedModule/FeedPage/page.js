@@ -68,7 +68,7 @@ class FeedPage extends Component {
             id: place.createdBy.id,
             displayName: place.createdBy.displayName,
             username: place.createdBy.username,
-            photoURL: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+            photoURL: place.createdBy.photoURL,
             updated: new Date(place.updatedAt)
           },
           placeName: place.placeName,
@@ -130,7 +130,7 @@ class FeedPage extends Component {
   //         user: {
   //           name: place.createdBy.username,
   //           id: place.createdBy.id,
-  //           uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+  //           uri: place.createdBy.photoURL,
   //           updated: new Date(place.updatedAt)
   //         },
   //         placeName: place.placeName,
@@ -455,7 +455,7 @@ class FeedPage extends Component {
                 <TouchableOpacity key={index} style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>
                   <TitleImage
                     style={styles.collection}
-                    uri={collection.pictureURL ? collection.pictureURL : 'https://placeimg.com/640/480/any'}
+                    uri={collection.pictureURL}
                     title={collection.name}
                     radius={8}
                     vAlign={'center'}

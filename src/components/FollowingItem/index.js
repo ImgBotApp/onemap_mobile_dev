@@ -14,7 +14,7 @@ class FollowingItem extends Component {
       displayName: user.displayName,
       email: user.email,
       bio: user.bio ? user.bio : "",
-      photoURL: user.photoURL ? user.photoURL : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+      photoURL: user.photoURL,
     };
     return (
       <View style={styles.userRow}>

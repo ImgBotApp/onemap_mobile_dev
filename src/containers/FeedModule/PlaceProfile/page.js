@@ -51,12 +51,6 @@ const DESTRUCTIVE_INDEX = 4
 const options = ['Cancel', 'Photo', 'Video']
 const title = 'Select Media Type'
 
-const user = {
-  name: 'Minna Hamilton',
-  photoURL: 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg'
-}
-
-// create a component
 class PlaceProfile extends PureComponent {
   static navigatorButtons = {
     leftButtons: [
@@ -542,7 +536,7 @@ class PlaceProfile extends PureComponent {
               <TouchableOpacity key={index} style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>
                 <TitleImage
                   style={styles.collection}
-                  uri={collection.pictureURL ? collection.pictureURL : 'https://placeimg.com/640/480/any'}
+                  uri={collection.pictureURL}
                   title={collection.name}
                   radius={8}
                   vAlign={'center'}

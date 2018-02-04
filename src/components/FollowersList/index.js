@@ -33,7 +33,7 @@ class FollowerList extends Component {
           email: user.email,
           bio: user.bio ? user.bio : "",
           key: true,//optional
-          photoURL: user.photoURL ? user.photoURL : 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+          photoURL: user.photoURL,
         }
       });
     }
