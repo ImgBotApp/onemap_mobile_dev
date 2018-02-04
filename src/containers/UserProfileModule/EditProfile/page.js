@@ -108,8 +108,8 @@ class EditProfile extends Component {
         this.props.updateUser({
           variables: {
             id: this.state.id,
-            first_name: this.state.firstName,
-            last_name: this.state.lastName,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
             gender: this.state.gender.toUpperCase(),
             photoURL: this.state.photoURL,
             displayName: this.state.displayName,
@@ -117,7 +117,8 @@ class EditProfile extends Component {
             city: this.state.city,
             country: this.state.country,
             bio: this.state.bio,
-            username: this.state.username
+            username: this.state.username,
+            group:'USER'
           }
         });
         this.props.navigator.pop({})

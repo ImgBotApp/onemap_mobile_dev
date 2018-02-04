@@ -141,8 +141,8 @@ class ProfileCreatePage extends Component {
           this.props.updateUser({
             variables: {
               id: this.state.userId,
-              first_name: this.props.info.first_name,
-              last_name: this.props.info.last_name,
+              firstName: this.props.info.first_name,
+              lastName: this.props.info.last_name,
               gender: this.state.gender.toUpperCase(),
               photoURL: this.state.photoURL,
               displayName: this.state.displayName,
@@ -150,7 +150,8 @@ class ProfileCreatePage extends Component {
               city: this.state.city,
               country: this.state.country,
               bio: this.state.bio,
-              username: this.state.username
+              username: this.state.username,
+              group: 'USER'
             }
           }).then(result => {
             if (result)
