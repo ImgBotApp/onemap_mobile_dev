@@ -432,6 +432,7 @@ class PlaceProfile extends PureComponent {
             style={styles.map}
             initialRegion={this.state.placeData.map}
             region={this.state.placeData.map}
+            scrollEnabled={false}
           >
             {
               this.state.placeData.map ? (
