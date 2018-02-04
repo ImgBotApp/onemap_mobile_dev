@@ -96,7 +96,7 @@ class PlaceProfile extends PureComponent {
         }]
       })
     })
-    if (props.place){
+    if (props.place) {
       this.props.navigator.setTitle({ title: props.place.placeName });
     }
     this.state = {
@@ -468,14 +468,18 @@ class PlaceProfile extends PureComponent {
     return (
       <View style={styles.interestContainer}>
         <View style={styles.interestInformation}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={styles.interestItem}>
             <Foundation name="heart" size={12} color={RED_COLOR} />
-            <Foundation name="marker" size={12} color={BLUE_COLOR} />
-            <Foundation name="bookmark" size={12} color={RED_COLOR} />
+            <Text style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
           </View>
-          <Text style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
-          <Text style={styles.interestText}>{calculateCount(this.state.placeData.checkedInIds.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
-          <Text style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
+          <View style={styles.interestItem}>
+            <Foundation name="marker" size={12} color={BLUE_COLOR} />
+            <Text style={styles.interestText}>{calculateCount(this.state.placeData.checkedInIds.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
+          </View>
+          <View style={styles.interestItem}>
+            <Foundation name="bookmark" size={12} color={RED_COLOR} />
+            <Text style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
+          </View>
         </View>
         <View style={styles.serparate}></View>
         <View style={styles.buttonInterest}>
@@ -489,7 +493,7 @@ class PlaceProfile extends PureComponent {
             <Foundation name="share" size={35} color={GREEN_COLOR} />
           </TouchableOpacity>
         </View>
-      </View>
+      </View >
     )
   }
 
