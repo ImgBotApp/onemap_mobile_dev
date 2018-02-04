@@ -72,6 +72,8 @@ class Collections extends Component {
       } else if (this.props.type === 'bookmark') {
         this.props.navigator.setTitle({ title: 'All' });
         this.getBookmarkedPlaces();
+      } else {
+        this.props.navigator.setTitle({ title: I18n.t('DRAWER_STORIES') });
       }
     } else {
       this.props.navigator.setTitle({ title: I18n.t('DRAWER_STORIES') });

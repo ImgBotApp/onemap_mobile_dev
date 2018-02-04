@@ -34,7 +34,7 @@ export default {
   DRAWER_COLLECTION_TITLE: "Collections",
   DRAWER_FOLLOW_PEOPLE: "Follow People",
   DRAWER_NEW_PLACE: "New Place",
-  DRAWER_STORIES: "Stories",
+  DRAWER_STORIES: "All Stories",
   DRAWER_Tag: "Tag",
   Drawer_Notifications: "Notifications",
 
