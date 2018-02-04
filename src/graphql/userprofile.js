@@ -29,6 +29,9 @@ export const GET_PROFILE = gql`
       follows {
         id
       }
+      blockByUsers {
+        id
+      }
     }
   }
 `
@@ -231,27 +234,11 @@ export const GET_FOLLOWS = gql`
 `
 
 /**
- * List follows and blocked Ids, before ListSuggestUser
- */
-export const GET_FOLLOWS_AND_BLOCKED_IDS = gql`#unused
-  query GetFollowersAndBlockedIds ($currentUserId: ID!) {
-    User(id: $currentUserId) {
-        follows {
-          id
-        }
-        blockByUsers {
-          id
-        }
-      }
-  }
-`
-
-/**
  * List Users, skip self and current follows users
  * exmaple params: {"currentUserId": "cjc0e32mvo10a0113jdx7g0qo", "currentUserFollowsIds": ["cjc02c13zmbig01130q1tj6dt", "cjc04z5q3mo610113h7hmofgn"], "currentUserBlockByUsersIds": []}
  * @return [User] 
  */
-export const GET_SUGGEST_USERS = gql`#unused
+export const GET_SUGGEST_USERS = gql`
   query ListSuggestUser(
     $first: Int, 
     $skip: Int, 
@@ -269,24 +256,11 @@ export const GET_SUGGEST_USERS = gql`#unused
       ]
     }) {
       id
-      email
       username
       firstName
       lastName
       displayName
-      bio
-      gender
-      birthdate
-      mobile
-      mobileVerification
-      city
-      country
       photoURL
-      loginMethod
-      registrationDate
-      group
-      accountStatus
-			isSuggest
     }
   }
 `

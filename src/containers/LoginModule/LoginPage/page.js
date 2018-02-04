@@ -91,7 +91,8 @@ class LoginPage extends Component {
             firstName: data.firstName,
             lastName: data.lastName,
             displayName: data.displayName,
-            username: data.username
+            username: data.username,
+            blockByUsers: data.blockByUsers
           });
           this.props.saveUserFollows(data.follows);
           AsyncStorage.setItem(APP_USER_KEY, JSON.stringify({
@@ -149,7 +150,8 @@ class LoginPage extends Component {
               firstName: data.firstName,
               lastName: data.lastName,
               displayName: data.displayName,
-              username: data.username
+              username: data.username,
+              blockByUsers: data.blockByUsers
             });
             this.props.saveUserFollows(data.follows);
             this.props.login();

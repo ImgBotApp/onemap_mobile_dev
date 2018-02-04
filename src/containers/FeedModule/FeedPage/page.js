@@ -25,7 +25,7 @@ import { client } from '@root/main'
 import { graphql } from "react-apollo";
 
 import { PLACES_PAGINATED } from "@graphql/places";
-import { SUGGEST_USERS } from '@graphql/users'
+import { GET_SUGGEST_USERS } from '@graphql/userprofile'
 import { GET_MY_COLLECTIONS } from '@graphql/collections'
 
 // create a component
@@ -82,8 +82,14 @@ class FeedPage extends Component {
     }
   }
   getSuggestUsers() {
+    const { user: { id, blockByUsers }, follows } = this.props;
     client.query({
-      query: SUGGEST_USERS
+      query: GET_SUGGEST_USERS,
+      variables: {
+        currentUserId: id,
+        currentUserFollowsIds: follows.map(item => item.id),
+        currentUserBlockByUsersIds: blockByUsers ? blockByUsers.map(item => item.id) : []
+      }
     }).then((users) => {
       this.suggestUsers = {
         id: 'a1',
