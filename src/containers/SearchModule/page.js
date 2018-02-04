@@ -173,7 +173,7 @@ class SearchPage extends Component {
           }
           getNearByLocationsPin.push(obj);
           maxDiff_lat = Math.max(maxDiff_lat, Math.abs(this.state.myPosition.latitude - results[i].latitude));
-          maxDiff_lng = Math.max(maxDiff_lng, Math.abs(this.state.myPosition.longitude - results[i].geometry.longitude));
+          maxDiff_lng = Math.max(maxDiff_lng, Math.abs(this.state.myPosition.longitude - results[i].longitude));
         }
 
         var getInitialRegion = {
