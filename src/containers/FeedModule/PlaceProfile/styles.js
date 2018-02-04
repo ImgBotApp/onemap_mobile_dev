@@ -1,4 +1,4 @@
-import { StyleSheet,Platform } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR } from '../../../theme/colors';
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
@@ -109,14 +109,19 @@ const styles = StyleSheet.create({
     marginTop: getDeviceHeight(89),
     alignItems: 'center'
   },
+  interestItem: {
+    flexDirection: 'row',
+    marginLeft: getDeviceWidth(60)
+  },
   interestInformation: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     width: '100%'
   },
   interestText: {
     color: LIGHT_GRAY_COLOR,
-    fontSize: SMALL_FONT_SIZE
+    fontSize: SMALL_FONT_SIZE,
+    marginLeft: getDeviceWidth(20)
   },
   serparate: {
     width: '100%',
@@ -171,7 +176,7 @@ const styles = StyleSheet.create({
   },
   writeStoryMain: {
     width: getDeviceWidth(1178),
-    padding: Platform.OS=='android'?getDeviceWidth(60):getDeviceWidth(30),
+    padding: Platform.OS == 'android' ? getDeviceWidth(60) : getDeviceWidth(30),
     marginTop: getDeviceHeight(89),
   },
   storyWriterImage: {
@@ -239,19 +244,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     backgroundColor: 'rgba(153,153,153,0)',
-    padding:0,
+    padding: 0,
   },
-  overlayWrapper:{
+  overlayWrapper: {
 
   },
-  playButton:{
-    position:"absolute",
-    backgroundColor:"transparent",
-    color:"white",
-    fontSize:20,
-    right: Platform.OS=='android'? 15:5,
-    bottom: Platform.OS=='android'? 18:5,
-    fontWeight:"100"
+  playButton: {
+    position: "absolute",
+    backgroundColor: "transparent",
+    color: "white",
+    fontSize: 20,
+    right: Platform.OS == 'android' ? 15 : 5,
+    bottom: Platform.OS == 'android' ? 18 : 5,
+    fontWeight: "100"
   }
 });
 

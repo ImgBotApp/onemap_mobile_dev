@@ -20,8 +20,6 @@ const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 const reducer = combineReducers(reducers)
 const store = createStoreWithMiddleware(reducer)
 
-
-
 import { ApolloProvider } from 'react-apollo'
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-client-preset'
 
@@ -114,30 +112,30 @@ export default class App {
                   lastName: data.lastName,
                   displayName: data.displayName,
                   username: data.username,
+                  checkedIn: data.checkedIn.map(item => item.id),
+                  blockByUsers: data.blockByUsers
                 })
               );
+              store.dispatch(
+                appActions.saveUserFollows(data.follows)
+              )
               this.setAppRoot('main');
            }
            else {//if can't get user profile
-            console.log("profile error");
-             this.setAppRoot('login');
+            this.setAppRoot('login');
            }
          }).catch(err => {
-           console.log("1:"+err);
            this.setAppRoot('login')
          });
        } else {//if can't get user api key from local storage
-        console.log("2:");
-         this.setAppRoot('login');
+        this.setAppRoot('login');
        }
      }).catch(err => {
-       console.log("3:"+err);
        this.setAppRoot('login')
      });
 
    } catch (error) {
      // Error retrieving data
-     console.log("4:"+err);
      this.startApp('login');
    }
 

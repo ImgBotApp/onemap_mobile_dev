@@ -28,19 +28,6 @@ export const EXIST_FACEBOOK_USER = gql`
   }
 `
 
-export const SUGGEST_USERS = gql`
-  query SuggestUsers {
-    allUsers(filter: {
-      isSuggest: true
-    }) {
-      id
-      username
-      displayName
-      photoURL
-    }
-  }
-`
-
 export const FILER_USERS = gql`
   query FilterUsers($keyword: String) {
     allUsers(filter: {

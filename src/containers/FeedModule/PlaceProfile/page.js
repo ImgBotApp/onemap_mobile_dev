@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component, PureComponent } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, Platform, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView, Platform, TextInput, Alert, Keyboard } from 'react-native';
 
 import CardView from 'react-native-cardview';
 import ImagePicker from 'react-native-image-picker';
@@ -38,8 +38,8 @@ import styles from './styles'
 
 const ImagePickerOption = {
   title: 'Take Media',
-  takePhotoButtonTitle:'Take Camera...',
-  chooseFromLibraryButtonTitle:'Choose from Library...',
+  takePhotoButtonTitle: 'Take Camera...',
+  chooseFromLibraryButtonTitle: 'Choose from Library...',
   storageOptions: {
     skipBackup: true,
     path: 'images'
@@ -96,6 +96,9 @@ class PlaceProfile extends PureComponent {
         }]
       })
     })
+    if (props.place) {
+      this.props.navigator.setTitle({ title: props.place.placeName });
+    }
     this.state = {
       currentPlaceID: props.placeID ? props.placeID : props.place.id,
       placeData: {
@@ -109,9 +112,7 @@ class PlaceProfile extends PureComponent {
         keywords: [],
         comments: [],
       },
-      keywordEditable: false,
       keywordText: '',
-      storyEditable: false,
       myStory: {
         story: '',
         title: ''
@@ -127,6 +128,7 @@ class PlaceProfile extends PureComponent {
       selectedMediaData: [],
       selectedCard: 0,
       imageUploading: false,
+      storyUpdated: false
     }
     console.log(this.props.user)
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
@@ -135,6 +137,21 @@ class PlaceProfile extends PureComponent {
   }
 
   componentWillMount() {
+    this.getPlaceProfile();
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidHideListener.remove();
+  }
+
+  _keyboardDidHide = () => {
+    if (this.state.storyUpdated) {
+      this.saveStory();
+    }
+  }
+
+  getPlaceProfile() {
     let Place = client.query({
       query: GET_PLACE_PROFILE,
       variables: {
@@ -142,6 +159,8 @@ class PlaceProfile extends PureComponent {
       }
     }).then((place) => {
       let data = place.data.Place;
+
+      this.props.navigator.setTitle({ title: data.placeName });
 
       const myStories = data.stories.filter(item => item.createdBy.id === this.props.user.id);
       const ownerStories = data.stories.filter(item => item.createdBy.id === data.createdBy.id);
@@ -257,6 +276,9 @@ class PlaceProfile extends PureComponent {
   onNaviagtorEvent(event) {
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'backButton') {
+        if (this.state.storyUpdated) {
+          this.saveStory();
+        }
         this.props.navigator.pop()
       }
     }
@@ -446,14 +468,18 @@ class PlaceProfile extends PureComponent {
     return (
       <View style={styles.interestContainer}>
         <View style={styles.interestInformation}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={styles.interestItem}>
             <Foundation name="heart" size={12} color={RED_COLOR} />
-            <Foundation name="marker" size={12} color={BLUE_COLOR} />
-            <Foundation name="bookmark" size={12} color={RED_COLOR} />
+            <Text style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
           </View>
-          <Text style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
-          <Text style={styles.interestText}>{calculateCount(this.state.placeData.checkedInIds.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
-          <Text style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
+          <View style={styles.interestItem}>
+            <Foundation name="marker" size={12} color={BLUE_COLOR} />
+            <Text style={styles.interestText}>{calculateCount(this.state.placeData.checkedInIds.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
+          </View>
+          <View style={styles.interestItem}>
+            <Foundation name="bookmark" size={12} color={RED_COLOR} />
+            <Text style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
+          </View>
         </View>
         <View style={styles.serparate}></View>
         <View style={styles.buttonInterest}>
@@ -467,7 +493,7 @@ class PlaceProfile extends PureComponent {
             <Foundation name="share" size={35} color={GREEN_COLOR} />
           </TouchableOpacity>
         </View>
-      </View>
+      </View >
     )
   }
 
@@ -538,7 +564,6 @@ class PlaceProfile extends PureComponent {
   }
 
   renderKeywords() {
-    const { keywordEditable } = this.state;
     const inputProps = {
       keyboardType: 'default',
       placeholder: 'Keyword',
@@ -547,38 +572,12 @@ class PlaceProfile extends PureComponent {
         fontSize: 14,
         marginVertical: Platform.OS == 'ios' ? 10 : -2,
       },
-      editable: keywordEditable,
       onSubmitEditing: this.onSubmitEditing
     };
     return (
       <View style={styles.keyWords}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text style={styles.keywordTitle}>{I18n.t('PLACE_KEYWORDS')}</Text>
-          <TouchableOpacity onPress={() => {
-            if (!keywordEditable) {
-              setTimeout(() => {
-                this.refs.inputKeyword.focus();
-              });
-            } else {
-              this.state.keywordText = '';
-            }
-            this.setState({ keywordEditable: !keywordEditable });
-          }}>
-            {!keywordEditable ?
-              <MaterialCommunityIcons
-                name='pencil'
-                color={DARK_GRAY_COLOR}
-                size={25}
-              />
-              :
-              <MaterialIcons
-                name='save'
-                color={DARK_GRAY_COLOR}
-                size={25}
-              />
-            }
-            {/* <Text style={styles.keywordDone}>{I18n.t('PLACE_KEYWORD_DONE')}</Text> */}
-          </TouchableOpacity>
         </View>
         <View style={styles.keywordContainer}>
           <TagInput
@@ -608,7 +607,7 @@ class PlaceProfile extends PureComponent {
         this.saveKeyword(this.state.keywordText);
       }
     } else {
-      this.setState({ keywordText: this.state.keywordEditable ? text : '' });
+      this.setState({ keywordText: text });
     }
   }
   onSubmitEditing = () => {
@@ -655,42 +654,18 @@ class PlaceProfile extends PureComponent {
   }
 
   _renderWriteStory() {
-    const { imageUploading, storyEditable } = this.state;
+    const { imageUploading } = this.state;
     return (
       <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <CircleImage style={styles.storyWriterImage} uri={this.props.user.photoURL} radius={getDeviceWidth(67)} />
           <Text style={styles.storyWriterName}>{this.props.user.displayName}</Text>
-          <TouchableOpacity disabled={imageUploading} onPress={() => {
-            if (storyEditable) {
-              this.saveStory();
-            } else {
-              setTimeout(() => {
-                this.refs.inputStoryTitle.focus();
-              });
-            }
-            this.setState({ storyEditable: !storyEditable });
-          }}>
-            {!storyEditable ?
-              <MaterialCommunityIcons
-                name='pencil'
-                color={DARK_GRAY_COLOR}
-                size={25}
-              />
-              :
-              <MaterialIcons
-                name='save'
-                color={DARK_GRAY_COLOR}
-                size={25}
-              />
-            }
-          </TouchableOpacity>
         </View>
         <View style={styles.myImagesContainer}>
           {
             this.state.storyImages.length && this.state.storyImages[0].type === 'add' ?
               (
-                <TouchableOpacity disabled={!storyEditable} onPress={this.showActionSheet.bind(this)}>
+                <TouchableOpacity onPress={this.showActionSheet.bind(this)}>
                   <Image style={styles.myImages} source={require('@assets/images/blankImage.png')} />
                   {/* {this.state.imageUploading && <LoadingSpinner />} */}
                 </TouchableOpacity>
@@ -708,25 +683,22 @@ class PlaceProfile extends PureComponent {
         <TextInput
           ref={'inputStoryTitle'}
           style={[styles.commentTitle, { width: '100%', marginTop: 10 }]}
-          editable={storyEditable}
           returnKeyType={'done'}
           placeholder={I18n.t('PLACE_TITLE_BOLD')}
           value={this.state.myStory.title}
-          onChangeText={text => this.setState({ myStory: { ...this.state.myStory, title: text } })}
+          onChangeText={text => this.setState({ myStory: { ...this.state.myStory, title: text }, storyUpdated: true })}
         />
         <TextInput
           style={[styles.commentDescription, { width: '100%' }]}
-          editable={storyEditable}
           multiline={true}
           placeholder={'What is this story about'}
           value={this.state.myStory.story}
-          onChangeText={text => this.setState({ myStory: { ...this.state.myStory, story: text } })}
+          onChangeText={text => this.setState({ myStory: { ...this.state.myStory, story: text }, storyUpdated: true })}
         />
       </CardView>
     )
   }
   showActionSheet() {
-    if (!this.state.storyEditable) return;
     this.ActionSheet.show()
   }
 
@@ -756,8 +728,7 @@ class PlaceProfile extends PureComponent {
           alert(response.error)
           console.log('ImagePicker Error: ', response.error);
         } else {
-          if(type == 'photo')
-          {
+          if (type == 'photo') {
             let source = { uri: response.uri };
             var storyImages = clone(this.state.storyImages);
             storyImages.pop();
@@ -767,21 +738,22 @@ class PlaceProfile extends PureComponent {
             uploadImage(response.data, '#story').then(url => {
               if (url) {
                 this.state.storyImages[this.state.storyImages.length - 2].uri = url;
+                this.saveStory();
               }
               this.setState({ imageUploading: false });
             });
-          }else{
+          } else {
             this.setState({ imageUploading: true });
-            uploadMedia(response,'#storyVideo').then(
-              url=>{
-                if(url){
+            uploadMedia(response, '#storyVideo').then(
+              url => {
+                if (url) {
                   console.log("uploading video success!");
-                  var storyImages = clone(this.state.storyImages);
+                  let storyImages = clone(this.state.storyImages);
                   storyImages.pop();
-                  storyImages.push({'uri':url});
+                  storyImages.push({ 'uri': url });
                   storyImages.push({ type: 'add' });
-                  this.setState({ storyImages });
-                  //this.state.storyImages[this.state.storyImages.length - 2].uri = url;
+                  this.state.storyImages = storyImages;
+                  this.saveStory();
                 }
                 this.setState({ imageUploading: false });
               }
@@ -814,46 +786,37 @@ class PlaceProfile extends PureComponent {
     }
   }
   deleteImageFromStory(index) {
-    if (this.state.storyEditable) {
-      Alert.alert(
-        I18n.t('PLACE_WRITE_STORY'),
-        'Do you want to remove this image?',
-        [
-          {
-            text: 'OK', onPress: () => {
-              let storyImages = clone(this.state.storyImages);
-              storyImages.splice(index, 1);
-              this.setState({ storyImages });
-            }
-          },
-          { text: 'Cancel', style: 'cancel' }
-        ]
-      )
-    }
+    Alert.alert(
+      I18n.t('PLACE_WRITE_STORY'),
+      'Do you want to remove this image?',
+      [
+        {
+          text: 'OK', onPress: () => {
+            let storyImages = clone(this.state.storyImages);
+            storyImages.splice(index, 1);
+            this.state.storyImages = storyImages;
+            this.saveStory();
+          }
+        },
+        { text: 'Cancel', style: 'cancel' }
+      ]
+    )
   }
   saveStory() {
-    const { myStory, imageUploading } = this.state;
-    if (imageUploading) return;
+    const { myStory } = this.state;
     if (myStory.id) {
-      this.setState({ imageUploading: true });
       this.props.updateStory({
         variables: {
           id: myStory.id,
           title: myStory.title,
           story: myStory.story,
-          hashtag: [],//TODO
-          placeId: this.state.placeData.id,
-          createdById: this.props.user.id,
           pictureURL: this.state.storyImages.map(item => item.uri).filter(item => !!item),
-          status: 'PUBLISHED',
         }
       }).then(res => {
-        this.setState({ myStory: res.data.updateStory });
+        this.setState({ myStory: res.data.updateStory, storyUpdated: false });
         client.resetStore();
-        this.setState({ imageUploading: false });
-      }).catch(err => this.setState({ imageUploading: false }))
+      }).catch(err => this.setState({ storyUpdated: false }))
     } else {
-      this.setState({ imageUploading: true });
       this.props.createStory({
         variables: {
           title: myStory.title,
@@ -865,10 +828,9 @@ class PlaceProfile extends PureComponent {
           status: 'PUBLISHED',
         }
       }).then(res => {
-        this.setState({ myStory: res.data.createStory });
+        this.setState({ myStory: res.data.createStory, storyUpdated: false });
         client.resetStore();
-        this.setState({ imageUploading: false });
-      }).catch(err => this.setState({ imageUploading: false }))
+      }).catch(err => this.setState({ storyUpdated: false }))
     }
   }
 
@@ -926,13 +888,13 @@ class PlaceProfile extends PureComponent {
         {this.renderSliderShow()}
         {this.renderCollectionModal()}
         <ActionSheet
-            ref={o => this.ActionSheet = o}
-            title={title}
-            options={options}
-            cancelButtonIndex={CANCEL_INDEX}
-            destructiveButtonIndex={DESTRUCTIVE_INDEX}
-            onPress={this.handlePress}
-          />
+          ref={o => this.ActionSheet = o}
+          title={title}
+          options={options}
+          cancelButtonIndex={CANCEL_INDEX}
+          destructiveButtonIndex={DESTRUCTIVE_INDEX}
+          onPress={this.handlePress}
+        />
         {this.state.imageUploading && <LoadingSpinner />}
       </View>
     );

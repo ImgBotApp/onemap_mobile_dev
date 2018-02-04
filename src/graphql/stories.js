@@ -99,20 +99,12 @@ export const UPDATE_STORY = gql`
     $id: ID! # story id
     $title: String!
     $story: String!
-    $hashtag: [String!] # array of String hashtag, [] if no hastag
-    $placeId: ID! # related place id
-    $createdById: ID! # user id
-    $status: StoryStatus! # DRAFT or PUBLISHED
     $pictureURL: [String!] # array of String url, [] if no picture url
   ) {
     updateStory(
       id: $id
-      createdById: $createdById
       title: $title
       story: $story
-      hashtag: $hashtag
-      placeId: $placeId
-      status: $status
       pictureURL: $pictureURL
     ) {
       id

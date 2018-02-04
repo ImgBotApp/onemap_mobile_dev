@@ -13,18 +13,6 @@ export function changeAppRoot(root) {
   }
 }
 
-export function login() {
-  return async function(dispatch, getState) {
-    dispatch(changeAppRoot('main'));
-  }
-}
-
-export function logout() {
-  return async function(dispatch, getState) {
-    dispatch(changeAppRoot('login'))
-  }
-}
-
 export function saveCollections(collections) {
   return {
     type: types.STORE_COLLECTIONS,

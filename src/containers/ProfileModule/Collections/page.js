@@ -56,22 +56,25 @@ class Collections extends Component {
       places: props.places ? props.places : [],
       loading: false
     }
-    if (props.collection) {
-      this.props.navigator.setTitle({ title: props.collection.name });
-    }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
   componentWillMount() {
     if (!this.state.places.length) {
       if (this.props.type === 'check') {
+        this.props.navigator.setTitle({ title: 'Check-Ins' });
         this.getCheckedPlaces();
       } else if (this.props.type === 'like') {
+        this.props.navigator.setTitle({ title: 'Hearted' });
         this.getLikedPlaces();
       } else if (this.props.collection) {
+        this.props.navigator.setTitle({ title: this.props.collection.name });
         this.getCollectionPlaces();
       } else if (this.props.type === 'bookmark') {
+        this.props.navigator.setTitle({ title: 'All' });
         this.getBookmarkedPlaces();
       }
+    } else {
+      this.props.navigator.setTitle({ title: I18n.t('DRAWER_STORIES') });
     }
   }
   onNavigatorEvent(event) {
@@ -143,11 +146,9 @@ class Collections extends Component {
   onCollectionItem(data) {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
-      title: I18n.t('PLACE_TITLE'),
       animated: true,
       passProps: {
-        place: data,
-        // onPlaceUpdate: place => this.onPlaceUpdate(place, index),
+        place: data
       }
     })
   }
@@ -264,7 +265,6 @@ class Collections extends Component {
   openPlaceProfile(id) {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
-      title: I18n.t('PLACE_TITLE'),
       animated: true,
       passProps: {
         placeID: id

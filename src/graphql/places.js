@@ -17,8 +17,59 @@ export const GET_ALL_PLACES = gql`
   }
 `
 export const PLACES_PAGINATED = gql`
-  query Places($first: Int!, $skip: Int!) {
-    allPlaces(first: $first, skip: $skip) {
+  query Places($first: Int!, $skip: Int!, $userId: ID!, $followsIds: [ID!]) {
+    allPlaces(first: $first, skip: $skip, orderBy: updatedAt_DESC, filter: {
+      OR: [
+        {
+          userCheckedIn_some: {
+            id: $userId
+          }
+        },
+        {
+          usersLike_some: {
+            id: $userId
+          }
+        },
+        {
+          collections_some: {
+            user: {
+              id: $userId
+            }
+          }
+        },
+        {
+          stories_some: {
+            createdBy: {
+              id: $userId
+            }
+          }
+        },
+        {
+          userCheckedIn_some: {
+            id_in: $followsIds
+          }
+        },
+        {
+          usersLike_some: {
+            id_in: $followsIds
+          }
+        },
+        {
+          collections_some: {
+            user: {
+              id_in: $followsIds
+            }
+          }
+        },
+        {
+          stories_some: {
+            createdBy: {
+              id_in: $followsIds
+            }
+          }
+        }
+      ]
+    }) {
       id
       createdAt
       updatedAt
@@ -190,7 +241,7 @@ export const GET_PLACES_FROM_GOOGLEId = gql`
  }
  `
 
- export const ADD_COLLECTION_TO_PLACE = gql`
+export const ADD_COLLECTION_TO_PLACE = gql`
   mutation ($id: ID!,
     $collectionIds: [ID!]
   ) {
