@@ -99,7 +99,7 @@ class ProfileComponent extends Component {
     })
   }
   render() {
-    const { data: { loading, error, allStories }, GetFollowersList, follows } = this.props;
+    const { data: { loading, error, allStories }, GetFollowersList, follows, user } = this.props;
     if (loading) {
       return (
         <ActivityIndicator />
@@ -109,11 +109,13 @@ class ProfileComponent extends Component {
       return <Text>{error}</Text>
     }
 
-    let follow_cnt = follows ? follows.length : 0;
+    const follow_cnt = follows ? follows.length : 0;
 
     let follower_cnt = 0;
     if (!GetFollowersList.loading && GetFollowersList.User.followers)
       follower_cnt = GetFollowersList.User.followers ? GetFollowersList.User.followers.length : 0;
+
+    const checked_cnt = user.checkedIn.length;
 
     return (
       <ScrollView style={styles.container}>
@@ -142,7 +144,7 @@ class ProfileComponent extends Component {
               <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWER')}</Text>
               <Text style={styles.specFont}>{follower_cnt}</Text>
               <Text style={styles.specFont}>{I18n.t('PROFILE_VISITED')}</Text>
-              <Text style={styles.specFont}>636</Text>
+              <Text style={styles.specFont}>{checked_cnt}</Text>
             </View>
           </View>
         </View>

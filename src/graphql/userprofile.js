@@ -29,6 +29,9 @@ export const GET_PROFILE = gql`
       follows {
         id
       }
+      checkedIn {
+        id
+      }
       blockByUsers {
         id
       }
