@@ -9,13 +9,9 @@ import * as appActions from './reducers/app/actions'
 
 import { registerScreens } from './registerScreens'
 
-// import TestSceen from '@containers/Test'
-
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 const reducer = combineReducers(reducers)
 const store = createStoreWithMiddleware(reducer)
-
-
 
 import { ApolloProvider } from 'react-apollo'
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-client-preset'

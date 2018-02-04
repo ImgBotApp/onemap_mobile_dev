@@ -45,14 +45,14 @@ class FeedItem extends Component {
               </View>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.onBookMarker.bind(this)}>
+          {/* <TouchableOpacity onPress={this.onBookMarker.bind(this)}>
             <MaterialCommunityIcons name={this.props.data.bookmark ? "bookmark" : "bookmark-outline"} size={30}
               color={this.props.data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         {/* Feed Title */}
         <View>
-          <Text style={styles.feedTitle}>{this.props.data.feedTitle}</Text>
+          <Text style={styles.feedTitle}>{this.props.data.placeName}</Text>
         </View>
         {/* Place Image */}
         <View style={styles.feedImages}>

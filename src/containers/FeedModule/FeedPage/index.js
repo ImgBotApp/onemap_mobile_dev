@@ -8,7 +8,8 @@ function mapStateToProps(state) {
   return {
     user: state.User,
     collections: state.app.collections,
-    placeUpdated: state.app.placeUpdated
+    placeUpdated: state.app.placeUpdated,
+    follows: state.app.follows,
   }
 }
 

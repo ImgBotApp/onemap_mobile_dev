@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, Button,Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, Button, Platform } from 'react-native';
 import ImageSliderView from 'react-native-image-slider';
 import PropTypes from 'prop-types';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -49,12 +49,14 @@ class ImageSlider extends Component {
     });
     // Remember to remove listener
     Orientation.removeOrientationListener(this._orientationDidChange);
-    Orientation.lockToPortrait();
+    setTimeout(() => {
+      Orientation.lockToPortrait();
+    });
   }
 
-  _onLayout(){
+  _onLayout() {
     Orientation.getOrientation((err, orientation) => {
-      console.log("did change layout orientaion:"+orientation);
+      console.log("did change layout orientaion:" + orientation);
       this.onlayoutOrientation(orientation);
     });
   }
