@@ -329,7 +329,6 @@ class SearchPage extends Component {
     if (!id) return;
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
-      title: I18n.t('PLACE_TITLE'),
       animated: true,
       passProps: {
         placeID: id
@@ -362,7 +361,6 @@ class SearchPage extends Component {
           this.setState({ loading: false });
           this.props.navigator.push({
             screen: SCREEN.PLACE_PROFILE_PAGE,
-            title: I18n.t('PLACE_TITLE'),
             animated: true,
             passProps: {
               placeID: place.data.allPlaces[0].id

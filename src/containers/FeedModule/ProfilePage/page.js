@@ -153,7 +153,7 @@ class ProfilePage extends Component {
 
   render() {
     const { user, collections, stories, campaigns } = this.state;
-    const followed = this.props.follows.map(item => item.id).includes(user.id); alert(user.accountVerification)
+    const followed = this.props.follows.map(item => item.id).includes(user.id);
 
     return (
       <ScrollView style={styles.container}>

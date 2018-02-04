@@ -96,6 +96,9 @@ class PlaceProfile extends PureComponent {
         }]
       })
     })
+    if (props.place){
+      this.props.navigator.setTitle({ title: props.place.placeName });
+    }
     this.state = {
       currentPlaceID: props.placeID ? props.placeID : props.place.id,
       placeData: {
@@ -156,6 +159,8 @@ class PlaceProfile extends PureComponent {
       }
     }).then((place) => {
       let data = place.data.Place;
+
+      this.props.navigator.setTitle({ title: data.placeName });
 
       const myStories = data.stories.filter(item => item.createdBy.id === this.props.user.id);
       const ownerStories = data.stories.filter(item => item.createdBy.id === data.createdBy.id);

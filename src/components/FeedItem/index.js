@@ -52,7 +52,7 @@ class FeedItem extends Component {
         </View>
         {/* Feed Title */}
         <View>
-          <Text style={styles.feedTitle}>{this.props.data.feedTitle}</Text>
+          <Text style={styles.feedTitle}>{this.props.data.placeName}</Text>
         </View>
         {/* Place Image */}
         <View style={styles.feedImages}>

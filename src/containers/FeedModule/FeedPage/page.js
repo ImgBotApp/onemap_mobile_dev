@@ -71,7 +71,7 @@ class FeedPage extends Component {
             photoURL: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
             updated: new Date(place.updatedAt)
           },
-          feedTitle: place.placeName,
+          placeName: place.placeName,
           images: place.pictureURL ? place.pictureURL.map(uri => { return { uri } }) : [],
           description: place.description || '',
           bookmark: this.isBookmarked(place),
@@ -133,7 +133,7 @@ class FeedPage extends Component {
   //           uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
   //           updated: new Date(place.updatedAt)
   //         },
-  //         feedTitle: place.placeName,
+  //         placeName: place.placeName,
   //         images: place.pictureURL.map(item => { return { uri: item } }),
   //         place: '',
   //         description: place.description || '',
@@ -338,7 +338,6 @@ class FeedPage extends Component {
   onPlace(data, index) {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
-      title: I18n.t('PLACE_TITLE'),
       animated: true,
       passProps: {
         place: data,
