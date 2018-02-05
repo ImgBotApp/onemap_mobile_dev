@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: 'white',
     fontSize: SMALL_FONT_SIZE,
-    fontFamily: 'Comfortaa-Regular'
   },
 });
 

@@ -112,7 +112,7 @@ export default class App {
                   lastName: data.lastName,
                   displayName: data.displayName,
                   username: data.username,
-                  checkedIn: data.checkedIn.map(item => item.id),
+                  checkIns: data.checkIns.map(item => item.id),
                   blockByUsers: data.blockByUsers
                 })
               );
@@ -162,8 +162,8 @@ export default class App {
                 screen: SCREEN.FEED_LIST_SCREEN,
                 icon: HomeIcon,
                 navigatorStyle: {
-                  navBarTextFontFamily: 'Comfortaa-Regular',
-                  navBarTextColor: DARK_GRAY_COLOR
+                  navBarTextFontFamily: 'SukhumvitSet-Bold',
+                  navBarTextColor: 'DARK_GRAY_COLOR',
                 }
               },
               {
@@ -171,8 +171,6 @@ export default class App {
                 screen: SCREEN.SEARCH_PAGE,
                 icon: SearchIcon,
                 navigatorStyle: {
-                  navBarTextFontFamily: 'Comfortaa-Regular',
-                  navBarTextColor: DARK_GRAY_COLOR,
                   navBarHidden: true
                 }
               },
@@ -181,7 +179,7 @@ export default class App {
                 screen: SCREEN.USER_PROFILE_SCREEN,
                 icon: UserIcon,
                 navigatorStyle: {
-                  navBarTextFontFamily: 'Comfortaa-Regular',
+                  navBarTextFontFamily: 'SukhumvitSet-Bold',
                   navBarTextColor: DARK_GRAY_COLOR
                 }
               },

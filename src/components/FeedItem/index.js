@@ -40,8 +40,8 @@ class FeedItem extends Component {
             <View style={styles.user}>
               <CircleImage style={styles.profileImage} uri={this.props.data.user.photoURL} radius={getDeviceWidth(70)} />
               <View style={styles.userDescription}>
-                <Text numberOfLines={1} style={[styles.name, DFonts.DFontFamily]}>{this.props.data.user.displayName}</Text>
-                <Text style={[styles.update, DFonts.DFontFamily]}>{calculateDuration(this.props.data.user.updated)}</Text>
+                <Text numberOfLines={1} style={[styles.name, DFonts.Title]}>{this.props.data.user.displayName}</Text>
+                <Text style={[styles.update, DFonts.SubTitle]}>{calculateDuration(this.props.data.user.updated)}</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -52,7 +52,7 @@ class FeedItem extends Component {
         </View>
         {/* Feed Title */}
         <View>
-          <Text style={styles.feedTitle}>{this.props.data.placeName}</Text>
+          <Text style={[DFonts.Content, styles.feedTitle]}>{this.props.data.placeName}</Text>
         </View>
         {/* Place Image */}
         <View style={styles.feedImages}>
@@ -77,7 +77,7 @@ class FeedItem extends Component {
         </View>
         {/* Place Title */}
         <View>
-          <Text style={styles.placeTitle}>{this.props.data.place}</Text>
+          <Text style={[DFonts.SubContent, styles.placeTitle]}>{this.props.data.place}</Text>
         </View>
         {/* Border Bar */}
         <View style={styles.separate}></View>
@@ -85,8 +85,8 @@ class FeedItem extends Component {
         <View style={styles.descriptionText}>
           <ViewMoreText
             numberOfLines={3}
-            renderViewMore={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read more</Text>)}
-            renderViewLess={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read less</Text>)}
+            renderViewMore={(onPress) => (<Text onPress={onPress} style={[DFonts.Regular, styles.additionalText]}>read more</Text>)}
+            renderViewLess={(onPress) => (<Text onPress={onPress} style={[DFonts.Regular, styles.additionalText]}>read less</Text>)}
             textStyle={styles.description}>
             {this.props.data.description}
           </ViewMoreText>

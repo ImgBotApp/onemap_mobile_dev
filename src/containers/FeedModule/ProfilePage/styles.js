@@ -51,7 +51,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   FollowingText: {
-    color: 'white'
+    color: 'white',
+    backgroundColor: 'transparent'
   },
   propertyView: {
     alignItems: 'center'

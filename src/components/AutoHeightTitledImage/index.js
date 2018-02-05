@@ -4,6 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import AutoHeightImage from 'react-native-auto-height-image';
 import styles from './styles'
 import { EMPTY_IMG } from '@global/const';
+import DFonts from '@theme/fonts';
 
 function getVAlign(align) {
   switch (align) {

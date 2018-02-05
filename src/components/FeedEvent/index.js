@@ -17,15 +17,15 @@ class FeedEvent extends Component {
           <View style={{flexDirection:'row'}}>
             <Image source={{uri: this.props.data.user.uri}} style={styles.userImage} />
             <View style={styles.userInfo}>
-              <Text style={[styles.userName,DFonts.DFontFamily]}>{this.props.data.user.name}</Text>
-              <Text style={[styles.update, DFonts.DFontFamily]}>{calculateDuration(this.props.data.user.updated)}</Text>
+              <Text style={[styles.userName,DFonts.Regular]}>{this.props.data.user.name}</Text>
+              <Text style={[styles.update, DFonts.Regular]}>{calculateDuration(this.props.data.user.updated)}</Text>
             </View>
           </View>
           {/* Place */}
           <View>
             <TouchableOpacity>
-              <Text style={[styles.collectionAdd, DFonts.DFontFamily]}>{'Add'}{this.props.data.title}</Text>
-              <Text style={[styles.collectionAdd, DFonts.DFontFamily]}>to Collection</Text>
+              <Text style={[styles.collectionAdd, DFonts.Regular]}>{'Add'}{this.props.data.title}</Text>
+              <Text style={[styles.collectionAdd, DFonts.Regular]}>to Collection</Text>
             </TouchableOpacity>
           </View>
         </View>

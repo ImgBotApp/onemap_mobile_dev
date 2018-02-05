@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
+import DFonts from '@theme/fonts';
 
 class ViewMoreText extends React.Component {
   constructor(props) {
@@ -102,13 +103,13 @@ class ViewMoreText extends React.Component {
   }
 
   renderViewMore = () => (
-    <Text onPress={this.onPressMore}>
+    <Text style={DFonts.Regular} onPress={this.onPressMore}>
       View More
     </Text>
   )
 
   renderViewLess = () => (
-    <Text onPress={this.onPressLess}>
+    <Text style={DFonts.Regular} onPress={this.onPressLess}>
       View Less
     </Text>
   )
@@ -132,7 +133,7 @@ class ViewMoreText extends React.Component {
       <View>
         <View onLayout={this.onLayout} style={this.getWrapperStyle()}>
           <Text
-            style={this.props.textStyle}
+            style={[DFonts.Text, this.props.textStyle]}
             numberOfLines={this.state.numberOfLines}
           >
             {this.props.children}

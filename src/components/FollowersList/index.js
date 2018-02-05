@@ -7,7 +7,8 @@ import I18n from '@language'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import CircleImage from '@components/CircleImage'
 import { getDeviceWidth, getDeivceHeight } from '@global'
-import { LIGHT_GRAY_COLOR } from '../../theme/colors';
+import { LIGHT_GRAY_COLOR } from '@theme/colors';
+import DFonts from '@theme/fonts';
 
 import { graphql } from "react-apollo";
 import { GET_FOLLOWERS } from "@graphql/userprofile";
@@ -52,8 +53,8 @@ class FollowerList extends Component {
                     <CircleImage style={styles.itemImage} uri={item.photoURL} radius={getDeviceWidth(88)} />
                   </TouchableOpacity>
                   <View style={styles.itemInfo}>
-                    <Text style={styles.username}>{item.displayName}</Text>
-                    <Text style={styles.bio}>{item.bio}</Text>
+                    <Text style={[DFonts.Title, styles.username]}>{item.displayName}</Text>
+                    <Text style={[DFonts.SubTitle, styles.bio]}>{item.bio}</Text>
                   </View>
                 </View>
                 {
@@ -76,7 +77,7 @@ class FollowerList extends Component {
                 <TouchableOpacity style={{ width: '100%', height: '100%', justifyContent: 'center' }} onPress={() => {
                   this.props.onItemPress(item)
                 }}>
-                  <Text style={styles.rightHiddenText}>{I18n.t('BLOCKED_STR')}</Text>
+                  <Text style={[DFonts.Title, styles.rightHiddenText]}>{I18n.t('BLOCKED_STR')}</Text>
                 </TouchableOpacity>
               </View>
             </View>

@@ -135,7 +135,7 @@ class ProfileCreatePage extends Component {
             mobileVerification: false,
             mobile: "iPhone",
             gender: this.state.gender.toUpperCase(),
-            checkedIn: [],
+            checkIns: [],
             blockByUsers: []
           });
           this.props.updateUser({
@@ -361,7 +361,7 @@ class ProfileCreatePage extends Component {
                 <Ionicons name="ios-phone-portrait-outline" size={24} color="#0a91ed" />            
               </View>
               <View style={styles.text}>
-                <PhoneInput ref='phone' textStyle={{fontFamily: 'Comfortaa-light'}} confirmText={'Confirm'} initialCountry={"us"}/>
+                <PhoneInput ref='phone' textStyle={{fontFamily: 'SukhumvitSet-Light'}} confirmText={'Confirm'} initialCountry={"us"}/>
               </View>
               
             </View> 
@@ -373,7 +373,7 @@ class ProfileCreatePage extends Component {
                 <EvilIcons name="calendar" size={24} color="#0a91ed" />            
               </View>
               <View style={styles.text}>
-                <Text style={{fontFamily: 'Comfortaa-light'}}>{this.state.birthday} </Text>
+                <Text style={{fontFamily: 'SukhumvitSet-Light'}}>{this.state.birthday} </Text>
               </View>
               <DateTimePicker
                 isVisible={this.state.isDateTimePickerVisible}

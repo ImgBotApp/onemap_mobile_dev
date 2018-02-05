@@ -61,7 +61,7 @@ export default {
   SETTING_STORY_SETTING: "Story Setting",
   SETTING_BLOCKED_USER: "Blocked User",
   SETTING_PRIVATE_ACCOUNT: "Private Account",
-  SETTING_PRIVATE_TEXT: "When your account is private, only people you approve can see your photo and video. Your existing follower won't be affedted",
+  SETTING_PRIVATE_TEXT: "Only people you approve can see your photo and video. Your existing follower won't be affected",
 
   // Phone Number Page
   SETTING_PHONE_NUMBER: "Phone Number",

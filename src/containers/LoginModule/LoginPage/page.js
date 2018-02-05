@@ -92,7 +92,7 @@ class LoginPage extends Component {
             lastName: data.lastName,
             displayName: data.displayName,
             username: data.username,
-            checkedIn: data.checkedIn.map(item => item.id),
+            checkIns: data.checkIns.map(item => item.id),
             blockByUsers: data.blockByUsers
           });
           this.props.saveUserFollows(data.follows);
@@ -113,8 +113,8 @@ class LoginPage extends Component {
             },
             animated: true,
             navigatorStyle: {
+              navBarTextFontFamily: 'SukhumvitSet-Bold',
               navBarTextColor: DARK_GRAY_COLOR,
-              navBarTextFontFamily: 'Comfortaa-Regular',
               naviBarComponentAlignment: 'center'
             },
           })
@@ -152,7 +152,7 @@ class LoginPage extends Component {
               lastName: data.lastName,
               displayName: data.displayName,
               username: data.username,
-              checkedIn: data.checkedIn.map(item => item.id),
+              checkIns: data.checkIns.map(item => item.id),
               blockByUsers: data.blockByUsers
             });
             this.props.saveUserFollows(data.follows);
@@ -212,8 +212,8 @@ class LoginPage extends Component {
       // animationType: 'fade',
       navigatorStyle: {
         // navBarHidden: true
+        navBarTextFontFamily: 'SukhumvitSet-Bold',
         navBarTextColor: DARK_GRAY_COLOR,
-        navBarTextFontFamily: 'Comfortaa-Regular',
         naviBarComponentAlignment: 'center'
       },
       // navigatorButtons: {}

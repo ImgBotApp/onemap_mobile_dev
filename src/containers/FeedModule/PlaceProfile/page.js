@@ -35,7 +35,7 @@ import LoadingSpinner from '@components/LoadingSpinner'
 import ImageSliderComponent from '@components/ImageSliderComponent'
 import TitleImage from '@components/TitledImage'
 import ViewMoreText from '@components/ViewMoreText';
-import { calculateCount, clone, getDeviceWidth, calculateDuration } from '@global'
+import { calculateCount, clone, getDeviceWidth, calculateDuration, getTimeDiff } from '@global'
 import { uploadImage, uploadMedia } from '@global/cloudinary';
 import { getImageFromVideoURL, getMediaTypeFromURL,convertImageToThumbURL } from '@global/const';
 import * as SCREEN from '@global/screenName'
@@ -116,7 +116,7 @@ class PlaceProfile extends PureComponent {
         image: [],
         map: null,
         heartedIds: [],
-        checkedInIds: [],
+        checkIns: [],
         collectionIds: [],
         keywords: [],
         comments: [],
@@ -197,7 +197,7 @@ class PlaceProfile extends PureComponent {
             openingHours: [data.openingHrs]
           },
           heartedIds: data.usersLike.map(item => item.id),
-          checkedInIds: data.userCheckedIn.map(item => item.id),
+          checkIns: data.checkIns,
           collectionIds: this.props.place && this.props.place.collectionIds ? this.props.place.collectionIds : data.collections.map(item => item.id),
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
           comments: [...ownerStories, ...otherStories],
@@ -205,7 +205,11 @@ class PlaceProfile extends PureComponent {
         },
         myStory: myStories.length ? myStories[0] : this.state.myStory,
         storyImages: myStories.length ? [...myStories[0].pictureURL.map(item => ({ uri: item })), ...this.state.storyImages] : this.state.storyImages
-      })
+      });
+      const myLastChecked = data.checkIns.filter(item => item.user.id === this.props.user.id);
+      if (myLastChecked.length) {
+        this.lastChecked = myLastChecked[myLastChecked.length - 1].createdAt;
+      }
     }).catch(err => alert(err));
   }
 
@@ -367,20 +371,26 @@ class PlaceProfile extends PureComponent {
   }
 
   onCheckInClick() {
+    if (this.lastChecked && (getTimeDiff(new Date(this.lastChecked), new Date()) < 20/* 60*/)) {// 20 min
+      alert('You have to wait 20 min after last check-in');
+      return;
+    }
     Vibration.vibrate();
-    let placeData = clone(this.state.placeData);
-    let checks = placeData.checkedInIds;
-    checks.push(this.props.user.id);
-    this.props.saveUserInfo({ ...this.props.user, checkedIn: [...this.props.user.checkedIn, placeData.id] });
-
+    let placeData = this.state.placeData;
     this.props.checkInPlace({
       variables: {
-        id: placeData.id,
-        checkedIds: checks
+        placeId: placeData.id,
+        userId: this.props.user.id,
+        lat: 0,
+        lng: 0
       }
     }).then(({ data }) => {
-      this.setState({ placeData });
+      let checks = clone(placeData.checkIns);
+      checks.push(data.createCheckIn);
+      this.setState({ placeData: { ...placeData, checkIns: checks } });
+      this.lastChecked = data.createCheckIn.createdAt;
       client.resetStore();
+      this.props.saveUserInfo({ ...this.props.user, checkIns: [...this.props.user.checkIns, data.createCheckIn.id] });
     }).catch(err => alert(err));
   }
 
@@ -397,7 +407,7 @@ class PlaceProfile extends PureComponent {
   renderTitle() {
     return (
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>{this.state.placeData.title}</Text>
+        <Text style={[DFonts.Title, styles.titleText]}>{this.state.placeData.title}</Text>
         <TouchableOpacity onPress={this.onBookMarker}>
           <MaterialCommunityIcons name={this.state.placeData.bookmark ? "bookmark" : "bookmark-outline"} size={30}
             color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} />
@@ -486,7 +496,7 @@ class PlaceProfile extends PureComponent {
           </View>
           <View style={styles.interestItem}>
             <Foundation name="marker" size={12} color={BLUE_COLOR} />
-            <Text style={styles.interestText}>{calculateCount(this.state.placeData.checkedInIds.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
+            <Text style={styles.interestText}>{calculateCount(this.state.placeData.checkIns.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
           </View>
           <View style={styles.interestItem}>
             <Foundation name="bookmark" size={12} color={RED_COLOR} />
@@ -589,7 +599,7 @@ class PlaceProfile extends PureComponent {
     return (
       <View style={styles.keyWords}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text style={styles.keywordTitle}>{I18n.t('PLACE_KEYWORDS')}</Text>
+          <Text style={[DFonts.Title, styles.keywordTitle]}>{I18n.t('PLACE_KEYWORDS')}</Text>
         </View>
         <View style={styles.keywordContainer}>
           <TagInput
@@ -600,7 +610,7 @@ class PlaceProfile extends PureComponent {
             text={this.state.keywordText}
             onChangeText={this.onChangeTagText}
             tagContainerStyle={styles.KeywordInput}
-            tagTextStyle={styles.keywordTextStyle}
+            tagTextStyle={[DFonts.SubTitle, styles.keywordTextStyle]}
             tagColor="#5c5a5a"
             tagTextColor="#e9e8eb"
             inputProps={inputProps}
@@ -671,7 +681,7 @@ class PlaceProfile extends PureComponent {
       <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <CircleImage style={styles.storyWriterImage} uri={this.props.user.photoURL} radius={getDeviceWidth(67)} />
-          <Text style={styles.storyWriterName}>{this.props.user.displayName}</Text>
+          <Text style={[DFonts.Title, styles.storyWriterName]}>{this.props.user.displayName}</Text>
         </View>
         <View style={styles.myImagesContainer}>
           {
@@ -694,14 +704,14 @@ class PlaceProfile extends PureComponent {
         </View>
         <TextInput
           ref={'inputStoryTitle'}
-          style={[styles.commentTitle, { width: '100%', marginTop: 10 }]}
+          style={[DFonts.Title, styles.commentTitle, { width: '100%', marginTop: 10 }]}
           returnKeyType={'done'}
           placeholder={I18n.t('PLACE_TITLE_BOLD')}
           value={this.state.myStory.title}
           onChangeText={text => this.setState({ myStory: { ...this.state.myStory, title: text }, storyUpdated: true })}
         />
         <TextInput
-          style={[styles.commentDescription, { width: '100%' }]}
+          style={[DFonts.Title, styles.commentDescription, { width: '100%' }]}
           multiline={true}
           placeholder={'What is this story about'}
           value={this.state.myStory.story}
@@ -853,8 +863,8 @@ class PlaceProfile extends PureComponent {
           <View style={{ flexDirection: 'row' }}>
             <CircleImage style={styles.storyWriterImage} uri={dataItem.createdBy.photoURL} radius={getDeviceWidth(67)} />
             <View>
-              <Text style={styles.storyWriterName}>{dataItem.createdBy.displayName}</Text>
-              <Text style={styles.commentDate}>{calculateDuration(dataItem.updatedAt)}</Text>
+              <Text style={[DFonts.Title, styles.storyWriterName]}>{dataItem.createdBy.displayName}</Text>
+              <Text style={[DFonts.SubTitle, styles.commentDate]}>{calculateDuration(dataItem.updatedAt)}</Text>
             </View>
           </View>
           <OptimizedFlatList
@@ -888,7 +898,7 @@ class PlaceProfile extends PureComponent {
           {this.renderKeywords()}
           {/* my stories */}
           <View style={styles.WriteStory}>
-            <Text style={styles.writeStoryTitle}>{I18n.t('PLACE_WRITE_STORY')}</Text>
+            <Text style={[DFonts.Title, styles.writeStoryTitle]}>{I18n.t('PLACE_WRITE_STORY')}</Text>
             {this._renderWriteStory()}
           </View>
           {/* other stories */}

@@ -10,6 +10,7 @@ import { getDeviceWidth, getDeviceHeight } from '@global'
 import styles from './styles'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
+import DFonts from '@theme/fonts';
 import { GET_PLACES_FROM_GOOGLEId } from '@graphql/places'
 import { client } from '@root/main'
 
@@ -45,7 +46,6 @@ class SearchPage extends Component {
       loading: false,
 
       nearByPlaces: [],
-      newNearByPlaces: [],
       title: '',
       address: '',
       isSearching: false,
@@ -59,7 +59,7 @@ class SearchPage extends Component {
         longitudeDelta: LONGTITUDE_DELTA,
       },
       initialMarker: null,
-      myPosition: null,
+      myPosition: {},
       isCallingAPI: false,
     }
     props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
@@ -110,18 +110,22 @@ class SearchPage extends Component {
   setGeoPositionEvent() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        this.setState({ myPosition: position.coords });
-        this.updateMapView();
-        console.log("current position:" + position.coords.latitude);
+        if (position.coords) {
+          console.log("current position:" + position.coords.latitude);
+          this.setState({ myPosition: position.coords });
+          this.updateMapView();
+        }
       },
       (error) => console.log(error),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 }
     );
 
     this.watchID = navigator.geolocation.watchPosition((position) => {
-      console.log("watch position:" + position.coords.latitude);
-      this.setState({ myPosition: position.coords });
-      this.updateMapView();
+      if (position.coords) {
+        console.log("watch position:" + position.coords.latitude);
+        this.setState({ myPosition: position.coords });
+        this.updateMapView();
+      }
     }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 });
 
   }
@@ -167,8 +171,8 @@ class SearchPage extends Component {
                 placeID: results[i].placeID
             }
             getNearByLocationsPin.push(obj);
-            maxDiff_lat = Math.max(maxDiff_lat,Math.abs(this.state.myPosition.latitude-results[i].latitude));
-            maxDiff_lng = Math.max(maxDiff_lng,Math.abs(this.state.myPosition.longitude-results[i].longitude));
+            maxDiff_lat = Math.max(maxDiff_lat, Math.abs(this.state.myPosition.latitude - results[i].latitude));
+            maxDiff_lng = Math.max(maxDiff_lng, Math.abs(this.state.myPosition.longitude - results[i].longitude));
           }
           getNearByLocationsPin.push(obj);
           maxDiff_lat = Math.max(maxDiff_lat, Math.abs(this.state.myPosition.latitude - results[i].latitude));
@@ -176,8 +180,8 @@ class SearchPage extends Component {
         }
 
         var getInitialRegion = {
-          latitude: this.state.myPosition ? this.state.myPosition.latitude : results[0].latitude,
-          longitude: this.state.myPosition ? this.state.myPosition.longitude : results[0].longitude,
+          latitude: this.state.myPosition.latitude ? this.state.myPosition.latitude : results[0].latitude,
+          longitude: this.state.myPosition.longitude ? this.state.myPosition.longitude : results[0].longitude,
           latitudeDelta: maxDiff_lat <= 0 ? LATTITUDE_DELTA : maxDiff_lat,
           longitudeDelta: maxDiff_lng <= 0 ? LONGTITUDE_DELTA : maxDiff_lng,
         }
@@ -245,12 +249,12 @@ class SearchPage extends Component {
                             <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
                           )}
                           <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
-                            <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
+                            <Text style={[DFonts.Regular, { flexWrap: "nowrap" }]}>{marker.title}</Text>
                           </Callout>
                         </Marker>
                       ))}
                       {
-                        this.state.myPosition ? (
+                        this.state.myPosition.latitude ? (
                           <Marker
                             coordinate={this.state.myPosition}
                             zIndex={this.state.nearByPlacesPin.length + 1000}
@@ -260,7 +264,7 @@ class SearchPage extends Component {
                               <Image source={require('@assets/images/map_position.png')} style={styles.mapmarker} />
                             )}
                             <Callout style={styles.customView}>
-                              <Text style={{ flexWrap: "nowrap" }}>{curr_position}</Text>
+                              <Text style={[DFonts.Regular, { flexWrap: "nowrap" }]}>{curr_position}</Text>
                             </Callout>
                           </Marker>
                         ) : null
@@ -278,10 +282,10 @@ class SearchPage extends Component {
                           <View style={styles.infomation}>
                             <View>
                               <TouchableOpacity onPress={() => this.onPlaceProfile(item.placeID)}>
-                                <Text style={styles.name}>{item.name}</Text>
+                                <Text style={[DFonts.Title, styles.name]}>{item.name}</Text>
                                 {this.state.isSelected ?
-                                  <Text style={styles.following}>{item.vicinity}</Text>
-                                  : <Text style={styles.following}>{item.address}</Text>
+                                  <Text style={[DFonts.SubTitle, styles.following]}>{item.vicinity}</Text>
+                                  : <Text style={[DFonts.SubTitle, styles.following]}>{item.address}</Text>
                                 }
                               </TouchableOpacity>
                             </View>

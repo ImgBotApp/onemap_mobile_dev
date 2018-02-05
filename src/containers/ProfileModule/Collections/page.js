@@ -9,6 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
 import { DARK_GRAY_COLOR } from '@theme/colors';
+import DFonts from '@theme/fonts';
 import * as SCREEN from '@global/screenName'
 import { clone } from '@global';
 import I18n from '@language'
@@ -17,7 +18,8 @@ import styles from './styles'
 import { client } from '@root/main';
 import { graphql } from "react-apollo";
 import { GET_COLLECTION_WITH_PLACES, GET_COLLECTIONS_WITH_PLACES } from '@graphql/collections';
-import { GET_USER_WITH_CHECKED_PLACES, GET_USER_WITH_LIKED_PLACES } from '@graphql/userprofile'
+import { GET_CHECKED_PLACES } from '@graphql/collections';
+import { GET_USER_WITH_LIKED_PLACES } from '@graphql/userprofile'
 import {OptimizedFlatList} from 'react-native-optimized-flatlist'
 
 const PLACES_PER_PAGE = 20;
@@ -102,12 +104,12 @@ class Collections extends Component {
   getCheckedPlaces() {
     this.setState({ loading: true });
     client.query({
-      query: GET_USER_WITH_CHECKED_PLACES,
+      query: GET_CHECKED_PLACES,
       variables: {
         userId: this.props.userId ? this.props.userId : this.props.user.id,
       }
     }).then(({ data }) => {
-      this.setState({ places: data.User.checkedIn, loading: false });
+      this.setState({ places: data.allPlaces, loading: false });
     }).catch(err => alert(err))
   }
   getCollectionPlaces() {
@@ -143,7 +145,7 @@ class Collections extends Component {
 
   _renderTabHeader(text) {
     return (
-      <Text name={text} style={styles.TabText} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>
+      <Text name={text} style={[DFonts.Title, styles.TabText]} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>
     )
   }
   onCollectionItem(data) {
@@ -256,7 +258,7 @@ class Collections extends Component {
                 <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
               )}
               <Callout style={styles.customView} onPress={() => this.openPlaceProfile(item.id)}>
-                <Text style={{ flexWrap: "nowrap" }}>{item.address}</Text>
+                <Text style={[DFonts.Regular, { flexWrap: "nowrap" }]}>{item.address}</Text>
               </Callout>
             </Marker>
           )}

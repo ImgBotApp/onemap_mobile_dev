@@ -15,7 +15,7 @@ import TitleImage from '@components/TitledImage'
 import styles from './style'
 import I18n from '@language'
 import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
-import { SMALL_FONT_SIZE } from '@theme/fonts';
+import DFonts, { SMALL_FONT_SIZE } from '@theme/fonts';
 
 import * as SCREEN from '@global/screenName'
 import { clone } from '@global';
@@ -89,7 +89,7 @@ class FeedPage extends Component {
       query: GET_SUGGEST_USERS,
       variables: {
         currentUserId: id,
-        currentUserFollowsIds: follows.map(item => item.id),
+        currentUserFollowsIds: follows ? follows.map(item => item.id) : [],
         currentUserBlockByUsersIds: blockByUsers ? blockByUsers.map(item => item.id) : []
       }
     }).then((users) => {
@@ -241,7 +241,7 @@ class FeedPage extends Component {
       <View style={styles.topItem}>
         {/* Recommend text */}
         <View style={styles.recommendText}>
-          <Text style={styles.recString}>{I18n.t('FEED_RECOMMEND_BY_ONEMAP')}</Text>
+          <Text style={[DFonts.Title, styles.recString]}>{I18n.t('FEED_RECOMMEND_BY_ONEMAP')}</Text>
           <TouchableOpacity onPress={this.closeSuggest.bind(this)}>
             <EvilIcons name="close-o" size={24} color={LIGHT_GRAY_COLOR} />
           </TouchableOpacity>
@@ -487,7 +487,7 @@ const ComponentWithQueries = graphql(PLACES_PAGINATED, {
     return {
       variables: {
         userId: props.user.id,
-        followsIds: props.follows.map(item => item.id),
+        followsIds: props.follows ? props.follows.map(item => item.id) : [],
         skip: 0,
         first: PLACES_PER_PAGE
       }

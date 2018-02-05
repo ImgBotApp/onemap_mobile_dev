@@ -12,6 +12,7 @@ import { client } from '@root/main'
 import { GET_FILTER_KEYWORDS } from '@graphql/keywords'
 import { FILER_USERS } from '@graphql/users'
 import { PLACES_APIKEY } from '@global/const';
+import DFonts from '@theme/fonts';
 
 class SearchResult extends Component {
   constructor(props) {
@@ -21,8 +22,8 @@ class SearchResult extends Component {
       places: [],
       keywords: [],
       users: [],
-      loading:false,
-      prevQuery:null
+      loading: false,
+      prevQuery: null
     };
   }
   componentWillMount() {
@@ -33,38 +34,37 @@ class SearchResult extends Component {
     this.onTextSearchPlace();
   }
   onTextSearchPlace() {
-    if(this.props.keyword == this.state.prevQuery)
+    if (this.props.keyword == this.state.prevQuery)
       return;
-    this.setState({loading:true});
+    this.setState({ loading: true });
     const radius = 50000;
     const language = 'en';
     const query = this.props.keyword.replace(/\s/g, "+");
 
-    if(this.props.coordinate == null) return;
-    const placeTextSearchURL = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+this.props.keyword+"&location="+this.props.coordinate.latitude+","+this.props.coordinate.longitude+"&radius="+radius+"&key="+PLACES_APIKEY;
+    if (this.props.coordinate == null) return;
+    const placeTextSearchURL = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + this.props.keyword + "&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius + "&key=" + PLACES_APIKEY;
 
-    fetch(placeTextSearchURL, { 
+    fetch(placeTextSearchURL, {
       method: 'GET',
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
     })
-    .then((response) => response.json())
-    .then((responseData) =>
-    {
-      //set your data here
-      let query = this.props.keyword;
-      this.setState({prevQuery:query});
+      .then((response) => response.json())
+      .then((responseData) => {
+        //set your data here
+        let query = this.props.keyword;
+        this.setState({ prevQuery: query });
 
-      this.setState({loading:false})
-      if(responseData.results)
-        this.setState({
-          places: responseData.results
-        })
-    })
-    .catch((error) => {
-      this.setState({loading:false})
-    });
-    
+        this.setState({ loading: false })
+        if (responseData.results)
+          this.setState({
+            places: responseData.results
+          })
+      })
+      .catch((error) => {
+        this.setState({ loading: false })
+      });
+
 
     client.query({
       query: GET_FILTER_KEYWORDS,
@@ -89,7 +89,7 @@ class SearchResult extends Component {
   }
   _renderTabHeader(text) {
     return (
-      <Text name={text} style={styles.TabText} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>
+      <Text name={text} style={[DFonts.Title, styles.TabText]} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>
     )
   }
 
@@ -99,8 +99,8 @@ class SearchResult extends Component {
         <View style={styles.item}>
           <CircleImage style={styles.profileImage} uri={item.photoURL} radius={getDeviceWidth(70)} />
           <View style={styles.infomation}>
-            <Text style={styles.name}>{item.displayName}</Text>
-            <Text style={styles.following}>{item.username}</Text>
+            <Text style={[DFonts.Title, styles.name]}>{item.displayName}</Text>
+            <Text style={[DFonts.SubTitle, styles.following]}>{item.username}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -113,8 +113,8 @@ class SearchResult extends Component {
         <View style={styles.item}>
           <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
           <View style={styles.infomation}>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.following}>{item.formatted_address}</Text>
+            <Text style={[DFonts.Title, styles.name]}>{item.name}</Text>
+            <Text style={[DFonts.SubTitle, styles.following]}>{item.formatted_address}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -125,8 +125,8 @@ class SearchResult extends Component {
       <View style={styles.item}>
         <Image source={require('@assets/images/bookmarker.png')} style={styles.placeImage} />
         <View style={styles.infomation}>
-          <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.following}>{item.following ? 'Follower' : null}</Text>
+          <Text style={[DFonts.Title, styles.name]}>{item.name}</Text>
+          <Text style={[DFonts.SubTitle, styles.following]}>{item.following ? 'Follower' : null}</Text>
         </View>
       </View>
     )
@@ -138,15 +138,15 @@ class SearchResult extends Component {
         <View style={styles.item}>
           <Image source={require('@assets/images/bookmarker.png')} style={styles.placeImage} />
           <View style={styles.infomation}>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.following}>{item.following ? 'Follower' : null}</Text>
+            <Text style={[DFonts.Title, styles.name]}>{item.name}</Text>
+            <Text style={[DFonts.Title, styles.following]}>{item.following ? 'Follower' : null}</Text>
           </View>
         </View>
       </TouchableOpacity>
     )
   }
   _onRenderItem(item) {
-    if(item == null)return;
+    if (item == null) return;
     switch (item.type) {
       case 'user':
         return this._onUserItem(item)
@@ -229,7 +229,7 @@ class SearchResult extends Component {
         </View>
         <View style={styles.tabbody}>
           {
-            this.state.loading?(<ActivityIndicator style={{marginTop:10}} size="small" color="#aaa" />):null
+            this.state.loading ? (<ActivityIndicator style={{ marginTop: 10 }} size="small" color="#aaa" />) : null
           }
           {
             this.state.page == 'Places' ? this._renderPlaces() : null

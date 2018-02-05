@@ -4,7 +4,8 @@ import { View, Text, StyleSheet, Image, Platform } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import styles from './style'
-import { DARK_GRAY_COLOR } from '../../../theme/colors';
+import { DARK_GRAY_COLOR } from '@theme/colors';
+import DFonts from '@theme/fonts';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const data = {
@@ -53,8 +54,8 @@ class MapDetailPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.titleText}>{this.props.title}</Text>
-        <Text style={styles.addressText}>{this.props.address}</Text>
+        <Text style={[DFonts.Title, styles.titleText]}>{this.props.title}</Text>
+        <Text style={[DFonts.SubTitle, styles.addressText]}>{this.props.address}</Text>
         <View style={styles.mapView}>
           <MapView
             provider={PROVIDER_GOOGLE}
