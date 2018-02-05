@@ -89,13 +89,20 @@ class ProfileComponent extends Component {
   }
   onEditProfile() {
     this.props.navigator.push({
-      screen: SCREEN.USER_ACCOUNT_SETTING,
-      title: 'Account Settings',
+      screen: SCREEN.USER_PROFILE_EDIT,
+      title: 'Edit Profile',
       animated: true,
       navigatorStyle: {
         navBarTextColor: DARK_GRAY_COLOR,
         navBarTextFontFamily: 'Comfortaa-Regular'
       }
+    });
+  }
+  onFollowSetting = () => {
+    this.props.navigator.push({
+      screen: SCREEN.USER_FOLLOW_PAGE,
+      title: 'Follow People',
+      animated: true,
     })
   }
   render() {
@@ -139,10 +146,12 @@ class ProfileComponent extends Component {
               </TouchableOpacity>
             </View>
             <View style={styles.spec}>
-              <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWING')}</Text>
-              <Text style={styles.specFont}>{follow_cnt}</Text>
-              <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWER')}</Text>
-              <Text style={styles.specFont}>{follower_cnt}</Text>
+              <TouchableOpacity style={styles.spec} onPress={this.onFollowSetting}>
+                <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWING')}</Text>
+                <Text style={styles.specFont}>{follow_cnt}</Text>
+                <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWER')}</Text>
+                <Text style={styles.specFont}>{follower_cnt}</Text>
+              </TouchableOpacity>
               <Text style={styles.specFont}>{I18n.t('PROFILE_VISITED')}</Text>
               <Text style={styles.specFont}>{checked_cnt}</Text>
             </View>

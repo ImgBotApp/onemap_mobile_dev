@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Switch, AsyncStorage, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Switch, AsyncStorage, Alert, Linking } from 'react-native';
 import { LoginManager } from 'react-native-fbsdk'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -102,7 +102,14 @@ class AccountSetting extends Component {
 
   }
   onTerms = () => {
-
+    const url = 'http://onemap.co/onemap-policies';
+    Linking.canOpenURL(url).then(supported => {
+      if (!supported) {
+        alert('Can\'t open url: ' + url);
+      } else {
+        return Linking.openURL(url);
+      }
+    });
   }
   render() {
     return (
@@ -120,17 +127,17 @@ class AccountSetting extends Component {
           <Text style={styles.buttons}>{I18n.t('SETTING_BLOCKED_USER')}</Text>
         </TouchableOpacity>
         {/* Request to be modification */}
-        <TouchableOpacity onPress={this.onRequestToBeModification.bind(this)}>
+        {/* <TouchableOpacity onPress={this.onRequestToBeModification.bind(this)}>
           <Text style={styles.buttons}>{I18n.t('USERPROFILE_USER_REQUSET_MODIFICATION')}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {/* Terms */}
         <TouchableOpacity onPress={this.onTerms.bind(this)}>
           <Text style={styles.buttons}>{I18n.t('USERPROFILE_TERMS')}</Text>
         </TouchableOpacity>
-        <View style={styles.privateAccount}>
+        {/* <View style={styles.privateAccount}>
           <Text style={styles.buttons}>{I18n.t('SETTING_PRIVATE_ACCOUNT')}</Text>
           <Switch style={styles.switchAccount} value={this.state.privateAccount} onValueChange={(val) => this.setState({ privateAccount: val })} />
-        </View>
+        </View> */}
         <View style={styles.line}></View>
         <Text style={styles.privateText}>{I18n.t('SETTING_PRIVATE_TEXT')}</Text>
         <View style={styles.line}></View>
