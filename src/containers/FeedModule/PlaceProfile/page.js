@@ -406,7 +406,7 @@ class PlaceProfile extends PureComponent {
   renderTitle() {
     return (
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>{this.state.placeData.title}</Text>
+        <Text style={[DFonts.Title, styles.titleText]}>{this.state.placeData.title}</Text>
         <TouchableOpacity onPress={this.onBookMarker}>
           <MaterialCommunityIcons name={this.state.placeData.bookmark ? "bookmark" : "bookmark-outline"} size={30}
             color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} />
@@ -598,7 +598,7 @@ class PlaceProfile extends PureComponent {
     return (
       <View style={styles.keyWords}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text style={styles.keywordTitle}>{I18n.t('PLACE_KEYWORDS')}</Text>
+          <Text style={[DFonts.Title, styles.keywordTitle]}>{I18n.t('PLACE_KEYWORDS')}</Text>
         </View>
         <View style={styles.keywordContainer}>
           <TagInput
@@ -609,7 +609,7 @@ class PlaceProfile extends PureComponent {
             text={this.state.keywordText}
             onChangeText={this.onChangeTagText}
             tagContainerStyle={styles.KeywordInput}
-            tagTextStyle={styles.keywordTextStyle}
+            tagTextStyle={[DFonts.SubTitle, styles.keywordTextStyle]}
             tagColor="#5c5a5a"
             tagTextColor="#e9e8eb"
             inputProps={inputProps}
@@ -680,7 +680,7 @@ class PlaceProfile extends PureComponent {
       <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <CircleImage style={styles.storyWriterImage} uri={this.props.user.photoURL} radius={getDeviceWidth(67)} />
-          <Text style={styles.storyWriterName}>{this.props.user.displayName}</Text>
+          <Text style={[DFonts.Title, styles.storyWriterName]}>{this.props.user.displayName}</Text>
         </View>
         <View style={styles.myImagesContainer}>
           {
@@ -703,14 +703,14 @@ class PlaceProfile extends PureComponent {
         </View>
         <TextInput
           ref={'inputStoryTitle'}
-          style={[styles.commentTitle, { width: '100%', marginTop: 10 }]}
+          style={[DFonts.Title, styles.commentTitle, { width: '100%', marginTop: 10 }]}
           returnKeyType={'done'}
           placeholder={I18n.t('PLACE_TITLE_BOLD')}
           value={this.state.myStory.title}
           onChangeText={text => this.setState({ myStory: { ...this.state.myStory, title: text }, storyUpdated: true })}
         />
         <TextInput
-          style={[styles.commentDescription, { width: '100%' }]}
+          style={[DFonts.SubTitle, styles.commentDescription, { width: '100%' }]}
           multiline={true}
           placeholder={'What is this story about'}
           value={this.state.myStory.story}
@@ -862,8 +862,8 @@ class PlaceProfile extends PureComponent {
           <View style={{ flexDirection: 'row' }}>
             <CircleImage style={styles.storyWriterImage} uri={dataItem.createdBy.photoURL} radius={getDeviceWidth(67)} />
             <View>
-              <Text style={styles.storyWriterName}>{dataItem.createdBy.displayName}</Text>
-              <Text style={styles.commentDate}>{calculateDuration(dataItem.updatedAt)}</Text>
+              <Text style={[DFonts.Title, styles.storyWriterName]}>{dataItem.createdBy.displayName}</Text>
+              <Text style={[DFonts.SubTitle, styles.commentDate]}>{calculateDuration(dataItem.updatedAt)}</Text>
             </View>
           </View>
           <FlatList
@@ -873,8 +873,8 @@ class PlaceProfile extends PureComponent {
             data={dataItem.pictureURL}
             renderItem={({ index }) => this._renderItem(dataItem.pictureURL.map(item => ({ uri: item })), index)}
           />
-          <Text style={styles.commentTitle}>{dataItem.title}</Text>
-          <Text style={styles.commentDescription}>{dataItem.story}</Text>
+          <Text style={[DFonts.Title, styles.commentTitle]}>{dataItem.title}</Text>
+          <Text style={[DFonts.SubTitle, styles.commentDescription]}>{dataItem.story}</Text>
         </CardView>
       )
     })
@@ -897,7 +897,7 @@ class PlaceProfile extends PureComponent {
           {this.renderKeywords()}
           {/* my stories */}
           <View style={styles.WriteStory}>
-            <Text style={styles.writeStoryTitle}>{I18n.t('PLACE_WRITE_STORY')}</Text>
+            <Text style={[DFonts.Title, styles.writeStoryTitle]}>{I18n.t('PLACE_WRITE_STORY')}</Text>
             {this._renderWriteStory()}
           </View>
           {/* other stories */}

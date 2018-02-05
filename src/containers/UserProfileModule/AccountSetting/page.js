@@ -58,8 +58,8 @@ class AccountSetting extends Component {
       title: 'Edit Profile',
       animated: true,
       navigatorStyle: {
+        navBarTextFontFamily: 'Comfortaa-Bold',
         navBarTextColor: DARK_GRAY_COLOR,
-        navBarTextFontFamily: 'Comfortaa-Regular'
       }
     })
   }

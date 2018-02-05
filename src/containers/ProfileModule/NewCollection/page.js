@@ -4,7 +4,8 @@ import { View, Text, StyleSheet, TextInput, Switch, TouchableOpacity } from 'rea
 import I18n from '@language'
 import styles from './styles'
 import { clone, getDeviceWidth, getDeviceHeight } from '@global'
-import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
+import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
+import DFonts from '@theme/fonts';
 import Modal from 'react-native-modalbox';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
@@ -95,18 +96,18 @@ class NewCollection extends Component {
     return (
       <View style={styles.container}>
         <View>
-          <Text style={styles.name}>{I18n.t('NAME_STR')}</Text>
+          <Text style={[DFonts.Title, styles.name]}>{I18n.t('NAME_STR')}</Text>
           <TextInput
-            style={styles.collectionInput}
+            style={[DFonts.Regular, styles.collectionInput]}
             placeholder={I18n.t('COLLECTION_NAME')}
             value={this.state.name}
             onChangeText={text => this.setState({ name: text })}
           />
         </View>
         <View style={styles.privacyContainer}>
-          <Text style={styles.name}>{I18n.t('PRIVACY_STR')}</Text>
+          <Text style={[DFonts.Title, styles.name]}>{I18n.t('PRIVACY_STR')}</Text>
           <View style={styles.privacy}>
-            <Text style={styles.privacyText}>{I18n.t('PRIVACY_DESCRIPTION')}</Text>
+            <Text style={[DFonts.Regular, styles.privacyText]}>{I18n.t('PRIVACY_DESCRIPTION')}</Text>
             <Switch value={this.state.isPublic} onValueChange={this.onValueChange.bind(this)} />
           </View>
         </View>

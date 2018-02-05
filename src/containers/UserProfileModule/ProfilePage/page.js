@@ -80,8 +80,8 @@ class ProfileComponent extends Component {
           title: 'Account Settings',
           animated: true,
           navigatorStyle: {
+            navBarTextFontFamily: 'Comfortaa-Bold',
             navBarTextColor: DARK_GRAY_COLOR,
-            navBarTextFontFamily: 'Comfortaa-Regular'
           }
         })
       }
@@ -93,8 +93,8 @@ class ProfileComponent extends Component {
       title: 'Edit Profile',
       animated: true,
       navigatorStyle: {
+        navBarTextFontFamily: 'Comfortaa-Bold',
         navBarTextColor: DARK_GRAY_COLOR,
-        navBarTextFontFamily: 'Comfortaa-Regular'
       }
     });
   }

@@ -12,6 +12,7 @@ import {
   View,
   ViewPropTypes
 } from 'react-native';
+import DFonts from '@theme/fonts';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 const containerHeight = 60;
@@ -33,7 +34,7 @@ class Search extends PureComponent {
      * Animated values
      */
     this.iconSearchAnimated = new Animated.Value(
-      this.middleWidth - this.props.searchIconCollapsedMargin+10
+      this.middleWidth - this.props.searchIconCollapsedMargin + 10
     );
     this.iconDeleteAnimated = new Animated.Value(0);
     this.inputFocusWidthAnimated = new Animated.Value(this.contentWidth - 20);
@@ -60,7 +61,7 @@ class Search extends PureComponent {
      */
     this.placeholder = this.props.placeholder || 'Search';
     this.cancelTitle = this.props.cancelTitle || 'Cancel';
-    this.autoFocus =  this.props.autoFocus || false;
+    this.autoFocus = this.props.autoFocus || false;
 
     /**
      * Shadow
@@ -72,8 +73,8 @@ class Search extends PureComponent {
   }
 
   componentDidMount() {
-    if(this.autoFocus) {
-      this.setState({expanded: true})
+    if (this.autoFocus) {
+      this.setState({ expanded: true })
       this.refs.input_keyword._component.focus();
 
     }
@@ -225,15 +226,15 @@ class Search extends PureComponent {
         }).start(),
         this.props.keyboardShouldPersist === false
           ? Animated.timing(this.inputFocusPlaceholderAnimated, {
-              toValue: this.middleWidth - this.props.placeholderCollapsedMargin,
-              duration: 200
-            }).start()
+            toValue: this.middleWidth - this.props.placeholderCollapsedMargin,
+            duration: 200
+          }).start()
           : null,
         this.props.keyboardShouldPersist === false || isForceAnim === true
           ? Animated.timing(this.iconSearchAnimated, {
-              toValue: this.middleWidth - this.props.searchIconCollapsedMargin,
-              duration: 200
-            }).start()
+            toValue: this.middleWidth - this.props.searchIconCollapsedMargin,
+            duration: 200
+          }).start()
           : null,
         Animated.timing(this.iconDeleteAnimated, {
           toValue: 0,
@@ -308,51 +309,51 @@ class Search extends PureComponent {
         <TouchableWithoutFeedback onPress={this.onSearch}>
           {this.props.iconSearch
             ? <Animated.View
-                style={[styles.iconSearch, { left: this.iconSearchAnimated }]}
-              >
-                {this.props.iconSearch}
-              </Animated.View>
+              style={[styles.iconSearch, { left: this.iconSearchAnimated }]}
+            >
+              {this.props.iconSearch}
+            </Animated.View>
             : <Animated.Image
-                source={require('@assets/images/search.png')}
-                style={[
-                  styles.iconSearch,
-                  styles.iconSearchDefault,
-                  this.props.tintColorSearch && {
-                    tintColor: this.props.tintColorSearch
-                  },
-                  {
-                    left: 3,//this.iconSearchAnimated
-                  }
-                ]}
-              />}
+              source={require('@assets/images/search.png')}
+              style={[
+                styles.iconSearch,
+                styles.iconSearchDefault,
+                this.props.tintColorSearch && {
+                  tintColor: this.props.tintColorSearch
+                },
+                {
+                  left: 3,//this.iconSearchAnimated
+                }
+              ]}
+            />}
         </TouchableWithoutFeedback>
         {this.props.useClearButton && <TouchableWithoutFeedback onPress={this.onDelete}>
           {this.props.iconDelete
             ? <Animated.View
-                style={[
-                  styles.iconDelete,
-                  this.props.positionRightDelete && {
-                    right: this.props.positionRightDelete
-                  },
-                  { opacity: this.iconDeleteAnimated }
-                ]}
-              >
-                {this.props.iconDelete}
-              </Animated.View>
+              style={[
+                styles.iconDelete,
+                this.props.positionRightDelete && {
+                  right: this.props.positionRightDelete
+                },
+                { opacity: this.iconDeleteAnimated }
+              ]}
+            >
+              {this.props.iconDelete}
+            </Animated.View>
             : <Animated.Image
-                source={require('@assets/images/delete.png')}
-                style={[
-                  styles.iconDelete,
-                  styles.iconDeleteDefault,
-                  this.props.tintColorDelete && {
-                    tintColor: this.props.tintColorDelete
-                  },
-                  this.props.positionRightDelete && {
-                    right: this.props.positionRightDelete
-                  },
-                  { opacity: this.iconDeleteAnimated }
-                ]}
-              />}
+              source={require('@assets/images/delete.png')}
+              style={[
+                styles.iconDelete,
+                styles.iconDeleteDefault,
+                this.props.tintColorDelete && {
+                  tintColor: this.props.tintColorDelete
+                },
+                this.props.positionRightDelete && {
+                  right: this.props.positionRightDelete
+                },
+                { opacity: this.iconDeleteAnimated }
+              ]}
+            />}
         </TouchableWithoutFeedback>}
 
         <TouchableOpacity onPress={this.onCancel}>
@@ -365,13 +366,13 @@ class Search extends PureComponent {
             ]}
           >
             <Text
-              style={[
-                styles.cancelButtonText,
-                this.props.titleCancelColor && {
-                  color: this.props.titleCancelColor
-                },
-                this.props.cancelButtonStyle && this.props.cancelButtonStyle,
-                this.props.cancelButtonTextStyle && this.props.cancelButtonTextStyle,
+              style={[DFonts.Title,
+              styles.cancelButtonText,
+              this.props.titleCancelColor && {
+                color: this.props.titleCancelColor
+              },
+              this.props.cancelButtonStyle && this.props.cancelButtonStyle,
+              this.props.cancelButtonTextStyle && this.props.cancelButtonTextStyle,
               ]}
             >
               {this.cancelTitle}
@@ -402,18 +403,18 @@ const getStyles = (inputHeight) => {
       paddingTop: 5,
       paddingBottom: 5,
       paddingRight: 20,
-      paddingLeft:20,
+      paddingLeft: 20,
       borderColor: '#444',
       backgroundColor: '#f7f7f7',
       borderRadius: 5,
       fontSize: 16,
-      fontFamily      : 'Comfortaa-Bold',
+      fontFamily: 'Comfortaa-Bold',
     },
     placeholderColor: 'grey',
     iconSearch: {
       flex: 1,
       position: 'absolute',
-      top: middleHeight-2,
+      top: middleHeight - 2,
       height: 20,
       width: 20
     },
@@ -423,7 +424,7 @@ const getStyles = (inputHeight) => {
     iconDelete: {
       position: 'absolute',
       right: 70,
-      top: middleHeight-2 ,
+      top: middleHeight - 2,
       height: 20,
       width: 20
     },
@@ -436,12 +437,12 @@ const getStyles = (inputHeight) => {
       backgroundColor: 'transparent',
       width: 60,
       height: 50,
-      
+
     },
     cancelButtonText: {
       fontSize: 14,
       color: '#fff',
-      fontFamily      : 'Comfortaa-Regular',
+      fontFamily: 'Comfortaa-Regular',
     }
   };
 }

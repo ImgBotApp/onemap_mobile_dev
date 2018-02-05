@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
 		paddingTop: getDeviceHeight(219)
 	},
 	headerTitle: {
-		fontFamily: 'Comfortaa-regular',
+		fontFamily: 'Comfortaa-Regular',
 		color: '#575858'
 	},
 	navContainer: {
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 	},
 	rightNavText: {
 		marginRight: getDeviceWidth(45),
-		fontFamily: 'Comfortaa-regular',
+		fontFamily: 'Comfortaa-Regular',
 		color: '#575858',
 		// fontSize: 14,
 		fontWeight: 'bold'
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 		height: 100,
 	},
 	text: {
-		fontFamily: 'Comfortaa-regular',
+		fontFamily: 'Comfortaa-Regular',
 		color: '#575858',
 		textAlign: 'center'
 	}

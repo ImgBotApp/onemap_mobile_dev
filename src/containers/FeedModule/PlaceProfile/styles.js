@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     color: DARK_GRAY_COLOR,
-    fontSize: BIG_FONT_SIZE
+    fontSize: BIGGER_FONT_SIZE
   },
   imageContainer: {
     marginTop: getDeviceHeight(89),
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   descriptionText: {
     color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
-    fontFamily: 'Comfortaa-regular'
+    fontFamily: 'Comfortaa-Regular'
   },
   additionalText: {
     color: BLUE_COLOR,
@@ -96,7 +96,8 @@ const styles = StyleSheet.create({
   },
   informationText: {
     color: LIGHT_GRAY_COLOR,
-    fontSize: SMALL_FONT_SIZE
+    fontSize: SMALL_FONT_SIZE,
+    fontFamily: 'Comfortaa-Regular'
   },
   informationContainer: {
     marginLeft: getDeviceWidth(76),
@@ -121,7 +122,8 @@ const styles = StyleSheet.create({
   interestText: {
     color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
-    marginLeft: getDeviceWidth(20)
+    marginLeft: getDeviceWidth(20),
+    fontFamily: 'Comfortaa-Regular'
   },
   serparate: {
     width: '100%',
@@ -188,7 +190,6 @@ const styles = StyleSheet.create({
     marginLeft: getDeviceWidth(40),
     color: DARK_GRAY_COLOR,
     fontSize: BIG_FONT_SIZE,
-    fontFamily: 'Comfortaa-regular'
   },
   myImagesContainer: {
     marginTop: getDeviceHeight(89),
@@ -202,19 +203,14 @@ const styles = StyleSheet.create({
   commentDate: {
     color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
-    fontFamily: 'Comfortaa-regular',
     marginLeft: getDeviceWidth(40),
   },
   commentTitle: {
-    fontSize: NORMAL_FONT_SIZE,
-    color: DARK_GRAY_COLOR,
     marginVertical: 5,
-    fontFamily: 'Comfortaa-regular'
+    fontSize: BIG_FONT_SIZE,
   },
   commentDescription: {
-    color: LIGHT_GRAY_COLOR,
-    fontSize: SMALL_FONT_SIZE,
-    fontFamily: 'Comfortaa-regular'
+    fontSize: NORMAL_FONT_SIZE,
   },
   collectionModal: {
     height: getDeviceHeight(704),

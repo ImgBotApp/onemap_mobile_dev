@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import CircleImage from '@components/CircleImage'
 import { getDeviceWidth, getDeviceHeight } from '@global'
+import DFonts from '@theme/fonts';
 import styles from './styles'
 
 class FollowingItem extends Component {
@@ -24,14 +25,14 @@ class FollowingItem extends Component {
               <CircleImage style={styles.itemImage} uri={item.photoURL} radius={getDeviceWidth(88)} />
             </TouchableOpacity>
             <View style={styles.itemInfo}>
-              <Text style={styles.username}>{item.displayName}</Text>
-              <Text style={styles.bio} numberOfLines={2}>{item.bio}</Text>
+              <Text style={[DFonts.Title, styles.username]}>{item.displayName}</Text>
+              <Text style={[DFonts.SubTitle, styles.bio]} numberOfLines={2}>{item.bio}</Text>
             </View>
           </View>
           <View style={styles.labelContainer}>
             <TouchableOpacity onPress={this.props.onFollow}>
               <View style={styles.followText}>
-                <Text style={styles.followButton}>Following</Text>
+                <Text style={[DFonts.Regular, styles.followButton]}>Following</Text>
               </View>
             </TouchableOpacity>
           </View>

@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../../theme/colors';
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
-import { BIG_FONT_SIZE, NORMAL_FONT_SIZE, BIGGER_FONT_SIZE, SMALL_FONT_SIZE } from '../../../theme/fonts';
+import { BIG_FONT_SIZE, NORMAL_FONT_SIZE, BIGGER_FONT_SIZE, SMALL_FONT_SIZE } from '@theme/fonts';
 // define your styles
 const styles = StyleSheet.create({
   container: {
@@ -20,8 +20,6 @@ const styles = StyleSheet.create({
   },
   recString: {
     color: DARK_GRAY_COLOR,
-    fontSize: NORMAL_FONT_SIZE,
-    fontWeight: 'bold'
   },
   users: {
     marginTop: getDeviceHeight(114),   

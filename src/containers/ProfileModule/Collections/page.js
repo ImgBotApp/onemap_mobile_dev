@@ -9,6 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
 import { DARK_GRAY_COLOR } from '@theme/colors';
+import DFonts from '@theme/fonts';
 import * as SCREEN from '@global/screenName'
 import { clone } from '@global';
 import I18n from '@language'
@@ -143,7 +144,7 @@ class Collections extends Component {
 
   _renderTabHeader(text) {
     return (
-      <Text name={text} style={styles.TabText} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>
+      <Text name={text} style={[DFonts.Title, styles.TabText]} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>
     )
   }
   onCollectionItem(data) {
@@ -256,7 +257,7 @@ class Collections extends Component {
                 <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
               )}
               <Callout style={styles.customView} onPress={() => this.openPlaceProfile(item.id)}>
-                <Text style={{ flexWrap: "nowrap" }}>{item.address}</Text>
+                <Text style={[DFonts.Regular, { flexWrap: "nowrap" }]}>{item.address}</Text>
               </Callout>
             </Marker>
           )}

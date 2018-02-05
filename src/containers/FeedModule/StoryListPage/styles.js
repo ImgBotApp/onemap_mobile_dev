@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     marginLeft: getDeviceWidth(96)
   },
   storyTitle: {
-    fontFamily: 'Comfortaa-regular',
+    fontFamily: 'Comfortaa-Regular',
     fontSize: 14,
     color: '#575858',
     marginBottom: getDeviceHeight(83)

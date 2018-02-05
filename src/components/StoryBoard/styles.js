@@ -11,15 +11,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
     alignItems: 'center'
-  },
-  text: {
-    position: 'absolute',
-    margin: 5,
-    bottom: 10,
-    backgroundColor: 'transparent',
-    color: '#e2dfe1',
-    width: '100%',
-    textAlign: 'center'
   }
 });
 

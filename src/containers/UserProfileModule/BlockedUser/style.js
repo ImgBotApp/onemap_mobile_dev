@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#efefef',
   },
   headerTitle: {
-		fontFamily: 'Comfortaa-regular',
+		fontFamily: 'Comfortaa-Regular',
     color: '#575858',
     fontSize: 16
 	},
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   rightNavText: {
     marginRight: getDeviceWidth(45),
-    fontFamily: 'Comfortaa-regular',
+    fontFamily: 'Comfortaa-Regular',
     color: '#575858',
     // fontSize: 14,
     fontWeight: 'bold'

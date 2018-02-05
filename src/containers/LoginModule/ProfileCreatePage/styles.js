@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize          : 13,
-    fontFamily        : 'Comfortaa-regular',
+    fontFamily        : 'Comfortaa-Regular',
     textAlign         : 'center'
   },
   profile: {
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     marginBottom    :getDeviceHeight(30),
     textAlign       : 'center',
     fontSize        : 13,
-    fontFamily      : 'Comfortaa-regular',
+    fontFamily      : 'Comfortaa-Regular',
     color           : DARK_GRAY_COLOR,
     marginLeft      : getDeviceHeight(300),
     marginRight     : getDeviceHeight(300),
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
   gender: {
     borderBottomWidth: 0,  
-    fontFamily: 'Comfortaa-light',
+    fontFamily: 'Comfortaa-Light',
   },
   genderIcon:{
     width:getDeviceHeight(62),
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     marginTop :getDeviceHeight(75),
   },
   genderItem:{
-    fontFamily: 'Comfortaa-light',
+    fontFamily: 'Comfortaa-Light',
   },
   fontAweSome: {
     alignItems: 'center',
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     // height: getDeviceHeight(98),
     alignItems: 'flex-end',
     borderBottomColor: '#b0b0b0',
-    fontFamily: 'Comfortaa-light',
+    fontFamily: 'Comfortaa-Light',
   },
   bioText: {
     marginLeft: getDeviceWidth(51),
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     // borderBottomWidth: Platform.OS === 'ios' ? 1 : 0,
     height: getDeviceHeight(402),
     alignItems: 'flex-end',
-    fontFamily: 'Comfortaa-light',
+    fontFamily: 'Comfortaa-Light',
     // borderBottomColor: '#b0b0b0'    
   },
   text: {
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     // alignItems: 'flex-end',
     borderBottomWidth: 1,
     borderBottomColor: '#b0b0b0',
-    fontFamily        : 'Comfortaa-light'
+    fontFamily        : 'Comfortaa-Light'
   },
   borderItem: {
     borderBottomWidth: 1,
@@ -183,10 +183,10 @@ const styles = StyleSheet.create({
     marginLeft        : GLOBAL.getDeviceWidth(226),
     // marginBottom      : GLOBAL.getDeviceHeight(58),
     fontSize          : 13,
-    fontFamily        : 'Comfortaa-light'
+    fontFamily        : 'Comfortaa-Light'
   },
   biolabel:{
-    fontFamily        : 'Comfortaa-light',
+    fontFamily        : 'Comfortaa-Light',
     alignSelf         :"flex-start",
     marginTop         :getDeviceHeight(30),
     marginLeft        :getDeviceWidth(20)

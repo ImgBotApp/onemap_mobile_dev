@@ -2,8 +2,29 @@ import { StyleSheet } from 'react-native'
 import { BLUE_COLOR } from './colors';
 
 export default styles = StyleSheet.create({
-  DFontFamily: {
-    fontFamily: 'Comfortaa-regular'
+  Header: {
+    fontFamily: 'Comfortaa-Bold',
+    fontSize: 20
+  },
+  Title: {
+    fontFamily: 'Comfortaa-Regular',
+    fontSize: 18
+  },
+  SubTitle: {
+    fontFamily: 'Comfortaa-Light',
+    fontSize: 10
+  },
+  Content: {
+    fontFamily: 'Comfortaa-Regular',
+    fontSize: 15
+  },
+  SubContent: {
+    fontFamily: 'Comfortaa-Regular',
+    fontSize: 13
+  },
+  Regular: {
+    fontFamily: 'Comfortaa-Regular',
+    fontSize: 13
   },
   AdditionalText: {
     fontSize: SMALL_FONT_SIZE,

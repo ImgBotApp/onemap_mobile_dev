@@ -10,6 +10,7 @@ import { getDeviceWidth, getDeviceHeight } from '@global'
 import styles from './styles'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
+import DFonts from '@theme/fonts';
 import { GET_PLACES_FROM_GOOGLEId } from '@graphql/places'
 import { client } from '@root/main'
 
@@ -245,7 +246,7 @@ class SearchPage extends Component {
                             <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
                           )}
                           <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
-                            <Text style={{ flexWrap: "nowrap" }}>{marker.title}</Text>
+                            <Text style={[DFonts.Regular, { flexWrap: "nowrap" }]}>{marker.title}</Text>
                           </Callout>
                         </Marker>
                       ))}
@@ -260,7 +261,7 @@ class SearchPage extends Component {
                               <Image source={require('@assets/images/map_position.png')} style={styles.mapmarker} />
                             )}
                             <Callout style={styles.customView}>
-                              <Text style={{ flexWrap: "nowrap" }}>{curr_position}</Text>
+                              <Text style={[DFonts.Regular, { flexWrap: "nowrap" }]}>{curr_position}</Text>
                             </Callout>
                           </Marker>
                         ) : null
@@ -278,10 +279,10 @@ class SearchPage extends Component {
                           <View style={styles.infomation}>
                             <View>
                               <TouchableOpacity onPress={() => this.onPlaceProfile(item.placeID)}>
-                                <Text style={styles.name}>{item.name}</Text>
+                                <Text style={[DFonts.Title, styles.name]}>{item.name}</Text>
                                 {this.state.isSelected ?
-                                  <Text style={styles.following}>{item.vicinity}</Text>
-                                  : <Text style={styles.following}>{item.address}</Text>
+                                  <Text style={[DFonts.SubTitle, styles.following]}>{item.vicinity}</Text>
+                                  : <Text style={[DFonts.SubTitle, styles.following]}>{item.address}</Text>
                                 }
                               </TouchableOpacity>
                             </View>
