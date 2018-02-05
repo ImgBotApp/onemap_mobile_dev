@@ -87,7 +87,7 @@ class FeedPage extends Component {
       query: GET_SUGGEST_USERS,
       variables: {
         currentUserId: id,
-        currentUserFollowsIds: follows.map(item => item.id),
+        currentUserFollowsIds: follows ? follows.map(item => item.id) : [],
         currentUserBlockByUsersIds: blockByUsers ? blockByUsers.map(item => item.id) : []
       }
     }).then((users) => {
@@ -483,7 +483,7 @@ const ComponentWithQueries = graphql(PLACES_PAGINATED, {
     return {
       variables: {
         userId: props.user.id,
-        followsIds: props.follows.map(item => item.id),
+        followsIds: props.follows ? props.follows.map(item => item.id) : [],
         skip: 0,
         first: PLACES_PER_PAGE
       }

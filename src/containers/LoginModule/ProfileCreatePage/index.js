@@ -135,7 +135,7 @@ class ProfileCreatePage extends Component {
             mobileVerification: false,
             mobile: "iPhone",
             gender: this.state.gender.toUpperCase(),
-            checkedIn: [],
+            checkIns: [],
             blockByUsers: []
           });
           this.props.updateUser({

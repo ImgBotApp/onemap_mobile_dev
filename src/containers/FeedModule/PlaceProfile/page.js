@@ -35,7 +35,7 @@ import LoadingSpinner from '@components/LoadingSpinner'
 import ImageSliderComponent from '@components/ImageSliderComponent'
 import TitleImage from '@components/TitledImage'
 import ViewMoreText from '@components/ViewMoreText';
-import { calculateCount, clone, getDeviceWidth, calculateDuration } from '@global'
+import { calculateCount, clone, getDeviceWidth, calculateDuration, getTimeDiff } from '@global'
 import { uploadImage, uploadMedia } from '@global/cloudinary';
 import { getThumlnailFromVideoURL, getMediaTypeFromURL } from '@global/const';
 import * as SCREEN from '@global/screenName'
@@ -115,7 +115,7 @@ class PlaceProfile extends PureComponent {
         image: [],
         map: null,
         heartedIds: [],
-        checkedInIds: [],
+        checkIns: [],
         collectionIds: [],
         keywords: [],
         comments: [],
@@ -196,7 +196,7 @@ class PlaceProfile extends PureComponent {
             openingHours: [data.openingHrs]
           },
           heartedIds: data.usersLike.map(item => item.id),
-          checkedInIds: data.userCheckedIn.map(item => item.id),
+          checkIns: data.checkIns,
           collectionIds: this.props.place && this.props.place.collectionIds ? this.props.place.collectionIds : data.collections.map(item => item.id),
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
           comments: [...ownerStories, ...otherStories],
@@ -204,7 +204,11 @@ class PlaceProfile extends PureComponent {
         },
         myStory: myStories.length ? myStories[0] : this.state.myStory,
         storyImages: myStories.length ? [...myStories[0].pictureURL.map(item => ({ uri: item })), ...this.state.storyImages] : this.state.storyImages
-      })
+      });
+      const myLastChecked = data.checkIns.filter(item => item.user.id === this.props.user.id);
+      if (myLastChecked.length) {
+        this.lastChecked = myLastChecked[myLastChecked.length - 1].createdAt;
+      }
     }).catch(err => alert(err));
   }
 
@@ -366,20 +370,26 @@ class PlaceProfile extends PureComponent {
   }
 
   onCheckInClick() {
+    if (this.lastChecked && (getTimeDiff(new Date(this.lastChecked), new Date()) < 20/* 60*/)) {// 20 min
+      alert('You have to wait 20 min after last check-in');
+      return;
+    }
     Vibration.vibrate();
-    let placeData = clone(this.state.placeData);
-    let checks = placeData.checkedInIds;
-    checks.push(this.props.user.id);
-    this.props.saveUserInfo({ ...this.props.user, checkedIn: [...this.props.user.checkedIn, placeData.id] });
-
+    let placeData = this.state.placeData;
     this.props.checkInPlace({
       variables: {
-        id: placeData.id,
-        checkedIds: checks
+        placeId: placeData.id,
+        userId: this.props.user.id,
+        lat: 0,
+        lng: 0
       }
     }).then(({ data }) => {
-      this.setState({ placeData });
+      let checks = clone(placeData.checkIns);
+      checks.push(data.createCheckIn);
+      this.setState({ placeData: { ...placeData, checkIns: checks } });
+      this.lastChecked = data.createCheckIn.createdAt;
       client.resetStore();
+      this.props.saveUserInfo({ ...this.props.user, checkIns: [...this.props.user.checkIns, data.createCheckIn.id] });
     }).catch(err => alert(err));
   }
 
@@ -485,7 +495,7 @@ class PlaceProfile extends PureComponent {
           </View>
           <View style={styles.interestItem}>
             <Foundation name="marker" size={12} color={BLUE_COLOR} />
-            <Text style={styles.interestText}>{calculateCount(this.state.placeData.checkedInIds.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
+            <Text style={styles.interestText}>{calculateCount(this.state.placeData.checkIns.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
           </View>
           <View style={styles.interestItem}>
             <Foundation name="bookmark" size={12} color={RED_COLOR} />

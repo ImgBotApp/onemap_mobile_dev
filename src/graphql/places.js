@@ -21,8 +21,10 @@ export const PLACES_PAGINATED = gql`
     allPlaces(first: $first, skip: $skip, orderBy: updatedAt_DESC, filter: {
       OR: [
         {
-          userCheckedIn_some: {
-            id: $userId
+          checkIns_some: {
+            user: {
+              id: $userId
+            }
           }
         },
         {
@@ -45,8 +47,10 @@ export const PLACES_PAGINATED = gql`
           }
         },
         {
-          userCheckedIn_some: {
-            id_in: $followsIds
+          checkIns_some: {
+            user: {
+              id_in: $followsIds
+            }
           }
         },
         {
@@ -164,8 +168,12 @@ export const GET_PLACE_PROFILE = gql`
         }
         updatedAt
       }
-      userCheckedIn {
+      checkIns {
         id
+        createdAt
+        user {
+          id
+        }
       }
       usersLike {
         id
@@ -281,16 +289,40 @@ export const LIKE_PLACE = gql`
   }
 `
 
-export const CHECK_IN_PLACE = gql`
-  mutation (
-    $id: ID!,
-    $checkedIds: [ID!]
-  ) {
-    updatePlace(
-      id: $id,
-      userCheckedInIds: $checkedIds
-    ) {
-      id
+export const GET_CHECKED_PLACES = gql`
+query GetCheckedPlaces($userId: ID!) {
+  allPlaces(orderBy: updatedAt_DESC, filter: {
+    checkIns_some: {
+      user: {
+        id: $userId
+      }
     }
+  }) {
+    id
+    createdAt
+    updatedAt
+    description
+    source
+    sourceId
+    createSide
+    placeName
+    locationLat
+    locationLong
+    addressAreaDistrict
+    addressCityTown
+    addressStateProvince
+    addressCountry
+    addressPostalCode
+    addressStreet
+    address
+    phoneNumber
+    website
+    facebook
+    line
+    openingHrs
+    pictureURL
+    status
+    placeOwner
   }
+}
 `

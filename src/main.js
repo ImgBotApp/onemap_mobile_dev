@@ -112,7 +112,7 @@ export default class App {
                   lastName: data.lastName,
                   displayName: data.displayName,
                   username: data.username,
-                  checkedIn: data.checkedIn.map(item => item.id),
+                  checkIns: data.checkIns.map(item => item.id),
                   blockByUsers: data.blockByUsers
                 })
               );

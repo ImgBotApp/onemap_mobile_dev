@@ -17,7 +17,8 @@ import styles from './styles'
 import { client } from '@root/main';
 import { graphql } from "react-apollo";
 import { GET_COLLECTION_WITH_PLACES, GET_COLLECTIONS_WITH_PLACES } from '@graphql/collections';
-import { GET_USER_WITH_CHECKED_PLACES, GET_USER_WITH_LIKED_PLACES } from '@graphql/userprofile'
+import { GET_CHECKED_PLACES } from '@graphql/collections';
+import { GET_USER_WITH_LIKED_PLACES } from '@graphql/userprofile'
 
 const PLACES_PER_PAGE = 20;
 
@@ -101,12 +102,12 @@ class Collections extends Component {
   getCheckedPlaces() {
     this.setState({ loading: true });
     client.query({
-      query: GET_USER_WITH_CHECKED_PLACES,
+      query: GET_CHECKED_PLACES,
       variables: {
         userId: this.props.userId ? this.props.userId : this.props.user.id,
       }
     }).then(({ data }) => {
-      this.setState({ places: data.User.checkedIn, loading: false });
+      this.setState({ places: data.allPlaces, loading: false });
     }).catch(err => alert(err))
   }
   getCollectionPlaces() {

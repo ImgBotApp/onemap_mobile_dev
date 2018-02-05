@@ -77,7 +77,7 @@ class ProfilePage extends Component {
       let user = this.state.user;
       user.bio = User.bio;
       user.followers = User._followersMeta.count;
-      user.checked = User._checkedInMeta.count;
+      user.checked = User._checkInsInMeta.count;
       user.accountVerification = User.accountVerification;
       this.setState({ user, collections: User.collections, stories: User.stories });
     }).catch(err => alert(err))
@@ -151,7 +151,7 @@ class ProfilePage extends Component {
 
   render() {
     const { user, collections, stories, campaigns } = this.state;
-    const followed = this.props.follows.map(item => item.id).includes(user.id);
+    const followed = this.props.follows && this.props.follows.map(item => item.id).includes(user.id);
 
     return (
       <ScrollView style={styles.container}>

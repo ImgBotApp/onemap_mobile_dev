@@ -31,6 +31,10 @@ export function calculateDuration(updateDate) {
   return `Updated ${year} years ago`
 }
 
+export function getTimeDiff(date1, date2) {
+  return (date2.getTime() - date1.getTime()) / 1000;
+}
+
 export function calculateCount(count) {
   var ret;
   if (!count) {

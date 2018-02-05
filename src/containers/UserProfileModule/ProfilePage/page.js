@@ -115,7 +115,7 @@ class ProfileComponent extends Component {
     if (!GetFollowersList.loading && GetFollowersList.User.followers)
       follower_cnt = GetFollowersList.User.followers ? GetFollowersList.User.followers.length : 0;
 
-    const checked_cnt = user.checkedIn.length;
+    const checked_cnt = user.checkIns.length;
 
     return (
       <ScrollView style={styles.container}>
