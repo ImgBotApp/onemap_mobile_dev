@@ -68,7 +68,6 @@ class AllCollections extends Component {
   onItemPress(item) {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
       animated: true,
       passProps: {
         collection: item
@@ -78,7 +77,7 @@ class AllCollections extends Component {
   onItemRemove(item) {
     Alert.alert(
       item.name,
-      'Do you want to remove this?',
+      'Do you want to remove ' + item.name + '?',
       [
         { text: 'OK', onPress: () => this.deleteUserCollection(item.id) },
         { text: 'Cancel', style: 'cancel' }
@@ -99,7 +98,6 @@ class AllCollections extends Component {
   onViewCollectionItem = (item) => {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
       animated: true,
       passProps: {
         type: item
@@ -109,17 +107,16 @@ class AllCollections extends Component {
   onViewCollectionsAll = () => {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
       animated: true,
       passProps: {
-        type: 'bookmark'
-      }
+        type: 'bookmark',
+        userId: this.props.userId
+      },
     })
   }
   onViewStories = () => {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
-      title: I18n.t('DRAWER_STORIES'),
       animated: true,
       passProps: {
         places: this.props.data.allStories.map(item => item.place)

@@ -25,16 +25,16 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb519021981830054</string>
+				<string>fb163236004399299</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
-	<string>519021981830054</string>
+	<string>163236004399299</string>
 	<key>FacebookDisplayName</key>
-	<string>malakOneMap</string>
+	<string>Mod</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

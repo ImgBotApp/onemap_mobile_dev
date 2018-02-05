@@ -26,6 +26,15 @@ export const GET_PROFILE = gql`
       registrationDate
       group
       accountStatus
+      follows {
+        id
+      }
+      checkIns {
+        id
+      }
+      blockByUsers {
+        id
+      }
     }
   }
 `
@@ -38,7 +47,7 @@ export const UPDATE_PROFILE = gql`
  mutation UpdateProfile (
     $id: ID! # user id
     $country: String
-    $city: String 
+    $city: String
     $displayName: String
     $email: String
     $username: String
@@ -52,11 +61,12 @@ export const UPDATE_PROFILE = gql`
     $mobileVerification: Boolean
     $mobile: String
     $gender: Gender #  NOT_SPECIFIC, MALE or FEMAIL
+    $group: [UserGroup!]  #USER, ADMIN, PARTNER, OFFICIAL
   ) {
     updateUser(
       id: $id
       country: $country
-      city: $city 
+      city: $city
       displayName: $displayName
       email: $email
       username: $username
@@ -70,6 +80,7 @@ export const UPDATE_PROFILE = gql`
       mobileVerification: $mobileVerification
       mobile: $mobile
       gender: $gender
+      group:$group
     ) {
       id
       firstName
@@ -80,8 +91,9 @@ export const UPDATE_PROFILE = gql`
       registrationDate
       country
       city
+      group
     }
-  } 
+  }
 `
 
 /**
@@ -95,6 +107,10 @@ query GetOneMapperProfile($userId: ID!) {
     _followersMeta {
       count
     }
+    _checkInsMeta {
+      count
+    }
+    accountVerification
     collections {
       id
       type
@@ -192,8 +208,8 @@ export const GET_FOLLOWERS = gql`
  */
 export const GET_FOLLOWS = gql`
   query GetFollows (
-      $userId: ID!, 
-      $skip: Int, 
+      $userId: ID!,
+      $skip: Int,
       $first: Int,
       $blockUsersIds: [ID!]!
     ) {
@@ -228,33 +244,17 @@ export const GET_FOLLOWS = gql`
 `
 
 /**
- * List follows and blocked Ids, before ListSuggestUser
- */
-export const GET_FOLLOWS_AND_BLOCKED_IDS = gql`#unused
-  query GetFollowersAndBlockedIds ($currentUserId: ID!) {
-    User(id: $currentUserId) {
-        follows {
-          id
-        }
-        blockByUsers {
-          id
-        }
-      }
-  }
-`
-
-/**
  * List Users, skip self and current follows users
  * exmaple params: {"currentUserId": "cjc0e32mvo10a0113jdx7g0qo", "currentUserFollowsIds": ["cjc02c13zmbig01130q1tj6dt", "cjc04z5q3mo610113h7hmofgn"], "currentUserBlockByUsersIds": []}
- * @return [User] 
+ * @return [User]
  */
-export const GET_SUGGEST_USERS = gql`#unused
+export const GET_SUGGEST_USERS = gql`
   query ListSuggestUser(
-    $first: Int, 
-    $skip: Int, 
-    $currentUserId: ID!, 
+    $first: Int,
+    $skip: Int,
+    $currentUserId: ID!,
     $currentUserFollowsIds: [ID!]!, #Array of ID, extracted from GetFollowersAndBlockedIds.User.follows
-    $currentUserBlockByUsersIds: [ID!]! #Array of ID, extracted from GetFollowersAndBlockedIds.User.blockByUsers 
+    $currentUserBlockByUsersIds: [ID!]! #Array of ID, extracted from GetFollowersAndBlockedIds.User.blockByUsers
   ) {
     allUsers(first: $first, skip: $skip, filter: {
       AND: [
@@ -262,28 +262,15 @@ export const GET_SUGGEST_USERS = gql`#unused
         { isSuggest: true },
         { id_not: $currentUserId }, #remove self from list
         { id_not_in: $currentUserFollowsIds },
-        { id_not_in: $currentUserBlockByUsersIds }, 
+        { id_not_in: $currentUserBlockByUsersIds },
       ]
     }) {
       id
-      email
       username
       firstName
       lastName
       displayName
-      bio
-      gender
-      birthdate
-      mobile
-      mobileVerification
-      city
-      country
       photoURL
-      loginMethod
-      registrationDate
-      group
-      accountStatus
-			isSuggest
     }
   }
 `
@@ -293,8 +280,8 @@ export const GET_SUGGEST_USERS = gql`#unused
  */
 export const GET_BLOCKUSRS = gql`
   query GetBlockUsers (
-    $userId: ID!, 
-    $skip: Int, 
+    $userId: ID!,
+    $skip: Int,
     $first: Int) {
     User(id: $userId) {
       id
@@ -356,42 +343,7 @@ export const FOLLOW_USER = gql`
         isSuggest
       }
     }
-  } 
-`
-
-export const GET_USER_WITH_CHECKED_PLACES = gql`
-query GetCheckedPlaces($userId: ID!) {
-  User(id: $userId) {
-    id
-    checkedIn {
-      id
-      createdAt
-      updatedAt
-      description
-      source
-      sourceId
-      createSide
-      placeName
-      locationLat
-      locationLong
-      addressAreaDistrict
-      addressCityTown
-      addressStateProvince
-      addressCountry
-      addressPostalCode
-      addressStreet
-      address
-      phoneNumber
-      website
-      facebook
-      line
-      openingHrs
-      pictureURL
-      status
-      placeOwner
-    }
   }
-}
 `
 
 export const GET_USER_WITH_LIKED_PLACES = gql`

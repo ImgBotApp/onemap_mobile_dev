@@ -1,8 +1,7 @@
 
 import page from './page'
 import { connect } from 'react-redux'
-import { saveProfileInfo } from '@actions/userLogIn'
-import { logout } from '../../../reducers/app/actions'
+import { logout } from '@reducers/user/actions'
 
 function mapStateToProps (state) {
   return {
@@ -11,11 +10,7 @@ function mapStateToProps (state) {
 }
 
 function mapDispatchToProps (dispatch) {
-  // return bindActionCreators(Actions, dispatch)
   return {
-    saveProfileInfo: data => {
-      dispatch(saveProfileInfo(data))
-    },
     logout: () => {
       dispatch(logout())
     }

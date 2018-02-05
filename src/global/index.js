@@ -16,9 +16,9 @@ export function getDeviceHeight(height) {
 export function calculateDuration(updateDate) {
   var one_day = 1000 * 60 * 60 * 24;
   var today = new Date().getTime()
-  console.log(today);
+  //console.log(today);
   var updatedTime = new Date(updateDate).getTime()
-  console.log(updatedTime);
+  //console.log(updatedTime);
   var duration = Math.floor((today - updatedTime) / one_day)
 
   if (duration == 0) return `Updated yesterday`
@@ -29,6 +29,10 @@ export function calculateDuration(updateDate) {
   var year = Math.floor(months / 12)
   if (year == 0) return `Updated a Year ago`
   return `Updated ${year} years ago`
+}
+
+export function getTimeDiff(date1, date2) {
+  return (date2.getTime() - date1.getTime()) / 1000;
 }
 
 export function calculateCount(count) {

@@ -25,7 +25,7 @@ import { client } from '@root/main'
 import { graphql } from "react-apollo";
 
 import { PLACES_PAGINATED } from "@graphql/places";
-import { SUGGEST_USERS } from '@graphql/users'
+import { GET_SUGGEST_USERS } from '@graphql/userprofile'
 import { GET_MY_COLLECTIONS } from '@graphql/collections'
 
 // create a component
@@ -42,7 +42,6 @@ class FeedPage extends Component {
         type: 'users',
         data: []
       },
-      loading: false,
       refreshing: false,
       selectedCollections: [],
       loading: true
@@ -59,7 +58,8 @@ class FeedPage extends Component {
       this.onRefresh();
       // this.fetchFeedItems();
       this.props.placeUpdate(false);
-    } else if (nextProps.data.allPlaces != this.props.data.allPlaces) {
+    } else if (nextProps.data.allPlaces &&
+      (nextProps.data.allPlaces != this.props.data.allPlaces || this.state.loading)) {
       let graphcoolData = nextProps.data.allPlaces.map((place) => {
         return {
           id: place.id,
@@ -68,10 +68,10 @@ class FeedPage extends Component {
             id: place.createdBy.id,
             displayName: place.createdBy.displayName,
             username: place.createdBy.username,
-            photoURL: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
+            photoURL: place.createdBy.photoURL,
             updated: new Date(place.updatedAt)
           },
-          feedTitle: place.placeName,
+          placeName: place.placeName,
           images: place.pictureURL ? place.pictureURL.map(uri => { return { uri } }) : [],
           description: place.description || '',
           bookmark: this.isBookmarked(place),
@@ -82,8 +82,14 @@ class FeedPage extends Component {
     }
   }
   getSuggestUsers() {
+    const { user: { id, blockByUsers }, follows } = this.props;
     client.query({
-      query: SUGGEST_USERS
+      query: GET_SUGGEST_USERS,
+      variables: {
+        currentUserId: id,
+        currentUserFollowsIds: follows ? follows.map(item => item.id) : [],
+        currentUserBlockByUsersIds: blockByUsers ? blockByUsers.map(item => item.id) : []
+      }
     }).then((users) => {
       this.suggestUsers = {
         id: 'a1',
@@ -109,43 +115,43 @@ class FeedPage extends Component {
       this.props.saveCollections(collections.data.allCollections);
     })
   }
-  fetchFeedItems = () => {//unused
-    client.query({
-      query: PLACES_PAGINATED,
-      variables: {
-        first: 10,
-        skip: this.state.skip
-      }
-    }).then((places) => {
-      items = places.data.allPlaces.map((place) => {
-        return {
-          id: place.id,
-          type: 'item',
-          user: {
-            name: place.createdBy.username,
-            id: place.createdBy.id,
-            uri: place.createdBy.photoURL || 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg',
-            updated: new Date(place.updatedAt)
-          },
-          feedTitle: place.placeName,
-          images: place.pictureURL.map(item => { return { uri: item } }),
-          place: '',
-          description: place.description || '',
-          bookmark: this.isBookmarked(place),
-          collectionIds: place.collections.map(collection => collection.id)//will be removed later
-        }
-      });
-      this.setState({
-        items: [this.suggestUsers, ...items],
-        loading: false,
-        refreshing: false
-      })
-    }).catch(error => {
-      this.setState({
-        loading: false
-      })
-    })
-  }
+  // fetchFeedItems = () => {//unused
+  //   client.query({
+  //     query: PLACES_PAGINATED,
+  //     variables: {
+  //       first: 10,
+  //       skip: this.state.skip
+  //     }
+  //   }).then((places) => {
+  //     items = places.data.allPlaces.map((place) => {
+  //       return {
+  //         id: place.id,
+  //         type: 'item',
+  //         user: {
+  //           name: place.createdBy.username,
+  //           id: place.createdBy.id,
+  //           uri: place.createdBy.photoURL,
+  //           updated: new Date(place.updatedAt)
+  //         },
+  //         placeName: place.placeName,
+  //         images: place.pictureURL.map(item => { return { uri: item } }),
+  //         place: '',
+  //         description: place.description || '',
+  //         bookmark: this.isBookmarked(place),
+  //         collectionIds: place.collections.map(collection => collection.id)//will be removed later
+  //       }
+  //     });
+  //     this.setState({
+  //       items: [this.suggestUsers, ...items],
+  //       loading: false,
+  //       refreshing: false
+  //     })
+  //   }).catch(error => {
+  //     this.setState({
+  //       loading: false
+  //     })
+  //   })
+  // }
   isBookmarked(place) {
     let marked = false;
     place.collections.forEach(collection => {
@@ -298,7 +304,7 @@ class FeedPage extends Component {
     )
   }
   _renderItem = ({ item, index }) => {
-    if (item.type) {
+    if (item && item.type) {
       switch (item.type) {
         case 'users':
           return this._renderSuggestedList(item.data)
@@ -332,7 +338,6 @@ class FeedPage extends Component {
   onPlace(data, index) {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
-      title: I18n.t('PLACE_TITLE'),
       animated: true,
       passProps: {
         place: data,
@@ -392,17 +397,18 @@ class FeedPage extends Component {
       </View>
     )
   };
-  handleLoadMore = () => {//unused
-    this.setState({
-      skip: this.state.skip + 10,
-      refreshing: true
-    }, () => {
-      this.fetchFeedItems();
-      this.setState({
-        refreshing: false
-      })
-    })
-  }
+  // handleLoadMore = () => {//unused
+  //   this.setState({
+  //     skip: this.state.skip + 10,
+  //     refreshing: true
+  //   }, () => {
+  //     this.fetchFeedItems();
+  //     this.setState({
+  //       refreshing: false
+  //     })
+  //   })
+  // }
+
   render() {
     if (this.state.loading)
       return (
@@ -449,7 +455,7 @@ class FeedPage extends Component {
                 <TouchableOpacity key={index} style={styles.collectionContainer} onPress={() => this.addBookmark(collection.id)}>
                   <TitleImage
                     style={styles.collection}
-                    uri={collection.pictureURL ? collection.pictureURL : 'https://placeimg.com/640/480/any'}
+                    uri={collection.pictureURL}
                     title={collection.name}
                     radius={8}
                     vAlign={'center'}
@@ -473,10 +479,14 @@ class FeedPage extends Component {
 }
 
 const ComponentWithQueries = graphql(PLACES_PAGINATED, {
-  options: {
-    variables: {
-      skip: 0,
-      first: PLACES_PER_PAGE
+  options: (props) => {
+    return {
+      variables: {
+        userId: props.user.id,
+        followsIds: props.follows ? props.follows.map(item => item.id) : [],
+        skip: 0,
+        first: PLACES_PER_PAGE
+      }
     }
   }
 })

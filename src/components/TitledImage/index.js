@@ -58,7 +58,16 @@ class TitledImage extends Component {
         onPress={this.props.onPress ? this.props.onPress : null}
         onLongPress={this.props.onLongPress ? this.props.onLongPress : null}
       >
-        <Image source={{ uri: this.state.uri }} style={[styles.image, { borderRadius: this.props.radius }]}></Image>
+        {this.state.uri ?
+          <Image
+            source={{ uri: this.state.uri }}
+            style={[styles.image, { borderRadius: this.props.radius }]}>
+          </Image>
+          :
+          <View
+            style={[styles.imagePlaceholder, { borderRadius: this.props.radius }]}
+          />
+        }
         <Text style={[styles.text, this.props.titleStyle]}>{this.state.title}</Text>
       </TouchableOpacity>
     );

@@ -13,7 +13,7 @@ export const PLACES_APIKEY = 'AIzaSyDqbVkKnQIprdvj8OOk9DYxPz0dnP0y4zA';
 
 export const EMPTY_IMG = 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg';
 
-export function getMediatTypeFromURL(url) {
+export function getMediaTypeFromURL(url) {
   let result = false;
   if (url) {
     let splitUrl = url.split('/');
@@ -33,9 +33,9 @@ export function getMediatTypeFromURL(url) {
   return result;
 }
 export function getThumlnailFromVideoURL(videourl) {
-  if (getMediatTypeFromURL(videourl)) {
+  if (getMediaTypeFromURL(videourl)) {
     let splitUrl = videourl.slice(0, videourl.length - 3);
     return splitUrl + "JPG";
   }
-  else return videourl ? videourl : EMPTY_IMG;
+  else return videourl;
 }

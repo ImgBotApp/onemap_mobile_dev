@@ -6,7 +6,7 @@ import styles from './styles'
 import { EMPTY_IMG } from '@global/const';
 
 function getVAlign(align) {
-  switch(align) {
+  switch (align) {
     case 'center':
       return 'center'
     case 'top':
@@ -16,7 +16,7 @@ function getVAlign(align) {
   }
 }
 function getHAlign(align) {
-  switch(align) {
+  switch (align) {
     case 'center':
       return 'center'
     case 'left':
@@ -28,7 +28,7 @@ function getHAlign(align) {
 
 // create a component
 class AutoHeightTitledImage extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       uri: props.uri || '',
@@ -37,15 +37,15 @@ class AutoHeightTitledImage extends Component {
       radius: props.radius
     }
   }
-  
-  componentWillReceiveProps (props) {
-    this.setState({uri: props.uri})
+
+  componentWillReceiveProps(props) {
+    this.setState({ uri: props.uri })
   }
   render() {
     return (
-      <View style={[this.props.style, styles.container,{justifyContent: this.state.vAlign, alignItems:this.state.hAlign}]}>
-        <AutoHeightImage imageURL={this.state.uri?this.state.uri:EMPTY_IMG} width={this.props.width} style={{borderWidth: 1, borderColor: 'transparent', borderRadius: this.props.radius ? this.props.radius : 8}}/>
-        <Text numberOfLines={3} ellipsizeMode ={'tail'} style={[styles.text, this.props.titleStyle]}>{this.props.title}</Text>
+      <View style={[this.props.style, styles.container, { justifyContent: this.state.vAlign, alignItems: this.state.hAlign }]}>
+        <AutoHeightImage imageURL={this.state.uri ? this.state.uri : EMPTY_IMG} width={this.props.width} style={{ borderWidth: 1, borderColor: 'transparent', borderRadius: this.props.radius ? this.props.radius : 8 }} />
+        <Text numberOfLines={3} ellipsizeMode={'tail'} style={[styles.text, this.props.titleStyle]}>{this.props.title}</Text>
       </View>
     );
   }

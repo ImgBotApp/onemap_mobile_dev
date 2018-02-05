@@ -17,8 +17,63 @@ export const GET_ALL_PLACES = gql`
   }
 `
 export const PLACES_PAGINATED = gql`
-  query Places($first: Int!, $skip: Int!) {
-    allPlaces(first: $first, skip: $skip) {
+  query Places($first: Int!, $skip: Int!, $userId: ID!, $followsIds: [ID!]) {
+    allPlaces(first: $first, skip: $skip, orderBy: updatedAt_DESC, filter: {
+      OR: [
+        {
+          checkIns_some: {
+            user: {
+              id: $userId
+            }
+          }
+        },
+        {
+          usersLike_some: {
+            id: $userId
+          }
+        },
+        {
+          collections_some: {
+            user: {
+              id: $userId
+            }
+          }
+        },
+        {
+          stories_some: {
+            createdBy: {
+              id: $userId
+            }
+          }
+        },
+        {
+          checkIns_some: {
+            user: {
+              id_in: $followsIds
+            }
+          }
+        },
+        {
+          usersLike_some: {
+            id_in: $followsIds
+          }
+        },
+        {
+          collections_some: {
+            user: {
+              id_in: $followsIds
+            }
+          }
+        },
+        {
+          stories_some: {
+            createdBy: {
+              id_in: $followsIds
+            }
+          }
+        }
+      ]
+    }) {
       id
       createdAt
       updatedAt
@@ -113,8 +168,12 @@ export const GET_PLACE_PROFILE = gql`
         }
         updatedAt
       }
-      userCheckedIn {
+      checkIns {
         id
+        createdAt
+        user {
+          id
+        }
       }
       usersLike {
         id
@@ -190,7 +249,7 @@ export const GET_PLACES_FROM_GOOGLEId = gql`
  }
  `
 
- export const ADD_COLLECTION_TO_PLACE = gql`
+export const ADD_COLLECTION_TO_PLACE = gql`
   mutation ($id: ID!,
     $collectionIds: [ID!]
   ) {
@@ -230,16 +289,40 @@ export const LIKE_PLACE = gql`
   }
 `
 
-export const CHECK_IN_PLACE = gql`
-  mutation (
-    $id: ID!,
-    $checkedIds: [ID!]
-  ) {
-    updatePlace(
-      id: $id,
-      userCheckedInIds: $checkedIds
-    ) {
-      id
+export const GET_CHECKED_PLACES = gql`
+query GetCheckedPlaces($userId: ID!) {
+  allPlaces(orderBy: updatedAt_DESC, filter: {
+    checkIns_some: {
+      user: {
+        id: $userId
+      }
     }
+  }) {
+    id
+    createdAt
+    updatedAt
+    description
+    source
+    sourceId
+    createSide
+    placeName
+    locationLat
+    locationLong
+    addressAreaDistrict
+    addressCityTown
+    addressStateProvince
+    addressCountry
+    addressPostalCode
+    addressStreet
+    address
+    phoneNumber
+    website
+    facebook
+    line
+    openingHrs
+    pictureURL
+    status
+    placeOwner
   }
+}
 `

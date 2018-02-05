@@ -1,53 +1,83 @@
-//import liraries
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage } from 'react-native'
-import FBSDK, { Loginmanager, LoginManager } from 'react-native-fbsdk'
-import I18n from '@language'
-import styles from './styles'
+import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage, PermissionsAndroid, Platform } from 'react-native'
+import FBSDK, { LoginManager } from 'react-native-fbsdk'
 
 import RoundButton from '@components/RoundButton'
 import LoadingSpinner from '@components/LoadingSpinner'
 import * as SCREEN from '@global/screenName'
 import { ACCOUNT_MODE, APP_USER_KEY } from '@global/const'
-import { DARK_GRAY_COLOR } from '../../../theme/colors';
-import * as appActions from '@reducers/app/actions'
+import I18n from '@language'
+import { DARK_GRAY_COLOR } from '@theme/colors';
+import styles from './styles'
 
-import { EXIST_FACEBOOK_USER } from '@graphql/users'
 import { client } from '@root/main'
-import { saveUserInfo } from '@reducers/user/actions'
 import { GET_PROFILE } from '@graphql/userprofile';
+import { EXIST_FACEBOOK_USER } from '@graphql/users'
 
 const { GraphRequest, GraphRequestManager, AccessToken } = FBSDK
 
 // create a component
 class LoginPage extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       id: '',
       loading: false
     }
   }
+  componentDidMount() {
+    if (Platform.OS == 'android')
+      this.requestLocationPermissionForAndroid();
+  }
+  async requestLocationPermissionForAndroid() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+
+      )
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can get the Location")
+      } else {
+        console.log("Location permission denied")
+      }
+    } catch (err) {
+      console.warn(err)
+    }
+  }
   async _responseInfoCallback(error, result) {
     if (error) {
       // alert('Error fetching data: ' + error.toString());
-      this.setState({loading: false})
-      alert('error, please try again')  
+      this.setState({ loading: false })
+      alert('error, please try again')
     } else {
       var gender = 'NOT_SPECIFIC'
-      if ( result.gender == 'male') 
+      if (result.gender == 'male')
         gender = 'MALE'
-      if ( result.gender == 'female') 
+      if (result.gender == 'female')
         gender = 'FEMALE'
-      
-      let UserExist = await client.query({
+
+      client.query({
         query: GET_PROFILE,
         variables: {
           userId: this.state.id
         }
       }).then((user) => {
         var data = user.data.User
-        if ( data.username ) {
+        if (data.username) {
+
+          // wheter to sync with facebook or not
+          // this.props.updateUser({
+          //   variables: {
+          //     id: this.state.id,
+          //     first_name: result.first_name,
+          //     last_name: result.last_name,
+          //     gender: gender,
+          //     photoURL: result.picture.data.url,
+          //     displayName: result.first_name + " " + result.last_name,
+          //     registrationDate: new Date().toLocaleDateString()
+          //   }
+          // })
+
           this.props.saveUserInfo({
             id: this.state.id,
             createdAt: new Date().toLocaleDateString(),
@@ -61,14 +91,15 @@ class LoginPage extends Component {
             firstName: data.firstName,
             lastName: data.lastName,
             displayName: data.displayName,
-            username: data.username
-          })
-          // this.props.dispatch(appActions.login())
+            username: data.username,
+            checkIns: data.checkIns.map(item => item.id),
+            blockByUsers: data.blockByUsers
+          });
+          this.props.saveUserFollows(data.follows);
           AsyncStorage.setItem(APP_USER_KEY, JSON.stringify({
             id: this.state.id
-          }))
+          }));
           this.props.login();
-          
         } else {
           this.props.navigator.push({
             screen: SCREEN.ACCOUNT_CREATE_PAGE,
@@ -86,68 +117,27 @@ class LoginPage extends Component {
               navBarTextFontFamily: 'Comfortaa-Regular',
               naviBarComponentAlignment: 'center'
             },
-          })        
+          })
         }
-      })
-      // var user = await this.props.updateFacebookUser({
-      //   variables: {
-      //     id: this.state.id,
-      //     first_name: result.first_name,
-      //     last_name: result.last_name,
-      //     gender: gender,
-      //     photoURL: result.picture.data.url,
-      //     displayName: result.first_name + " " + result.last_name,
-      //     registrationDate: new Date().toLocaleDateString()
-      //   }
-      // })
-      // this.props.navigator.push({
-      //   screen: SCREEN.ACCOUNT_CREATE_PAGE,
-      //   title: 'Create Account',
-      //   passProps: {
-      //     mode: ACCOUNT_MODE.create
-      //   },
-      //   animated: true,
-      //   // animationType: 'fade',
-      //   navigatorStyle: {
-      //     // navBarHidden: true
-      //     navBarTextColor: DARK_GRAY_COLOR,
-      //     navBarTextFontFamily: 'Comfortaa-Regular',
-      //     naviBarComponentAlignment: 'center'
-      //   },
-      //   // navigatorButtons: {}
-      // })
-      // var userInfo = user.data.updateUser
-      // this.props.saveProfileInfo({
-      //   username: userInfo.id,
-      //   name: userInfo.displayName,
-      //   gender: userInfo.gender,
-      //   photoURL: userInfo.photoURL,
-      //   first_name: result.first_name,
-      //   last_name: result.last_name,
-      //   registrationDate: userInfo.registrationDate
-      // })
-      this.setState({loading: false})
-      // alert('success')
-    //   this.props.navigation.navigate('Drawer',this.props.user)
+      });
+      this.setState({ loading: false });
     }
   }
-  async _fbAuth () {
-    this.setState({loading: true})
+  async _fbAuth() {
+    this.setState({ loading: true })
     try {
       const value = await AsyncStorage.getItem(APP_USER_KEY);
       let val = JSON.parse(value);
-      if (val !== null && val.id !== null){
-        // We have data!!
-        let UserExist = await client.query({
+      if (val !== null && val.id !== null) {
+        client.query({
           query: GET_PROFILE,
           variables: {
             userId: val.id
           }
         }).then((user) => {
-          this.setState({loading: false})
+          this.setState({ loading: false })
           var data = user.data.User
-          if ( data.username ) {
-            
+          if (data.username) {
             this.props.saveUserInfo({
               id: data.id,
               createdAt: new Date().toLocaleDateString(),
@@ -161,102 +151,56 @@ class LoginPage extends Component {
               firstName: data.firstName,
               lastName: data.lastName,
               displayName: data.displayName,
-              username: data.username
-            })
-            
+              username: data.username,
+              checkIns: data.checkIns.map(item => item.id),
+              blockByUsers: data.blockByUsers
+            });
+            this.props.saveUserFollows(data.follows);
             this.props.login();
-          } 
-          else {
-            // this.props.navigator.push({
-            //   screen: SCREEN.ACCOUNT_CREATE_PAGE,
-            //   title: 'Create Account',
-            //   passProps: {
-            //     mode: ACCOUNT_MODE.facebook,
-            //     info: {
-                  
-            //       userId: this.state.id
-            //     }
-            //   },
-            //   animated: true,
-            //   navigatorStyle: {
-            //     navBarTextColor: DARK_GRAY_COLOR,
-            //     navBarTextFontFamily: 'Comfortaa-Regular',
-            //     naviBarComponentAlignment: 'center'
-            //   },
-            // })
-            LoginManager.logOut();
-            LoginManager.logInWithReadPermissions(['public_profile','email','user_about_me','user_birthday','user_hometown','user_location'])
-            .then((result) => {
-              if (result.isCancelled) {
-                // alert('cancelled')
-              } else {
-                this.setState({loading: true})
-                return AccessToken.getCurrentAccessToken()
-              }
-            }).then((data) => {
-              const token = data.accessToken.toString()
-              return Promise.all([this.props.FacebookLogin({
-                  variables: { facebookToken: token }}), 
-                token])
-            }).then((data) => {
-              var gctoken = data[0]
-              var fbtoken = data[1]
-              this.setState({id: gctoken.data.authenticateFBUser.id})
-              this.props.saveUserId(gctoken.data.authenticateFBUser.id, gctoken.data.authenticateFBUser.token)
-              const infoRequest = new GraphRequest(
-                '/me?fields=id,first_name,last_name,picture.height(1000),email,gender,address,about',
-                null,
-                (error, result) => this._responseInfoCallback(error, result),
-              );
-              new GraphRequestManager().addRequest(infoRequest).start();
-            })
-            .catch((err) => {
-              console.log(err)
-              this.setState({loading: false})   
-            })
+          }
+          else {//user doesn't exist, maybe admin removed your account
           }
         })
       } else {
-        LoginManager.logOut();
-        LoginManager.logInWithReadPermissions(['public_profile','email','user_about_me','user_birthday','user_hometown','user_location'])
-        .then((result) => {
-          if (result.isCancelled) {
-            // alert('cancelled')
-          } else {
-            this.setState({loading: true})
-            return AccessToken.getCurrentAccessToken()
-          }
-        }).then((data) => {
-          const token = data.accessToken.toString()
-          return Promise.all([this.props.FacebookLogin({
-              variables: { facebookToken: token }}), 
-            token])
-        }).then((data) => {
-          var gctoken = data[0]
-          var fbtoken = data[1]
-          this.setState({id: gctoken.data.authenticateFBUser.id})
-          this.props.saveUserId(gctoken.data.authenticateFBUser.id, gctoken.data.authenticateFBUser.token)
-          const infoRequest = new GraphRequest(
-            '/me?fields=id,first_name,last_name,picture.height(1000),email,gender,address,about',
-            null,
-            (error, result) => this._responseInfoCallback(error, result),
-          );
-          new GraphRequestManager().addRequest(infoRequest).start();
-        })
-        .catch((err) => {alert(JSON.stringify(err))
-          console.log(err)
-          this.setState({loading: false})   
-        })
+        LoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_about_me', 'user_birthday', 'user_hometown', 'user_location'])
+          .then((result) => {
+            if (result.isCancelled) {
+              // alert('cancelled')
+            } else {
+              this.setState({ loading: true })
+              return AccessToken.getCurrentAccessToken()
+            }
+          }).then((data) => {
+            const token = data.accessToken.toString()
+            return Promise.all([this.props.FacebookLogin({
+              variables: { facebookToken: token }
+            }),
+              token])
+          }).then((data) => {
+            var gctoken = data[0]
+            var fbtoken = data[1]
+            this.setState({ id: gctoken.data.authenticateFBUser.id })
+            const infoRequest = new GraphRequest(
+              '/me?fields=id,first_name,last_name,picture.height(1000),email,gender,address,about',
+              null,
+              (error, result) => this._responseInfoCallback(error, result),
+            );
+            new GraphRequestManager().addRequest(infoRequest).start();
+          })
+          .catch((err) => {
+            console.log(err)
+            this.setState({ loading: false })
+          })
       }
-      return;
     } catch (error) {
+      alert(error)
       // Error retrieving data
       console.log(error)
-      this.setState({loading: false})
+      this.setState({ loading: false })
     }
   }
 
-  onPhoneNumber () {
+  onPhoneNumber() {
     // this.props.navigation.navigate('PhoneNumberPage')
     this.props.navigator.push({
       screen: SCREEN.PHONE_NUMBER_PAGE,
@@ -275,13 +219,16 @@ class LoginPage extends Component {
       // navigatorButtons: {}
     })
   }
-  onTestUser () {
+  onTestUser() {
 
   }
   render() {
     return (
       <View style={styles.container}>
-        <Image style={styles.marker} source={require('@assets/images/login/mark.png')} />
+        <Image resizeMode={'contain'}
+          style={styles.marker}
+          source={require('@assets/images/login/mark.png')}
+        />
         {/*
         <Text style={[styles.login_str, styles.first_line]}>{I18n.t('SIGN_LOGIN_STR')}</Text>
         <Text style={[styles.login_str, styles.second_line]}>{I18n.t('WITH_STR')}</Text>
@@ -304,10 +251,10 @@ class LoginPage extends Component {
           />
         </View>
         */}
-        <RoundButton style={styles.loginWithFB} title={I18n.t('LOGINFACEBOOK')} 
+        <RoundButton style={styles.loginWithFB} title={I18n.t('LOGINFACEBOOK')}
           pressColor={'transparent'} onPress={this._fbAuth.bind(this)}
         />
-        
+
         {
           this.state.loading ? (<LoadingSpinner />) : null
         }

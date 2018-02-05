@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, Button, Platform } from 'react-native';
 import ImageSliderView from 'react-native-image-slider';
 import PropTypes from 'prop-types';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -9,7 +9,7 @@ import styles, { sliderWidth, itemWidth, landWidth } from './styles'
 
 import Carousel, { Pagination, ParallaxImage } from 'react-native-snap-carousel';
 import Orientation from 'react-native-orientation';
-import { getMediatTypeFromURL } from '@global/const';
+import { getMediaTypeFromURL } from '@global/const';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('screen');
 
@@ -28,13 +28,14 @@ class ImageSlider extends Component {
   onPress() {
     this.props.onPress();
   }
-
-  componentDidMount() {
+  componentWillMount() {
     Orientation.unlockAllOrientations();
-    Orientation.addOrientationListener(this._orientationDidChange);
+  }
+  componentDidMount() {
     Orientation.getOrientation((err, orientation) => {
       this.onlayoutOrientation(orientation);
     });
+    //Orientation.addOrientationListener(this._orientationDidChange.bind(this));
   }
 
   _orientationDidChange = (orientation) => {
@@ -48,7 +49,16 @@ class ImageSlider extends Component {
     });
     // Remember to remove listener
     Orientation.removeOrientationListener(this._orientationDidChange);
-    Orientation.lockToPortrait();
+    setTimeout(() => {
+      Orientation.lockToPortrait();
+    });
+  }
+
+  _onLayout() {
+    Orientation.getOrientation((err, orientation) => {
+      console.log("did change layout orientaion:" + orientation);
+      this.onlayoutOrientation(orientation);
+    });
   }
 
   onlayoutOrientation(orientation) {
@@ -67,7 +77,7 @@ class ImageSlider extends Component {
         itemWidth: Math.max(dim.width, dim.height),
       });
     }
-    this.forceUpdate()
+    //this.forceUpdate()
   }
 
   _renderItemWithParallax({ item, index }, parallaxProps) {
@@ -83,11 +93,12 @@ class ImageSlider extends Component {
   }
   _onSnapToItem(index) {
     this.setState({ slider1ActiveSlide: index });
+    this.forceUpdate();
   }
   render() {
     const { slider1ActiveSlide, slider1Ref } = this.state;
     return (
-      <View style={styles.container} supportedOrientations={['portrait', 'landscape']}>
+      <View style={styles.container} supportedOrientations={['portrait', 'landscape']} onLayout={this._onLayout.bind(this)}>
         <Carousel
           ref={(c) => { if (!this.state.slider1Ref) { this.setState({ slider1Ref: c }); } }}
           data={this.props.data}
@@ -139,7 +150,7 @@ class SliderEntry extends Component {
   get image() {
     const { data: { uri }, parallax, parallaxProps, even } = this.props;
 
-    if (getMediatTypeFromURL(uri)) {
+    if (getMediaTypeFromURL(uri)) {
       return (
         <VideoPlayer videourl={uri} {...this.props} />
         //<VideoPlayer videourl={"https://www.w3schools.com/html/mov_bbb.mp4"} {...this.props}/>

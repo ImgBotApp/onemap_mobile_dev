@@ -13,7 +13,7 @@ export const FEED_NEW_COLLECTION = 'onemap.new_collection_page'
 export const USERS_PROFILE_PAGE = 'onemap.users_profile_page'
 export const PLACE_PROFILE_PAGE = 'onemap.place_profile_page'
 export const MAP_DETAIL_PAGE = 'onemap.map_detail_page'
-export const STORY_LIST_PAGE = 'onemap.story_list_page'
+export const STORY_LIST_PAGE = 'onemap.story_list_page'//unused
 
 // Search Module
 export const SEARCH_PAGE = 'onemap.search_page'

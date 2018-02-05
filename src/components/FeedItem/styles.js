@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet,Platform } from 'react-native'
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
 import { DARK_GRAY_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR } from '../../theme/colors';
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     paddingTop: getDeviceHeight(74),
     paddingLeft: getDeviceWidth(54),
     paddingRight: getDeviceWidth(42),
-    paddingBottom: getDeviceWidth(32)
+    paddingBottom: Platform.OS=='android'?getDeviceWidth(52):getDeviceWidth(32)
   },
   userInfo: {
     flexDirection: 'row',
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Comfortaa-regular'
   },
   feedImages: {
-    height: getDeviceHeight(365)
+    //height: Platform.OS=='android'?getDeviceHeight(385):getDeviceHeight(365)
   },
   feedItemImage: {
     height: '100%',
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   },
   FeedImageCard: {
     marginTop: getDeviceHeight(50),
-    height: getDeviceHeight(340),
+    height: Platform.OS=='android'?getDeviceHeight(400):getDeviceHeight(340),
     width: getDeviceWidth(532),
     marginRight: getDeviceWidth(30),
   },
@@ -66,14 +66,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Comfortaa-regular'
   },
   separate: {
-    marginTop: getDeviceHeight(50),
+    marginTop: Platform.OS=='android'?getDeviceHeight(10):getDeviceHeight(50),
     borderWidth: 1,
     borderColor: LIGHT_GRAY_COLOR
   },
   description: {
     color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
-    fontFamily: 'Comfortaa-regular'
+    fontFamily: 'Comfortaa-regular',
   },
   additionalText: {
     color: BLUE_COLOR,
@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     color: "white",
     fontSize: 20,
-    right: 5,
-    bottom: 5,
+    right: Platform.OS=='android'? 15:5,
+    bottom: Platform.OS=='android'? 18:5,
     fontWeight: "100"
   }
 });

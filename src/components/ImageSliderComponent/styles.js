@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
         color:"white"
     },
   container: {
-    position: 'absolute',
     justifyContent: 'center',
     alignItems:'center',
     flex: 1,

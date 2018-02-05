@@ -5,8 +5,6 @@ import TitleImage from '@components/TitledImage'
 
 import styles from './styles'
 
-const imagePlaceholder = 'https://res.cloudinary.com/onemap-co/image/upload/v1516259041/placeholder_veswep.png'
-
 class CollectionItem extends Component {
   constructor(props) {
     super(props)
@@ -24,7 +22,7 @@ class CollectionItem extends Component {
       <View style={[styles.cell, this.props.style]}>
         <TitleImage
           style={[styles.collection, this.props.insideStyle]}
-          uri={this.state.uri ? this.state.uri : imagePlaceholder}
+          uri={this.state.uri}
           radius={this.state.radius}
           title={this.state.title}
           vAlign={'center'}

@@ -34,7 +34,7 @@ export default {
   DRAWER_COLLECTION_TITLE: "Collections",
   DRAWER_FOLLOW_PEOPLE: "Follow People",
   DRAWER_NEW_PLACE: "New Place",
-  DRAWER_STORIES: "Stories",
+  DRAWER_STORIES: "All Stories",
   DRAWER_Tag: "Tag",
   Drawer_Notifications: "Notifications",
 
@@ -61,7 +61,7 @@ export default {
   SETTING_STORY_SETTING: "Story Setting",
   SETTING_BLOCKED_USER: "Blocked User",
   SETTING_PRIVATE_ACCOUNT: "Private Account",
-  SETTING_PRIVATE_TEXT: "When your account is private, only people you approve can see your photo and video. Your existing follower won't be affedted",
+  SETTING_PRIVATE_TEXT: "Only people you approve can see your photo and video. Your existing follower won't be affedted",
 
   // Phone Number Page
   SETTING_PHONE_NUMBER: "Phone Number",

@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity, Alert, ActivityIndicator, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity, Alert, ActivityIndicator, Image, Platform } from 'react-native';
 import Tabs from 'react-native-tabs';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import MapView from 'react-native-map-clustering';
@@ -17,7 +17,8 @@ import styles from './styles'
 import { client } from '@root/main';
 import { graphql } from "react-apollo";
 import { GET_COLLECTION_WITH_PLACES, GET_COLLECTIONS_WITH_PLACES } from '@graphql/collections';
-import { GET_USER_WITH_CHECKED_PLACES, GET_USER_WITH_LIKED_PLACES } from '@graphql/userprofile'
+import { GET_CHECKED_PLACES } from '@graphql/collections';
+import { GET_USER_WITH_LIKED_PLACES } from '@graphql/userprofile'
 
 const PLACES_PER_PAGE = 20;
 
@@ -56,22 +57,27 @@ class Collections extends Component {
       places: props.places ? props.places : [],
       loading: false
     }
-    if (props.collection) {
-      this.props.navigator.setTitle({ title: props.collection.name });
-    }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
   componentWillMount() {
     if (!this.state.places.length) {
       if (this.props.type === 'check') {
+        this.props.navigator.setTitle({ title: 'Check-Ins' });
         this.getCheckedPlaces();
       } else if (this.props.type === 'like') {
+        this.props.navigator.setTitle({ title: 'Hearted' });
         this.getLikedPlaces();
       } else if (this.props.collection) {
+        this.props.navigator.setTitle({ title: this.props.collection.name });
         this.getCollectionPlaces();
       } else if (this.props.type === 'bookmark') {
+        this.props.navigator.setTitle({ title: 'All' });
         this.getBookmarkedPlaces();
+      } else {
+        this.props.navigator.setTitle({ title: I18n.t('DRAWER_STORIES') });
       }
+    } else {
+      this.props.navigator.setTitle({ title: I18n.t('DRAWER_STORIES') });
     }
   }
   onNavigatorEvent(event) {
@@ -96,12 +102,12 @@ class Collections extends Component {
   getCheckedPlaces() {
     this.setState({ loading: true });
     client.query({
-      query: GET_USER_WITH_CHECKED_PLACES,
+      query: GET_CHECKED_PLACES,
       variables: {
         userId: this.props.userId ? this.props.userId : this.props.user.id,
       }
     }).then(({ data }) => {
-      this.setState({ places: data.User.checkedIn, loading: false });
+      this.setState({ places: data.allPlaces, loading: false });
     }).catch(err => alert(err))
   }
   getCollectionPlaces() {
@@ -143,11 +149,9 @@ class Collections extends Component {
   onCollectionItem(data) {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
-      title: I18n.t('PLACE_TITLE'),
       animated: true,
       passProps: {
-        place: data,
-        // onPlaceUpdate: place => this.onPlaceUpdate(place, index),
+        place: data
       }
     })
   }
@@ -246,8 +250,11 @@ class Collections extends Component {
             <Marker
               key={index}
               coordinate={{ latitude: item.locationLat, longitude: item.locationLong }}
+              image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
             >
-              <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
+              {Platform.OS === 'ios' && (
+                <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
+              )}
               <Callout style={styles.customView} onPress={() => this.openPlaceProfile(item.id)}>
                 <Text style={{ flexWrap: "nowrap" }}>{item.address}</Text>
               </Callout>
@@ -261,7 +268,6 @@ class Collections extends Component {
   openPlaceProfile(id) {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
-      title: I18n.t('PLACE_TITLE'),
       animated: true,
       passProps: {
         placeID: id
