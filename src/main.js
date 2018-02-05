@@ -162,8 +162,8 @@ export default class App {
                 screen: SCREEN.FEED_LIST_SCREEN,
                 icon: HomeIcon,
                 navigatorStyle: {
-                  navBarTextFontFamily: 'SukhumvitSet-Text',
-                  navBarTextColor: DARK_GRAY_COLOR
+                  navBarTextFontFamily: 'SukhumvitSet-Bold',
+                  navBarTextColor: 'DARK_GRAY_COLOR',
                 }
               },
               {
@@ -171,8 +171,6 @@ export default class App {
                 screen: SCREEN.SEARCH_PAGE,
                 icon: SearchIcon,
                 navigatorStyle: {
-                  navBarTextFontFamily: 'SukhumvitSet-Text',
-                  navBarTextColor: DARK_GRAY_COLOR,
                   navBarHidden: true
                 }
               },
@@ -181,7 +179,7 @@ export default class App {
                 screen: SCREEN.USER_PROFILE_SCREEN,
                 icon: UserIcon,
                 navigatorStyle: {
-                  navBarTextFontFamily: 'SukhumvitSet-Text',
+                  navBarTextFontFamily: 'SukhumvitSet-Bold',
                   navBarTextColor: DARK_GRAY_COLOR
                 }
               },

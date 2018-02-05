@@ -12,6 +12,7 @@ import {
   View,
   ViewPropTypes
 } from 'react-native';
+import DFonts from '@theme/fonts';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 const containerHeight = 60;
@@ -365,13 +366,13 @@ class Search extends PureComponent {
             ]}
           >
             <Text
-              style={[
-                styles.cancelButtonText,
-                this.props.titleCancelColor && {
-                  color: this.props.titleCancelColor
-                },
-                this.props.cancelButtonStyle && this.props.cancelButtonStyle,
-                this.props.cancelButtonTextStyle && this.props.cancelButtonTextStyle,
+              style={[DFonts.Title,
+              styles.cancelButtonText,
+              this.props.titleCancelColor && {
+                color: this.props.titleCancelColor
+              },
+              this.props.cancelButtonStyle && this.props.cancelButtonStyle,
+              this.props.cancelButtonTextStyle && this.props.cancelButtonTextStyle,
               ]}
             >
               {this.cancelTitle}

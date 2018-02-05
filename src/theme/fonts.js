@@ -2,8 +2,29 @@ import { StyleSheet } from 'react-native'
 import { BLUE_COLOR } from './colors';
 
 export default styles = StyleSheet.create({
-  DFontFamily: {
-    fontFamily: 'SukhumvitSet-Text'
+  Header: {
+    fontFamily: 'SukhumvitSet-Bold',
+    fontSize: 20
+  },
+  Title: {
+    fontFamily: 'SukhumvitSet-Medium',
+    fontSize: 18
+  },
+  SubTitle: {
+    fontFamily: 'SukhumvitSet-Light',
+    fontSize: 10
+  },
+  Content: {
+    fontFamily: 'SukhumvitSet-Medium',
+    fontSize: 15
+  },
+  SubContent: {
+    fontFamily: 'SukhumvitSet-Medium',
+    fontSize: 13
+  },
+  Regular: {
+    fontFamily: 'SukhumvitSet-Text',
+    fontSize: 13
   },
   AdditionalText: {
     fontSize: SMALL_FONT_SIZE,

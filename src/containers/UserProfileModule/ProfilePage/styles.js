@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   bigName: {
-    fontFamily: 'SukhumvitSet-Text',
+    fontFamily: 'SukhumvitSet-Medium',
     fontSize: 16,
     color: DARK_GRAY_COLOR
   },

@@ -96,7 +96,8 @@ const styles = StyleSheet.create({
   },
   informationText: {
     color: LIGHT_GRAY_COLOR,
-    fontSize: SMALL_FONT_SIZE
+    fontSize: SMALL_FONT_SIZE,
+    fontFamily: 'SukhumvitSet-Text'
   },
   informationContainer: {
     marginLeft: getDeviceWidth(76),
@@ -121,7 +122,8 @@ const styles = StyleSheet.create({
   interestText: {
     color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
-    marginLeft: getDeviceWidth(20)
+    marginLeft: getDeviceWidth(20),
+    fontFamily: 'SukhumvitSet-Text'
   },
   serparate: {
     width: '100%',
@@ -188,7 +190,6 @@ const styles = StyleSheet.create({
     marginLeft: getDeviceWidth(40),
     color: DARK_GRAY_COLOR,
     fontSize: BIG_FONT_SIZE,
-    fontFamily: 'SukhumvitSet-Text'
   },
   myImagesContainer: {
     marginTop: getDeviceHeight(89),
@@ -202,14 +203,12 @@ const styles = StyleSheet.create({
   commentDate: {
     color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
-    fontFamily: 'SukhumvitSet-Text',
     marginLeft: getDeviceWidth(40),
   },
   commentTitle: {
     fontSize: NORMAL_FONT_SIZE,
     color: DARK_GRAY_COLOR,
     marginVertical: 5,
-    fontFamily: 'SukhumvitSet-Text'
   },
   commentDescription: {
     color: LIGHT_GRAY_COLOR,

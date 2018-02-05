@@ -15,9 +15,10 @@ const styles = StyleSheet.create({
     color: '#575858'
   },
   buttons: {
-    fontSize: 25,
+    fontSize: 20,
     color: '#42a5f5',
-    marginBottom: getDeviceHeight(49)
+    marginBottom: getDeviceHeight(49),
+    fontFamily: 'SukhumvitSet-Text'
   },
   privateAccount: {
     flexDirection: 'row',
@@ -33,7 +34,8 @@ const styles = StyleSheet.create({
   privateText: {
     marginBottom: getDeviceHeight(32),
     marginTop: getDeviceHeight(32),
-    color: '#acacac'
+    color: '#acacac',
+    fontFamily: 'SukhumvitSet-Text'
   },
   logout: {
     marginTop: getDeviceHeight(43)

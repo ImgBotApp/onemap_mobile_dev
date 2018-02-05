@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 
 import styles from './styles'
+import DFonts from '@theme/fonts';
 //  Props 
 /**
  * @Props
@@ -68,7 +69,7 @@ class TitledImage extends Component {
             style={[styles.imagePlaceholder, { borderRadius: this.props.radius }]}
           />
         }
-        <Text style={[styles.text, this.props.titleStyle]}>{this.state.title}</Text>
+        <Text style={[DFonts.Regular, styles.text, this.props.titleStyle]}>{this.state.title}</Text>
       </TouchableOpacity>
     );
   }

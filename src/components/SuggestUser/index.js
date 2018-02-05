@@ -6,7 +6,7 @@ import CircleImage from '@components/CircleImage'
 
 import styles from './style'
 import I18n from '@language'
-import fontStyles from '@theme/fonts'
+import DFonts from '@theme/fonts'
 import { getDeviceWidth, getDeviceHeight } from '@global'
 // create a component
 class SuggestUser extends Component {
@@ -27,16 +27,16 @@ class SuggestUser extends Component {
         <View style={styles.info}>
           <View style={{ alignItems: 'center' }}>
             <TouchableOpacity onPress={this.props.onPress}>
-              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.name, fontStyles.DFontFamily]}>{displayName}</Text>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.name, DFonts.Title]}>{displayName}</Text>
             </TouchableOpacity>
-            <Text style={[fontStyles.DFontFamily, styles.id]}>{username}</Text>
+            <Text style={[DFonts.SubTitle, styles.id]}>{username}</Text>
             <View style={styles.separate}></View>
           </View>
           <View style={{ alignItems: 'center' }}>
-            <Text style={styles.suggest}>{I18n.t('FEED_SUGGESTED_BY_ONEMAP')}</Text>
+            <Text style={[DFonts.SubTitle, styles.suggest]}>{I18n.t('FEED_SUGGESTED_BY_ONEMAP')}</Text>
             <TouchableOpacity>
               <View style={styles.followButton}>
-                <Text style={styles.followText}>{I18n.t('FEED_FOLLOW')}</Text>
+                <Text style={[DFonts.Title, styles.followText]}>{I18n.t('FEED_FOLLOW')}</Text>
               </View>
             </TouchableOpacity>
           </View>

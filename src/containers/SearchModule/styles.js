@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
     fontSize: NORMAL_FONT_SIZE,
     color: DARK_GRAY_COLOR,
     marginBottom: getDeviceHeight(10),
-    fontFamily: 'SukhumvitSet-Text',
   },
   following: {
     fontSize: SMALL_FONT_SIZE,

@@ -77,7 +77,7 @@ class ProfilePage extends Component {
       let user = this.state.user;
       user.bio = User.bio;
       user.followers = User._followersMeta.count;
-      user.checked = User._checkInsInMeta.count;
+      user.checked = User._checkInsMeta.count;
       user.accountVerification = User.accountVerification;
       this.setState({ user, collections: User.collections, stories: User.stories });
     }).catch(err => alert(err))
@@ -164,38 +164,38 @@ class ProfilePage extends Component {
             </View>
             <View style={styles.userInfo}>
               <View>
-                <Text style={styles.userName}>{user.displayName}</Text>
-                <Text style={styles.userId}>{user.username}</Text>
+                <Text style={[DFonts.Title, styles.userName]}>{user.displayName}</Text>
+                <Text style={[DFonts.Regular, styles.userId]}>{user.username}</Text>
               </View>
               <TouchableOpacity onPress={() => this.onFollow(!followed)}>
                 <View style={styles.FollowingButton}>
-                  <Text style={styles.FollowingText}>{followed ? I18n.t('UNFOLLOW') : I18n.t('FEED_FOLLOW')}</Text>
+                  <Text style={[DFonts.Regular, styles.FollowingText]}>{followed ? I18n.t('UNFOLLOW') : I18n.t('FEED_FOLLOW')}</Text>
                 </View>
               </TouchableOpacity>
             </View>
           </View>
           <View style={styles.propertyContainer}>
             <View style={[styles.propertyView, { height: 25 }]}>
-              <Text style={styles.pText}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWED')}</Text>
+              <Text style={[DFonts.Regular, styles.pText]}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWED')}</Text>
               {followed && <Entypo name="user" size={12} color={BLUE_COLOR} />}
             </View>
             <View style={styles.propertyView}>
-              <Text style={styles.pText}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWERS')}</Text>
-              <Text style={styles.pText}>{calculateCount(user.followers)}</Text>
+              <Text style={[DFonts.Regular, styles.pText]}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWERS')}</Text>
+              <Text style={[DFonts.Regular, styles.pText]}>{calculateCount(user.followers)}</Text>
             </View>
             <View style={styles.propertyView}>
-              <Text style={styles.pText}>{I18n.t('FEED_FOLLOWER_PROFILE_VISITED')}</Text>
-              <Text style={styles.pText}>{calculateCount(user.checked)}</Text>
+              <Text style={[DFonts.Regular, styles.pText]}>{I18n.t('FEED_FOLLOWER_PROFILE_VISITED')}</Text>
+              <Text style={[DFonts.Regular, styles.pText]}>{calculateCount(user.checked)}</Text>
             </View>
           </View>
         </View>
         <View>
-          <Text style={styles.about}>{user.bio}</Text>
+          <Text style={[DFonts.Regular, styles.about]}>{user.bio}</Text>
         </View>
         {/* Campaign list */}
         {campaigns.length > 0 &&
           <View>
-            <Text style={styles.collectionText}>{I18n.t('PROFILE_CAMPAIGN')}</Text>
+            <Text style={[DFonts.Title, styles.collectionText]}>{I18n.t('PROFILE_CAMPAIGN')}</Text>
           </View>}
         {campaigns.length > 0 &&
           <View style={styles.collectionContainer}>
@@ -203,7 +203,7 @@ class ProfilePage extends Component {
           </View>}
         {/* Collection list */}
         <View>
-          <Text style={styles.collectionText}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
+          <Text style={[DFonts.Title, styles.collectionText]}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
         </View>
         <View style={styles.collectionContainer}>
           <Collections
@@ -215,7 +215,7 @@ class ProfilePage extends Component {
         </View>
         {/* Story board */}
         <View style={{ marginBottom: 15 }}>
-          <Text style={styles.StoryText}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
+          <Text style={[DFonts.Title, styles.StoryText]}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
           <StoryBoard
             style={styles.StoryContainer}
             data={stories}

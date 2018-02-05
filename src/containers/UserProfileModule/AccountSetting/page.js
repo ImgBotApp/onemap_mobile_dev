@@ -58,8 +58,8 @@ class AccountSetting extends Component {
       title: 'Edit Profile',
       animated: true,
       navigatorStyle: {
+        navBarTextFontFamily: 'SukhumvitSet-Bold',
         navBarTextColor: DARK_GRAY_COLOR,
-        navBarTextFontFamily: 'SukhumvitSet-Text'
       }
     })
   }
