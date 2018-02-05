@@ -8,11 +8,12 @@ export default styles = StyleSheet.create({
   },
   text: {
     position: 'absolute',
+    margin: 5,
     bottom: 0,
     backgroundColor: 'transparent',
     color: '#e2dfe1',
     width: '100%',
-    textAlign: 'left'
+    textAlign: 'center'
   },
   container: {
   }

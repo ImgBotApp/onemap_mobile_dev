@@ -77,7 +77,7 @@ class ProfilePage extends Component {
       let user = this.state.user;
       user.bio = User.bio;
       user.followers = User._followersMeta.count;
-      user.checked = User._checkInsInMeta.count;
+      user.checked = User._checkInsMeta.count;
       user.accountVerification = User.accountVerification;
       this.setState({ user, collections: User.collections, stories: User.stories });
     }).catch(err => alert(err))

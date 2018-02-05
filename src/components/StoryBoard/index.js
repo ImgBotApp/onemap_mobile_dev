@@ -43,6 +43,7 @@ class StoryBoard extends Component {
             style={{ marginBottom: 10 }}
           />
         </TouchableOpacity>
+        <Text numberOfLines={1} style={[styles.text]}>{item.title}</Text>
       </View>
     )
   }
