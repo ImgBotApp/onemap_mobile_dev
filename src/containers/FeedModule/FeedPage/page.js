@@ -80,7 +80,8 @@ class FeedPage extends Component {
           collectionIds: place.collections.map(collection => collection.id)//will be removed later
         }
       });
-      this.setState({ items: [this.suggestUsers, ...graphcoolData], loading: false });
+      
+      this.setState({ items: [this.suggestUsers?this.suggestUsers:[], ...graphcoolData], loading: false });
     }
   }
   getSuggestUsers() {
@@ -94,7 +95,7 @@ class FeedPage extends Component {
       }
     }).then((users) => {
       this.suggestUsers = {
-        id: 'a1',
+        id: 'users'+Date.now(),
         type: 'users',
         data: users.data.allUsers.map((user) => {
           return {
@@ -304,24 +305,21 @@ class FeedPage extends Component {
     )
   }
   _renderItem = ({ item, index }) => {
-    if(item == null)
-    {
-      return (<View></View>);
-    }
     if (item && item.type) {
       switch (item.type) {
-        case 'users':
-          return this._renderSuggestedList(item.data)
+        //case 'users':
+          //return this._renderSuggestedList(item.data)
         case 'item':
           return this._renderFeedItem(item, index)
-        case 'event':
-          return this._renderFeedEvent(item)
-        case 'campaign':
-          return this._renderFeedCampaign(item)
-        case 'place':
-          return this._renderSuggestPlace(item)
+        //case 'event':
+          //return this._renderFeedEvent(item)
+        //case 'campaign':
+          //return this._renderFeedCampaign(item)
+        //case 'place':
+          //return this._renderSuggestPlace(item)
       }
     }
+    return (<View/>);
   }
 
   onPressUserProfile(userInfo) {
@@ -423,12 +421,10 @@ class FeedPage extends Component {
     return (
       <View style={styles.container}>
         <OptimizedFlatList
-          keyExtractor={(item, index) => index}
+          keyExtractor={(item, index) => item.id?item.id:index}
           style={{ width: '100%', height: '100%' }}
           data={this.state.items}
-          initialNumToRender={8}
           renderItem={this._renderItem.bind(this)}
-          onEndReachedThreshold={1}
           onEndReached={this.onEndReached}
           refreshing={this.props.data.networkStatus === 4}
           onRefresh={this.onRefresh}

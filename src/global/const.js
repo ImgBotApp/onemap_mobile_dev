@@ -13,7 +13,7 @@ export const APP_USER_KEY = 'onemap.user.id'
 export const PLACES_APIKEY = 'AIzaSyDqbVkKnQIprdvj8OOk9DYxPz0dnP0y4zA';
 
 export const EMPTY_IMG = 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg';
-export const THUMB_SIZE = 300;
+export const THUMB_SIZE = 200;
 
 export function getMediaTypeFromURL(url) {
   let result = false;
@@ -64,11 +64,37 @@ export function convertImageToThumbURL(url){
           for(var j=0; j<splitUrl.length-1 ;j++)
             result +=splitUrl[j]+'/';
           result += splitUrl[splitUrl.length-1];
-          
+          return result;
+        }
+        case 'maps.googleapis.com':{
+          let filename = splitUrl[splitUrl.length - 1].split('&');
+          for(var i=0; i<filename.length;i++)
+          {
+            let subname = filename[i];
+            if(subname.substring(0,8)=="maxwidth" || subname.substring(0,9)=="maxheight")
+            {
+              filename[i]="maxwidth="+THUMB_SIZE;
+              break;
+            }
+            let str='';
+            for(var i=0; i<filename.length-1; i++)
+              str+=filename[i]+"&";
+            str += filename[filename.length-1];
+            splitUrl[splitUrl.length-1] = str;
+
+            result = '';
+            for(var j=0; j<splitUrl.length-1 ;j++)
+              result +=splitUrl[j]+'/';
+            result += splitUrl[splitUrl.length-1];
+            return result;
+          }
+        }
+        defalut:{
+          break;
         }
       }
     }
   }
-  
   return result;
 }
+

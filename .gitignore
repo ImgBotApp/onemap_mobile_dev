@@ -38,6 +38,7 @@ assets_*
 
 bin/
 .project
+node_modules_reactnative*
 
 # node.js
 #
