@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     paddingTop: getDeviceHeight(98)
   },
   headerTitle: {
-    fontFamily: 'Comfortaa-regular',
+    fontFamily: 'SukhumvitSet-Text',
     color: '#575858'
   },
   buttons: {

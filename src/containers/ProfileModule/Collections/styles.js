@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   storyItemTitle: {
-    fontFamily: 'Comfortaa-regular',
+    fontFamily: 'SukhumvitSet-Text',
     fontSize: 12,
     textAlign: 'left'
   },

@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     marginTop: getDeviceHeight(78),
     fontSize: NORMAL_FONT_SIZE,
     color: DARK_GRAY_COLOR,
-    fontFamily: 'Comfortaa-regular'
+    fontFamily: 'SukhumvitSet-Text'
   },
   feedImages: {
     //height: Platform.OS=='android'?getDeviceHeight(385):getDeviceHeight(365)
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   placeTitle: {
     marginTop: getDeviceHeight(50),
     color: LIGHT_GRAY_COLOR,
-    fontFamily: 'Comfortaa-regular'
+    fontFamily: 'SukhumvitSet-Text'
   },
   separate: {
     marginTop: Platform.OS=='android'?getDeviceHeight(10):getDeviceHeight(50),
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   description: {
     color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
-    fontFamily: 'Comfortaa-regular',
+    fontFamily: 'SukhumvitSet-Text',
   },
   additionalText: {
     color: BLUE_COLOR,

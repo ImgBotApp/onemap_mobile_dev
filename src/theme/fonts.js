@@ -3,7 +3,7 @@ import { BLUE_COLOR } from './colors';
 
 export default styles = StyleSheet.create({
   DFontFamily: {
-    fontFamily: 'Comfortaa-regular'
+    fontFamily: 'SukhumvitSet-Text'
   },
   AdditionalText: {
     fontSize: SMALL_FONT_SIZE,

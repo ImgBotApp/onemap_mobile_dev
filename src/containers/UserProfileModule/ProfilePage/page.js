@@ -81,7 +81,7 @@ class ProfileComponent extends Component {
           animated: true,
           navigatorStyle: {
             navBarTextColor: DARK_GRAY_COLOR,
-            navBarTextFontFamily: 'Comfortaa-Regular'
+            navBarTextFontFamily: 'SukhumvitSet-Text'
           }
         })
       }
@@ -94,7 +94,7 @@ class ProfileComponent extends Component {
       animated: true,
       navigatorStyle: {
         navBarTextColor: DARK_GRAY_COLOR,
-        navBarTextFontFamily: 'Comfortaa-Regular'
+        navBarTextFontFamily: 'SukhumvitSet-Text'
       }
     });
   }

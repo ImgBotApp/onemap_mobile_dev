@@ -114,7 +114,7 @@ class LoginPage extends Component {
             animated: true,
             navigatorStyle: {
               navBarTextColor: DARK_GRAY_COLOR,
-              navBarTextFontFamily: 'Comfortaa-Regular',
+              navBarTextFontFamily: 'SukhumvitSet-Text',
               naviBarComponentAlignment: 'center'
             },
           })
@@ -213,7 +213,7 @@ class LoginPage extends Component {
       navigatorStyle: {
         // navBarHidden: true
         navBarTextColor: DARK_GRAY_COLOR,
-        navBarTextFontFamily: 'Comfortaa-Regular',
+        navBarTextFontFamily: 'SukhumvitSet-Text',
         naviBarComponentAlignment: 'center'
       },
       // navigatorButtons: {}

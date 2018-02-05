@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   TabText: {
     color: LIGHT_GRAY_COLOR,
     fontSize:  BIG_FONT_SIZE,
-    fontFamily      : 'Comfortaa-Regular',
+    fontFamily      : 'SukhumvitSet-Text',
   },
   TabSelected: {
     borderBottomWidth: 1,
@@ -63,13 +63,13 @@ const styles = StyleSheet.create({
   name: {
     fontSize: NORMAL_FONT_SIZE,
     color: DARK_GRAY_COLOR,
-    fontFamily      : 'Comfortaa-Regular',
+    fontFamily      : 'SukhumvitSet-Text',
   },
   following: {
     fontSize: SMALL_FONT_SIZE,
     color: LIGHT_GRAY_COLOR,
     marginBottom :getDeviceHeight(10),
-    fontFamily      : 'Comfortaa-Light',
+    fontFamily      : 'SukhumvitSet-Light',
   },
   placeImage: {
     width: getDeviceWidth(140),

@@ -96,12 +96,12 @@ const styles = StyleSheet.create({
     fontSize: NORMAL_FONT_SIZE,
     color: DARK_GRAY_COLOR,
     marginBottom: getDeviceHeight(10),
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: 'SukhumvitSet-Text',
   },
   following: {
     fontSize: SMALL_FONT_SIZE,
     color: LIGHT_GRAY_COLOR,
-    fontFamily: 'Comfortaa-Light',
+    fontFamily: 'SukhumvitSet-Light',
   },
   customView: {
     width: 160,
