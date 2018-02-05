@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet,Platform } from 'react-native'
 import { BACKGROUNDCOLOR, LIGHT_GRAY_COLOR, DARK_GRAY_COLOR, BLUE_COLOR } from '../../../theme/colors';
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
   collectionInput: {
     marginTop: getDeviceHeight(76),
-    height: getDeviceHeight(120),
+    height: Platform.OS=='android'?getDeviceHeight(140):getDeviceHeight(120),
     paddingLeft: getDeviceWidth(59),
     backgroundColor: LIGHT_GRAY_COLOR
   },

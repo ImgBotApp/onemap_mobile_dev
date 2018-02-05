@@ -19,7 +19,6 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker, Callout } from 'react-native-maps';
 import Permissions from 'react-native-permissions'
 
-//import Places from 'google-places-web'// issue for android
 import Places from 'google-places-web'
 
 import { PLACES_APIKEY } from '@global/const';
