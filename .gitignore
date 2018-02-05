@@ -36,6 +36,9 @@ assets_*
 *.bundle*
 *.keystore
 
+bin/
+.project
+
 # node.js
 #
 node_modules/

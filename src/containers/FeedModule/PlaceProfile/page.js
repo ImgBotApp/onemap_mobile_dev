@@ -37,7 +37,7 @@ import TitleImage from '@components/TitledImage'
 import ViewMoreText from '@components/ViewMoreText';
 import { calculateCount, clone, getDeviceWidth, calculateDuration } from '@global'
 import { uploadImage, uploadMedia } from '@global/cloudinary';
-import { getThumlnailFromVideoURL, getMediaTypeFromURL } from '@global/const';
+import { getImageFromVideoURL, getMediaTypeFromURL,convertImageToThumbURL } from '@global/const';
 import * as SCREEN from '@global/screenName'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import DFonts from '@theme/fonts'
@@ -317,7 +317,7 @@ class PlaceProfile extends PureComponent {
           onPress={() => this.setState({ sliderShow: true, selectedMediaData: data.filter(item => item.type !== 'add'), selectedCard: index })}
           onLongPress={() => this.deleteImageFromStory(index)}
         >
-          <Image source={{ uri: getThumlnailFromVideoURL(item.uri) }} style={styles.imageItem} />
+          <Image source={{ uri: convertImageToThumbURL(getImageFromVideoURL(item.uri)) }} style={styles.imageItem} />
           {
             getMediaTypeFromURL(item.uri) ?
               (

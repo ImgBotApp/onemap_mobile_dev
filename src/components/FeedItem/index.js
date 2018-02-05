@@ -9,7 +9,7 @@ import styles from './styles'
 import DFonts from '@theme/fonts'
 import { RED_COLOR, LIGHT_GRAY_COLOR } from '@theme/colors';
 import { getDeviceWidth, getDeviceHeight, calculateDuration } from '@global'
-import { getThumlnailFromVideoURL, getMediaTypeFromURL } from '@global/const';
+import { getImageFromVideoURL, getMediaTypeFromURL,convertImageToThumbURL } from '@global/const';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {OptimizedFlatList} from 'react-native-optimized-flatlist'
 
@@ -57,13 +57,13 @@ class FeedItem extends Component {
         {/* Place Image */}
         <View style={styles.feedImages}>
           <OptimizedFlatList
-            keyExtractor={(item, index) => index}
+            keyExtractor={(item, index) => item.uri}
             data={this.props.data.images}
             horizontal
             renderItem={({ item }) => (
               <CardView cardElevation={5} cardMaxElevation={5} cornerRadius={5} style={styles.FeedImageCard}>
                 <TouchableOpacity onPress={this._onPlaceImagePress.bind(this)}>
-                  <Image source={{ uri: getThumlnailFromVideoURL(item.uri) }} style={styles.feedItemImage} />
+                  <Image source={{ uri: convertImageToThumbURL(getImageFromVideoURL(item.uri)) }} style={styles.feedItemImage} />
                   {
                     getMediaTypeFromURL(item.uri) ?
                       (
