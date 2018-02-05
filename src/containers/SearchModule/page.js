@@ -59,7 +59,7 @@ class SearchPage extends Component {
         longitudeDelta: LONGTITUDE_DELTA,
       },
       initialMarker: null,
-      myPosition: null,
+      myPosition: {},
       isCallingAPI: false,
     }
     props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
@@ -110,18 +110,22 @@ class SearchPage extends Component {
   setGeoPositionEvent() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        this.setState({ myPosition: position.coords });
-        this.updateMapView();
-        console.log("current position:" + position.coords.latitude);
+        if (position.coords) {
+          console.log("current position:" + position.coords.latitude);
+          this.setState({ myPosition: position.coords });
+          this.updateMapView();
+        }
       },
       (error) => console.log(error),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 }
     );
 
     this.watchID = navigator.geolocation.watchPosition((position) => {
-      console.log("watch position:" + position.coords.latitude);
-      this.setState({ myPosition: position.coords });
-      this.updateMapView();
+      if (position.coords) {
+        console.log("watch position:" + position.coords.latitude);
+        this.setState({ myPosition: position.coords });
+        this.updateMapView();
+      }
     }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 });
 
   }
@@ -172,8 +176,8 @@ class SearchPage extends Component {
         }
 
         var getInitialRegion = {
-          latitude: this.state.myPosition ? this.state.myPosition.latitude : results[0].latitude,
-          longitude: this.state.myPosition ? this.state.myPosition.longitude : results[0].longitude,
+          latitude: this.state.myPosition.latitude ? this.state.myPosition.latitude : results[0].latitude,
+          longitude: this.state.myPosition.longitude ? this.state.myPosition.longitude : results[0].longitude,
           latitudeDelta: maxDiff_lat <= 0 ? LATTITUDE_DELTA : maxDiff_lat,
           longitudeDelta: maxDiff_lng <= 0 ? LONGTITUDE_DELTA : maxDiff_lng,
         }
@@ -246,7 +250,7 @@ class SearchPage extends Component {
                         </Marker>
                       ))}
                       {
-                        this.state.myPosition ? (
+                        this.state.myPosition.latitude ? (
                           <Marker
                             coordinate={this.state.myPosition}
                             zIndex={this.state.nearByPlacesPin.length + 1000}
