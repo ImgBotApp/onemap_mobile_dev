@@ -189,11 +189,10 @@ class Collections extends Component {
         >
           <AutoHeightTitledImage
             uri={item.pictureURL ? item.pictureURL[0] : ""}
-            width={getDeviceWidth(375)}
-            title={item.address}
+            title={item.placeName}
             vAlign={'center'}
             radius={8}
-            hAlign={'left'}
+            hAlign={'center'}
             titleStyle={styles.storyItemTitle}
             style={{ marginBottom: 10 }}
           />

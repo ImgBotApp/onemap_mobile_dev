@@ -176,7 +176,7 @@ class ProfileComponent extends Component {
           <Text style={styles.storyTitle}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
           {
             allStories ? (
-              <StoryBoard style={styles.StoryContainer} data={allStories} width={375}
+              <StoryBoard style={styles.StoryContainer} data={allStories}
                 onPressItem={this.onStoryItem}
               />) : null
           }

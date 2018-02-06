@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
   storyItemTitle: {
     fontFamily: 'Comfortaa-Regular',
     fontSize: 12,
-    textAlign: 'left'
+    textAlign: 'left',
+    color: 'white'
   },
   CollectionContainer: {
     marginTop: 15,

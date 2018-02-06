@@ -219,7 +219,6 @@ class ProfilePage extends Component {
           <StoryBoard
             style={styles.StoryContainer}
             data={stories}
-            width={375}
             onPressItem={this.onStoryItem.bind(this)}
           />
         </View>

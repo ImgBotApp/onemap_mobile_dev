@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
     alignItems: 'center'
-  }
+  },
 });
 
 
