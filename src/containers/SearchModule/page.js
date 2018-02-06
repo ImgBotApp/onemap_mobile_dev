@@ -372,9 +372,9 @@ class SearchPage extends Component {
     let redrictURLS = [];
     await Promise.all(
       ret_photos.map(photo =>
-        axios.get("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + PLACES_APIKEY)
+        fetch("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + PLACES_APIKEY)
           .then(function (response) {
-            redrictURLS.push(response.config.url);
+            redrictURLS.push(response.url);
           })
           .catch(function (error) {
             this.setState({ loading: false })
