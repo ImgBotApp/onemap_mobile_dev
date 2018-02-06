@@ -37,7 +37,8 @@ import TitleImage from '@components/TitledImage'
 import ViewMoreText from '@components/ViewMoreText';
 import { calculateCount, clone, getDeviceWidth, calculateDuration, getTimeDiff } from '@global'
 import { uploadImage, uploadMedia } from '@global/cloudinary';
-import { getImageFromVideoURL, getMediaTypeFromURL,convertImageToThumbURL } from '@global/const';
+import { getImageFromVideoURL, getMediaTypeFromURL } from '@global/const';
+import { fetchThumbFromCloudinary } from '@global/cloudinary';
 import * as SCREEN from '@global/screenName'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import DFonts from '@theme/fonts'
@@ -321,7 +322,7 @@ class PlaceProfile extends PureComponent {
           onPress={() => this.setState({ sliderShow: true, selectedMediaData: data.filter(item => item.type !== 'add'), selectedCard: index })}
           onLongPress={() => this.deleteImageFromStory(index)}
         >
-          <Image source={{ uri: convertImageToThumbURL(getImageFromVideoURL(item.uri)) }} style={styles.imageItem} />
+          <Image source={{ uri: fetchThumbFromCloudinary(getImageFromVideoURL(item.uri)) }} style={styles.imageItem} />
           {
             getMediaTypeFromURL(item.uri) ?
               (
@@ -752,14 +753,14 @@ class PlaceProfile extends PureComponent {
         } else {
           if (type == 'photo') {
             let source = { uri: response.uri };
-            var storyImages = clone(this.state.storyImages);
-            storyImages.pop();
-            storyImages.push(source);
-            storyImages.push({ type: 'add' });
-            this.setState({ storyImages, imageUploading: true });
+            this.setState({ imageUploading: true });
             uploadImage(response.data, '#story').then(url => {
               if (url) {
-                this.state.storyImages[this.state.storyImages.length - 2].uri = url;
+                var storyImages = clone(this.state.storyImages);
+                storyImages.pop();
+                storyImages.push({ 'uri': url });
+                storyImages.push({ type: 'add' });
+                this.setState({ storyImages });
                 this.saveStory();
               }
               this.setState({ imageUploading: false });
@@ -769,12 +770,11 @@ class PlaceProfile extends PureComponent {
             uploadMedia(response, '#storyVideo').then(
               url => {
                 if (url) {
-                  console.log("uploading video success!");
                   let storyImages = clone(this.state.storyImages);
                   storyImages.pop();
                   storyImages.push({ 'uri': url });
                   storyImages.push({ type: 'add' });
-                  this.state.storyImages = storyImages;
+                  this.setState({ storyImages });
                   this.saveStory();
                 }
                 this.setState({ imageUploading: false });
