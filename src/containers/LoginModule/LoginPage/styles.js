@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   login_str: {
     textAlign: 'center',
     fontSize: NORMAL_FONT_SIZE,
-    fontFamily: 'SukhumvitSet-Text',
+    fontFamily: 'Comfortaa-Regular',
     color: LIGHT_GRAY_COLOR
   },
   first_line: {
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     height: getDeviceHeight(81),
     top: getDeviceHeight(-50),
     color: LIGHT_GRAY_COLOR,
-    fontFamily: 'SukhumvitSet-Text',
+    fontFamily: 'Comfortaa-Regular',
     fontSize: BIG_FONT_SIZE,
     position: 'absolute',
     textAlign: 'center',

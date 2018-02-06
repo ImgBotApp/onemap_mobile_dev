@@ -12,7 +12,7 @@ import { getDeviceWidth, getDeviceHeight, calculateDuration } from '@global'
 import { getImageFromVideoURL, getMediaTypeFromURL } from '@global/const';
 import { fetchThumbFromCloudinary } from '@global/cloudinary';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {OptimizedFlatList} from 'react-native-optimized-flatlist'
+import { OptimizedFlatList } from 'react-native-optimized-flatlist'
 
 // create a component
 class FeedItem extends Component {

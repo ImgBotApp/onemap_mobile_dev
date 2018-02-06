@@ -28,7 +28,7 @@ import { PLACES_PAGINATED } from "@graphql/places";
 import { GET_SUGGEST_USERS } from '@graphql/userprofile'
 import { GET_MY_COLLECTIONS } from '@graphql/collections'
 
-import {OptimizedFlatList} from 'react-native-optimized-flatlist'
+import { OptimizedFlatList } from 'react-native-optimized-flatlist'
 
 // create a component
 class FeedPage extends Component {
@@ -80,8 +80,8 @@ class FeedPage extends Component {
           collectionIds: place.collections.map(collection => collection.id)//will be removed later
         }
       });
-      
-      this.setState({ items: [this.suggestUsers?this.suggestUsers:[], ...graphcoolData], loading: false });
+
+      this.setState({ items: [this.suggestUsers ? this.suggestUsers : [], ...graphcoolData], loading: false });
     }
   }
   getSuggestUsers() {
@@ -95,7 +95,7 @@ class FeedPage extends Component {
       }
     }).then((users) => {
       this.suggestUsers = {
-        id: 'users'+Date.now(),
+        id: 'users' + Date.now(),
         type: 'users',
         data: users.data.allUsers.map((user) => {
           return {
@@ -319,7 +319,7 @@ class FeedPage extends Component {
           return this._renderSuggestPlace(item)
       }
     }
-    return (<View/>);
+    return (<View />);
   }
 
   onPressUserProfile(userInfo) {
