@@ -307,16 +307,16 @@ class FeedPage extends Component {
   _renderItem = ({ item, index }) => {
     if (item && item.type) {
       switch (item.type) {
-        //case 'users':
-          //return this._renderSuggestedList(item.data)
+        case 'users':
+          return this._renderSuggestedList(item.data)
         case 'item':
           return this._renderFeedItem(item, index)
-        //case 'event':
-          //return this._renderFeedEvent(item)
-        //case 'campaign':
-          //return this._renderFeedCampaign(item)
-        //case 'place':
-          //return this._renderSuggestPlace(item)
+        case 'event':
+          return this._renderFeedEvent(item)
+        case 'campaign':
+          return this._renderFeedCampaign(item)
+        case 'place':
+          return this._renderSuggestPlace(item)
       }
     }
     return (<View/>);
@@ -421,13 +421,14 @@ class FeedPage extends Component {
     return (
       <View style={styles.container}>
         <OptimizedFlatList
-          keyExtractor={(item, index) => item.id?item.id:index}
+          keyExtractor={(item, index) => index}
           style={{ width: '100%', height: '100%' }}
           data={this.state.items}
           renderItem={this._renderItem.bind(this)}
           onEndReached={this.onEndReached}
           refreshing={this.props.data.networkStatus === 4}
           onRefresh={this.onRefresh}
+          removeClippedSubviews={true}
         />
         <Modal
           style={styles.collectionModal}
