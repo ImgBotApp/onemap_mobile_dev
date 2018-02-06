@@ -18,7 +18,7 @@ import styles from './styles'
 import { client } from '@root/main';
 import { graphql } from "react-apollo";
 import { GET_COLLECTION_WITH_PLACES, GET_COLLECTIONS_WITH_PLACES } from '@graphql/collections';
-import { GET_CHECKED_PLACES } from '@graphql/collections';
+import { GET_CHECKED_PLACES } from '@graphql/places';
 import { GET_USER_WITH_LIKED_PLACES } from '@graphql/userprofile'
 
 const PLACES_PER_PAGE = 20;

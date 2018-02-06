@@ -100,7 +100,8 @@ class AllCollections extends Component {
       screen: SCREEN.COLLECTIONS_PAGE,
       animated: true,
       passProps: {
-        type: item
+        type: item,
+        userId: this.props.userId
       }
     })
   }
