@@ -63,7 +63,10 @@ class LoginPage extends Component {
         }
       }).then((user) => {
         var data = user.data.User
-        if (data.username) {
+
+        //FYI,server create new account having username field(with facebook id) when authenticateFBUser is called,
+        // so never data.username is null
+        if (data.displayName && data.gender) {
 
           // wheter to sync with facebook or not
           // this.props.updateUser({

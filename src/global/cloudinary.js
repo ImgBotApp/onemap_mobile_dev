@@ -80,5 +80,5 @@ export function uploadMedia(videoData, tag) {
 
 export function fetchThumbFromCloudinary(imageurl){
     const fetchurl= 'http://res.cloudinary.com/'+cloud_name+'/image/fetch/w_'+THUMB_SIZE+',g_face,c_fill/';
-    return fetchurl+imageurl;
+    return fetchurl+imageurl.replace('?','%3F');
 }
