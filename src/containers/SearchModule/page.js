@@ -61,6 +61,7 @@ class SearchPage extends Component {
       initialMarker: null,
       myPosition: {},
       isCallingAPI: false,
+      placeInf:null,
     }
     props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
@@ -337,12 +338,14 @@ class SearchPage extends Component {
     if (!placeID) return;
     var ret_photos;
     this.setState({ loading: true });
-    RNPlaces.lookUpPlaceByID(placeID).then((result) => {
-      this.setState({ placeInf: result });
+    RNGooglePlaces.lookUpPlaceByID(placeID).then((result) => {
+      this.setState({placeInf:result});
       return Places.details({ placeid: placeID });
     }
     ).then((place) => {
       ret_photos = place.photos;
+      this.setState({placeInf:{...this.state.placeInf,...place}});
+
       return client.resetStore().then(() => {
         return client.query({
           query: GET_PLACES_FROM_GOOGLEId,
@@ -385,6 +388,54 @@ class SearchPage extends Component {
     }, err => { this.setState({ loading: false }); })
   }
   onCreatePlace() {
+    if(!this.state.placeInf || !this.state.placeInf.address_components)
+      return;
+    let pCode = '';
+    let cityTown = '';
+    let country = '';
+    let street = '';
+    let sublocality ='';
+    let areaDistrict = '';
+
+    this.state.placeInf.address_components.forEach(item => {
+      if(item.types)
+      {
+        item.types.forEach(
+          typeItem =>{
+            switch (typeItem)
+            {
+              case 'postal_code':{
+                pCode = item.long_name;
+                break;
+              }
+              case 'locality':{
+                cityTown = item.long_name;
+                break;
+              }
+              case 'country':{
+                country = item.long_name;
+                break;
+              }
+              case 'route':{
+                street = item.long_name;
+                break;
+              }
+              case 'sublocality':{
+                sublocality = item.long_name;
+                break;
+              }
+              case 'administrative_area_level_1':{
+                areaDistrict = item.long_name;
+                break;
+              }
+              default:{
+                break;
+              }
+            }
+          }
+        );
+      }
+    });
     this.props.createPlace({
       variables: {
         createdById: this.props.user.id,
@@ -392,17 +443,17 @@ class SearchPage extends Component {
         status: 'ENABLE',// # ENABLE or DISABLE
         createSide: 'FRONTEND',// # FRONTEND or BACKEND
         description: '',
-        sourceId: this.state.placeInf.placeID,// # GOOGLE place id if source is GOOGLE_PLACE
+        sourceId: this.state.placeInf.place_id,// # GOOGLE place id if source is GOOGLE_PLACE
         placeName: this.state.placeInf.name,
-        locationLat: this.state.placeInf.latitude,
-        locationLong: this.state.placeInf.longitude,
-        //addressAreaDistrict: String
-        addressCityTown: this.state.placeInf.addressComponents ? this.state.placeInf.addressComponents.administrative_area_level_2 : '',
-        //addressStateProvince: String
-        addressCountry: this.state.placeInf.addressComponents ? this.state.placeInf.addressComponents.country : '',
-        addressPostalCode: this.state.placeInf.addressComponents ? this.state.placeInf.addressComponents.postal_code : '',
-        //addressStreet: String
-        address: this.state.placeInf.address,
+        locationLat: this.state.placeInf.geometry.location.lat,
+        locationLong: this.state.placeInf.geometry.location.lng,
+        addressAreaDistrict: areaDistrict,
+        addressCityTown: cityTown,
+        addressStateProvince: sublocality,
+        addressCountry: country,
+        addressPostalCode: pCode,
+        addressStreet: street,
+        address: this.state.placeInf.vicinity || this.state.placeInf.formatted_address,
         phoneNumber: this.state.placeInf.phoneNumber || '',
         website: this.state.placeInf.website || '',
         facebook: this.state.placeInf.facebook || '',
