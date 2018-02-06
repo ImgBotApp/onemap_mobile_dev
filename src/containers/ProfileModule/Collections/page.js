@@ -20,7 +20,7 @@ import { graphql } from "react-apollo";
 import { GET_COLLECTION_WITH_PLACES, GET_COLLECTIONS_WITH_PLACES } from '@graphql/collections';
 import { GET_CHECKED_PLACES } from '@graphql/places';
 import { GET_USER_WITH_LIKED_PLACES } from '@graphql/userprofile'
-import {OptimizedFlatList} from 'react-native-optimized-flatlist'
+import { OptimizedFlatList } from 'react-native-optimized-flatlist'
 
 const PLACES_PER_PAGE = 20;
 

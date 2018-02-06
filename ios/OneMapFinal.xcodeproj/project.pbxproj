@@ -84,10 +84,9 @@
 		D2C60E3C2010B53200870FF2 /* RCTConvert+GMSMapViewType.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C60E292010B53200870FF2 /* RCTConvert+GMSMapViewType.m */; };
 		D2DBCA5920108EFA001D3571 /* libRNCardView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8426B7EA200298E100C7E6EA /* libRNCardView.a */; };
 		DDF996FE459F408C80F3FF20 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 795A42D188BC4B9C9FEB8A7B /* EvilIcons.ttf */; };
-		2BB86CD1D2434347B2FAD059 /* SukhumvitSet-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C7A96D6530404105BB3D4EEA /* SukhumvitSet-Bold.ttf */; };
-		330019F36D644E8CBF6D45DC /* SukhumvitSet-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF8C972EF55044B1986FA510 /* SukhumvitSet-Light.ttf */; };
-		E36C9E58EA154D478AAD11FB /* SukhumvitSet-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0FDDF2CDF7314885A3B3A5EB /* SukhumvitSet-Medium.ttf */; };
-		E0CA239A1C354E0B95790F34 /* SukhumvitSet-Text.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B5A61B85F304B5C975A99D4 /* SukhumvitSet-Text.ttf */; };
+		6AB0F705D2734FB8A7B98735 /* Comfortaa-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6CB73DCCBF604CD4B04BC9A2 /* Comfortaa-Bold.ttf */; };
+		096F05F4195643E3855170D2 /* Comfortaa-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F5C5C4D681F4C5D946ACCED /* Comfortaa-Light.ttf */; };
+		C7F42D490F6B4A1CB7AB6A02 /* Comfortaa-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB71C1CC4B4D4CB786FE196D /* Comfortaa-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -566,10 +565,9 @@
 		F0108B3728804CCEA028240D /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		F19634409E2D44E2AFE4459B /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
 		F5B69B160AF840CFB6567F52 /* libRNGooglePlaces.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGooglePlaces.a; sourceTree = "<group>"; };
-		C7A96D6530404105BB3D4EEA /* SukhumvitSet-Bold.ttf */ = {isa = PBXFileReference; name = "SukhumvitSet-Bold.ttf"; path = "../assets/fonts/SukhumvitSet-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		BF8C972EF55044B1986FA510 /* SukhumvitSet-Light.ttf */ = {isa = PBXFileReference; name = "SukhumvitSet-Light.ttf"; path = "../assets/fonts/SukhumvitSet-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		0FDDF2CDF7314885A3B3A5EB /* SukhumvitSet-Medium.ttf */ = {isa = PBXFileReference; name = "SukhumvitSet-Medium.ttf"; path = "../assets/fonts/SukhumvitSet-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		7B5A61B85F304B5C975A99D4 /* SukhumvitSet-Text.ttf */ = {isa = PBXFileReference; name = "SukhumvitSet-Text.ttf"; path = "../assets/fonts/SukhumvitSet-Text.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6CB73DCCBF604CD4B04BC9A2 /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; name = "Comfortaa-Bold.ttf"; path = "../assets/fonts/Comfortaa-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8F5C5C4D681F4C5D946ACCED /* Comfortaa-Light.ttf */ = {isa = PBXFileReference; name = "Comfortaa-Light.ttf"; path = "../assets/fonts/Comfortaa-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BB71C1CC4B4D4CB786FE196D /* Comfortaa-Regular.ttf */ = {isa = PBXFileReference; name = "Comfortaa-Regular.ttf"; path = "../assets/fonts/Comfortaa-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -798,10 +796,9 @@
 				3F44E95111B2413AAFB37BC3 /* Octicons.ttf */,
 				B30CD1DA368D405FBFCCD715 /* SimpleLineIcons.ttf */,
 				90AF79317F26460BA96C455C /* Zocial.ttf */,
-				C7A96D6530404105BB3D4EEA /* SukhumvitSet-Bold.ttf */,
-				BF8C972EF55044B1986FA510 /* SukhumvitSet-Light.ttf */,
-				0FDDF2CDF7314885A3B3A5EB /* SukhumvitSet-Medium.ttf */,
-				7B5A61B85F304B5C975A99D4 /* SukhumvitSet-Text.ttf */,
+				6CB73DCCBF604CD4B04BC9A2 /* Comfortaa-Bold.ttf */,
+				8F5C5C4D681F4C5D946ACCED /* Comfortaa-Light.ttf */,
+				BB71C1CC4B4D4CB786FE196D /* Comfortaa-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1687,10 +1684,9 @@
 				0F27EC5C7B54482C887358AD /* Octicons.ttf in Resources */,
 				6DFB7C3D054B410F8CE9D2B0 /* SimpleLineIcons.ttf in Resources */,
 				65A2761B90A446FFAD8C43D0 /* Zocial.ttf in Resources */,
-				2BB86CD1D2434347B2FAD059 /* SukhumvitSet-Bold.ttf in Resources */,
-				330019F36D644E8CBF6D45DC /* SukhumvitSet-Light.ttf in Resources */,
-				E36C9E58EA154D478AAD11FB /* SukhumvitSet-Medium.ttf in Resources */,
-				E0CA239A1C354E0B95790F34 /* SukhumvitSet-Text.ttf in Resources */,
+				6AB0F705D2734FB8A7B98735 /* Comfortaa-Bold.ttf in Resources */,
+				096F05F4195643E3855170D2 /* Comfortaa-Light.ttf in Resources */,
+				C7F42D490F6B4A1CB7AB6A02 /* Comfortaa-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

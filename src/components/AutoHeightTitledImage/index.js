@@ -52,11 +52,11 @@ class AutoHeightTitledImage extends Component {
           width={getDeviceWidth(375)}
           style={{ borderWidth: 1, borderColor: 'transparent', borderRadius: this.props.radius ? this.props.radius : 8 }}
         />
-        <View style={{ position: 'absolute', width: getDeviceWidth(375), alignItems: 'center' }}>
+        <View style={{ position: 'absolute', width: getDeviceWidth(375), bottom: 0, alignItems: 'center' }}>
           <Text
             numberOfLines={1}
             ellipsizeMode={'tail'}
-            style={[styles.text, this.props.titleStyle]}
+            style={[DFonts.Regular, styles.text, this.props.titleStyle]}
           >
             {this.props.title}
           </Text>

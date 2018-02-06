@@ -50,7 +50,7 @@ import { GET_KEYWORD } from '@graphql/keywords'
 import { GET_PLACE_PROFILE } from '@graphql/places'
 
 import styles from './styles'
-import {OptimizedFlatList} from 'react-native-optimized-flatlist'
+import { OptimizedFlatList } from 'react-native-optimized-flatlist'
 
 const ImagePickerOption = {
   title: 'Take Media',
@@ -886,8 +886,8 @@ class PlaceProfile extends PureComponent {
               data={dataItem.pictureURL}
               renderItem={({ index }) => this._renderItem(dataItem.pictureURL.map(item => ({ uri: item })), index)}
             />
-            <Text style={styles.commentTitle}>{dataItem.title}</Text>
-            <Text style={styles.commentDescription}>{dataItem.story}</Text>
+            <Text style={[DFonts.Title, styles.commentTitle]}>{dataItem.title}</Text>
+            <Text style={[DFonts.SubTitle, styles.commentDescription]}>{dataItem.story}</Text>
           </CardView>
         )
       })
