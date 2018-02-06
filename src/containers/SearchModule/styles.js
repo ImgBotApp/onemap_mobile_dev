@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   following: {
     fontSize: SMALL_FONT_SIZE,
     color: LIGHT_GRAY_COLOR,
-    fontFamily: 'Comfortaa-Light',
+    fontFamily: 'SukhumvitSet-Light',
   },
   customView: {
     width: 160,

@@ -98,7 +98,7 @@ android {
         debug {
             keyAlias 'android'
             keyPassword 'android'
-            storeFile file('D:/20171124/onemap_mobile_dev_android/android/keystores/debug.keystore')
+            storeFile file('D:/20171124/onemap_mobile_dev/android/keystores/debug.keystore')
             storePassword 'android'
         }
     }

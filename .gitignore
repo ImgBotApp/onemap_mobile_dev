@@ -36,6 +36,10 @@ assets_*
 *.bundle*
 *.keystore
 
+bin/
+.project
+node_modules_reactnative*
+
 # node.js
 #
 node_modules/

@@ -20,6 +20,7 @@ import { graphql } from "react-apollo";
 import { GET_COLLECTION_WITH_PLACES, GET_COLLECTIONS_WITH_PLACES } from '@graphql/collections';
 import { GET_CHECKED_PLACES } from '@graphql/places';
 import { GET_USER_WITH_LIKED_PLACES } from '@graphql/userprofile'
+import {OptimizedFlatList} from 'react-native-optimized-flatlist'
 
 const PLACES_PER_PAGE = 20;
 
@@ -205,7 +206,7 @@ class Collections extends Component {
     return (
       <View style={styles.Stories}>
         <View style={styles.subStory}>
-          <FlatList
+          <OptimizedFlatList
             data={this.state.places}
             keyExtractor={this._keyExtractor}
             renderItem={data => this._renderStoryItem(data, 0)}
@@ -213,14 +214,14 @@ class Collections extends Component {
         </View>
 
         <View style={styles.subStory}>
-          <FlatList
+          <OptimizedFlatList
             data={this.state.places}
             keyExtractor={this._keyExtractor}
             renderItem={data => this._renderStoryItem(data, 1)}
           />
         </View>
         <View style={styles.subStory}>
-          <FlatList
+          <OptimizedFlatList
             data={this.state.places}
             keyExtractor={this._keyExtractor}
             renderItem={data => this._renderStoryItem(data, 2)}

@@ -9,8 +9,10 @@ import styles from './styles'
 import DFonts from '@theme/fonts'
 import { RED_COLOR, LIGHT_GRAY_COLOR } from '@theme/colors';
 import { getDeviceWidth, getDeviceHeight, calculateDuration } from '@global'
-import { getThumlnailFromVideoURL, getMediaTypeFromURL } from '@global/const';
+import { getImageFromVideoURL, getMediaTypeFromURL } from '@global/const';
+import { fetchThumbFromCloudinary } from '@global/cloudinary';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {OptimizedFlatList} from 'react-native-optimized-flatlist'
 
 // create a component
 class FeedItem extends Component {
@@ -22,7 +24,7 @@ class FeedItem extends Component {
     this.props.onPress(this.props.data);
   }
 
-  onPressItem = () => {
+  _onPlaceImagePress() {
     this.props.onPlace();
   }
 
@@ -55,14 +57,14 @@ class FeedItem extends Component {
         </TouchableOpacity>
         {/* Place Image */}
         <View style={styles.feedImages}>
-          <FlatList
-            keyExtractor={(item, index) => index}
+          <OptimizedFlatList
+            keyExtractor={(item, index) => item.uri}
             data={this.props.data.images}
             horizontal
             renderItem={({ item }) => (
               <CardView cardElevation={5} cardMaxElevation={5} cornerRadius={5} style={styles.FeedImageCard}>
-                <TouchableOpacity onPress={this.onPressItem}>
-                  <Image source={{ uri: getThumlnailFromVideoURL(item.uri) }} style={styles.feedItemImage} />
+                <TouchableOpacity onPress={this._onPlaceImagePress.bind(this)}>
+                  <Image source={{ uri: fetchThumbFromCloudinary(getImageFromVideoURL(item.uri)) }} style={styles.feedItemImage} />
                   {
                     getMediaTypeFromURL(item.uri) ?
                       (

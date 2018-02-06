@@ -151,9 +151,9 @@ const styles = StyleSheet.create({
   bioText: {
     marginLeft: getDeviceWidth(51),
     width: getDeviceWidth(920),
-    // borderBottomWidth: Platform.OS === 'ios' ? 1 : 0,
     height: getDeviceHeight(402),
     alignItems: 'flex-end',
+    textAlignVertical: 'top',  
     fontFamily: 'Comfortaa-Light',
     // borderBottomColor: '#b0b0b0'    
   },

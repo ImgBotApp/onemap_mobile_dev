@@ -20,7 +20,6 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker, Callout } from 'react-native-maps';
 import Permissions from 'react-native-permissions'
 
-//import Places from 'google-places-web'// issue for android
 import Places from 'google-places-web'
 
 import { PLACES_APIKEY } from '@global/const';
@@ -156,24 +155,28 @@ class SearchPage extends Component {
         this.setState({ isCallingAPI: false })
         //this.refs.toast.show('nearby search updated')
 
-        var maxDiff_lat = 0, maxDiff_lng = 0;
+        var maxDiff_lat=0,maxDiff_lng=0;
         // this.setPinLocation(results);
         var getNearByLocationsPin = [];
         for (var i = 0; i < results.length; i++) {
-          if (results[i].latitude && results[i].longitude) {
+          if(results[i].latitude && results[i].longitude)
+          {
             var obj = {
-              coordinates: {
+                coordinates: {
                 latitude: results[i].latitude,
                 longitude: results[i].longitude,
-              },
-              title: results[i].name,
-              address: results[i].address,
-              placeID: results[i].placeID
+                },
+                title: results[i].name,
+                address: results[i].address,
+                placeID: results[i].placeID
             }
             getNearByLocationsPin.push(obj);
             maxDiff_lat = Math.max(maxDiff_lat, Math.abs(this.state.myPosition.latitude - results[i].latitude));
             maxDiff_lng = Math.max(maxDiff_lng, Math.abs(this.state.myPosition.longitude - results[i].longitude));
           }
+          getNearByLocationsPin.push(obj);
+          maxDiff_lat = Math.max(maxDiff_lat, Math.abs(this.state.myPosition.latitude - results[i].latitude));
+          maxDiff_lng = Math.max(maxDiff_lng, Math.abs(this.state.myPosition.longitude - results[i].longitude));
         }
 
         var getInitialRegion = {
@@ -369,9 +372,9 @@ class SearchPage extends Component {
     let redrictURLS = [];
     await Promise.all(
       ret_photos.map(photo =>
-        axios.get("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + PLACES_APIKEY)
+        fetch("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + PLACES_APIKEY)
           .then(function (response) {
-            redrictURLS.push(response.config.url);
+            redrictURLS.push(response.url);
           })
           .catch(function (error) {
             this.setState({ loading: false })

@@ -1,6 +1,6 @@
 import _ from "underscore";
 import sha1 from "sha1";
-
+import { THUMB_SIZE } from './const';
 const cloud_api_key = "467698848195651";
 const cloud_api_secret = "ya2mX_kNtFG4omnouxxWW3ozQHo";
 const cloud_name = "onemap-co";
@@ -76,4 +76,9 @@ export function uploadMedia(videoData, tag) {
       return null;
     });
 
+}
+
+export function fetchThumbFromCloudinary(imageurl){
+    const fetchurl= 'http://res.cloudinary.com/'+cloud_name+'/image/fetch/w_'+THUMB_SIZE+',g_face,c_fill/';
+    return fetchurl+imageurl;
 }

@@ -28,6 +28,8 @@ import { PLACES_PAGINATED } from "@graphql/places";
 import { GET_SUGGEST_USERS } from '@graphql/userprofile'
 import { GET_MY_COLLECTIONS } from '@graphql/collections'
 
+import {OptimizedFlatList} from 'react-native-optimized-flatlist'
+
 // create a component
 class FeedPage extends Component {
   constructor(props) {
@@ -78,7 +80,8 @@ class FeedPage extends Component {
           collectionIds: place.collections.map(collection => collection.id)//will be removed later
         }
       });
-      this.setState({ items: [this.suggestUsers, ...graphcoolData], loading: false });
+      
+      this.setState({ items: [this.suggestUsers?this.suggestUsers:[], ...graphcoolData], loading: false });
     }
   }
   getSuggestUsers() {
@@ -92,7 +95,7 @@ class FeedPage extends Component {
       }
     }).then((users) => {
       this.suggestUsers = {
-        id: 'a1',
+        id: 'users'+Date.now(),
         type: 'users',
         data: users.data.allUsers.map((user) => {
           return {
@@ -223,8 +226,6 @@ class FeedPage extends Component {
           first: PLACES_PER_PAGE
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
-          console.log(fetchMoreResult)
-          console.log(previousResult)
           if (!fetchMoreResult || fetchMoreResult.allPlaces.length === 0) {
             return previousResult;
           }
@@ -247,7 +248,7 @@ class FeedPage extends Component {
           </TouchableOpacity>
         </View>
         {/* User list */}
-        <FlatList
+        <OptimizedFlatList
           keyExtractor={(item, index) => index}
           style={styles.users}
           data={data}
@@ -318,6 +319,7 @@ class FeedPage extends Component {
           return this._renderSuggestPlace(item)
       }
     }
+    return (<View/>);
   }
 
   onPressUserProfile(userInfo) {
@@ -418,16 +420,15 @@ class FeedPage extends Component {
       );
     return (
       <View style={styles.container}>
-        <FlatList
+        <OptimizedFlatList
           keyExtractor={(item, index) => index}
           style={{ width: '100%', height: '100%' }}
           data={this.state.items}
-          initialNumToRender={8}
           renderItem={this._renderItem.bind(this)}
-          onEndReachedThreshold={1}
           onEndReached={this.onEndReached}
           refreshing={this.props.data.networkStatus === 4}
           onRefresh={this.onRefresh}
+          removeClippedSubviews={true}
         />
         <Modal
           style={styles.collectionModal}

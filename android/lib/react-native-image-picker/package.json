@@ -2,7 +2,7 @@
   "_args": [
     [
       "react-native-image-picker@0.26.7",
-      "D:\\20171124\\onemap_mobile_dev_android"
+      "D:\\20171124\\onemap_mobile_dev"
     ]
   ],
   "_from": "react-native-image-picker@0.26.7",
@@ -26,7 +26,7 @@
   ],
   "_resolved": "https://registry.npmjs.org/react-native-image-picker/-/react-native-image-picker-0.26.7.tgz",
   "_spec": "0.26.7",
-  "_where": "D:\\20171124\\onemap_mobile_dev_android",
+  "_where": "D:\\20171124\\onemap_mobile_dev",
   "author": {
     "name": "Marc Shilling",
     "url": "marcshilling"

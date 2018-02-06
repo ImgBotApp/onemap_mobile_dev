@@ -37,7 +37,8 @@ import TitleImage from '@components/TitledImage'
 import ViewMoreText from '@components/ViewMoreText';
 import { calculateCount, clone, getDeviceWidth, calculateDuration, getTimeDiff } from '@global'
 import { uploadImage, uploadMedia } from '@global/cloudinary';
-import { getThumlnailFromVideoURL, getMediaTypeFromURL } from '@global/const';
+import { getImageFromVideoURL, getMediaTypeFromURL } from '@global/const';
+import { fetchThumbFromCloudinary } from '@global/cloudinary';
 import * as SCREEN from '@global/screenName'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import DFonts from '@theme/fonts'
@@ -49,6 +50,7 @@ import { GET_KEYWORD } from '@graphql/keywords'
 import { GET_PLACE_PROFILE } from '@graphql/places'
 
 import styles from './styles'
+import {OptimizedFlatList} from 'react-native-optimized-flatlist'
 
 const ImagePickerOption = {
   title: 'Take Media',
@@ -320,7 +322,7 @@ class PlaceProfile extends PureComponent {
           onPress={() => this.setState({ sliderShow: true, selectedMediaData: data.filter(item => item.type !== 'add'), selectedCard: index })}
           onLongPress={() => this.deleteImageFromStory(index)}
         >
-          <Image source={{ uri: getThumlnailFromVideoURL(item.uri) }} style={styles.imageItem} />
+          <Image source={{ uri: fetchThumbFromCloudinary(getImageFromVideoURL(item.uri)) }} style={styles.imageItem} />
           {
             getMediaTypeFromURL(item.uri) ?
               (
@@ -418,7 +420,7 @@ class PlaceProfile extends PureComponent {
   renderPlaceImages() {
     return (
       <View style={styles.imageContainer}>
-        <FlatList
+        <OptimizedFlatList
           keyExtractor={(item, index) => index}
           extraData={this.state.placeData}
           style={styles.imageFlatList}
@@ -691,7 +693,7 @@ class PlaceProfile extends PureComponent {
                   {/* {this.state.imageUploading && <LoadingSpinner />} */}
                 </TouchableOpacity>
               ) : (
-                <FlatList
+                <OptimizedFlatList
                   keyExtractor={(item, index) => index}
                   horizontal
                   style={styles.myImages}
@@ -751,14 +753,14 @@ class PlaceProfile extends PureComponent {
         } else {
           if (type == 'photo') {
             let source = { uri: response.uri };
-            var storyImages = clone(this.state.storyImages);
-            storyImages.pop();
-            storyImages.push(source);
-            storyImages.push({ type: 'add' });
-            this.setState({ storyImages, imageUploading: true });
+            this.setState({ imageUploading: true });
             uploadImage(response.data, '#story').then(url => {
               if (url) {
-                this.state.storyImages[this.state.storyImages.length - 2].uri = url;
+                var storyImages = clone(this.state.storyImages);
+                storyImages.pop();
+                storyImages.push({ 'uri': url });
+                storyImages.push({ type: 'add' });
+                this.setState({ storyImages });
                 this.saveStory();
               }
               this.setState({ imageUploading: false });
@@ -768,12 +770,11 @@ class PlaceProfile extends PureComponent {
             uploadMedia(response, '#storyVideo').then(
               url => {
                 if (url) {
-                  console.log("uploading video success!");
                   let storyImages = clone(this.state.storyImages);
                   storyImages.pop();
                   storyImages.push({ 'uri': url });
                   storyImages.push({ type: 'add' });
-                  this.state.storyImages = storyImages;
+                  this.setState({ storyImages });
                   this.saveStory();
                 }
                 this.setState({ imageUploading: false });
@@ -878,15 +879,15 @@ class PlaceProfile extends PureComponent {
                 <Text style={[DFonts.SubTitle, styles.commentDate]}>{calculateDuration(dataItem.updatedAt)}</Text>
               </View>
             </View>
-            <FlatList
+            <OptimizedFlatList
               keyExtractor={(item, index) => index}
               style={[styles.imageFlatList, { marginTop: 10 }]}
               horizontal
               data={dataItem.pictureURL}
               renderItem={({ index }) => this._renderItem(dataItem.pictureURL.map(item => ({ uri: item })), index)}
             />
-            <Text style={[DFonts.Title, styles.commentTitle]}>{dataItem.title}</Text>
-            <Text style={[DFonts.SubTitle, styles.commentDescription]}>{dataItem.story}</Text>
+            <Text style={styles.commentTitle}>{dataItem.title}</Text>
+            <Text style={styles.commentDescription}>{dataItem.story}</Text>
           </CardView>
         )
       })

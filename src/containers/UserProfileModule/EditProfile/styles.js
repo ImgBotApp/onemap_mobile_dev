@@ -110,9 +110,9 @@ const styles = StyleSheet.create({
   bioText: {
     marginLeft: getDeviceWidth(51),
     width: getDeviceWidth(920),
-    // borderBottomWidth: Platform.OS === 'ios' ? 1 : 0,
     height: getDeviceHeight(402),
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
+    textAlignVertical: 'top',
     fontFamily: 'Comfortaa-Light',
     // borderBottomColor: '#b0b0b0'    
   },
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     marginLeft: getDeviceWidth(51),
     height: getDeviceHeight(402),
     borderWidth: 1,
-    borderColor: '#b0b0b0'
+    borderColor: '#b0b0b0',
   },
   cameraImage: {
     width           : getDeviceWidth(152),
