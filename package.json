@@ -60,7 +60,6 @@
     "redux-thunk": "^2.2.0",
     "seamless-immutable": "^7.1.2",
     "sha1": "^1.1.1",
-    "subscriptions-transport-ws": "^0.9.4",
     "underscore": "^1.8.3",
     "whatwg-fetch": "^2.0.3"
   },
