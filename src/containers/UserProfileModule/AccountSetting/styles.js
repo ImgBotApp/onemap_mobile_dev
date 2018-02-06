@@ -11,14 +11,14 @@ const styles = StyleSheet.create({
     paddingTop: getDeviceHeight(98)
   },
   headerTitle: {
-    fontFamily: 'SukhumvitSet-Text',
+    fontFamily: 'Comfortaa-Regular',
     color: '#575858'
   },
   buttons: {
     fontSize: 20,
     color: '#42a5f5',
     marginBottom: getDeviceHeight(49),
-    fontFamily: 'SukhumvitSet-Text'
+    fontFamily: 'Comfortaa-Regular'
   },
   privateAccount: {
     flexDirection: 'row',
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     marginBottom: getDeviceHeight(32),
     marginTop: getDeviceHeight(32),
     color: '#acacac',
-    fontFamily: 'SukhumvitSet-Text'
+    fontFamily: 'Comfortaa-Regular'
   },
   logout: {
     marginTop: getDeviceHeight(43)

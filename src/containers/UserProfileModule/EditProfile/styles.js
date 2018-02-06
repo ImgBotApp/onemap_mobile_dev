@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     marginBottom: getDeviceHeight(277)
   },
   headerTitle: {
-    fontFamily: 'SukhumvitSet-Text',
+    fontFamily: 'Comfortaa-Regular',
     color: '#575858'
   },
   navContainer: {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
   rightNavText: {
     marginRight: getDeviceWidth(45),
-    fontFamily: 'SukhumvitSet-Text',
+    fontFamily: 'Comfortaa-Regular',
     color: '#575858',
     // fontSize: 14,
     fontWeight: 'bold'
@@ -75,10 +75,10 @@ const styles = StyleSheet.create({
   },
   gender: {
     borderBottomWidth: 0,  
-    fontFamily: 'SukhumvitSet-Light',
+    fontFamily: 'Comfortaa-Light',
   },
   genderItem:{
-    fontFamily: 'SukhumvitSet-Light',
+    fontFamily: 'Comfortaa-Light',
   },
   genderIcon:{
     width:getDeviceHeight(62),
@@ -105,15 +105,16 @@ const styles = StyleSheet.create({
     // height: getDeviceHeight(98),
     alignItems: 'flex-end',
     borderBottomColor: '#b0b0b0',
-    fontFamily: 'SukhumvitSet-Light',
+    fontFamily: 'Comfortaa-Light',
   },
   bioText: {
     marginLeft: getDeviceWidth(51),
     width: getDeviceWidth(920),
     height: getDeviceHeight(402),
     alignItems: 'flex-start',
-    fontFamily: 'SukhumvitSet-Light',
-    textAlignVertical: 'top'
+    textAlignVertical: 'top',
+    fontFamily: 'Comfortaa-Light',
+    // borderBottomColor: '#b0b0b0'    
   },
   text: {
     marginLeft: getDeviceWidth(51),

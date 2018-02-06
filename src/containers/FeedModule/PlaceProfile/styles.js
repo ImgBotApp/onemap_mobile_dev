@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     color: DARK_GRAY_COLOR,
-    fontSize: BIG_FONT_SIZE
+    fontSize: BIGGER_FONT_SIZE
   },
   imageContainer: {
     marginTop: getDeviceHeight(89),
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   descriptionText: {
     color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
-    fontFamily: 'SukhumvitSet-Text'
+    fontFamily: 'Comfortaa-Regular'
   },
   additionalText: {
     color: BLUE_COLOR,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   informationText: {
     color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
-    fontFamily: 'SukhumvitSet-Text'
+    fontFamily: 'Comfortaa-Regular'
   },
   informationContainer: {
     marginLeft: getDeviceWidth(76),
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
     marginLeft: getDeviceWidth(20),
-    fontFamily: 'SukhumvitSet-Text'
+    fontFamily: 'Comfortaa-Regular'
   },
   serparate: {
     width: '100%',
@@ -206,14 +206,11 @@ const styles = StyleSheet.create({
     marginLeft: getDeviceWidth(40),
   },
   commentTitle: {
-    fontSize: NORMAL_FONT_SIZE,
-    color: DARK_GRAY_COLOR,
     marginVertical: 5,
+    fontSize: BIG_FONT_SIZE,
   },
   commentDescription: {
-    color: LIGHT_GRAY_COLOR,
-    fontSize: SMALL_FONT_SIZE,
-    fontFamily: 'SukhumvitSet-Text'
+    fontSize: NORMAL_FONT_SIZE,
   },
   collectionModal: {
     height: getDeviceHeight(704),

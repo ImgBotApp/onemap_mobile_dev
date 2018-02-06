@@ -52,9 +52,9 @@ class FeedItem extends Component {
           </TouchableOpacity> */}
         </View>
         {/* Feed Title */}
-        <View>
-          <Text style={[DFonts.Content, styles.feedTitle]}>{this.props.data.placeName}</Text>
-        </View>
+        <TouchableOpacity onPress={this.onPressItem}>
+          <Text style={[DFonts.Title, styles.feedTitle]}>{this.props.data.placeName}</Text>
+        </TouchableOpacity>
         {/* Place Image */}
         <View style={styles.feedImages}>
           <OptimizedFlatList
@@ -81,17 +81,21 @@ class FeedItem extends Component {
           <Text style={[DFonts.SubContent, styles.placeTitle]}>{this.props.data.place}</Text>
         </View>
         {/* Border Bar */}
-        <View style={styles.separate}></View>
+        {!!this.props.data.description &&
+          <View style={styles.separate} />
+        }
         {/* Description */}
-        <View style={styles.descriptionText}>
-          <ViewMoreText
-            numberOfLines={3}
-            renderViewMore={(onPress) => (<Text onPress={onPress} style={[DFonts.Regular, styles.additionalText]}>read more</Text>)}
-            renderViewLess={(onPress) => (<Text onPress={onPress} style={[DFonts.Regular, styles.additionalText]}>read less</Text>)}
-            textStyle={styles.description}>
-            {this.props.data.description}
-          </ViewMoreText>
-        </View>
+        {!!this.props.data.description &&
+          <View style={styles.descriptionText}>
+            <ViewMoreText
+              numberOfLines={3}
+              renderViewMore={(onPress) => (<Text onPress={onPress} style={[DFonts.Regular, styles.additionalText]}>read more</Text>)}
+              renderViewLess={(onPress) => (<Text onPress={onPress} style={[DFonts.Regular, styles.additionalText]}>read less</Text>)}
+              textStyle={styles.description}>
+              {this.props.data.description}
+            </ViewMoreText>
+          </View>
+        }
       </CardView>
     );
   }

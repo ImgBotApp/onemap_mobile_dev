@@ -10,7 +10,7 @@ import * as userActions from './reducers/user/actions';
 
 import { registerScreens } from './registerScreens'
 
-import {AsyncStorage} from 'react-native'
+import { AsyncStorage } from 'react-native'
 import { GET_PROFILE } from './graphql/userprofile';
 import { APP_USER_KEY } from './global/const'
 
@@ -26,7 +26,13 @@ import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-client-preset'
 import * as SCREEN from './global/screenName'
 
 const httpLink = new HttpLink({
-  uri: 'https://api.graph.cool/simple/v1/' + (true ? 'cjb30vkvv434c0146sjjn4d4w' : 'cjctwe3gj19zb01051chfehqy')
+  uri: 'https://api.graph.cool/simple/v1/' + (__DEV__ ?
+    // Development
+    'cjb30vkvv434c0146sjjn4d4w'
+    :
+    // Production
+    'cjctwe3gj19zb01051chfehqy'
+  )
 })
 export const client = new ApolloClient({
   link: httpLink,
@@ -52,7 +58,7 @@ export default class App {
     Orientation.lockToPortrait();
     this._fbAuth();
   }
-  setAppRoot(root){
+  setAppRoot(root) {
     store.subscribe(this.onStoreUpdate.bind(this));
     store.dispatch(appActions.changeAppRoot(root));
   }
@@ -84,20 +90,20 @@ export default class App {
   }
   _fbAuth(root) {
     try {
-     AsyncStorage.getItem(APP_USER_KEY).then((value) => {
-       let val = JSON.parse(value);
-       if (val !== null && val.id !== null) {
-         // We have data!!
-         let UserExist = client.query({
-           query: GET_PROFILE,
-           variables: {
-             userId: val.id
-           }
-         }).then((user) => {
-           var data = user.data.User
-           if (data.username) {
+      AsyncStorage.getItem(APP_USER_KEY).then((value) => {
+        let val = JSON.parse(value);
+        if (val !== null && val.id !== null) {
+          // We have data!!
+          let UserExist = client.query({
+            query: GET_PROFILE,
+            variables: {
+              userId: val.id
+            }
+          }).then((user) => {
+            var data = user.data.User
+            if (data.username) {
 
-             store.dispatch(
+              store.dispatch(
                 userActions.saveUserInfo({
                   id: data.id,
                   createdAt: new Date().toLocaleDateString(),
@@ -120,26 +126,26 @@ export default class App {
                 appActions.saveUserFollows(data.follows)
               )
               this.setAppRoot('main');
-           }
-           else {//if can't get user profile
-            this.setAppRoot('login');
-           }
-         }).catch(err => {
-           this.setAppRoot('login')
-         });
-       } else {//if can't get user api key from local storage
-        this.setAppRoot('login');
-       }
-     }).catch(err => {
-       this.setAppRoot('login')
-     });
+            }
+            else {//if can't get user profile
+              this.setAppRoot('login');
+            }
+          }).catch(err => {
+            this.setAppRoot('login')
+          });
+        } else {//if can't get user api key from local storage
+          this.setAppRoot('login');
+        }
+      }).catch(err => {
+        this.setAppRoot('login')
+      });
 
-   } catch (error) {
-     // Error retrieving data
-     this.startApp('login');
-   }
+    } catch (error) {
+      // Error retrieving data
+      this.startApp('login');
+    }
 
- }
+  }
   startApp(root) {
     switch (root) {
       case 'login':
@@ -162,7 +168,7 @@ export default class App {
                 screen: SCREEN.FEED_LIST_SCREEN,
                 icon: HomeIcon,
                 navigatorStyle: {
-                  navBarTextFontFamily: 'SukhumvitSet-Bold',
+                  navBarTextFontFamily: 'Comfortaa-Bold',
                   navBarTextColor: 'DARK_GRAY_COLOR',
                 }
               },
@@ -179,7 +185,7 @@ export default class App {
                 screen: SCREEN.USER_PROFILE_SCREEN,
                 icon: UserIcon,
                 navigatorStyle: {
-                  navBarTextFontFamily: 'SukhumvitSet-Bold',
+                  navBarTextFontFamily: 'Comfortaa-Bold',
                   navBarTextColor: DARK_GRAY_COLOR
                 }
               },

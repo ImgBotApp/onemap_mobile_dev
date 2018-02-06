@@ -1,5 +1,8 @@
 <resources>
     <string name="facebook_app_id">163236004399299</string>
+    <!-- Development -->
+    <!-- <string name="google_api_key">AIzaSyAat5w4Pk7FTXOR1ZPcuavjwjIbiP-JBGU</string> -->
+    <!-- Production -->
     <string name="google_api_key">AIzaSyD4rJhaFamagOqOoJ0UYKXyv9xcZ8w4FNk</string>
     <string name="app_name">OneMap</string>
 </resources>

@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     marginTop       : getDeviceHeight(350),
     textAlign       : 'center',
     fontSize        : 13,
-    fontFamily      : 'SukhumvitSet-Text',
+    fontFamily      : 'Comfortaa-Regular',
     color           : DARK_GRAY_COLOR
   },
   PhoneInputContainer: {

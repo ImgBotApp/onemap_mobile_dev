@@ -18,7 +18,7 @@ import styles from './styles'
 import { client } from '@root/main';
 import { graphql } from "react-apollo";
 import { GET_COLLECTION_WITH_PLACES, GET_COLLECTIONS_WITH_PLACES } from '@graphql/collections';
-import { GET_CHECKED_PLACES } from '@graphql/collections';
+import { GET_CHECKED_PLACES } from '@graphql/places';
 import { GET_USER_WITH_LIKED_PLACES } from '@graphql/userprofile'
 import {OptimizedFlatList} from 'react-native-optimized-flatlist'
 
@@ -190,11 +190,10 @@ class Collections extends Component {
         >
           <AutoHeightTitledImage
             uri={item.pictureURL ? item.pictureURL[0] : ""}
-            width={getDeviceWidth(375)}
-            title={item.address}
+            title={item.placeName}
             vAlign={'center'}
             radius={8}
-            hAlign={'left'}
+            hAlign={'center'}
             titleStyle={styles.storyItemTitle}
             style={{ marginBottom: 10 }}
           />

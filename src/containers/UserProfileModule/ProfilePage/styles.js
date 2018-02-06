@@ -37,12 +37,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   bigName: {
-    fontFamily: 'SukhumvitSet-Medium',
+    fontFamily: 'Comfortaa-Regular',
     fontSize: 16,
     color: DARK_GRAY_COLOR
   },
   userId: {
-    fontFamily: 'SukhumvitSet-Text',
+    fontFamily: 'Comfortaa-Regular',
     fontSize: SMALL_FONT_SIZE,
     color: '#575858'
   },
@@ -57,11 +57,11 @@ const styles = StyleSheet.create({
   },
   editProfile: {
     color: '#575858',
-    fontFamily: 'SukhumvitSet-Text',
+    fontFamily: 'Comfortaa-Regular',
     fontSize: SMALL_FONT_SIZE
   },
   bio: {
-    fontFamily: 'SukhumvitSet-Text',
+    fontFamily: 'Comfortaa-Regular',
     fontSize: SMALL_FONT_SIZE,
     color: DARK_GRAY_COLOR,
     marginTop: GLOBAL.getDeviceHeight(50)
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   specFont: {
-    fontFamily: 'SukhumvitSet-Text',
+    fontFamily: 'Comfortaa-Regular',
     fontSize: 8,
     marginBottom: GLOBAL.getDeviceHeight(15)
   },
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     marginRight: GLOBAL.getDeviceWidth(86)
   },
   collectionTitle: {
-    fontFamily: 'SukhumvitSet-Text',
+    fontFamily: 'Comfortaa-Regular',
     fontSize: 14,
     marginBottom: GLOBAL.getDeviceHeight(69),
     color: '#575858'
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     marginLeft: GLOBAL.getDeviceWidth(96)
   },
   storyTitle: {
-    fontFamily: 'SukhumvitSet-Text',
+    fontFamily: 'Comfortaa-Regular',
     fontSize: 14,
     color: '#575858',
     marginBottom: GLOBAL.getDeviceHeight(83)
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     width: GLOBAL.getDeviceWidth(375)
   },
   storyItemTitle: {
-    fontFamily: 'SukhumvitSet-Text',
+    fontFamily: 'Comfortaa-Regular',
     fontSize: 12,
     textAlign: 'left'
   }

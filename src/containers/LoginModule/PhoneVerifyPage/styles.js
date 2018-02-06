@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   resendText: {
-    fontFamily        : 'SukhumvitSet-Text',
+    fontFamily        : 'Comfortaa-Regular',
     fontSize          : 13,
     textAlign         : 'center'
   },
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   desFont: {
     fontSize          : 13,
-    fontFamily        : 'SukhumvitSet-Text',
+    fontFamily        : 'Comfortaa-Regular',
     textAlign         : 'center'
   },
   gapsPhoneNumber: {
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   resendText: {
     color             : '#575858',
-    fontFamily        : 'SukhumvitSet-Text',
+    fontFamily        : 'Comfortaa-Regular',
     textAlign         : 'center',
     fontSize          : 10
   },

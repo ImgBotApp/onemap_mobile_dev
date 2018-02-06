@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: SMALL_FONT_SIZE,
     color: LIGHT_GRAY_COLOR,
-    fontFamily: 'SukhumvitSet-Text'
+    fontFamily: 'Comfortaa-Regular'
   },
   descriptionText: {
     marginTop: getDeviceHeight(50)

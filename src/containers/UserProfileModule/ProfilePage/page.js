@@ -80,7 +80,7 @@ class ProfileComponent extends Component {
           title: 'Account Settings',
           animated: true,
           navigatorStyle: {
-            navBarTextFontFamily: 'SukhumvitSet-Bold',
+            navBarTextFontFamily: 'Comfortaa-Bold',
             navBarTextColor: DARK_GRAY_COLOR,
           }
         })
@@ -93,7 +93,7 @@ class ProfileComponent extends Component {
       title: 'Edit Profile',
       animated: true,
       navigatorStyle: {
-        navBarTextFontFamily: 'SukhumvitSet-Bold',
+        navBarTextFontFamily: 'Comfortaa-Bold',
         navBarTextColor: DARK_GRAY_COLOR,
       }
     });
@@ -176,7 +176,7 @@ class ProfileComponent extends Component {
           <Text style={styles.storyTitle}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
           {
             allStories ? (
-              <StoryBoard style={styles.StoryContainer} data={allStories} width={375}
+              <StoryBoard style={styles.StoryContainer} data={allStories}
                 onPressItem={this.onStoryItem}
               />) : null
           }
