@@ -22,7 +22,7 @@ class FeedItem extends Component {
     this.props.onPress(this.props.data);
   }
 
-  _onPlaceImagePress() {
+  onPressItem = () => {
     this.props.onPlace();
   }
 
@@ -50,9 +50,9 @@ class FeedItem extends Component {
           </TouchableOpacity> */}
         </View>
         {/* Feed Title */}
-        <View>
+        <TouchableOpacity onPress={this.onPressItem}>
           <Text style={[DFonts.Title, styles.feedTitle]}>{this.props.data.placeName}</Text>
-        </View>
+        </TouchableOpacity>
         {/* Place Image */}
         <View style={styles.feedImages}>
           <FlatList
@@ -61,7 +61,7 @@ class FeedItem extends Component {
             horizontal
             renderItem={({ item }) => (
               <CardView cardElevation={5} cardMaxElevation={5} cornerRadius={5} style={styles.FeedImageCard}>
-                <TouchableOpacity onPress={this._onPlaceImagePress.bind(this)}>
+                <TouchableOpacity onPress={this.onPressItem}>
                   <Image source={{ uri: getThumlnailFromVideoURL(item.uri) }} style={styles.feedItemImage} />
                   {
                     getMediaTypeFromURL(item.uri) ?
@@ -79,17 +79,21 @@ class FeedItem extends Component {
           <Text style={[DFonts.SubContent, styles.placeTitle]}>{this.props.data.place}</Text>
         </View>
         {/* Border Bar */}
-        <View style={styles.separate}></View>
+        {!!this.props.data.description &&
+          <View style={styles.separate} />
+        }
         {/* Description */}
-        <View style={styles.descriptionText}>
-          <ViewMoreText
-            numberOfLines={3}
-            renderViewMore={(onPress) => (<Text onPress={onPress} style={[DFonts.Regular, styles.additionalText]}>read more</Text>)}
-            renderViewLess={(onPress) => (<Text onPress={onPress} style={[DFonts.Regular, styles.additionalText]}>read less</Text>)}
-            textStyle={styles.description}>
-            {this.props.data.description}
-          </ViewMoreText>
-        </View>
+        {!!this.props.data.description &&
+          <View style={styles.descriptionText}>
+            <ViewMoreText
+              numberOfLines={3}
+              renderViewMore={(onPress) => (<Text onPress={onPress} style={[DFonts.Regular, styles.additionalText]}>read more</Text>)}
+              renderViewLess={(onPress) => (<Text onPress={onPress} style={[DFonts.Regular, styles.additionalText]}>read less</Text>)}
+              textStyle={styles.description}>
+              {this.props.data.description}
+            </ViewMoreText>
+          </View>
+        }
       </CardView>
     );
   }
