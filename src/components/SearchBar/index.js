@@ -408,7 +408,11 @@ const getStyles = (inputHeight) => {
       backgroundColor: '#f7f7f7',
       borderRadius: 5,
       fontSize: 16,
+<<<<<<< HEAD
       fontFamily: 'SukhumvitSet-Bold',
+=======
+      fontFamily: 'Comfortaa-Bold',
+>>>>>>> f4dfb30611baa5e813d1e75c4aafd1315f86862e
     },
     placeholderColor: 'grey',
     iconSearch: {
@@ -442,7 +446,7 @@ const getStyles = (inputHeight) => {
     cancelButtonText: {
       fontSize: 14,
       color: '#fff',
-      fontFamily: 'SukhumvitSet-Text',
+      fontFamily: 'Comfortaa-Regular',
     }
   };
 }

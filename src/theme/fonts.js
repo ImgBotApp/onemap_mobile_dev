@@ -3,27 +3,27 @@ import { BLUE_COLOR } from './colors';
 
 export default styles = StyleSheet.create({
   Header: {
-    fontFamily: 'SukhumvitSet-Bold',
+    fontFamily: 'Comfortaa-Bold',
     fontSize: 20
   },
   Title: {
-    fontFamily: 'SukhumvitSet-Medium',
+    fontFamily: 'Comfortaa-Regular',
     fontSize: 18
   },
   SubTitle: {
-    fontFamily: 'SukhumvitSet-Light',
+    fontFamily: 'Comfortaa-Light',
     fontSize: 10
   },
   Content: {
-    fontFamily: 'SukhumvitSet-Medium',
+    fontFamily: 'Comfortaa-Regular',
     fontSize: 15
   },
   SubContent: {
-    fontFamily: 'SukhumvitSet-Medium',
+    fontFamily: 'Comfortaa-Regular',
     fontSize: 13
   },
   Regular: {
-    fontFamily: 'SukhumvitSet-Text',
+    fontFamily: 'Comfortaa-Regular',
     fontSize: 13
   },
   AdditionalText: {

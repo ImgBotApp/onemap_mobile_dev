@@ -138,7 +138,7 @@ class PlaceProfile extends PureComponent {
       imageUploading: false,
       storyUpdated: false
     }
-    console.log(this.props.user)
+    this.loading = false;
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
     this.handlePress = this.handlePress.bind(this)
     this.showActionSheet = this.showActionSheet.bind(this)
@@ -710,7 +710,7 @@ class PlaceProfile extends PureComponent {
           onChangeText={text => this.setState({ myStory: { ...this.state.myStory, title: text }, storyUpdated: true })}
         />
         <TextInput
-          style={[DFonts.Title, styles.commentDescription, { width: '100%' }]}
+          style={[DFonts.SubTitle, styles.commentDescription, { width: '100%' }]}
           multiline={true}
           placeholder={'What is this story about'}
           value={this.state.myStory.story}
@@ -824,6 +824,8 @@ class PlaceProfile extends PureComponent {
     )
   }
   saveStory() {
+    if (this.loading) return;
+    else this.loading = true;
     const { myStory } = this.state;
     if (myStory.id) {
       this.props.updateStory({
@@ -835,8 +837,12 @@ class PlaceProfile extends PureComponent {
         }
       }).then(res => {
         this.setState({ myStory: res.data.updateStory, storyUpdated: false });
+        this.loading = false;
         client.resetStore();
-      }).catch(err => this.setState({ storyUpdated: false }))
+      }).catch(err => {
+        this.setState({ storyUpdated: false });
+        this.loading = false;
+      });
     } else {
       this.props.createStory({
         variables: {
@@ -850,34 +856,40 @@ class PlaceProfile extends PureComponent {
         }
       }).then(res => {
         this.setState({ myStory: res.data.createStory, storyUpdated: false });
+        this.loading = false;
         client.resetStore();
-      }).catch(err => this.setState({ storyUpdated: false }))
+      }).catch(err => {
+        this.setState({ storyUpdated: false });
+        this.loading = false;
+      });
     }
   }
 
   _renderCommentStory() {
-    return this.state.placeData.comments.map((dataItem, index) => {
-      return (
-        <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-          <View style={{ flexDirection: 'row' }}>
-            <CircleImage style={styles.storyWriterImage} uri={dataItem.createdBy.photoURL} radius={getDeviceWidth(67)} />
-            <View>
-              <Text style={[DFonts.Title, styles.storyWriterName]}>{dataItem.createdBy.displayName}</Text>
-              <Text style={[DFonts.SubTitle, styles.commentDate]}>{calculateDuration(dataItem.updatedAt)}</Text>
+    return this.state.placeData.comments
+      .filter(comment => comment.createdBy.id !== this.props.user.id)
+      .map((dataItem, index) => {
+        return (
+          <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
+            <View style={{ flexDirection: 'row' }}>
+              <CircleImage style={styles.storyWriterImage} uri={dataItem.createdBy.photoURL} radius={getDeviceWidth(67)} />
+              <View>
+                <Text style={[DFonts.Title, styles.storyWriterName]}>{dataItem.createdBy.displayName}</Text>
+                <Text style={[DFonts.SubTitle, styles.commentDate]}>{calculateDuration(dataItem.updatedAt)}</Text>
+              </View>
             </View>
-          </View>
-          <FlatList
-            keyExtractor={(item, index) => index}
-            style={[styles.imageFlatList, { marginTop: 10 }]}
-            horizontal
-            data={dataItem.pictureURL}
-            renderItem={({ index }) => this._renderItem(dataItem.pictureURL.map(item => ({ uri: item })), index)}
-          />
-          <Text style={styles.commentTitle}>{dataItem.title}</Text>
-          <Text style={styles.commentDescription}>{dataItem.story}</Text>
-        </CardView>
-      )
-    })
+            <FlatList
+              keyExtractor={(item, index) => index}
+              style={[styles.imageFlatList, { marginTop: 10 }]}
+              horizontal
+              data={dataItem.pictureURL}
+              renderItem={({ index }) => this._renderItem(dataItem.pictureURL.map(item => ({ uri: item })), index)}
+            />
+            <Text style={[DFonts.Title, styles.commentTitle]}>{dataItem.title}</Text>
+            <Text style={[DFonts.SubTitle, styles.commentDescription]}>{dataItem.story}</Text>
+          </CardView>
+        )
+      })
   }
 
   render() {

@@ -361,7 +361,7 @@ class ProfileCreatePage extends Component {
                 <Ionicons name="ios-phone-portrait-outline" size={24} color="#0a91ed" />            
               </View>
               <View style={styles.text}>
-                <PhoneInput ref='phone' textStyle={{fontFamily: 'SukhumvitSet-Light'}} confirmText={'Confirm'} initialCountry={"us"}/>
+                <PhoneInput ref='phone' textStyle={{fontFamily: 'Comfortaa-Light'}} confirmText={'Confirm'} initialCountry={"us"}/>
               </View>
               
             </View> 
@@ -373,7 +373,7 @@ class ProfileCreatePage extends Component {
                 <EvilIcons name="calendar" size={24} color="#0a91ed" />            
               </View>
               <View style={styles.text}>
-                <Text style={{fontFamily: 'SukhumvitSet-Light'}}>{this.state.birthday} </Text>
+                <Text style={{fontFamily: 'Comfortaa-Light'}}>{this.state.birthday} </Text>
               </View>
               <DateTimePicker
                 isVisible={this.state.isDateTimePickerVisible}
