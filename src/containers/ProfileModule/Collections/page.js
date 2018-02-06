@@ -199,6 +199,7 @@ class Collections extends Component {
           />
         </TouchableOpacity>
       )
+    return (<View/>);
   }
   _keyExtractor = (item, index) => index;
 

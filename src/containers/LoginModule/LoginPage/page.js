@@ -63,6 +63,7 @@ class LoginPage extends Component {
         }
       }).then((user) => {
         var data = user.data.User
+
         if (data.displayName) {
 
           // wheter to sync with facebook or not

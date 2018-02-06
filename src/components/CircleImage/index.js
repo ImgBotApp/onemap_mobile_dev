@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { View, Text, Image } from 'react-native';
 import styles from './styles'
+import { fetchThumbFromCloudinary } from '@global/cloudinary';
+
 // create a component
 class CircleImage extends Component {
   constructor(props) {
@@ -12,7 +14,7 @@ class CircleImage extends Component {
       <View style={this.props.style}>
         {this.props.uri ?
           <Image
-            source={{ uri: this.props.uri ? this.props.uri : '' }}
+            source={{ uri: this.props.uri ? fetchThumbFromCloudinary(this.props.uri) : '' }}
             style={[styles.image, { borderRadius: this.props.radius }]}
           />
           :

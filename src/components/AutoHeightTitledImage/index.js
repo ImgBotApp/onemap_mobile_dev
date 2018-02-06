@@ -6,6 +6,7 @@ import styles from './styles'
 import { EMPTY_IMG } from '@global/const';
 import { getDeviceWidth, getDeviceHeight } from '@global'
 import DFonts from '@theme/fonts';
+import { fetchThumbFromCloudinary } from '@global/cloudinary';
 
 function getVAlign(align) {
   switch (align) {
@@ -47,7 +48,7 @@ class AutoHeightTitledImage extends Component {
     return (
       <View style={[this.props.style, { justifyContent: this.state.vAlign, alignItems: this.state.hAlign }]}>
         <AutoHeightImage
-          imageURL={this.state.uri ? this.state.uri : EMPTY_IMG}
+          imageURL={this.state.uri ? fetchThumbFromCloudinary(this.state.uri): EMPTY_IMG}
           width={getDeviceWidth(375)}
           style={{ borderWidth: 1, borderColor: 'transparent', borderRadius: this.props.radius ? this.props.radius : 8 }}
         />
