@@ -174,6 +174,7 @@ class LoginPage extends Component {
   }
 
   doLogin() {
+    LoginManger.logOut();
     LoginManager.logInWithReadPermissions(['public_profile', 'email', 'user_about_me', 'user_birthday', 'user_hometown', 'user_location'])
       .then((result) => {
         if (result.isCancelled) {
