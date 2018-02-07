@@ -7,6 +7,7 @@ import { APP_USER_KEY } from '@global/const'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
+import { APPFONTNAME } from '@theme/fonts';
 import styles from './styles'
 
 class AccountSetting extends Component {
@@ -58,7 +59,7 @@ class AccountSetting extends Component {
       title: 'Edit Profile',
       animated: true,
       navigatorStyle: {
-        navBarTextFontFamily: 'Comfortaa-Bold',
+        navBarTextFontFamily: APPFONTNAME.Bold,
         navBarTextColor: DARK_GRAY_COLOR,
       }
     })

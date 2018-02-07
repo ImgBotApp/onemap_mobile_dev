@@ -12,7 +12,7 @@ import {
   View,
   ViewPropTypes
 } from 'react-native';
-import DFonts from '@theme/fonts';
+import DFonts,{ APPFONTNAME } from '@theme/fonts';
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 const containerHeight = 60;
@@ -408,7 +408,7 @@ const getStyles = (inputHeight) => {
       backgroundColor: '#f7f7f7',
       borderRadius: 5,
       fontSize: 16,
-      fontFamily: 'Comfortaa-Bold',
+      fontFamily: APPFONTNAME.Bold,
     },
     placeholderColor: 'grey',
     iconSearch: {
@@ -442,7 +442,7 @@ const getStyles = (inputHeight) => {
     cancelButtonText: {
       fontSize: 14,
       color: '#fff',
-      fontFamily: 'Comfortaa-Regular',
+      fontFamily: APPFONTNAME.Regular,
     }
   };
 }

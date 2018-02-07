@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 import * as GLOBAL from '@global'
-
+import { APPFONTNAME } from '@theme/fonts';
 // define your styles
 const styles = StyleSheet.create({
   container: {
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   resendText: {
-    fontFamily        : 'Comfortaa-Regular',
+    fontFamily        : APPFONTNAME.Regular,
     fontSize          : 13,
     textAlign         : 'center'
   },
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   desFont: {
     fontSize          : 13,
-    fontFamily        : 'Comfortaa-Regular',
+    fontFamily        : APPFONTNAME.Regular,
     textAlign         : 'center'
   },
   gapsPhoneNumber: {
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   resendText: {
     color             : '#575858',
-    fontFamily        : 'Comfortaa-Regular',
+    fontFamily        : APPFONTNAME.Regular,
     textAlign         : 'center',
     fontSize          : 10
   },

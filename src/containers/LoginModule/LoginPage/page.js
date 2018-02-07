@@ -14,6 +14,7 @@ import { client } from '@root/main'
 import { GET_PROFILE } from '@graphql/userprofile';
 import { EXIST_FACEBOOK_USER } from '@graphql/users'
 import Orientation from 'react-native-orientation';
+import { APPFONTNAME } from '@theme/fonts';
 
 const { GraphRequest, GraphRequestManager, AccessToken } = FBSDK
 
@@ -116,7 +117,7 @@ class LoginPage extends Component {
             },
             animated: true,
             navigatorStyle: {
-              navBarTextFontFamily: 'Comfortaa-Bold',
+              navBarTextFontFamily: APPFONTNAME.Bold,
               navBarTextColor: DARK_GRAY_COLOR,
               naviBarComponentAlignment: 'center'
             },
@@ -221,7 +222,7 @@ class LoginPage extends Component {
       // animationType: 'fade',
       navigatorStyle: {
         // navBarHidden: true
-        navBarTextFontFamily: 'Comfortaa-Bold',
+        navBarTextFontFamily: APPFONTNAME.Bold,
         navBarTextColor: DARK_GRAY_COLOR,
         naviBarComponentAlignment: 'center'
       },
