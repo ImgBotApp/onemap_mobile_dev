@@ -34,58 +34,84 @@ class SearchResult extends Component {
     this.onTextSearchPlace();
   }
   onTextSearchPlace() {
-    if (this.props.keyword == this.state.prevQuery)
+    if(this.state.loading)
       return;
+
     this.setState({ loading: true });
-    const radius = 50000;
-    const language = 'en';
-    const query = this.props.keyword.replace(/\s/g, "+");
 
-    if (this.props.coordinate == null) return;
-    const placeTextSearchURL = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + this.props.keyword + "&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius + "&key=" + PLACES_APIKEY;
+    if(this.props.isAuto && this.state.page == 'Places')
+    {
+      const radius = 10000;
+      const language = 'en';
+      const query = this.props.keyword.replace(/\s/g, "+");
 
-    fetch(placeTextSearchURL, {
-      method: 'GET',
-      'Access-Control-Allow-Origin': '*',
-      'Content-Type': 'application/json',
-    })
+      if (this.props.coordinate == null) return;
+      
+      const autocompleteURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+this.props.keyword+"&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius+'&offset=2'+"&key=" + PLACES_APIKEY;
+
+      fetch(autocompleteURL, {
+        method: 'GET',
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      })
       .then((response) => response.json())
       .then((responseData) => {
-        //set your data here
         let query = this.props.keyword;
         this.setState({ prevQuery: query });
-
+        
         this.setState({ loading: false })
-        if (responseData.results)
+        if (responseData.predictions)
           this.setState({
-            places: responseData.results
+            autoplaces: responseData.predictions
           })
       })
       .catch((error) => {
         this.setState({ loading: false })
       });
-
-
-    client.query({
-      query: GET_FILTER_KEYWORDS,
-      variables: {
-        keyword: this.props.keyword
+    }else{
+      if(!this.props.isAuto && this.state.page == 'Keywords')
+      {
+        client.query({
+          query: GET_FILTER_KEYWORDS,
+          variables: {
+            keyword: this.props.keyword
+          }
+        }).then((users) => {
+          let placeArray = [];
+          if(users)
+          {
+            users.data.allKeywords.forEach(item=>{
+              if(item.places)
+              {
+                item.places.forEach(place=>{
+                  placeArray.push({...place,...{keyword:item.name}});
+                })
+              }
+            });
+          }
+          this.setState({
+            keywords: placeArray,
+            loading:false
+          })
+        })
       }
-    }).then((users) => {
-      this.setState({
-        keywords: users.data.allKeywords
-      })
-    })
-    client.query({
-      query: FILER_USERS,
-      variables: {
-        keyword: this.props.keyword
+      else if(!this.props.isAuto && this.state.page == 'People'){
+        client.query({
+          query: FILER_USERS,
+          variables: {
+            keyword: this.props.keyword,
+            loading:false
+          }
+        }).then((users) => {
+          this.setState({
+            users: users.data.allUsers,
+            loading:false
+          })
+        })
+      }else{
+        this.setState({loading:false});
       }
-    }).then((users) => {
-      this.setState({
-        users: users.data.allUsers
-      })
-    })
+    }
   }
   _renderTabHeader(text) {
     return (
@@ -113,8 +139,8 @@ class SearchResult extends Component {
         <View style={styles.item}>
           <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
           <View style={styles.infomation}>
-            <Text style={[DFonts.Title, styles.name]}>{item.name}</Text>
-            <Text style={[DFonts.SubTitle, styles.following]}>{item.formatted_address}</Text>
+            <Text style={[DFonts.Title, styles.name]}>{item.structured_formatting.main_text}</Text>
+            <Text style={[DFonts.SubTitle, styles.following]}>{item.description}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -132,18 +158,20 @@ class SearchResult extends Component {
     )
   }
   _onKeywordItem(item) {
-    const placeId = item.places.length ? item.places[0].id : '';
+    
+    const placeId = item.id ? item.id : '';
     return (
       <TouchableOpacity onPress={() => this.props.onKeywordItem(placeId)}>
         <View style={styles.item}>
-          <Image source={require('@assets/images/bookmarker.png')} style={styles.placeImage} />
+          <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
           <View style={styles.infomation}>
-            <Text style={[DFonts.Title, styles.name]}>{item.name}</Text>
-            <Text style={[DFonts.Title, styles.following]}>{item.following ? 'Follower' : null}</Text>
+            <Text style={[DFonts.Title, styles.name]}>{item.placeName}</Text>
+            <Text style={[DFonts.SubTitle, styles.following]}>{item.address}</Text>
           </View>
         </View>
       </TouchableOpacity>
     )
+    
   }
   _onRenderItem(item) {
     if (item == null) return;
@@ -186,7 +214,7 @@ class SearchResult extends Component {
       <FlatList
         keyExtractor={(item, index) => index}
         style={styles.scrollView}
-        data={this.state.places}
+        data={this.state.autoplaces}
         renderItem={({ item }) => this._onPlaceItem(item)}
       />
 

@@ -9,6 +9,30 @@ export const GET_FILTER_KEYWORDS = gql`
       name
       places {
         id
+        createdAt
+        updatedAt
+        description
+        source
+        sourceId
+        createSide
+        placeName
+        locationLat
+        locationLong
+        addressAreaDistrict
+        addressCityTown
+        addressStateProvince
+        addressCountry
+        addressPostalCode
+        addressStreet
+        address
+        phoneNumber
+        website
+        facebook
+        line
+        openingHrs
+        pictureURL
+        status
+        placeOwner
       }
     }
   }
