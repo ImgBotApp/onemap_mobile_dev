@@ -155,7 +155,8 @@ export default class App {
             navigatorStyle: {
               navBarHidden: true
             },
-            navigatorButtons: {}
+            navigatorButtons: {},
+            portraitOnlyMode: true
           }
         })
         return;
@@ -189,7 +190,8 @@ export default class App {
                   navBarTextColor: DARK_GRAY_COLOR
                 }
               },
-            ]
+            ],
+            portraitOnlyMode: true
           })
         }).catch((error) => {
           console.log(error);

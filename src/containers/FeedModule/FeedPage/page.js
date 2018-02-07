@@ -29,7 +29,7 @@ import { GET_SUGGEST_USERS } from '@graphql/userprofile'
 import { GET_MY_COLLECTIONS } from '@graphql/collections'
 
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
-
+import Orientation from 'react-native-orientation';
 // create a component
 class FeedPage extends Component {
   constructor(props) {
@@ -50,6 +50,7 @@ class FeedPage extends Component {
     };
     this.onEndReached = this.onEndReached.bind(this)
     this.onRefresh = this.onRefresh.bind(this)
+    Orientation.lockToPortrait();
   }
   componentWillMount() {
     this.getSuggestUsers();

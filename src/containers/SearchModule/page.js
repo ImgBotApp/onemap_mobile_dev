@@ -219,7 +219,7 @@ class SearchPage extends Component {
           ref="search_box"
           backgroundColor={"#f3f3f3"}
           titleCancelColor={"#585958"}
-          //onChangeText={this.onShowResult.bind(this)}
+          onChangeText={this.onAutoShowResult.bind(this)}
           onSearch={this.onShowResult.bind(this)}
           onCancel={this.onDismissResult.bind(this)}
         />
@@ -300,6 +300,7 @@ class SearchPage extends Component {
               :
               (
                 <SearchResult keyword={this.state.keyword}
+                  isAuto={this.state.isAuto}
                   coordinate={this.state.initialMarker}
                   onUser={this.onUserItem.bind(this)}
                   onKeywordItem={this.onKeywordItem.bind(this)}
@@ -479,11 +480,25 @@ class SearchPage extends Component {
   }
   onShowResult(val) {
     this.setState({
-      keyword: val
+      keyword: val,
+      isAuto:false
     })
-    if (val.length == 0) return this.setState({ result: false })
-    else return this.setState({ result: true })
+    //if (val.length == 0) return this.setState({ result: false })
+    //else return this.setState({ result: true })
     this.forceUpdate()
+  }
+  onAutoShowResult(val){
+    this.setState({
+      keyword: val,
+      isAuto:true
+    })
+    //if (val.length == 0) return this.setState({ result: false })
+    //else return this.setState({ result: true })
+    if (val.length > 0)
+    {
+      this.setState({ result: true })
+      this.forceUpdate()
+    }
   }
   onDismissResult() {
     this.setState({

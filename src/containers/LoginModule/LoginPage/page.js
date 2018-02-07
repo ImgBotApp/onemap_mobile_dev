@@ -13,6 +13,7 @@ import styles from './styles'
 import { client } from '@root/main'
 import { GET_PROFILE } from '@graphql/userprofile';
 import { EXIST_FACEBOOK_USER } from '@graphql/users'
+import Orientation from 'react-native-orientation';
 
 const { GraphRequest, GraphRequestManager, AccessToken } = FBSDK
 
@@ -24,6 +25,7 @@ class LoginPage extends Component {
       id: '',
       loading: false
     }
+    Orientation.lockToPortrait();
   }
   componentDidMount() {
     if (Platform.OS == 'android')
