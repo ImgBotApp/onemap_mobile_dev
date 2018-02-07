@@ -17,6 +17,7 @@ export const GET_PROFILE = gql`
       gender
       birthdate
       facebookUserId
+      accountVerification
       mobile
       mobileVerification
       city

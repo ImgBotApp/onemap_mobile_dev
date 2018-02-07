@@ -119,6 +119,7 @@ export default class App {
                   lastName: data.lastName,
                   displayName: data.displayName,
                   username: data.username,
+                  accountVerification: data.accountVerification,
                   checkIns: data.checkIns.map(item => item.id),
                   blockByUsers: data.blockByUsers
                 })

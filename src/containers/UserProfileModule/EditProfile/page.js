@@ -103,7 +103,8 @@ class EditProfile extends Component {
           firstName: this.state.firstName,
           lastName: this.state.lastName,
           displayName: this.state.displayName,
-          username: this.state.username
+          username: this.state.username,
+          accountVerification: this.state.accountVerification
         });
         this.props.updateUser({
           variables: {
