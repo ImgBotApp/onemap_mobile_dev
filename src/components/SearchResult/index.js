@@ -47,7 +47,7 @@ class SearchResult extends Component {
 
       if (this.props.coordinate == null) return;
       
-      const autocompleteURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+this.props.keyword+"&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius+'&offset=2'+"&key=" + PLACES_APIKEY;
+      const autocompleteURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+this.props.keyword+"&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius+"&key=" + PLACES_APIKEY;
 
       fetch(autocompleteURL, {
         method: 'GET',
@@ -140,7 +140,7 @@ class SearchResult extends Component {
           <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
           <View style={styles.infomation}>
             <Text style={[DFonts.Title, styles.name]}>{item.structured_formatting.main_text}</Text>
-            <Text style={[DFonts.SubTitle, styles.following]}>{item.description}</Text>
+            <Text style={[DFonts.SubTitle, styles.following]}>{item.structured_formatting.secondary_text}</Text>
           </View>
         </View>
       </TouchableOpacity>
