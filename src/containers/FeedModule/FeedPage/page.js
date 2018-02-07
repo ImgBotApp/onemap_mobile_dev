@@ -238,7 +238,7 @@ class FeedPage extends Component {
     }
   }
   _renderSuggestedList(data) {
-    if (this.state.suggestFlag == false) return null
+    if (this.state.suggestFlag == false || !data.length) return <View />;
     return (
       <View style={styles.topItem}>
         {/* Recommend text */}
