@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 import { getDeviceWidth, getDeviceHeight } from '@global'
 import { BLUE_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
-
+import { APPFONTNAME } from '@theme/fonts';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     marginTop       : getDeviceHeight(350),
     textAlign       : 'center',
     fontSize        : 13,
-    fontFamily      : 'Comfortaa-Regular',
+    fontFamily      : APPFONTNAME.Regular,
     color           : DARK_GRAY_COLOR
   },
   PhoneInputContainer: {

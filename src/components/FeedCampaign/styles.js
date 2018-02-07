@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
 import { BLUE_COLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../theme/colors';
-import { NORMAL_FONT_SIZE, BIG_FONT_SIZE, SMALL_FONT_SIZE } from '../../theme/fonts';
+import { NORMAL_FONT_SIZE, BIG_FONT_SIZE, SMALL_FONT_SIZE,APPFONTNAME } from '../../theme/fonts';
 // define your styles
 const styles = StyleSheet.create({
   container: {
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: SMALL_FONT_SIZE,
     color: LIGHT_GRAY_COLOR,
-    fontFamily: 'Comfortaa-Regular'
+    fontFamily: APPFONTNAME.Regular
   },
   descriptionText: {
     marginTop: getDeviceHeight(50)

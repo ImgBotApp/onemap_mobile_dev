@@ -1,6 +1,6 @@
 import { StyleSheet, Platform } from 'react-native'
 import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../theme/colors';
-import { BIG_FONT_SIZE, NORMAL_FONT_SIZE,SMALL_FONT_SIZE } from '../../theme/fonts';
+import { BIG_FONT_SIZE, NORMAL_FONT_SIZE,SMALL_FONT_SIZE,APPFONTNAME } from '../../theme/fonts';
 import { getDeviceWidth, getDeviceHeight } from '@global'
 
 const styles = StyleSheet.create({
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   following: {
     fontSize: SMALL_FONT_SIZE,
     color: LIGHT_GRAY_COLOR,
-    fontFamily: 'Comfortaa-Light',
+    fontFamily: APPFONTNAME.Light,
   },
   customView: {
     width: 160,

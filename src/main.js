@@ -24,6 +24,7 @@ import { ApolloProvider } from 'react-apollo'
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-client-preset'
 
 import * as SCREEN from './global/screenName'
+import { APPFONTNAME } from '@theme/fonts';
 
 const httpLink = new HttpLink({
   uri: 'https://api.graph.cool/simple/v1/' + (__DEV__ ?
@@ -169,7 +170,7 @@ export default class App {
                 screen: SCREEN.FEED_LIST_SCREEN,
                 icon: HomeIcon,
                 navigatorStyle: {
-                  navBarTextFontFamily: 'Comfortaa-Bold',
+                  navBarTextFontFamily: APPFONTNAME.Bold,
                   navBarTextColor: 'DARK_GRAY_COLOR',
                 }
               },
@@ -186,7 +187,7 @@ export default class App {
                 screen: SCREEN.USER_PROFILE_SCREEN,
                 icon: UserIcon,
                 navigatorStyle: {
-                  navBarTextFontFamily: 'Comfortaa-Bold',
+                  navBarTextFontFamily: APPFONTNAME.Bold,
                   navBarTextColor: DARK_GRAY_COLOR
                 }
               },

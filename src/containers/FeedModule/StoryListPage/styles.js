@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
+import { APPFONTNAME } from '@theme/fonts';
 // define your styles
 const styles = StyleSheet.create({
   container: {
@@ -11,7 +12,7 @@ const styles = StyleSheet.create({
     marginLeft: getDeviceWidth(96)
   },
   storyTitle: {
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     fontSize: 14,
     color: '#575858',
     marginBottom: getDeviceHeight(83)

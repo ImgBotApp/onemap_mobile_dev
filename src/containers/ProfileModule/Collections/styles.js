@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { BACKGROUNDCOLOR } from '../../../theme/colors';
 import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
 import { getDeviceHeight, getDeviceWidth } from '@global'
-import { NORMAL_FONT_SIZE, BIG_FONT_SIZE, SMALL_FONT_SIZE } from '../../../theme/fonts';
+import { NORMAL_FONT_SIZE, BIG_FONT_SIZE, SMALL_FONT_SIZE,APPFONTNAME } from '../../../theme/fonts';
 // define your styles
 const styles = StyleSheet.create({
   container: {
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   storyItemTitle: {
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     fontSize: 12,
     textAlign: 'left',
     color: 'white'

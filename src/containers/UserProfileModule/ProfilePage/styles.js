@@ -3,7 +3,7 @@ import * as GLOBAL from '@global'
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
 import { DARK_GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../../theme/colors';
-import { SMALL_FONT_SIZE } from '../../../theme/fonts';
+import { SMALL_FONT_SIZE,APPFONTNAME } from '../../../theme/fonts';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -37,12 +37,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   bigName: {
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     fontSize: 16,
     color: DARK_GRAY_COLOR
   },
   userId: {
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     fontSize: SMALL_FONT_SIZE,
     color: '#575858'
   },
@@ -57,11 +57,11 @@ const styles = StyleSheet.create({
   },
   editProfile: {
     color: '#575858',
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     fontSize: SMALL_FONT_SIZE
   },
   bio: {
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     fontSize: SMALL_FONT_SIZE,
     color: DARK_GRAY_COLOR,
     marginTop: GLOBAL.getDeviceHeight(50)
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   specFont: {
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     fontSize: 8,
     marginBottom: GLOBAL.getDeviceHeight(15)
   },
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     marginRight: GLOBAL.getDeviceWidth(86)
   },
   collectionTitle: {
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     fontSize: 14,
     marginBottom: GLOBAL.getDeviceHeight(69),
     color: '#575858'
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     marginLeft: GLOBAL.getDeviceWidth(96)
   },
   storyTitle: {
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     fontSize: 14,
     color: '#575858',
     marginBottom: GLOBAL.getDeviceHeight(83)
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     width: GLOBAL.getDeviceWidth(375)
   },
   storyItemTitle: {
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     fontSize: 12,
     textAlign: 'left'
   }

@@ -31,6 +31,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import PhoneInput from 'react-native-phone-input'
 import LoadingSpinner from '@components/LoadingSpinner'
 import { uploadImage } from '@global/cloudinary';
+import { APPFONTNAME } from '@theme/fonts';
 
 const CANCEL_INDEX = 0
 const DESTRUCTIVE_INDEX = 4
@@ -361,7 +362,7 @@ class ProfileCreatePage extends Component {
                 <Ionicons name="ios-phone-portrait-outline" size={24} color="#0a91ed" />            
               </View>
               <View style={styles.text}>
-                <PhoneInput ref='phone' textStyle={{fontFamily: 'Comfortaa-Light'}} confirmText={'Confirm'} initialCountry={"us"}/>
+                <PhoneInput ref='phone' textStyle={{fontFamily: APPFONTNAME.Light}} confirmText={'Confirm'} initialCountry={"us"}/>
               </View>
               
             </View> 
@@ -373,7 +374,7 @@ class ProfileCreatePage extends Component {
                 <EvilIcons name="calendar" size={24} color="#0a91ed" />            
               </View>
               <View style={styles.text}>
-                <Text style={{fontFamily: 'Comfortaa-Light'}}>{this.state.birthday} </Text>
+                <Text style={{fontFamily: APPFONTNAME.Light}}>{this.state.birthday} </Text>
               </View>
               <DateTimePicker
                 isVisible={this.state.isDateTimePickerVisible}

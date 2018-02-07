@@ -16,7 +16,7 @@ import StoryBoard from '@components/StoryBoard'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
-import { SMALL_FONT_SIZE } from '@theme/fonts';
+import { SMALL_FONT_SIZE,APPFONTNAME } from '@theme/fonts';
 
 import { client } from '@root/main'
 import { GET_FOLLOWS } from '@graphql/userprofile';
@@ -80,7 +80,7 @@ class ProfileComponent extends Component {
           title: 'Account Settings',
           animated: true,
           navigatorStyle: {
-            navBarTextFontFamily: 'Comfortaa-Bold',
+            navBarTextFontFamily: APPFONTNAME.Bold,
             navBarTextColor: DARK_GRAY_COLOR,
           }
         })
@@ -93,7 +93,7 @@ class ProfileComponent extends Component {
       title: 'Edit Profile',
       animated: true,
       navigatorStyle: {
-        navBarTextFontFamily: 'Comfortaa-Bold',
+        navBarTextFontFamily: APPFONTNAME.Bold,
         navBarTextColor: DARK_GRAY_COLOR,
       }
     });

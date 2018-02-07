@@ -1,5 +1,6 @@
 import { StyleSheet, Platform } from 'react-native'
 import { getDeviceWidth, getDeviceHeight } from '@global'
+import { APPFONTNAME } from '@theme/fonts';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
     marginBottom: getDeviceHeight(277)
   },
   headerTitle: {
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     color: '#575858'
   },
   navContainer: {
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
   },
   rightNavText: {
     marginRight: getDeviceWidth(45),
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     color: '#575858',
     // fontSize: 14,
     fontWeight: 'bold'
@@ -75,10 +76,10 @@ const styles = StyleSheet.create({
   },
   gender: {
     borderBottomWidth: 0,  
-    fontFamily: 'Comfortaa-Light',
+    fontFamily: APPFONTNAME.Light,
   },
   genderItem:{
-    fontFamily: 'Comfortaa-Light',
+    fontFamily: APPFONTNAME.Light,
   },
   genderIcon:{
     width:getDeviceHeight(62),
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
     // height: getDeviceHeight(98),
     alignItems: 'flex-end',
     borderBottomColor: '#b0b0b0',
-    fontFamily: 'Comfortaa-Light',
+    fontFamily: APPFONTNAME.Light,
   },
   bioText: {
     marginLeft: getDeviceWidth(51),
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
     height: getDeviceHeight(402),
     alignItems: 'flex-start',
     textAlignVertical: 'top',
-    fontFamily: 'Comfortaa-Light',
+    fontFamily: APPFONTNAME.Light,
     // borderBottomColor: '#b0b0b0'    
   },
   text: {

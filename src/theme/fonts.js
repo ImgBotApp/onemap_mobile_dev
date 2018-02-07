@@ -1,29 +1,35 @@
 import { StyleSheet } from 'react-native'
 import { BLUE_COLOR } from './colors';
 
+export const APPFONTNAME= {
+  Bold:   'Comfortaa-Bold',
+  Regular:'Comfortaa-Regular',
+  Light:  'Comfortaa-Light'
+}
+
 export default styles = StyleSheet.create({
   Header: {
-    fontFamily: 'Comfortaa-Bold',
+    fontFamily: APPFONTNAME.Bold,
     fontSize: 20
   },
   Title: {
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     fontSize: 18
   },
   SubTitle: {
-    fontFamily: 'Comfortaa-Light',
+    fontFamily: APPFONTNAME.Light,
     fontSize: 10
   },
   Content: {
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     fontSize: 15
   },
   SubContent: {
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     fontSize: 13
   },
   Regular: {
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     fontSize: 13
   },
   AdditionalText: {

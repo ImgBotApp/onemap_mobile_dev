@@ -1,7 +1,7 @@
 import { StyleSheet, Platform } from 'react-native'
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
-import { SMALL_FONT_SIZE, NORMAL_FONT_SIZE } from '@theme/fonts';
+import { SMALL_FONT_SIZE, NORMAL_FONT_SIZE,APPFONTNAME } from '@theme/fonts';
 import { LIGHT_GRAY_COLOR, BIG_FONT_SIZE, BACKGROUNDCOLOR } from '@theme/colors';
 // define your styles
 const styles = StyleSheet.create({
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   login_str: {
     textAlign: 'center',
     fontSize: NORMAL_FONT_SIZE,
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     color: LIGHT_GRAY_COLOR
   },
   first_line: {
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     height: getDeviceHeight(81),
     top: getDeviceHeight(-50),
     color: LIGHT_GRAY_COLOR,
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     fontSize: BIG_FONT_SIZE,
     position: 'absolute',
     textAlign: 'center',

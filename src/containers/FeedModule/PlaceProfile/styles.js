@@ -2,7 +2,7 @@ import { StyleSheet, Platform } from 'react-native'
 import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR } from '../../../theme/colors';
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
-import { BIG_FONT_SIZE, SMALL_FONT_SIZE, SMALLER_FONT_SIZE, NORMAL_FONT_SIZE, BIGGER_FONT_SIZE } from '../../../theme/fonts';
+import { BIG_FONT_SIZE, SMALL_FONT_SIZE, SMALLER_FONT_SIZE, NORMAL_FONT_SIZE, BIGGER_FONT_SIZE,APPFONTNAME } from '../../../theme/fonts';
 // define your styles
 const styles = StyleSheet.create({
   container: {
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   descriptionText: {
     color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
-    fontFamily: 'Comfortaa-Regular'
+    fontFamily: APPFONTNAME.Regular
   },
   additionalText: {
     color: BLUE_COLOR,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   informationText: {
     color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
-    fontFamily: 'Comfortaa-Regular'
+    fontFamily: APPFONTNAME.Regular
   },
   informationContainer: {
     marginLeft: getDeviceWidth(76),
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
     marginLeft: getDeviceWidth(20),
-    fontFamily: 'Comfortaa-Regular'
+    fontFamily: APPFONTNAME.Regular
   },
   serparate: {
     width: '100%',

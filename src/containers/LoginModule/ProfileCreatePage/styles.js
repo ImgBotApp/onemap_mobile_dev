@@ -3,6 +3,7 @@ import { BLUE_COLOR, DARK_GRAY_COLOR } from '../../../theme/colors';
 
 import * as GLOBAL from '@global'
 import { getDeviceWidth, getDeviceHeight } from '@global'
+import { APPFONTNAME } from '@theme/fonts';
 // define your styles
 const styles = StyleSheet.create({
   scrollView: {
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize          : 13,
-    fontFamily        : 'Comfortaa-Regular',
+    fontFamily        : APPFONTNAME.Regular,
     textAlign         : 'center'
   },
   profile: {
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
     marginBottom    :getDeviceHeight(30),
     textAlign       : 'center',
     fontSize        : 13,
-    fontFamily      : 'Comfortaa-Regular',
+    fontFamily      : APPFONTNAME.Regular,
     color           : DARK_GRAY_COLOR,
     marginLeft      : getDeviceHeight(300),
     marginRight     : getDeviceHeight(300),
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
   },
   gender: {
     borderBottomWidth: 0,  
-    fontFamily: 'Comfortaa-Light',
+    fontFamily: APPFONTNAME.Light,
   },
   genderIcon:{
     width:getDeviceHeight(62),
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     marginTop :getDeviceHeight(75),
   },
   genderItem:{
-    fontFamily: 'Comfortaa-Light',
+    fontFamily: APPFONTNAME.Light,
   },
   fontAweSome: {
     alignItems: 'center',
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
     // height: getDeviceHeight(98),
     alignItems: 'flex-end',
     borderBottomColor: '#b0b0b0',
-    fontFamily: 'Comfortaa-Light',
+    fontFamily: APPFONTNAME.Light,
   },
   bioText: {
     marginLeft: getDeviceWidth(51),
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
     height: getDeviceHeight(402),
     alignItems: 'flex-end',
     textAlignVertical: 'top',  
-    fontFamily: 'Comfortaa-Light',
+    fontFamily: APPFONTNAME.Light,
     // borderBottomColor: '#b0b0b0'    
   },
   text: {
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
     // alignItems: 'flex-end',
     borderBottomWidth: 1,
     borderBottomColor: '#b0b0b0',
-    fontFamily        : 'Comfortaa-Light'
+    fontFamily        : APPFONTNAME.Light
   },
   borderItem: {
     borderBottomWidth: 1,
@@ -183,10 +184,10 @@ const styles = StyleSheet.create({
     marginLeft        : GLOBAL.getDeviceWidth(226),
     // marginBottom      : GLOBAL.getDeviceHeight(58),
     fontSize          : 13,
-    fontFamily        : 'Comfortaa-Light'
+    fontFamily        : APPFONTNAME.Light
   },
   biolabel:{
-    fontFamily        : 'Comfortaa-Light',
+    fontFamily        : APPFONTNAME.Light,
     alignSelf         :"flex-start",
     marginTop         :getDeviceHeight(30),
     marginLeft        :getDeviceWidth(20)

@@ -1,6 +1,7 @@
 import { StyleSheet, TouchableOpacity } from 'react-native'
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
+import { APPFONTNAME } from '@theme/fonts';
 // define your styles
 const styles = StyleSheet.create({
   container: {
@@ -11,14 +12,14 @@ const styles = StyleSheet.create({
     paddingTop: getDeviceHeight(98)
   },
   headerTitle: {
-    fontFamily: 'Comfortaa-Regular',
+    fontFamily: APPFONTNAME.Regular,
     color: '#575858'
   },
   buttons: {
     fontSize: 20,
     color: '#42a5f5',
     marginBottom: getDeviceHeight(49),
-    fontFamily: 'Comfortaa-Regular'
+    fontFamily: APPFONTNAME.Regular
   },
   privateAccount: {
     flexDirection: 'row',
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     marginBottom: getDeviceHeight(32),
     marginTop: getDeviceHeight(32),
     color: '#acacac',
-    fontFamily: 'Comfortaa-Regular'
+    fontFamily: APPFONTNAME.Regular
   },
   logout: {
     marginTop: getDeviceHeight(43)
