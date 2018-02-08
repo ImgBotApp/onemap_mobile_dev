@@ -38,6 +38,7 @@ class FeedPage extends Component {
       suggestFlag: true,
       collectionModal: false,
       skip: 0,
+      suggestUsers: { data: [] },
       items: [],
       users: {
         id: 'a1',
@@ -48,66 +49,61 @@ class FeedPage extends Component {
       selectedCollections: [],
       loading: true
     };
-    this.onEndReached = this.onEndReached.bind(this)
     this.onRefresh = this.onRefresh.bind(this)
     Orientation.lockToPortrait();
   }
   componentWillMount() {
-    this.getSuggestUsers();
     this.getMyCollections();
   }
   componentWillReceiveProps(nextProps) {
+    const { getSuggestUsers, getPlacesPaginated } = nextProps;
     if (!this.props.placeUpdated && nextProps.placeUpdated) {
       this.onRefresh();
-      // this.fetchFeedItems();
       this.props.placeUpdate(false);
-    } else if (nextProps.data.allPlaces &&
-      (nextProps.data.allPlaces != this.props.data.allPlaces || this.state.loading)) {
-      let graphcoolData = nextProps.data.allPlaces.map((place) => {
-        return {
-          id: place.id,
-          type: 'item',
-          user: {
-            id: place.createdBy.id,
-            displayName: place.createdBy.displayName,
-            username: place.createdBy.username,
-            photoURL: place.createdBy.photoURL,
-            updated: new Date(place.updatedAt)
-          },
-          placeName: place.placeName,
-          images: place.pictureURL ? place.pictureURL.map(uri => { return { uri } }) : [],
-          description: place.description || '',
-          bookmark: this.isBookmarked(place),
-          collectionIds: place.collections.map(collection => collection.id)//will be removed later
+    } else {
+      if (getSuggestUsers.allUsers) {
+        if (getSuggestUsers.allUsers !== this.props.getSuggestUsers.allUsers) {
+          this.setState({
+            suggestUsers: getSuggestUsers.allUsers.length ? [{
+              id: 'users' + Date.now(),
+              type: 'users',
+              data: getSuggestUsers.allUsers.map((user) => {
+                return {
+                  id: user.id,
+                  username: user.username,
+                  displayName: user.displayName,
+                  photoURL: user.photoURL,
+                }
+              })
+            }] : []
+          });
         }
-      });
-
-      this.setState({ items: [this.suggestUsers ? this.suggestUsers : [], ...graphcoolData], loading: false });
-    }
-  }
-  getSuggestUsers() {
-    const { user: { id, blockByUsers }, follows } = this.props;
-    client.query({
-      query: GET_SUGGEST_USERS,
-      variables: {
-        currentUserId: id,
-        currentUserFollowsIds: follows ? follows.map(item => item.id) : [],
-        currentUserBlockByUsersIds: blockByUsers ? blockByUsers.map(item => item.id) : []
       }
-    }).then((users) => {
-      this.suggestUsers = {
-        id: 'users' + Date.now(),
-        type: 'users',
-        data: users.data.allUsers.map((user) => {
-          return {
-            id: user.id,
-            username: user.username,
-            displayName: user.displayName,
-            photoURL: user.photoURL,
-          }
-        })
-      };
-    })
+      if (getPlacesPaginated.allPlaces) {
+        if (getPlacesPaginated.allPlaces != this.props.getPlacesPaginated.allPlaces || this.state.loading) {
+          let graphcoolData = getPlacesPaginated.allPlaces.map((place) => {
+            return {
+              id: place.id,
+              type: 'item',
+              user: {
+                id: place.createdBy.id,
+                displayName: place.createdBy.displayName,
+                username: place.createdBy.username,
+                photoURL: place.createdBy.photoURL,
+                updated: new Date(place.updatedAt)
+              },
+              placeName: place.placeName,
+              images: place.pictureURL ? place.pictureURL.map(uri => { return { uri } }) : [],
+              description: place.description || '',
+              bookmark: this.isBookmarked(place),
+              collectionIds: place.collections.map(collection => collection.id)//will be removed later
+            }
+          });
+          this.setState({ items: graphcoolData, loading: false });
+        }
+      }
+    }
+
   }
   getMyCollections() {
     client.query({
@@ -119,43 +115,6 @@ class FeedPage extends Component {
       this.props.saveCollections(collections.data.allCollections);
     })
   }
-  // fetchFeedItems = () => {//unused
-  //   client.query({
-  //     query: PLACES_PAGINATED,
-  //     variables: {
-  //       first: 10,
-  //       skip: this.state.skip
-  //     }
-  //   }).then((places) => {
-  //     items = places.data.allPlaces.map((place) => {
-  //       return {
-  //         id: place.id,
-  //         type: 'item',
-  //         user: {
-  //           name: place.createdBy.username,
-  //           id: place.createdBy.id,
-  //           uri: place.createdBy.photoURL,
-  //           updated: new Date(place.updatedAt)
-  //         },
-  //         placeName: place.placeName,
-  //         images: place.pictureURL.map(item => { return { uri: item } }),
-  //         place: '',
-  //         description: place.description || '',
-  //         bookmark: this.isBookmarked(place),
-  //         collectionIds: place.collections.map(collection => collection.id)//will be removed later
-  //       }
-  //     });
-  //     this.setState({
-  //       items: [this.suggestUsers, ...items],
-  //       loading: false,
-  //       refreshing: false
-  //     })
-  //   }).catch(error => {
-  //     this.setState({
-  //       loading: false
-  //     })
-  //   })
-  // }
   isBookmarked(place) {
     let marked = false;
     place.collections.forEach(collection => {
@@ -211,20 +170,15 @@ class FeedPage extends Component {
     })
   }
   onRefresh() {
-    this.props.data.refetch({
-      variables: {
-        skip: 0,
-        first: PLACES_PER_PAGE
-      }
-    });
+    this.props.getPlacesPaginated.refetch();
   }
   onEndReached() {
-    if (!this.props.data.loading) {
-      const { data } = this.props;
-      data.fetchMore({
+    const { getPlacesPaginated } = this.props;
+    if (!getPlacesPaginated.loading) {
+
+      getPlacesPaginated.fetchMore({
         variables: {
-          skip: data.allPlaces.length + PLACES_PER_PAGE,
-          first: PLACES_PER_PAGE
+          skip: getPlacesPaginated.allPlaces.length + PLACES_PER_PAGE,
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
           if (!fetchMoreResult || fetchMoreResult.allPlaces.length === 0) {
@@ -238,7 +192,7 @@ class FeedPage extends Component {
     }
   }
   _renderSuggestedList(data) {
-    if (this.state.suggestFlag == false || !data.length) return <View />;
+    if (this.state.suggestFlag == false) return <View />;
     return (
       <View style={styles.topItem}>
         {/* Recommend text */}
@@ -376,17 +330,6 @@ class FeedPage extends Component {
       title: I18n.t('COLLECTION_CREATE_NEW'),
     })
   }
-  handlerefresh = () => {
-    this.setState({
-      skip: this.state.skip + 10,
-      refreshing: true
-    }, () => {
-      // alert('a')
-      this.setState({
-        refreshing: false
-      })
-    })
-  }
   renderFooter = () => {
     // if(!this.state.loading) return null;
     return (
@@ -400,17 +343,6 @@ class FeedPage extends Component {
       </View>
     )
   };
-  // handleLoadMore = () => {//unused
-  //   this.setState({
-  //     skip: this.state.skip + 10,
-  //     refreshing: true
-  //   }, () => {
-  //     this.fetchFeedItems();
-  //     this.setState({
-  //       refreshing: false
-  //     })
-  //   })
-  // }
 
   render() {
     if (this.state.loading)
@@ -424,10 +356,10 @@ class FeedPage extends Component {
         <OptimizedFlatList
           keyExtractor={(item, index) => index}
           style={{ width: '100%', height: '100%' }}
-          data={this.state.items}
+          data={[...this.state.suggestUsers, ...this.state.items]}
           renderItem={this._renderItem.bind(this)}
-          onEndReached={this.onEndReached}
-          refreshing={this.props.data.networkStatus === 4}
+          onEndReached={() => this.onEndReached()}
+          refreshing={this.props.getPlacesPaginated.networkStatus === 4}
           onRefresh={this.onRefresh}
           removeClippedSubviews={true}
         />
@@ -480,19 +412,4 @@ class FeedPage extends Component {
   }
 }
 
-const ComponentWithQueries = graphql(PLACES_PAGINATED, {
-  options: (props) => {
-    return {
-      variables: {
-        userId: props.user.id,
-        followsIds: props.follows ? props.follows.map(item => item.id) : [],
-        skip: 0,
-        first: PLACES_PER_PAGE
-      }
-    }
-  }
-})
-  (FeedPage);
-
-//make this component available to the app
-export default ComponentWithQueries;
+export default FeedPage;
