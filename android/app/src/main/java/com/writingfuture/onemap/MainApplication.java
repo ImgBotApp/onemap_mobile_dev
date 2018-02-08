@@ -1,4 +1,4 @@
-package com.writtingfuture.onemap;
+package com.writingfuture.onemap;
 
 import android.app.Application;
 

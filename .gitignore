@@ -35,6 +35,8 @@ local.properties
 assets_*
 *.bundle*
 *.keystore
+gradle.properties
+settings.json
 
 bin/
 .project
