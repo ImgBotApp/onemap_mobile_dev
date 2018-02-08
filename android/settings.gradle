@@ -1,4 +1,6 @@
 rootProject.name = 'OneMap'
+include ':react-native-multi-image-selector'
+project(':react-native-multi-image-selector').projectDir = new File(rootProject.projectDir, './lib/react-native-multi-image-selector/android')
 include ':react-native-image-picker'
 project(':react-native-image-picker').projectDir = new File(rootProject.projectDir, './lib/react-native-image-picker/android')
 

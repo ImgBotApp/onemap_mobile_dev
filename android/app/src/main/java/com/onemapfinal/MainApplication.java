@@ -3,6 +3,7 @@ package com.onemapfinal;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import me.nereo.multi_image_selector.MultiImagePackage;
 import cl.json.RNSharePackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.brentvatne.react.ReactVideoPackage;
@@ -48,6 +49,7 @@ public class MainApplication extends NavigationApplication implements ReactAppli
     // No need to add RnnPackage and MainReactPackage
     return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new MultiImagePackage(),
             new RNSharePackage(),
             new PickerPackage(),
             new ReactVideoPackage(),

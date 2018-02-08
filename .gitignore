@@ -39,7 +39,9 @@ assets_*
 bin/
 .project
 node_modules_reactnative*
-
+*.prefs
+*.classpath
+*.pro
 # node.js
 #
 node_modules/
