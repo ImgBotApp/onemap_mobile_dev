@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage, PermissionsAndroid, Platform } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage, Platform } from 'react-native'
 import FBSDK, { LoginManager } from 'react-native-fbsdk'
-import Permissions from 'react-native-permissions'
 
 import RoundButton from '@components/RoundButton'
 import LoadingSpinner from '@components/LoadingSpinner'
@@ -29,36 +28,7 @@ class LoginPage extends Component {
     }
     Orientation.lockToPortrait();
   }
-  componentDidMount() {
-    if (Platform.OS == 'android')
-      this.requestLocationPermissionForAndroid();
-    else {
-      Permissions.check('location').then(response => {
-        if (response != 'authorized') {
-            Permissions.request('location').then(response => {
-              if (response == 'authorized') {
-                
-              }
-            })
-        }
-      })
-    }
-  }
-  async requestLocationPermissionForAndroid() {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-
-      )
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("You can get the Location")
-      } else {
-        console.log("Location permission denied")
-      }
-    } catch (err) {
-      console.warn(err)
-    }
-  }
+  
   async _responseInfoCallback(error, result) {
     if (error) {
       // alert('Error fetching data: ' + error.toString());

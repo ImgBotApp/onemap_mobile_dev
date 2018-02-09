@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity, Platform,PermissionsAndroid } from 'react-native';
 import RNPlaces from 'react-native-google-places'
 import RNGooglePlaces from 'react-native-google-places'
 import Search from '@components/SearchBar';
@@ -52,12 +52,15 @@ class SearchPage extends Component {
       isSelected: false,
       searched: null,
       nearByPlacesPin: [],
-      initialPosition: {
+      initialPosition: null,
+      /*
+      {
         latitude: 0,
         longitude: 0,
         latitudeDelta: LATTITUDE_DELTA,
         longitudeDelta: LONGTITUDE_DELTA,
       },
+      */
       initialMarker: null,
       myPosition: {},
       isCallingAPI: false,
@@ -66,30 +69,49 @@ class SearchPage extends Component {
     props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
   onNavigatorEvent(event) { // this is the onPress handler for the two buttons together
-    if (event.id == "bottomTabSelected") {
-      /*
-      Permissions.check('location').then(response => {
-        if (response != 'authorized') {
-          Permissions.request('location').then(response => {
-            if (response == 'authorized') {
-              this.onSearchNearByPlace();
-            }
-          })
-        }
-        else this.onSearchNearByPlace();
-      })
-      */
+    if (event.id == "bottomTabSelected" && event.selectedTabIndex == 1) {
+      if (Platform.OS == 'android')
+        this.requestLocationPermissionForAndroid();
+      else {
+        this.requestLocationPermissionForIOS();
+      }
     }
   }
-  componentDidMount() {
-    _this = this;
-    Permissions.check('location').then(response => {
-      if (response == 'authorized') {
-        this.setGeoPositionEvent();
-      }
-    })
-    //this.setGeoPositionEvent();
+  async requestLocationPermissionForIOS() {
+    try {
+      Permissions.check('location').then(response => {
+        if (response != 'authorized') {
+            console.log("request the Location")
+            Permissions.request('location').then(response => {
+              if (response == 'authorized') {
+                console.log("You can get the Location")
+                this.setGeoPositionEvent();
+              }else {
+                //Permissions.openSettings();
+              }
+            })
+        }else this.setGeoPositionEvent();
+      })
+    } catch (err) {
+      console.warn(err)
+    }
   }
+  async requestLocationPermissionForAndroid() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      )
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can get the Location")
+        this.setGeoPositionEvent();
+      } else {
+        console.log("Location permission denied")
+      }
+    } catch (err) {
+      console.warn(err)
+    }
+  }
+  
   componentWillUnmount() {
     if (this.watchID != null)
       navigator.geolocation.clearWatch(this.watchID);
@@ -111,29 +133,31 @@ class SearchPage extends Component {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 }
     );
 
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      if (position.coords) {
-        console.log("watch position:" + position.coords.latitude);
-        this.setState({ myPosition: position.coords });
-        this.updateMapView();
-      }
-    }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 });
-
+    if(!this.watchID)
+    {
+      this.watchID = navigator.geolocation.watchPosition((position) => {
+        if (position.coords) {
+          console.log("watch position:" + position.coords.latitude);
+          this.setState({ myPosition: position.coords });
+          this.updateMapView();
+        }
+      }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 });
+    }
   }
   updateMapView() {
     var getInitialRegion = {
       latitude: this.state.myPosition.latitude,
       longitude: this.state.myPosition.longitude,
-      latitudeDelta: LATTITUDE_DELTA,
-      longitudeDelta: LONGTITUDE_DELTA,
+      latitudeDelta: this.initialPosition?this.initialPosition.latitudeDelta:LATTITUDE_DELTA,
+      longitudeDelta: this.initialPosition?this.initialPosition.longitudeDelta:LONGTITUDE_DELTA,
     }
     var getInitialRegionMaker = {
       latitude: this.state.myPosition.latitude,
       longitude: this.state.myPosition.longitude,
     }
-    this.setState({
-      initialPosition: getInitialRegion, initialMarker: getInitialRegionMaker,
-    })
+    if(!this.state.initialPosition)
+      this.setState({ initialPosition: getInitialRegion });
+    this.setState({ initialMarker: getInitialRegionMaker });
     this.onSearchNearByPlace();
   }
   async onSearchNearByPlace() {
