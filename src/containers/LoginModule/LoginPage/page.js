@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage, PermissionsAndroid, Platform } from 'react-native'
 import FBSDK, { LoginManager } from 'react-native-fbsdk'
+import Permissions from 'react-native-permissions'
 
 import RoundButton from '@components/RoundButton'
 import LoadingSpinner from '@components/LoadingSpinner'
@@ -31,6 +32,17 @@ class LoginPage extends Component {
   componentDidMount() {
     if (Platform.OS == 'android')
       this.requestLocationPermissionForAndroid();
+    else {
+      Permissions.check('location').then(response => {
+        if (response != 'authorized') {
+            Permissions.request('location').then(response => {
+              if (response == 'authorized') {
+                
+              }
+            })
+        }
+      })
+    }
   }
   async requestLocationPermissionForAndroid() {
     try {

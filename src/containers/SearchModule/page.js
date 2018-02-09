@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity, Platform, PermissionsAndroid } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity, Platform } from 'react-native';
 import RNPlaces from 'react-native-google-places'
 import RNGooglePlaces from 'react-native-google-places'
 import Search from '@components/SearchBar';
@@ -84,19 +84,9 @@ class SearchPage extends Component {
   componentDidMount() {
     _this = this;
     Permissions.check('location').then(response => {
-      if (response != 'authorized') {
-        if (Platform.OS == 'android') {
-
-        }
-        else {
-          Permissions.request('location').then(response => {
-            if (response == 'authorized') {
-              this.setGeoPositionEvent();
-            }
-          })
-        }
+      if (response == 'authorized') {
+        this.setGeoPositionEvent();
       }
-      else this.setGeoPositionEvent();
     })
     //this.setGeoPositionEvent();
   }
