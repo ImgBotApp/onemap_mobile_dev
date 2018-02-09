@@ -751,8 +751,13 @@ class PlaceProfile extends PureComponent {
     }
   }
   async addMediaToStory(isFromCamera) {
+    if(this.state.imageUploading)
+      return;
+
     this.setState({isOpenImagePicker:false});
     
+    let uploadedURLS = [];
+          
     if(isFromCamera)
     {
       //this.state.selectedMediaType
@@ -803,7 +808,6 @@ class PlaceProfile extends PureComponent {
           maxNum: 10,
           multiple:true
         }).then((imageArray)=> {
-          let uploadedURLS = [];
           if(imageArray)
           {
             this.setState({ imageUploading: true });
@@ -823,7 +827,7 @@ class PlaceProfile extends PureComponent {
             })
           }
           else Promise.resolve();
-        }).catch(e=> { this.setState({ imageUploading: false }) });
+        }).catch(e=> { Promise.resolve(); });
       }
       else{
         ImageCropPicker.openPicker({
@@ -834,9 +838,42 @@ class PlaceProfile extends PureComponent {
           includeExif: true,
           multiple:true,
           maxFiles:10
-        }).then(image => {
-          console.log(image);
-        });
+        }).then(imageArray => {
+          if(imageArray && !this.state.imageUploading)
+          {
+            this.setState({ imageUploading: true });
+            return Promise.all(
+              imageArray.map(imgData =>
+                {
+                  ////mime =='image/jpeg', 'video/mp4'
+                  if(imgData.mime && imgData.mime.substring(0,5)=='image')
+                  {
+                    return uploadImage(imgData.data, '#avatar').then(url => {
+                      if (url)
+                        uploadedURLS.push(url);
+                    })
+                  }else if(imgData.mime && imgData.mime.substring(0,5)=='video'){
+                    return uploadMedia({uri:imgData.path}, '#storyVideo').then(url => {
+                        if (url)
+                          uploadedURLS.push(url);
+                      }
+                    );
+                  }
+                  return null;
+                }
+              )
+            );
+          }
+          else Promise.resolve();
+        }).then(() => {
+          this.setState({ imageUploading: false });
+          if(uploadedURLS.length > 0)
+            this.updateStoryImages(uploadedURLS);
+          Promise.resolve();
+        }, err => { 
+          Promise.resolve();
+          this.setState({ imageUploading: false }) 
+        }).catch(e=> { Promise.resolve(); });
       }
     }
     
@@ -851,6 +888,7 @@ class PlaceProfile extends PureComponent {
     storyImages.push({ type: 'add' });
     this.setState({ storyImages });
     this.saveStory();
+    this.setState({ imageUploading: false });
   }
   deleteImageFromStory(index) {
     Alert.alert(
