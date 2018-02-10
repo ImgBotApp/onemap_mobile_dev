@@ -51,7 +51,7 @@ import { GET_PLACE_PROFILE } from '@graphql/places'
 
 import styles from './styles'
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
-import MultiImage from 'react-native-multi-image-selector';
+//import MultiImage from 'react-native-multi-image-selector';
 
 const imagePickerOptions = {
   title: 'Take Media',
@@ -802,6 +802,7 @@ class PlaceProfile extends PureComponent {
       });
     }
     else{//image picker
+      /*
       if(Platform.OS == 'android')
       {
         MultiImage.pickImage({
@@ -831,6 +832,7 @@ class PlaceProfile extends PureComponent {
         }).catch(e=> { Promise.resolve(); });
       }
       else{
+        */
         ImageCropPicker.openPicker({
           width: MAXWIDTH,
           height: MAXHEIGHT,
@@ -876,7 +878,7 @@ class PlaceProfile extends PureComponent {
           this.setState({ imageUploading: false }) 
         }).catch(e=> { Promise.resolve(); });
       }
-    }
+    //}
     
   }
   updateStoryImages(imageArray){
