@@ -83,7 +83,17 @@ const styles = StyleSheet.create({
     marginLeft: getDeviceWidth(76),
     marginRight: getDeviceWidth(76),
     marginTop: getDeviceHeight(89),
-    height: getDeviceHeight(323)
+    height: getDeviceHeight(323),
+    overflow: 'hidden',
+    zIndex:10
+  },
+  mapWrapper:{
+    position:'absolute',
+    top:0,
+    left:0,
+    right:0,
+    bottom:-30,
+    zIndex:0
   },
   map: {
     width: '100%',

@@ -457,30 +457,31 @@ class PlaceProfile extends PureComponent {
 
   renderMapView() {
     return (
-      <TouchableOpacity onPress={this.goMapDetail.bind(this)}>
-        <View style={styles.mapView}>
-          <MapView
-            provider={PROVIDER_GOOGLE}
-            style={styles.map}
-            initialRegion={this.state.placeData.map}
-            region={this.state.placeData.map}
-            scrollEnabled={false}
-          >
-            {
-              this.state.placeData.map ? (
-                <MapView.Marker
-                  title={this.state.placeData.title}
-                  coordinate={this.state.placeData.map}
-                  image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
-                >
-                  {Platform.OS === 'ios' && (
-                    <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
-                  )}
-                </MapView.Marker>) : null
-            }
-          </MapView>
-        </View>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.mapView} onPress={this.goMapDetail.bind(this)}>
+          <View style={styles.mapWrapper}>
+            <MapView
+              provider={PROVIDER_GOOGLE}
+              style={styles.map}
+              initialRegion={this.state.placeData.map}
+              region={this.state.placeData.map}
+              scrollEnabled={false}
+            >
+              {
+                this.state.placeData.map ? (
+                  <MapView.Marker
+                    title={this.state.placeData.title}
+                    coordinate={this.state.placeData.map}
+                    image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
+                  >
+                    {Platform.OS === 'ios' && (
+                      <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
+                    )}
+                  </MapView.Marker>) : null
+              }
+            </MapView>
+          </View>
+        </TouchableOpacity>
+     
     )
   }
 

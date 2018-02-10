@@ -254,48 +254,50 @@ class SearchPage extends Component {
               (
                 <View style={{ width: '100%' }}>
                   <View style={styles.mapView}>
-                    <MapView
-                      // showsUserLocation={true}
-                      provider={PROVIDER_GOOGLE}
-                      style={styles.map}
-                      initialRegion={this.state.initialPosition}
-                      region={this.state.initialPosition}
-                      showsCompass={true}
-                      loadingEnabled={true}
-                      showsBuildings={true}
-                    >
-                      {this.state.nearByPlacesPin.map((marker, key) => (
-                        <Marker
-                          key={key}
-                          coordinate={marker.coordinates}
-                          zIndex={key}
-                          image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
-                        >
-                          {Platform.OS === 'ios' && (
-                            <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
-                          )}
-                          <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
-                            <Text style={[DFonts.Regular, { flexWrap: "nowrap" }]}>{marker.title}</Text>
-                          </Callout>
-                        </Marker>
-                      ))}
-                      {
-                        this.state.myPosition.latitude ? (
+                    <View style={styles.mapWrapper}>
+                      <MapView
+                        // showsUserLocation={true}
+                        provider={PROVIDER_GOOGLE}
+                        style={styles.map}
+                        initialRegion={this.state.initialPosition}
+                        region={this.state.initialPosition}
+                        showsCompass={true}
+                        loadingEnabled={true}
+                        showsBuildings={true}
+                      >
+                        {this.state.nearByPlacesPin.map((marker, key) => (
                           <Marker
-                            coordinate={this.state.myPosition}
-                            zIndex={this.state.nearByPlacesPin.length + 1000}
-                            image={Platform.OS == 'android' ? require('@assets/images/map_position.png') : null}
+                            key={key}
+                            coordinate={marker.coordinates}
+                            zIndex={key}
+                            image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
                           >
                             {Platform.OS === 'ios' && (
-                              <Image source={require('@assets/images/map_position.png')} style={styles.mapmarker} />
+                              <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
                             )}
-                            <Callout style={styles.customView}>
-                              <Text style={[DFonts.Regular, { flexWrap: "nowrap" }]}>{curr_position}</Text>
+                            <Callout style={styles.customView} onPress={() => this.onPlaceProfile(marker.placeID)}>
+                              <Text style={[DFonts.Regular, { flexWrap: "nowrap" }]}>{marker.title}</Text>
                             </Callout>
                           </Marker>
-                        ) : null
-                      }
-                    </MapView>
+                        ))}
+                        {
+                          this.state.myPosition.latitude ? (
+                            <Marker
+                              coordinate={this.state.myPosition}
+                              zIndex={this.state.nearByPlacesPin.length + 1000}
+                              image={Platform.OS == 'android' ? require('@assets/images/map_position.png') : null}
+                            >
+                              {Platform.OS === 'ios' && (
+                                <Image source={require('@assets/images/map_position.png')} style={styles.mapmarker} />
+                              )}
+                              <Callout style={styles.customView}>
+                                <Text style={[DFonts.Regular, { flexWrap: "nowrap" }]}>{curr_position}</Text>
+                              </Callout>
+                            </Marker>
+                          ) : null
+                        }
+                      </MapView>
+                    </View>
                   </View>
                   <FlatList
                     keyExtractor={(item, index) => index}
