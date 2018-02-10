@@ -11,13 +11,13 @@ const styles = StyleSheet.create({
   },
   cell: {
     width: getDeviceWidth(332),
-    height: getDeviceHeight(332),
+    height: getDeviceWidth(332),
     alignItems: 'center',
     justifyContent: 'center'
   },
   collection: {
     width: getDeviceWidth(305),
-    height: getDeviceHeight(305)
+    height: getDeviceWidth(305)
   }
 });
 
