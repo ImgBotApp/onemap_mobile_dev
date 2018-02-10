@@ -70,12 +70,23 @@ class SearchPage extends Component {
   }
   onNavigatorEvent(event) { // this is the onPress handler for the two buttons together
     if (event.id == "bottomTabSelected" && event.selectedTabIndex == 1) {
+      /*
       if (Platform.OS == 'android')
         this.requestLocationPermissionForAndroid();
       else {
         this.requestLocationPermissionForIOS();
       }
+      */
     }
+  }
+  componentDidMount() {
+    _this = this;
+    Permissions.check('location').then(response => {
+      if (response == 'authorized') {
+        this.setGeoPositionEvent();
+      }
+    })
+    //this.setGeoPositionEvent();
   }
   async requestLocationPermissionForIOS() {
     try {
