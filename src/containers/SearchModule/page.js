@@ -111,7 +111,7 @@ class SearchPage extends Component {
       console.warn(err)
     }
   }
-  
+
   componentWillUnmount() {
     if (this.watchID != null)
       navigator.geolocation.clearWatch(this.watchID);
@@ -389,15 +389,27 @@ class SearchPage extends Component {
   async onFetchGooglePictures(ret_photos) {
     let redrictURLS = [];
     await Promise.all(
-      ret_photos.map(photo =>
-        fetch("https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + PLACES_APIKEY)
-          .then(function (response) {
-            redrictURLS.push(response.url);
-          })
-          .catch(function (error) {
-            this.setState({ loading: false })
-          })
-      )
+      ret_photos.map(photo =>{
+        const url = "https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + PLACES_APIKEY;
+        if(Platform.OS == 'android')
+        {
+          return axios.get(url)
+            .then(function (response) {
+              redrictURLS.push(response.request.responseURL);
+            })
+            .catch(function (error) {
+              this.setState({ loading: false })
+            })
+        }else{
+          return fetch(url)
+            .then(function (response) {
+              redrictURLS.push(response.url);
+            })
+            .catch(function (error) {
+              this.setState({ loading: false })
+            })
+        }
+      })
     ).then(() => {
       this.setState({ pictureURLS: redrictURLS, isFeaching: true });
     }, err => { this.setState({ loading: false }); })
@@ -493,6 +505,8 @@ class SearchPage extends Component {
     });
   }
   onShowResult(val) {
+    if(this.state.loading)
+      return;
     this.setState({
       keyword: val,
       isAuto:false
@@ -502,6 +516,8 @@ class SearchPage extends Component {
     this.forceUpdate()
   }
   onAutoShowResult(val){
+    if(this.state.loading)
+      return;
     this.setState({
       keyword: val,
       isAuto:true

@@ -34,6 +34,9 @@ class SearchResult extends Component {
     this.onTextSearchPlace();
   }
   onTextSearchPlace() {
+    let queryWords = this.props.keyword;
+    this.setState({ prevQuery: queryWords });
+
     if(this.state.loading)
       return;
 
@@ -43,12 +46,13 @@ class SearchResult extends Component {
     {
       const radius = 10000;
       const language = 'en';
-      const query = this.props.keyword.replace(/\s/g, "+");
+      const query = queryWords.replace(/\s/g, "+");
 
       if (this.props.coordinate == null) return;
-      
-      const autocompleteURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+this.props.keyword+"&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius+"&key=" + PLACES_APIKEY;
 
+      const autocompleteURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+query+"&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius+"&key=" + PLACES_APIKEY;
+
+      console.log("~~~~~~~~~~~~~~~~~~~ "+query);
       fetch(autocompleteURL, {
         method: 'GET',
         'Access-Control-Allow-Origin': '*',
@@ -56,9 +60,7 @@ class SearchResult extends Component {
       })
       .then((response) => response.json())
       .then((responseData) => {
-        let query = this.props.keyword;
-        this.setState({ prevQuery: query });
-        
+
         this.setState({ loading: false })
         if (responseData.predictions)
           this.setState({
@@ -74,7 +76,7 @@ class SearchResult extends Component {
         client.query({
           query: GET_FILTER_KEYWORDS,
           variables: {
-            keyword: this.props.keyword
+            keyword: queryWords
           }
         }).then((users) => {
           let placeArray = [];
@@ -99,7 +101,7 @@ class SearchResult extends Component {
         client.query({
           query: FILER_USERS,
           variables: {
-            keyword: this.props.keyword,
+            keyword: queryWords,
             loading:false
           }
         }).then((users) => {
@@ -158,7 +160,7 @@ class SearchResult extends Component {
     )
   }
   _onKeywordItem(item) {
-    
+
     const placeId = item.id ? item.id : '';
     return (
       <TouchableOpacity onPress={() => this.props.onKeywordItem(placeId)}>
@@ -171,7 +173,7 @@ class SearchResult extends Component {
         </View>
       </TouchableOpacity>
     )
-    
+
   }
   _onRenderItem(item) {
     if (item == null) return;
