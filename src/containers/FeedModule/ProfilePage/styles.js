@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     marginLeft: -1 * getDeviceWidth(98)
   },
   userImage: {
-    width: getDeviceHeight(355),
+    width: getDeviceWidth(355),
     height: getDeviceWidth(355)
   },
   userInfo: {

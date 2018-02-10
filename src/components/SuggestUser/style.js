@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     width: getDeviceWidth(304),
-    height: getDeviceHeight(304),
+    height: getDeviceWidth(304),
     borderRadius: getDeviceWidth(152),
     borderWidth: 1,
     borderColor:'transparent'

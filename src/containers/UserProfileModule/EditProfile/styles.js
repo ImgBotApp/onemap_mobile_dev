@@ -8,11 +8,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#efefef',
   },
-  avatarView:{
-    justifyContent:"center",
-    alignItems:"center",
+  avatarView: {
+    justifyContent: "center",
+    alignItems: "center",
     width: getDeviceWidth(473),
-    height: getDeviceHeight(473),
+    height: getDeviceWidth(473),
     marginTop: getDeviceHeight(126),
     marginBottom: getDeviceHeight(277)
   },
@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   profileImage: {
-    width:"100%",
-    height:"100%"
+    width: "100%",
+    height: "100%"
   },
   inputElement: {
     width: getDeviceWidth(969),
@@ -68,24 +68,24 @@ const styles = StyleSheet.create({
     borderBottomColor: '#b0b0b0'
   },
   genderSelection: {
-    width             : getDeviceWidth(971),
+    width: getDeviceWidth(971),
     // marginTop         : -1 * getDeviceHeight(108),
     // marginBottom      : getDeviceHeight(108),
     marginLeft: getDeviceWidth(51),
     width: getDeviceWidth(830),
   },
   gender: {
-    borderBottomWidth: 0,  
+    borderBottomWidth: 0,
     fontFamily: APPFONTNAME.Light,
   },
-  genderItem:{
+  genderItem: {
     fontFamily: APPFONTNAME.Light,
   },
-  genderIcon:{
-    width:getDeviceHeight(62),
-    height:getDeviceHeight(102),
-    resizeMode      : 'contain',
-    marginTop :getDeviceHeight(75),
+  genderIcon: {
+    width: getDeviceHeight(62),
+    height: getDeviceHeight(102),
+    resizeMode: 'contain',
+    marginTop: getDeviceHeight(75),
   },
   fontAweSome: {
     alignItems: 'center',
@@ -139,13 +139,13 @@ const styles = StyleSheet.create({
     borderColor: '#b0b0b0',
   },
   cameraImage: {
-    width           : getDeviceWidth(152),
-    height          : getDeviceHeight(152),
+    width: getDeviceWidth(152),
+    height: getDeviceHeight(152),
     marginBottom: getDeviceHeight(277),
-    resizeMode      : 'contain',
-    alignSelf:"center",
-    position:"absolute",
-    backgroundColor:"transparent",
+    resizeMode: 'contain',
+    alignSelf: "center",
+    position: "absolute",
+    backgroundColor: "transparent",
   }
 })
 

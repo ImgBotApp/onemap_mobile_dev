@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     width: GLOBAL.getDeviceWidth(342),
-    height: GLOBAL.getDeviceHeight(342),
+    height: GLOBAL.getDeviceWidth(342),
   },
   checkImage: {
     width: getDeviceWidth(98),
