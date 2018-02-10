@@ -34,43 +34,41 @@ class SearchResult extends Component {
     this.onTextSearchPlace();
   }
   onTextSearchPlace() {
-    if(this.state.loading)
+    if (this.state.loading)
       return;
 
     this.setState({ loading: true });
 
-    if(this.props.isAuto && this.state.page == 'Places')
-    {
+    if (this.props.isAuto && this.state.page == 'Places') {
       const radius = 10000;
       const language = 'en';
       const query = this.props.keyword.replace(/\s/g, "+");
 
       if (this.props.coordinate == null) return;
-      
-      const autocompleteURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+this.props.keyword+"&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius+"&key=" + PLACES_APIKEY;
+
+      const autocompleteURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=" + this.props.keyword + "&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius + "&key=" + PLACES_APIKEY;
 
       fetch(autocompleteURL, {
         method: 'GET',
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
       })
-      .then((response) => response.json())
-      .then((responseData) => {
-        let query = this.props.keyword;
-        this.setState({ prevQuery: query });
-        
-        this.setState({ loading: false })
-        if (responseData.predictions)
-          this.setState({
-            autoplaces: responseData.predictions
-          })
-      })
-      .catch((error) => {
-        this.setState({ loading: false })
-      });
-    }else{
-      if(!this.props.isAuto && this.state.page == 'Keywords')
-      {
+        .then((response) => response.json())
+        .then((responseData) => {
+          let query = this.props.keyword;
+          this.setState({ prevQuery: query });
+
+          this.setState({ loading: false })
+          if (responseData.predictions)
+            this.setState({
+              autoplaces: responseData.predictions
+            })
+        })
+        .catch((error) => {
+          this.setState({ loading: false })
+        });
+    } else {
+      if (!this.props.isAuto && this.state.page == 'Keywords') {
         client.query({
           query: GET_FILTER_KEYWORDS,
           variables: {
@@ -78,38 +76,36 @@ class SearchResult extends Component {
           }
         }).then((users) => {
           let placeArray = [];
-          if(users)
-          {
-            users.data.allKeywords.forEach(item=>{
-              if(item.places)
-              {
-                item.places.forEach(place=>{
-                  placeArray.push({...place,...{keyword:item.name}});
+          if (users) {
+            users.data.allKeywords.forEach(item => {
+              if (item.places) {
+                item.places.forEach(place => {
+                  placeArray.push({ ...place, ...{ keyword: item.name } });
                 })
               }
             });
           }
           this.setState({
             keywords: placeArray,
-            loading:false
+            loading: false
           })
         })
       }
-      else if(!this.props.isAuto && this.state.page == 'People'){
+      else if (!this.props.isAuto && this.state.page == 'People') {
         client.query({
           query: FILER_USERS,
           variables: {
             keyword: this.props.keyword,
-            loading:false
+            loading: false
           }
         }).then((users) => {
           this.setState({
             users: users.data.allUsers,
-            loading:false
+            loading: false
           })
         })
-      }else{
-        this.setState({loading:false});
+      } else {
+        this.setState({ loading: false });
       }
     }
   }
@@ -158,7 +154,7 @@ class SearchResult extends Component {
     )
   }
   _onKeywordItem(item) {
-    
+
     const placeId = item.id ? item.id : '';
     return (
       <TouchableOpacity onPress={() => this.props.onKeywordItem(placeId)}>
@@ -171,7 +167,7 @@ class SearchResult extends Component {
         </View>
       </TouchableOpacity>
     )
-    
+
   }
   _onRenderItem(item) {
     if (item == null) return;

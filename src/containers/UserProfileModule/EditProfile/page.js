@@ -119,7 +119,7 @@ class EditProfile extends Component {
             country: this.state.country,
             bio: this.state.bio,
             username: this.state.username,
-            group:'USER'
+            group: 'USER'
           }
         });
         this.props.navigator.pop({})

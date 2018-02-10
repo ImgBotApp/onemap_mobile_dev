@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   },
   storyWriterImage: {
     width: getDeviceWidth(134),
-    height: getDeviceHeight(134)
+    height: getDeviceWidth(134)
   },
   storyWriterName: {
     flex: 1,
