@@ -29,6 +29,9 @@ import FollowPeoplePage from './containers/UserProfileModule/FollowPeoplePage'
 import CollectionsPage from './containers/ProfileModule/Collections'
 import BlockedUserPage from './containers/UserProfileModule/BlockedUser'
 
+// Campaign Module
+import CampaignProfilePage from './containers/CampaignModule/ProfilePage'
+
 export function registerScreens(store, Provider, client) {
 
   // Login Module
@@ -58,4 +61,7 @@ export function registerScreens(store, Provider, client) {
   Navigation.registerComponent(SCREEN.USER_FOLLOW_PAGE, () => FollowPeoplePage, store, Provider, client)
   Navigation.registerComponent(SCREEN.COLLECTIONS_PAGE, () => CollectionsPage, store, Provider, client)
   Navigation.registerComponent(SCREEN.BLOCKED_USER_PAGE, () => BlockedUserPage, store, Provider, client)
+
+  // Campaign Module
+  Navigation.registerComponent(SCREEN.CAMPAIGN_PROFILE_PAGE, () => CampaignProfilePage, store, Provider, client)
 }

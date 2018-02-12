@@ -1,12 +1,12 @@
 //import liraries
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { Component } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import CardView from 'react-native-cardview'
 import styles from './styles'
 import ViewMoreText from '@components/ViewMoreText'
 import I18n from '@language'
 import DFonts from '@theme/fonts'
-
+import PropTypes from 'prop-types'
 /**
  * Props Event
  * 
@@ -15,12 +15,25 @@ import DFonts from '@theme/fonts'
 
 // create a component
 class FeedCampaign extends Component {
+  static propTypes = {
+    data: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      profile: PropTypes.string,
+      title: PropTypes.string,
+      description: PropTypes.string,
+      image: PropTypes.string
+    }),
+    onVisitProfile: PropTypes.func.isRequired
+  }
+  constructor(props) {
+    super(props)
+  }
   render() {
     return (
       <CardView style={styles.container} cardElevation={2} cardMaxElevation={2} cornerRadius={5}>
         <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row' }}>
-            <Image source={{ uri: this.props.data.mark }} style={styles.markImage} />
+            <Image source={{ uri: this.props.data.profile }} style={styles.markImage} />
             <View style={styles.campaignInfo}>
               <Text style={styles.title}>{this.props.data.title}</Text>
               <Text style={styles.campaign}>{I18n.t('FEED_CAMPAIGN')}</Text>

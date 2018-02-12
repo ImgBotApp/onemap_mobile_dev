@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   visitProfile: {
     width: getDeviceWidth(391),
-    height: getDeviceHeight(85),
+    height: getDeviceWidth(85),
     borderRadius: 5,
     borderColor: BLUE_COLOR,
     borderWidth: 1,
@@ -51,16 +51,16 @@ const styles = StyleSheet.create({
     fontFamily: APPFONTNAME.Regular
   },
   descriptionText: {
-    marginTop: getDeviceHeight(50)
+    marginTop: getDeviceWidth(50)
   },
   additionalText: {
     fontSize: SMALL_FONT_SIZE,
     color: BLUE_COLOR
   },
   image: {
-    marginTop: getDeviceHeight(40),
+    marginTop: getDeviceWidth(40),
     width: '100%',
-    height: getDeviceHeight(367),
+    height: getDeviceWidth(367),
     borderRadius: 5,
     borderColor: 'transparent',
     borderWidth: 1

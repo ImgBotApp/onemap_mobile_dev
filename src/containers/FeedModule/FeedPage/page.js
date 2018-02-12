@@ -1,37 +1,44 @@
 //import liraries
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import IonIcons from 'react-native-vector-icons/Ionicons';
-import Modal from 'react-native-modalbox';
+import React, { Component } from 'react'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
+import IonIcons from 'react-native-vector-icons/Ionicons'
+import Modal from 'react-native-modalbox'
 
 import SuggestUser from '@components/SuggestUser'
 import FeedItem from '@components/FeedItem'
 import FeedEvent from '@components/FeedEvent'
-import FeedCampaign from '@components/FeedCampaign'
+import FeedCampaign from '../../../components/FeedCampaign'
 import SuggestPlace from '@components/SuggestPlace'
 import TitleImage from '@components/TitledImage'
 
 import styles from './style'
 import I18n from '@language'
-import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
-import DFonts, { SMALL_FONT_SIZE } from '@theme/fonts';
+import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '@theme/colors'
+import DFonts, { SMALL_FONT_SIZE } from '@theme/fonts'
 
-import * as SCREEN from '@global/screenName'
-import { clone } from '@global';
+import * as SCREEN from '../../../global/screenName'
+import { clone } from '@global'
 const PLACES_PER_PAGE = 8;
 
 import { client } from '@root/main'
-import { graphql } from "react-apollo";
+import { graphql } from "react-apollo"
 
 import { PLACES_PAGINATED } from "@graphql/places";
 import { GET_SUGGEST_USERS } from '@graphql/userprofile'
 import { GET_MY_COLLECTIONS } from '@graphql/collections'
-
+import { getCampaignByUser } from '../../../graphql/campaign'
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
-import Orientation from 'react-native-orientation';
+import Orientation from 'react-native-orientation'
+import PropTypes from 'prop-types'
 // create a component
 class FeedPage extends Component {
+  static propTypes = {
+    users: PropTypes.shape({
+      id: PropTypes.string,
+      username: PropTypes.string
+    })
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -45,6 +52,7 @@ class FeedPage extends Component {
         type: 'users',
         data: []
       },
+      campaigns: [],
       refreshing: false,
       selectedCollections: [],
       loading: true
@@ -54,6 +62,20 @@ class FeedPage extends Component {
   }
   componentWillMount() {
     this.getMyCollections();
+    getCampaignByUser(this.props.user.id)
+    .then(res => {
+      const campaigns = res.data.allCampaigns.map(item => ({
+        id: item.id,
+        profile: item.partner.photoURL,
+        title: item.name,
+        description: item.description,
+        image: item.photoUrl,
+        type: 'campaign'
+      }))
+      this.setState({
+        campaigns
+      })
+    })
   }
   componentWillReceiveProps(nextProps) {
     const { getSuggestUsers, getPlacesPaginated } = nextProps;
@@ -242,12 +264,20 @@ class FeedPage extends Component {
   }
 
   onVisitProfile = (CampaignId) => {
+    this.props.navigator.push({
+      screen: SCREEN.CAMPAIGN_PROFILE_PAGE,
+      title: I18n.t('CAMPAIGN_PROFILE_TITLE'),
+      animated: true,
+      passProps: {
+        campaignId: CampaignId
+      }
+    })
   }
 
   _renderFeedCampaign(data) {
     return (
       <View style={styles.feedItem}>
-        <FeedCampaign data={data} onVisitProfile={this.onVisitProfile.bind(this)} />
+        <FeedCampaign data={data} onVisitProfile={CampaignId => this.onVisitProfile(CampaignId)} />
       </View>
     )
   }
@@ -356,7 +386,7 @@ class FeedPage extends Component {
         <OptimizedFlatList
           keyExtractor={(item, index) => index}
           style={{ width: '100%', height: '100%' }}
-          data={[...this.state.suggestUsers, ...this.state.items]}
+          data={[...this.state.suggestUsers, ...this.state.items, ...this.state.campaigns]}
           renderItem={this._renderItem.bind(this)}
           onEndReached={() => this.onEndReached()}
           refreshing={this.props.getPlacesPaginated.networkStatus === 4}

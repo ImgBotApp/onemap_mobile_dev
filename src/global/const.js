@@ -2,6 +2,10 @@
 export const DESIGN_WIDTH = 1440
 export const DESIGN_HEIGHT = 2542
 
+export const LATITUDE = 37.78825
+export const LONGITUDE = -122.4324
+export const LATITUDE_DELTA = 0.0922
+export const LONGITUDE_DELTA = 0.0555929
 
 export const ACCOUNT_MODE = {
   create: 'createAccount',

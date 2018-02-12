@@ -137,5 +137,12 @@ export default {
   // User profile
   USERPROFILE_TITLE: "Profile",
   USERPROFILE_USER_REQUSET_MODIFICATION: "Request to be modification",
-  USERPROFILE_TERMS: "Terms"
+  USERPROFILE_TERMS: "Terms",
+
+
+  // Camapgin Module
+  CAMPAIGN_PROFILE_TITLE: 'Campaign Profile',
+  CAMPAIGN_MAP_VIEW: 'MapView',
+  CAMPAIGN_EVENT_VIEW: 'Events',
+  CAMPAIGN_BADGE_VIEW: 'Badge'
 }

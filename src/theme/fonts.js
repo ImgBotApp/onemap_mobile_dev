@@ -8,6 +8,10 @@ export const APPFONTNAME= {
 }
 
 export default styles = StyleSheet.create({
+  MostBig: {
+    fontFamily: APPFONTNAME.Bold,
+    fontSize: 24
+  },
   Header: {
     fontFamily: APPFONTNAME.Bold,
     fontSize: 20
