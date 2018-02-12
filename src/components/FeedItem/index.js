@@ -29,7 +29,8 @@ class FeedItem extends Component {
   }
 
   onBookMarker() {
-    this.props.onBookMarker();
+    // this.props.onBookMarker();
+    this.props.onPlace();
   }
   render() {
     return (
