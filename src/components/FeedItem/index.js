@@ -42,14 +42,14 @@ class FeedItem extends Component {
             <View style={styles.user}>
               <CircleImage style={styles.profileImage} uri={this.props.data.user.photoURL} radius={getDeviceWidth(70)} />
               <View style={styles.userDescription}>
-                <Text numberOfLines={1} style={[styles.name, DFonts.Title]}>{this.props.data.user.displayName}</Text>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.name, DFonts.Title]}>{this.props.data.user.displayName}</Text>
                 <Text style={[styles.update, DFonts.SubTitle]}>{calculateDuration(this.props.data.user.updated)}</Text>
               </View>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.onBookMarker.bind(this)}>
             <MaterialCommunityIcons name={this.props.data.bookmark ? "bookmark" : "bookmark-outline"} size={30}
-              color={this.props.data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} />
+              color={this.props.data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} style = {{width:40,textAlign:'center',alignSelf:'flex-start'}}/>
           </TouchableOpacity>
         </View>
         {/* Feed Title */}

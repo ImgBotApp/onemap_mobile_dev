@@ -25,7 +25,7 @@ class SuggestUser extends Component {
           <CircleImage style={styles.profileImage} uri={photoURL} radius={getDeviceWidth(152)} />
         </TouchableOpacity>
         <View style={styles.info}>
-          <View style={{ alignItems: 'center' }}>
+          <View style={{ alignItems: 'flex-start',width:'100%' }}>
             <TouchableOpacity onPress={this.props.onPress}>
               <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.name, DFonts.Title]}>{displayName}</Text>
             </TouchableOpacity>

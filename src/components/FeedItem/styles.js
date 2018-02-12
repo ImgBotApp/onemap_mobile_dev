@@ -17,11 +17,11 @@ const styles = StyleSheet.create({
   userInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
   user: {
     flexDirection: 'row',
-    width: '80%'
+    width:'75%'
   },
   userDescription: {
     marginLeft: getDeviceWidth(47)

@@ -83,7 +83,17 @@ const styles = StyleSheet.create({
     marginLeft: getDeviceWidth(76),
     marginRight: getDeviceWidth(76),
     marginTop: getDeviceHeight(89),
-    height: getDeviceHeight(323)
+    height: getDeviceHeight(323),
+    overflow: 'hidden',
+    zIndex:10
+  },
+  mapWrapper:{
+    position:'absolute',
+    top:0,
+    left:0,
+    right:0,
+    bottom:-30,
+    zIndex:0
   },
   map: {
     width: '100%',
@@ -253,6 +263,57 @@ const styles = StyleSheet.create({
     right: Platform.OS == 'android' ? 15 : 5,
     bottom: Platform.OS == 'android' ? 18 : 5,
     fontWeight: "100"
+  },
+  modalMediaView:{
+    width: getDeviceWidth(1000),
+    height:getDeviceHeight(750),
+    backgroundColor: 'white',
+    borderColor: 'transparent',
+    borderWidth: 1,
+    borderRadius: 8,
+    alignItems: 'center',
+    // padding: getDeviceWidth(30),
+    justifyContent: 'space-between'
+  },
+  BlockTitle: {
+    fontSize: NORMAL_FONT_SIZE,
+    color: DARK_GRAY_COLOR,
+  },
+  modalMediaViewHeader: {
+    height:getDeviceHeight(150),
+    paddingTop: getDeviceWidth(30),
+    paddingLeft: getDeviceWidth(30),
+    paddingRight: getDeviceWidth(30),
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  },
+  modalItem: {
+    height:getDeviceHeight(200),
+    width: '100%',
+    borderColor: LIGHT_GRAY_COLOR,
+    borderTopWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  modalButton: {
+    flex: 1,
+    borderColor: LIGHT_GRAY_COLOR,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRightWidth: 1,
+    paddingLeft:20,
+    paddingRight:20
+  },
+  cancelStr: {
+    color: BLUE_COLOR,
+    fontSize: BIG_FONT_SIZE
+  },
+  buttonStr: {
+    width: getDeviceWidth(800),
+    color: 'black',
+    fontSize: BIG_FONT_SIZE,
+    width:'100%',
   }
 });
 
