@@ -26,9 +26,6 @@ class MapTabView extends Component {
         longitude: item.long
       })
     }))
-    if (this.props.places.length) {
-      const item = this.props.places[0]
-    }
     this.map.fitToCoordinates(makers, {
       edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
       animated: true,

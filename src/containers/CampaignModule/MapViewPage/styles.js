@@ -8,6 +8,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#2c3e50',
   },
+  map: {
+    width: '100%',
+    height: '100%'
+  }
 });
 
 export default styles
