@@ -117,6 +117,7 @@ query GetOneMapperProfile($userId: ID!) {
       type
       name
       pictureURL
+      privacy
     }
     stories {
       id
