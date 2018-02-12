@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, LIGHT_BLUE } from '../../../theme/colors';
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
-import { BIG_FONT_SIZE, NORMAL_FONT_SIZE, SMALL_FONT_SIZE } from '../../../theme/fonts';
+import { BIG_FONT_SIZE, NORMAL_FONT_SIZE, SMALL_FONT_SIZE,APPFONTNAME } from '../../../theme/fonts';
 // define your styles
 const styles = StyleSheet.create({
   container: {
@@ -27,20 +27,24 @@ const styles = StyleSheet.create({
     marginLeft: -1 * getDeviceWidth(98)
   },
   userImage: {
-    width: getDeviceWidth(355),
-    height: getDeviceWidth(355)
+    width: getDeviceWidth(342),
+    height: getDeviceWidth(342)
   },
   userInfo: {
     marginLeft: getDeviceWidth(48),
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    width:getDeviceWidth(626)
   },
   userName: {
+    fontFamily: APPFONTNAME.Regular,
     color: DARK_GRAY_COLOR,
-    fontSize: BIG_FONT_SIZE
+    fontSize: 16,
+    fontSize: BIG_FONT_SIZE,
   },
   userId: {
+    fontFamily: APPFONTNAME.Regular,
     color: LIGHT_GRAY_COLOR,
-    fontSize: NORMAL_FONT_SIZE
+    fontSize: SMALL_FONT_SIZE
   },
   FollowingButton: {
     width: getDeviceWidth(626),
@@ -52,7 +56,7 @@ const styles = StyleSheet.create({
   },
   FollowingText: {
     color: 'white',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   propertyView: {
     alignItems: 'center'

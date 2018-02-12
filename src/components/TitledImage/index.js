@@ -4,10 +4,10 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 
 import styles from './styles'
 import DFonts from '@theme/fonts';
-//  Props 
+//  Props
 /**
  * @Props
- * 
+ *
  * title
  * titleColor
  * uri
@@ -69,7 +69,7 @@ class TitledImage extends Component {
             style={[styles.imagePlaceholder, { borderRadius: this.props.radius }]}
           />
         }
-        <Text style={[DFonts.Regular, styles.text, this.props.titleStyle]}>{this.state.title}</Text>
+        <Text numberOfLines={3} ellipsizeMode={'tail'} style={[DFonts.Regular, styles.text, this.props.titleStyle]}>{this.state.title}</Text>
       </TouchableOpacity>
     );
   }
