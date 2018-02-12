@@ -310,10 +310,10 @@ class SearchPage extends Component {
                           <View style={styles.infomation}>
                             <View>
                               <TouchableOpacity onPress={() => this.onPlaceProfile(item.placeID)}>
-                                <Text style={[DFonts.Title, styles.name]}>{item.name}</Text>
+                                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.name]}>{item.name}</Text>
                                 {this.state.isSelected ?
-                                  <Text style={[DFonts.SubTitle, styles.following]}>{item.vicinity}</Text>
-                                  : <Text style={[DFonts.SubTitle, styles.following]}>{item.address}</Text>
+                                  <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.following]}>{item.vicinity}</Text>
+                                  : <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.following]}>{item.address}</Text>
                                 }
                               </TouchableOpacity>
                             </View>

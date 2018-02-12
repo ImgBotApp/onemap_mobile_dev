@@ -127,8 +127,8 @@ class SearchResult extends Component {
         <View style={styles.item}>
           <CircleImage style={styles.profileImage} uri={item.photoURL} radius={getDeviceWidth(70)} />
           <View style={styles.infomation}>
-            <Text style={[DFonts.Title, styles.name]}>{item.displayName}</Text>
-            <Text style={[DFonts.SubTitle, styles.following]}>{item.username}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.name]}>{item.displayName}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.following]}>{item.username}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -141,8 +141,8 @@ class SearchResult extends Component {
         <View style={styles.item}>
           <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
           <View style={styles.infomation}>
-            <Text style={[DFonts.Title, styles.name]}>{item.structured_formatting.main_text}</Text>
-            <Text style={[DFonts.SubTitle, styles.following]}>{item.structured_formatting.secondary_text}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.name]}>{item.structured_formatting.main_text}</Text>
+            <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.following]}>{item.structured_formatting.secondary_text}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -167,8 +167,8 @@ class SearchResult extends Component {
         <View style={styles.item}>
           <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
           <View style={styles.infomation}>
-            <Text style={[DFonts.Title, styles.name]}>{item.placeName}</Text>
-            <Text style={[DFonts.SubTitle, styles.following]}>{item.address}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.name]}>{item.placeName}</Text>
+            <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.following]}>{item.address}</Text>
           </View>
         </View>
       </TouchableOpacity>
