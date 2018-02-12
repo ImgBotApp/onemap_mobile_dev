@@ -21,10 +21,11 @@ const styles = StyleSheet.create({
   },
   user: {
     flexDirection: 'row',
-    width:'75%'
+    
   },
   userDescription: {
-    marginLeft: getDeviceWidth(47)
+    marginLeft: getDeviceWidth(47),
+    width:getDeviceWidth(800),
   },
   profileImage: {
     width: getDeviceWidth(140),
