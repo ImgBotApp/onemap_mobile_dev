@@ -64,7 +64,7 @@ class SearchPage extends Component {
       initialMarker: null,
       myPosition: {},
       isCallingAPI: false,
-      placeInf:null,
+      placeInf: null,
     }
     props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
@@ -181,20 +181,19 @@ class SearchPage extends Component {
         this.setState({ isCallingAPI: false })
         //this.refs.toast.show('nearby search updated')
 
-        var maxDiff_lat=0,maxDiff_lng=0;
+        var maxDiff_lat = 0, maxDiff_lng = 0;
         // this.setPinLocation(results);
         var getNearByLocationsPin = [];
         for (var i = 0; i < results.length; i++) {
-          if(results[i].latitude && results[i].longitude)
-          {
+          if (results[i].latitude && results[i].longitude) {
             var obj = {
-                coordinates: {
+              coordinates: {
                 latitude: results[i].latitude,
                 longitude: results[i].longitude,
-                },
-                title: results[i].name,
-                address: results[i].address,
-                placeID: results[i].placeID
+              },
+              title: results[i].name,
+              address: results[i].address,
+              placeID: results[i].placeID
             }
             getNearByLocationsPin.push(obj);
             maxDiff_lat = Math.max(maxDiff_lat, Math.abs(this.state.myPosition.latitude - results[i].latitude));
@@ -326,7 +325,9 @@ class SearchPage extends Component {
               )
               :
               (
-                <SearchResult keyword={this.state.keyword}
+                <SearchResult
+                  userId={this.props.user.id}
+                  keyword={this.state.keyword}
                   isAuto={this.state.isAuto}
                   coordinate={this.state.initialMarker}
                   onUser={this.onUserItem.bind(this)}
@@ -367,12 +368,12 @@ class SearchPage extends Component {
     var ret_photos;
     this.setState({ loading: true });
     RNGooglePlaces.lookUpPlaceByID(placeID).then((result) => {
-      this.setState({placeInf:result});
+      this.setState({ placeInf: result });
       return Places.details({ placeid: placeID });
     }
     ).then((place) => {
       ret_photos = place.photos;
-      this.setState({placeInf:{...this.state.placeInf,...place}});
+      this.setState({ placeInf: { ...this.state.placeInf, ...place } });
 
       return client.resetStore().then(() => {
         return client.query({
@@ -428,47 +429,45 @@ class SearchPage extends Component {
     }, err => { this.setState({ loading: false }); })
   }
   onCreatePlace() {
-    if(!this.state.placeInf || !this.state.placeInf.address_components)
+    if (!this.state.placeInf || !this.state.placeInf.address_components)
       return;
     let pCode = '';
     let cityTown = '';
     let country = '';
     let street = '';
-    let sublocality ='';
+    let sublocality = '';
     let areaDistrict = '';
 
     this.state.placeInf.address_components.forEach(item => {
-      if(item.types)
-      {
+      if (item.types) {
         item.types.forEach(
-          typeItem =>{
-            switch (typeItem)
-            {
-              case 'postal_code':{
+          typeItem => {
+            switch (typeItem) {
+              case 'postal_code': {
                 pCode = item.long_name;
                 break;
               }
-              case 'locality':{
+              case 'locality': {
                 cityTown = item.long_name;
                 break;
               }
-              case 'country':{
+              case 'country': {
                 country = item.long_name;
                 break;
               }
-              case 'route':{
+              case 'route': {
                 street = item.long_name;
                 break;
               }
-              case 'sublocality':{
+              case 'sublocality': {
                 sublocality = item.long_name;
                 break;
               }
-              case 'administrative_area_level_1':{
+              case 'administrative_area_level_1': {
                 areaDistrict = item.long_name;
                 break;
               }
-              default:{
+              default: {
                 break;
               }
             }
@@ -522,7 +521,7 @@ class SearchPage extends Component {
       return;
     this.setState({
       keyword: val,
-      isAuto:false
+      isAuto: false
     })
     //if (val.length == 0) return this.setState({ result: false })
     //else return this.setState({ result: true })
@@ -533,12 +532,11 @@ class SearchPage extends Component {
       return;
     this.setState({
       keyword: val,
-      isAuto:true
+      isAuto: true
     })
     //if (val.length == 0) return this.setState({ result: false })
     //else return this.setState({ result: true })
-    if (val.length > 0)
-    {
+    if (val.length > 0) {
       this.setState({ result: true })
       this.forceUpdate()
     }

@@ -79,7 +79,7 @@ class ProfilePage extends Component {
       user.followers = User._followersMeta.count;
       user.checked = User._checkInsMeta.count;
       user.accountVerification = User.accountVerification;
-      this.setState({ user, collections: User.collections, stories: User.stories });
+      this.setState({ user, collections: User.collections.filter(item => !item.privacy), stories: User.stories });
     }).catch(err => alert(err))
   }
 

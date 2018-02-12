@@ -98,8 +98,9 @@ class SearchResult extends Component {
         client.query({
           query: FILER_USERS,
           variables: {
-            keyword: queryWords,
-            loading:false
+            keyword: this.props.keyword,
+            userId: this.props.userId,
+            loading: false
           }
         }).then((users) => {
           this.setState({

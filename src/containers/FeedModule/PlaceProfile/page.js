@@ -80,14 +80,14 @@ class PlaceProfile extends PureComponent {
         disableIconTint: true
       }
     ],
-    rightButtons: [
-      {
-        title: '',
-        buttonColor: DARK_GRAY_COLOR,
-        id: 'more',
-        disableIconTint: true
-      }
-    ]
+    // rightButtons: [
+    //   {
+    //     title: '',
+    //     buttonColor: DARK_GRAY_COLOR,
+    //     id: 'more',
+    //     disableIconTint: true
+    //   }
+    // ]
   };
   constructor(props) {
     super(props)
@@ -100,15 +100,15 @@ class PlaceProfile extends PureComponent {
         }]
       })
     })
-    Ionicons.getImageSource('ios-more', 35, DARK_GRAY_COLOR).then(icon => {
-      props.navigator.setButtons({
-        rightButtons: [{
-          icon,
-          id: 'more',
-          disableIconTint: true
-        }]
-      })
-    })
+    // Ionicons.getImageSource('ios-more', 35, DARK_GRAY_COLOR).then(icon => {
+    //   props.navigator.setButtons({
+    //     rightButtons: [{
+    //       icon,
+    //       id: 'more',
+    //       disableIconTint: true
+    //     }]
+    //   })
+    // })
     if (props.place) {
       this.props.navigator.setTitle({ title: props.place.placeName });
     }
