@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     width: getDeviceWidth(140),
-    height: getDeviceHeight(140)
+    height: getDeviceWidth(140)
   },
   infomation: {
     marginLeft: getDeviceWidth(72),

@@ -108,6 +108,7 @@ class LoginPage extends Component {
             lastName: data.lastName,
             displayName: data.displayName,
             username: data.username,
+            accountVerification: data.accountVerification,
             checkIns: data.checkIns.map(item => item.id),
             blockByUsers: data.blockByUsers
           });
@@ -168,6 +169,7 @@ class LoginPage extends Component {
               lastName: data.lastName,
               displayName: data.displayName,
               username: data.username,
+              accountVerification: data.accountVerification,
               checkIns: data.checkIns.map(item => item.id),
               blockByUsers: data.blockByUsers
             });

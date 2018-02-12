@@ -14,11 +14,11 @@ import { AsyncStorage } from 'react-native'
 import { GET_PROFILE } from './graphql/userprofile';
 import { APP_USER_KEY } from './global/const'
 
-// import TestSceen from '@containers/Test'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
-const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+// import TestSceen from '@containers/Test'
 const reducer = combineReducers(reducers)
-const store = createStoreWithMiddleware(reducer)
+const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
 
 import { ApolloProvider } from 'react-apollo'
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-client-preset'
@@ -119,6 +119,7 @@ export default class App {
                   lastName: data.lastName,
                   displayName: data.displayName,
                   username: data.username,
+                  accountVerification: data.accountVerification,
                   checkIns: data.checkIns.map(item => item.id),
                   blockByUsers: data.blockByUsers
                 })

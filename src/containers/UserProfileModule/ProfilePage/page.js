@@ -16,7 +16,7 @@ import StoryBoard from '@components/StoryBoard'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
-import { SMALL_FONT_SIZE,APPFONTNAME } from '@theme/fonts';
+import { SMALL_FONT_SIZE, APPFONTNAME } from '@theme/fonts';
 
 import { client } from '@root/main'
 import { GET_FOLLOWS } from '@graphql/userprofile';
@@ -129,7 +129,9 @@ class ProfileComponent extends Component {
         <View style={styles.infoView}>
           <View style={{ flexDirection: 'row' }}>
             <CircleImage style={styles.profileImage} uri={this.state.photoURL} radius={getDeviceWidth(171)} />
-            <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage} />
+            {this.state.accountVerification &&
+              <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage} />
+            }
           </View>
           <View style={styles.infoContainer}>
             <View style={styles.nameView}>

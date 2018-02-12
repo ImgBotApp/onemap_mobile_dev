@@ -42,8 +42,7 @@ class SearchResult extends Component {
 
     this.setState({ loading: true });
 
-    if(this.props.isAuto && this.state.page == 'Places')
-    {
+    if (this.props.isAuto && this.state.page == 'Places') {
       const radius = 10000;
       const language = 'en';
       const query = queryWords.replace(/\s/g, "+");
@@ -80,24 +79,22 @@ class SearchResult extends Component {
           }
         }).then((users) => {
           let placeArray = [];
-          if(users)
-          {
-            users.data.allKeywords.forEach(item=>{
-              if(item.places)
-              {
-                item.places.forEach(place=>{
-                  placeArray.push({...place,...{keyword:item.name}});
+          if (users) {
+            users.data.allKeywords.forEach(item => {
+              if (item.places) {
+                item.places.forEach(place => {
+                  placeArray.push({ ...place, ...{ keyword: item.name } });
                 })
               }
             });
           }
           this.setState({
             keywords: placeArray,
-            loading:false
+            loading: false
           })
         })
       }
-      else if(!this.props.isAuto && this.state.page == 'People'){
+      else if (!this.props.isAuto && this.state.page == 'People') {
         client.query({
           query: FILER_USERS,
           variables: {
@@ -107,11 +104,11 @@ class SearchResult extends Component {
         }).then((users) => {
           this.setState({
             users: users.data.allUsers,
-            loading:false
+            loading: false
           })
         })
-      }else{
-        this.setState({loading:false});
+      } else {
+        this.setState({ loading: false });
       }
     }
   }

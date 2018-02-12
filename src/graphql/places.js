@@ -21,47 +21,9 @@ export const PLACES_PAGINATED = gql`
     allPlaces(first: $first, skip: $skip, orderBy: updatedAt_DESC, filter: {
       OR: [
         {
-          checkIns_some: {
-            user: {
-              id: $userId
-            }
-          }
-        },
-        {
-          usersLike_some: {
-            id: $userId
-          }
-        },
-        {
-          collections_some: {
-            user: {
-              id: $userId
-            }
-          }
-        },
-        {
           stories_some: {
             createdBy: {
               id: $userId
-            }
-          }
-        },
-        {
-          checkIns_some: {
-            user: {
-              id_in: $followsIds
-            }
-          }
-        },
-        {
-          usersLike_some: {
-            id_in: $followsIds
-          }
-        },
-        {
-          collections_some: {
-            user: {
-              id_in: $followsIds
             }
           }
         },

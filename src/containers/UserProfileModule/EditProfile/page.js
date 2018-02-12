@@ -103,7 +103,8 @@ class EditProfile extends Component {
           firstName: this.state.firstName,
           lastName: this.state.lastName,
           displayName: this.state.displayName,
-          username: this.state.username
+          username: this.state.username,
+          accountVerification: this.state.accountVerification
         });
         this.props.updateUser({
           variables: {
@@ -118,7 +119,7 @@ class EditProfile extends Component {
             country: this.state.country,
             bio: this.state.bio,
             username: this.state.username,
-            group:'USER'
+            group: 'USER'
           }
         });
         this.props.navigator.pop({})

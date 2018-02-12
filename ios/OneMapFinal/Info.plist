@@ -93,7 +93,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Camera Usage</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app always requires location tracking</string>
+	<string>OneMap would like to use your location services in order to find places around you.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Mic Usage</string>
 	<key>NSMotionUsageDescription</key>
