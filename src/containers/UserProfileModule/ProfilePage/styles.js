@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   nameView: {
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    width:getDeviceWidth(626)
   },
   bigName: {
     fontFamily: APPFONTNAME.Regular,

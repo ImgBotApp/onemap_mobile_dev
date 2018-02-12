@@ -13,12 +13,12 @@ import {
   TextInput,
   TouchableOpacity,
   Vibration,
-  View,
+  View
 } from 'react-native';
 
 import CardView from 'react-native-cardview';
 import ImagePicker from 'react-native-image-picker';
-import ImageCropPicker from 'react-native-image-crop-picker';
+import ImageCropPicker from 'react-native-image-crop-picker'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import Modal from 'react-native-modalbox';
@@ -51,8 +51,9 @@ import { GET_PLACE_PROFILE } from '@graphql/places'
 
 import styles from './styles'
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
+//import MultiImage from 'react-native-multi-image-selector';
 
-const ImagePickerOption = {
+const imagePickerOptions = {
   title: 'Take Media',
   takePhotoButtonTitle: 'Take Camera...',
   chooseFromLibraryButtonTitle: 'Choose from Library...',
@@ -61,6 +62,8 @@ const ImagePickerOption = {
     path: 'images'
   }
 }
+const MAXWIDTH = 1080;
+const MAXHEIGHT = 1920;
 
 const CANCEL_INDEX = 0
 const DESTRUCTIVE_INDEX = 4
@@ -138,7 +141,9 @@ class PlaceProfile extends PureComponent {
       selectedMediaData: [],
       selectedCard: 0,
       imageUploading: false,
-      storyUpdated: false
+      storyUpdated: false,
+      isOpenImagePicker:false,
+      selectedMediaType:''
     }
     this.loading = false;
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
@@ -309,7 +314,11 @@ class PlaceProfile extends PureComponent {
     const item = data[index];
     if (item && item.type === 'add') {
       return (
-        <TouchableOpacity onPress={this.showActionSheet.bind(this)}>
+        <TouchableOpacity onPress={()=>
+          {
+            this.setState({isOpenImagePicker:true})
+          }
+        }>
           <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
             <Image source={require('@assets/images/blankImage.png')} style={styles.imageItem} />
           </CardView>
@@ -448,30 +457,31 @@ class PlaceProfile extends PureComponent {
 
   renderMapView() {
     return (
-      <TouchableOpacity onPress={this.goMapDetail.bind(this)}>
-        <View style={styles.mapView}>
-          <MapView
-            provider={PROVIDER_GOOGLE}
-            style={styles.map}
-            initialRegion={this.state.placeData.map}
-            region={this.state.placeData.map}
-            scrollEnabled={false}
-          >
-            {
-              this.state.placeData.map ? (
-                <MapView.Marker
-                  title={this.state.placeData.title}
-                  coordinate={this.state.placeData.map}
-                  image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
-                >
-                  {Platform.OS === 'ios' && (
-                    <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
-                  )}
-                </MapView.Marker>) : null
-            }
-          </MapView>
-        </View>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.mapView} onPress={this.goMapDetail.bind(this)}>
+          <View style={styles.mapWrapper}>
+            <MapView
+              provider={PROVIDER_GOOGLE}
+              style={styles.map}
+              initialRegion={this.state.placeData.map}
+              region={this.state.placeData.map}
+              scrollEnabled={false}
+            >
+              {
+                this.state.placeData.map ? (
+                  <MapView.Marker
+                    title={this.state.placeData.title}
+                    coordinate={this.state.placeData.map}
+                    image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
+                  >
+                    {Platform.OS === 'ios' && (
+                      <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
+                    )}
+                  </MapView.Marker>) : null
+              }
+            </MapView>
+          </View>
+        </TouchableOpacity>
+     
     )
   }
 
@@ -688,7 +698,9 @@ class PlaceProfile extends PureComponent {
           {
             this.state.storyImages.length && this.state.storyImages[0].type === 'add' ?
               (
-                <TouchableOpacity onPress={this.showActionSheet.bind(this)}>
+                <TouchableOpacity onPress={()=>{
+                  this.setState({isOpenImagePicker:true})
+                }}>
                   <Image style={styles.myImages} source={require('@assets/images/blankImage.png')} />
                   {/* {this.state.imageUploading && <LoadingSpinner />} */}
                 </TouchableOpacity>
@@ -722,6 +734,7 @@ class PlaceProfile extends PureComponent {
     )
   }
   showActionSheet() {
+    this.setState({isOpenImagePicker:false});
     this.ActionSheet.show()
   }
 
@@ -730,82 +743,155 @@ class PlaceProfile extends PureComponent {
       selected: i
     })
     if (i == 2) {
-      this.addMediaToStory('video');
+      this.setState({selectedMediaType:'video'});
+      this.addMediaToStory(true);
     }
     else if (i == 1) {
-      this.addMediaToStory('photo');
+      this.setState({selectedMediaType:'photo'});
+      this.addMediaToStory(true);
     }
   }
-  addMediaToStory(type) {
-    if (true) {//TODO: should determine reasonable picker type
-      //Image Picker
-      ImagePicker.showImagePicker({
-        ...ImagePickerOption,
-        mediaType: type,
-        maxWidth: 1080,
-        maxHeight: 1920,
+  async addMediaToStory(isFromCamera) {
+    if(this.state.imageUploading)
+      return;
+
+    this.setState({isOpenImagePicker:false});
+    
+    let uploadedURLS = [];
+          
+    if(isFromCamera)
+    {
+      //this.state.selectedMediaType
+      console.log("Take Media Mode"+this.state.selectedMediaType);
+      ImagePicker.launchCamera({
+        mediaType:this.state.selectedMediaType,
+        maxWidth: MAXWIDTH,
+        maxHeight: MAXHEIGHT,
       }, (response) => {
+        
         if (response.didCancel) {
           console.log('User cancelled image picker');
+          Promise.resolve();
         } else if (response.error) {
           alert(response.error)
           console.log('ImagePicker Error: ', response.error);
+          Promise.resolve();
         } else {
-          if (type == 'photo') {
+          this.setState({ imageUploading: true });
+          if (this.state.selectedMediaType == 'photo') {
             let source = { uri: response.uri };
-            this.setState({ imageUploading: true });
             uploadImage(response.data, '#story').then(url => {
               if (url) {
-                var storyImages = clone(this.state.storyImages);
-                storyImages.pop();
-                storyImages.push({ 'uri': url });
-                storyImages.push({ type: 'add' });
-                this.setState({ storyImages });
-                this.saveStory();
+                this.updateStoryImages([url]);
               }
               this.setState({ imageUploading: false });
+              Promise.resolve();
             });
           } else {
-            this.setState({ imageUploading: true });
             uploadMedia(response, '#storyVideo').then(
               url => {
                 if (url) {
-                  let storyImages = clone(this.state.storyImages);
-                  storyImages.pop();
-                  storyImages.push({ 'uri': url });
-                  storyImages.push({ type: 'add' });
-                  this.setState({ storyImages });
-                  this.saveStory();
+                  this.updateStoryImages([url]);
                 }
                 this.setState({ imageUploading: false });
+                Promise.resolve();
               }
             );
           }
         }
       });
-    } else {
-      //Image Crop Picker
-      ImageCropPicker.openPicker({
-        compressImageMaxWidth: 1080,
-        compressImageMaxHeight: 1920,
-        includeBase64: true,
-        mediaType: 'any',
-        path: 'images'
-      }).then(response => {
-        let source = { uri: response.uri };
-        var storyImages = clone(this.state.storyImages);
-        storyImages.pop();
-        storyImages.push(source);
-        storyImages.push({ type: 'add' });
-        this.setState({ storyImages, imageUploading: true });
-        uploadImage(response.data, '#story').then(url => {
-          if (url) {
-            this.state.storyImages[this.state.storyImages.length - 2].uri = url;
-          }
-          this.setState({ imageUploading: false });
-        });
-      }).catch(err => console.log(err));
     }
+    else{//image picker
+      /*
+      if(Platform.OS == 'android')
+      {
+        MultiImage.pickImage({
+          showCamera:false,
+          maxNum: 10,
+          multiple:true
+        }).then((imageArray)=> {
+          if(imageArray)
+          {
+            this.setState({ imageUploading: true });
+            Promise.all(
+              imageArray.map(imgData =>
+                uploadImage(imgData, '#avatar').then(url => {
+                  if (url)
+                    uploadedURLS.push(url);
+                })
+              )
+            ).then(() => {
+              Promise.resolve();
+              this.setState({ imageUploading: false });
+              this.updateStoryImages(uploadedURLS);
+            }, err => { 
+              this.setState({ imageUploading: false }) 
+            })
+          }
+          else Promise.resolve();
+        }).catch(e=> { Promise.resolve(); });
+      }
+      else{
+        */
+        ImageCropPicker.openPicker({
+          width: MAXWIDTH,
+          height: MAXHEIGHT,
+          cropping: false,
+          includeBase64: true,
+          includeExif: true,
+          multiple:true,
+          maxFiles:10
+        }).then(imageArray => {
+          if(imageArray && !this.state.imageUploading)
+          {
+            this.setState({ imageUploading: true });
+            return Promise.all(
+              imageArray.map(imgData =>
+                {
+                  ////mime =='image/jpeg', 'video/mp4'
+                  if(imgData.mime && imgData.mime.substring(0,5)=='image')
+                  {
+                    return uploadImage(imgData.data, '#avatar').then(url => {
+                      if (url)
+                        uploadedURLS.push(url);
+                    })
+                  }else if(imgData.mime && imgData.mime.substring(0,5)=='video'){
+                    return uploadMedia({uri:imgData.path}, '#storyVideo').then(url => {
+                        if (url)
+                          uploadedURLS.push(url);
+                      }
+                    );
+                  }
+                  return null;
+                }
+              )
+            );
+          }
+          else Promise.resolve();
+        }).then(() => {
+          this.setState({ imageUploading: false });
+          if(uploadedURLS.length > 0)
+            this.updateStoryImages(uploadedURLS);
+          Promise.resolve();
+        }, err => { 
+          Promise.resolve();
+          this.setState({ imageUploading: false }) 
+        }).catch(e=> { Promise.resolve(); });
+      }
+    //}
+    
+  }
+  updateStoryImages(imageArray){
+    if(!imageArray)
+      return;
+
+    let storyImages = clone(this.state.storyImages);
+    storyImages.pop();
+    imageArray.forEach(image=>{storyImages.push({ 'uri': image })});
+    storyImages.push({ type: 'add' });
+    this.setState({ storyImages });
+    this.saveStory();
+    this.setState({ imageUploading: false });
   }
   deleteImageFromStory(index) {
     Alert.alert(
@@ -929,6 +1015,30 @@ class PlaceProfile extends PureComponent {
           destructiveButtonIndex={DESTRUCTIVE_INDEX}
           onPress={this.handlePress}
         />
+
+        <Modal style={styles.modalMediaView} backdrop={true} position={'center'}
+          isOpen={this.state.isOpenImagePicker}
+          onClosed={() => this.setState({ isOpenImagePicker: false })}
+        >
+          <View style={styles.modalMediaViewHeader}>
+            <Text style={styles.BlockTitle}>{'Take Media'}</Text>
+          </View>
+          <View style={styles.modalItem}>
+            <TouchableOpacity style={styles.modalButton} onPress={this.showActionSheet.bind(this)}>
+              <Text style={styles.buttonStr}>{'Take Camera...'}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modalItem}>
+            <TouchableOpacity style={styles.modalButton} onPress={()=>this.addMediaToStory(false)}>
+              <Text style={styles.buttonStr}>{'Choose from Library...'}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modalItem}>
+            <TouchableOpacity style={styles.modalButton} onPress={()=>this.setState({ isOpenImagePicker: false })}>
+              <Text style={styles.cancelStr}>{'Cancel'}</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
         {this.state.imageUploading && <LoadingSpinner />}
       </View>
     );

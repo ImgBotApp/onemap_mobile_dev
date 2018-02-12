@@ -209,12 +209,10 @@ class FeedPage extends Component {
           data={data}
           horizontal
           renderItem={({ item }) =>
-            <View style={{ marginRight: 15 }}>
-              <SuggestUser
+            <SuggestUser
                 data={item}
                 onPress={() => this.onPressUserProfile(item)}
               />
-            </View>
           }
         />
       </View>

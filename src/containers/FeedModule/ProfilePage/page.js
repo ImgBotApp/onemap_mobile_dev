@@ -159,13 +159,13 @@ class ProfilePage extends Component {
         <View style={styles.userInformationContainer}>
           <View style={styles.userInformation}>
             <View style={{ flexDirection: 'row' }}>
-              <CircleImage uri={user.photoURL} style={styles.userImage} radius={getDeviceWidth(177)} />
+              <CircleImage uri={user.photoURL} style={styles.userImage} radius={getDeviceWidth(171)} />
               {user.accountVerification === 'YES' && <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage} />}
             </View>
             <View style={styles.userInfo}>
               <View>
-                <Text style={[DFonts.Title, styles.userName]}>{user.displayName}</Text>
-                <Text style={[DFonts.Regular, styles.userId]}>{user.username}</Text>
+                <Text numberOfLines={2} ellipsizeMode={'tail'} style={styles.userName}>{user.displayName}</Text>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.userId}>{user.username}</Text>
               </View>
               <TouchableOpacity onPress={() => this.onFollow(!followed)}>
                 <View style={styles.FollowingButton}>

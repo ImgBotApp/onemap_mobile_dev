@@ -1,4 +1,4 @@
-package com.onemapfinal;
+package com.writingfuture.onemap;
 
 import com.facebook.react.ReactActivity;
 import android.content.Intent;

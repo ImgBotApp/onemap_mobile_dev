@@ -34,7 +34,10 @@ class SearchResult extends Component {
     this.onTextSearchPlace();
   }
   onTextSearchPlace() {
-    if (this.state.loading)
+    let queryWords = this.props.keyword;
+    this.setState({ prevQuery: queryWords });
+
+    if(this.state.loading)
       return;
 
     this.setState({ loading: true });
@@ -42,37 +45,37 @@ class SearchResult extends Component {
     if (this.props.isAuto && this.state.page == 'Places') {
       const radius = 10000;
       const language = 'en';
-      const query = this.props.keyword.replace(/\s/g, "+");
+      const query = queryWords.replace(/\s/g, "+");
 
       if (this.props.coordinate == null) return;
 
-      const autocompleteURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=" + this.props.keyword + "&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius + "&key=" + PLACES_APIKEY;
+      const autocompleteURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+query+"&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius+"&key=" + PLACES_APIKEY;
 
+      console.log("~~~~~~~~~~~~~~~~~~~ "+query);
       fetch(autocompleteURL, {
         method: 'GET',
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
       })
-        .then((response) => response.json())
-        .then((responseData) => {
-          let query = this.props.keyword;
-          this.setState({ prevQuery: query });
+      .then((response) => response.json())
+      .then((responseData) => {
 
-          this.setState({ loading: false })
-          if (responseData.predictions)
-            this.setState({
-              autoplaces: responseData.predictions
-            })
-        })
-        .catch((error) => {
-          this.setState({ loading: false })
-        });
-    } else {
-      if (!this.props.isAuto && this.state.page == 'Keywords') {
+        this.setState({ loading: false })
+        if (responseData.predictions)
+          this.setState({
+            autoplaces: responseData.predictions
+          })
+      })
+      .catch((error) => {
+        this.setState({ loading: false })
+      });
+    }else{
+      if(!this.props.isAuto && this.state.page == 'Keywords')
+      {
         client.query({
           query: GET_FILTER_KEYWORDS,
           variables: {
-            keyword: this.props.keyword
+            keyword: queryWords
           }
         }).then((users) => {
           let placeArray = [];
@@ -95,8 +98,8 @@ class SearchResult extends Component {
         client.query({
           query: FILER_USERS,
           variables: {
-            keyword: this.props.keyword,
-            loading: false
+            keyword: queryWords,
+            loading:false
           }
         }).then((users) => {
           this.setState({
@@ -121,8 +124,8 @@ class SearchResult extends Component {
         <View style={styles.item}>
           <CircleImage style={styles.profileImage} uri={item.photoURL} radius={getDeviceWidth(70)} />
           <View style={styles.infomation}>
-            <Text style={[DFonts.Title, styles.name]}>{item.displayName}</Text>
-            <Text style={[DFonts.SubTitle, styles.following]}>{item.username}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.name]}>{item.displayName}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.following]}>{item.username}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -135,8 +138,8 @@ class SearchResult extends Component {
         <View style={styles.item}>
           <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
           <View style={styles.infomation}>
-            <Text style={[DFonts.Title, styles.name]}>{item.structured_formatting.main_text}</Text>
-            <Text style={[DFonts.SubTitle, styles.following]}>{item.structured_formatting.secondary_text}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.name]}>{item.structured_formatting.main_text}</Text>
+            <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.following]}>{item.structured_formatting.secondary_text}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -161,8 +164,8 @@ class SearchResult extends Component {
         <View style={styles.item}>
           <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
           <View style={styles.infomation}>
-            <Text style={[DFonts.Title, styles.name]}>{item.placeName}</Text>
-            <Text style={[DFonts.SubTitle, styles.following]}>{item.address}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.name]}>{item.placeName}</Text>
+            <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.following]}>{item.address}</Text>
           </View>
         </View>
       </TouchableOpacity>
