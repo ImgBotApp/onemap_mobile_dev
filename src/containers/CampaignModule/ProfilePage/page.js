@@ -17,6 +17,8 @@ import FontStyle from '../../../theme/fonts'
 import MapTabView from './MapView'
 import EventView from './EventView'
 import BadgeTabView from './BadgeView'
+
+import { CAMPAIGN_CONDITION_GROUP_PAGE } from '../../../global/screenName'
 // create a component
 class CampaignProfilePage extends Component {
 
@@ -82,6 +84,16 @@ class CampaignProfilePage extends Component {
     })
   }
 
+  onNavigateConditionGroupPage = (id) => {
+    this.props.navigator.push({
+      screen: CAMPAIGN_CONDITION_GROUP_PAGE,
+      title: I18n.t('CAMPAGIN_ALL_BADGES'),
+      passProps: {
+        conditionGroupId: id
+      }
+    })
+  }
+
   _renderHeaderPart() {
     return (
       <View style={styles.infoContainer}>
@@ -141,7 +153,7 @@ class CampaignProfilePage extends Component {
         }
       })
       return (
-        <MapTabView  places = {condGroup}/>
+        <MapTabView  places = {condGroup} onConditionGroup={(id) => this.onNavigateConditionGroupPage(id)}/>
       )
     }
     if (this.state.page == 'events') {

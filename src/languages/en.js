@@ -144,5 +144,6 @@ export default {
   CAMPAIGN_PROFILE_TITLE: 'Campaign Profile',
   CAMPAIGN_MAP_VIEW: 'MapView',
   CAMPAIGN_EVENT_VIEW: 'Events',
-  CAMPAIGN_BADGE_VIEW: 'Badge'
+  CAMPAIGN_BADGE_VIEW: 'Badge',
+  CAMPAGIN_ALL_BADGES: 'All Badges'
 }

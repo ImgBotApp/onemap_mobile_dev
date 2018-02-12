@@ -35,6 +35,10 @@ class MapTabView extends Component {
     })
   }
 
+  onConditionGroup = (id) => {
+    this.props.onConditionGroup(id)
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -62,6 +66,7 @@ class MapTabView extends Component {
                   latitude: item.lat,
                   longitude: item.long
                 }}
+                onPress={() => this.onConditionGroup(item.id)}
                 image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
               >
               {Platform.OS === 'ios' && (
@@ -83,7 +88,8 @@ MapTabView.propTypes = {
     long: PropTypes.number,
     name: PropTypes.string
   })),
-  provider: ProviderPropType
+  provider: ProviderPropType,
+  onConditionGroup: PropTypes.func.isRequired
 }
 
 //make this component available to the app
