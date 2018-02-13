@@ -112,7 +112,12 @@ query GetOneMapperProfile($userId: ID!) {
       count
     }
     accountVerification
-    collections {
+    collections(
+      filter: {
+        privacy: false
+        type: USER
+      }
+    ) {
       id
       type
       name
