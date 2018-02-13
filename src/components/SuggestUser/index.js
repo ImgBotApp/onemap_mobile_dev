@@ -20,15 +20,12 @@ class SuggestUser extends Component {
   render() {
     const { photoURL, username, displayName } = this.props.data;
     return (
+      <TouchableOpacity onPress={this.props.onPress}>
       <CardView style={styles.container} cardElevation={5} cardMaxElevation={2} cornerRadius={10}>
-        <TouchableOpacity onPress={this.props.onPress}>
-          <CircleImage style={styles.profileImage} uri={photoURL} radius={getDeviceWidth(152)} />
-        </TouchableOpacity>
+        <CircleImage style={styles.profileImage} uri={photoURL} radius={getDeviceWidth(152)} />
         <View style={styles.info}>
           <View style={{ alignItems: 'flex-start',width:'100%' }}>
-            <TouchableOpacity onPress={this.props.onPress}>
-              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.name, DFonts.Title]}>{displayName}</Text>
-            </TouchableOpacity>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.name, DFonts.Title]}>{displayName}</Text>
             <Text style={[DFonts.SubTitle, styles.id]}>{username}</Text>
             <View style={styles.separate}></View>
           </View>
@@ -42,6 +39,7 @@ class SuggestUser extends Component {
           </View>
         </View>
       </CardView >
+      </TouchableOpacity>
     );
   }
 }
