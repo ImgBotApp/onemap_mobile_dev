@@ -196,7 +196,7 @@ class PlaceProfile extends PureComponent {
             longitudeDelta: 0.00421
           },
           information: {
-            address: data.addressCityTown,
+            address: data.address,
             phoneNumber: data.phoneNumber,
             website: data.website,
             openingHours: [data.openingHrs]
@@ -487,10 +487,10 @@ class PlaceProfile extends PureComponent {
   renderInfo() {
     return (
       <View style={styles.informationContainer}>
-        <Text style={styles.informationText}>{I18n.t('PLACE_ADDRESS')}{`\t\t\t: `}{this.state.placeData.information.address}</Text>
-        <Text style={styles.informationText}>{I18n.t('PLACE_NUMBER')}{`\t\t: `}{this.state.placeData.information.phoneNumber}</Text>
-        <Text style={styles.informationText}>{I18n.t('PLACE_WEBSITE')}{`\t\t\t: `}{this.state.placeData.information.website}</Text>
-        <Text style={styles.informationText}>{I18n.t('PLACE_OPENHOUR')}{`\t\t: `}{this.state.placeData.information.openingHours}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_ADDRESS')}{`\t\t\t: `}{this.state.placeData.information.address}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_NUMBER')}{`\t: `}{this.state.placeData.information.phoneNumber}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_WEBSITE')}{`\t\t\t: `}{this.state.placeData.information.website}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_OPENHOUR')}{`\t: `}{this.state.placeData.information.openingHours}</Text>
       </View>
     )
   }
@@ -500,17 +500,17 @@ class PlaceProfile extends PureComponent {
     return (
       <View style={styles.interestContainer}>
         <View style={styles.interestInformation}>
-          <View style={styles.interestItem}>
-            <Foundation name="heart" size={12} color={RED_COLOR} />
-            <Text style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
+          <View style={[styles.interestItem,{flex:0.25}]}>
+            <Foundation name="heart" size={15} color={RED_COLOR} />
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
           </View>
-          <View style={styles.interestItem}>
-            <Foundation name="marker" size={12} color={BLUE_COLOR} />
-            <Text style={styles.interestText}>{calculateCount(this.state.placeData.checkIns.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
+          <View style={[styles.interestItem,{flex:0.25}]}>
+            <Foundation name="marker" size={15} color={BLUE_COLOR} />
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.checkIns.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
           </View>
-          <View style={styles.interestItem}>
-            <Foundation name="bookmark" size={12} color={RED_COLOR} />
-            <Text style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
+          <View style={[styles.interestItem,{flex:0.5}]}>
+            <Foundation name="bookmark" size={15} color={RED_COLOR} />
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
           </View>
         </View>
         <View style={styles.serparate}></View>

@@ -107,8 +107,9 @@ const styles = StyleSheet.create({
   },
   informationText: {
     color: LIGHT_GRAY_COLOR,
-    fontSize: SMALL_FONT_SIZE,
-    fontFamily: APPFONTNAME.Regular
+    fontSize: NORMAL_FONT_SIZE,
+    fontFamily: APPFONTNAME.Regular,
+    marginBottom:2
   },
   informationContainer: {
     marginLeft: getDeviceWidth(76),
@@ -123,16 +124,17 @@ const styles = StyleSheet.create({
   },
   interestItem: {
     flexDirection: 'row',
-    marginLeft: getDeviceWidth(60)
+    marginLeft: getDeviceWidth(30),
+    alignItems:'center',
   },
   interestInformation: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent:'center',
     width: '100%'
   },
   interestText: {
     color: LIGHT_GRAY_COLOR,
-    fontSize: SMALL_FONT_SIZE,
+    fontSize: NORMAL_FONT_SIZE-1,
     marginLeft: getDeviceWidth(20),
     fontFamily: APPFONTNAME.Regular
   },

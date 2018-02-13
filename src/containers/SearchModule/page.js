@@ -492,7 +492,7 @@ class SearchPage extends Component {
         addressCountry: country,
         addressPostalCode: pCode,
         addressStreet: street,
-        address: this.state.placeInf.vicinity || this.state.placeInf.formatted_address,
+        address: this.state.placeInf.address,
         phoneNumber: this.state.placeInf.phoneNumber || '',
         website: this.state.placeInf.website || '',
         facebook: this.state.placeInf.facebook || '',
