@@ -1,4 +1,5 @@
 import { gql } from 'react-apollo'
+import { client } from '@root/main'
 
 export const GET_ALL_PLACES = gql`
   query AllPlacesQuery {
@@ -146,6 +147,16 @@ export const GET_PLACE_PROFILE = gql`
     }
   }
 `
+
+export function getPlaceDetail(id) {
+  return client.query({
+    query: GET_PLACE_PROFILE,
+    variables: {
+      id: id
+    }
+  }).then(res => Promise.resolve(res.data))
+  .then(res => Promise.resolve(res.Place))
+}
 export const CREATE_PLACE = gql`
   mutation CreatePlace(
     $createdById: ID! # user id

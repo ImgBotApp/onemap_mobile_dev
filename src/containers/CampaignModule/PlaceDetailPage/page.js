@@ -10,8 +10,9 @@ import I18n from '@language'
 import CardView from 'react-native-cardview'
 import moment from 'moment'
 import { GetPlaceByCondition, GetRulesByCondition } from '../../../graphql/condition'
+import { getPlaceDetail } from '../../../graphql/places'
 import SuggestPlaceItem from '../../../components/CampaignSuggestPlace'
-
+import * as SCREEN from '../../../global/screenName'
 const SuggestPlace = [{
   id: 'cjdbog6jmbo470191whdq90rj',
   name: 'Khad Khong Tha  Lampang',
@@ -92,6 +93,18 @@ class PlaceDetailPage extends Component {
     }
   }
 
+  onVisitPlaceProfile = (id) => {
+    getPlaceDetail(id)
+    .then(res => {
+      this.props.navigator.push({
+        screen: SCREEN.PLACE_PROFILE_PAGE,
+        passProps: {
+          place: res
+        }
+      })
+    })
+  }
+
   renderCondtionDetail() {
     return (
       <View style={styles.detailPart}>
@@ -129,7 +142,7 @@ class PlaceDetailPage extends Component {
             )}
           />
           <Text style={[FontStyle.SubTitle, styles.placeDescription]}>Description Here</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => this.onVisitPlaceProfile(this.state.place.place && this.state.place.place.id)}>
             <Text style={[FontStyle.SubTitle, styles.placeMore]}>{I18n.t('PROFILE_VIEW_MORE')}</Text>
           </TouchableOpacity>
         </CardView>
@@ -154,9 +167,9 @@ class PlaceDetailPage extends Component {
           <Image source={require('@assets/images/badge/time.png')} style={styles.checkInImage}/>
           <View>
           {
-            this.state.rules.dates && this.state.rules.dates.map(item => {
+            this.state.rules.dates && this.state.rules.dates.map((item, index) => {
               return (
-                <View>
+                <View key={index}>
                 <Text style={[FontStyle.SubContent, styles.ruleText]}>
                   {' '}{ moment(item.fromDateTime).format('DD MMM YY')} {' - '} { moment(item.toDateTime).format('DD MMM YY')} 
                 </Text>
@@ -193,7 +206,9 @@ class PlaceDetailPage extends Component {
               cornerRadius={5}
               style={styles.SPlaceItem}
             >
-              <SuggestPlaceItem id={item.id} name={item.name} address={item.address} images={item.images}/>
+              <SuggestPlaceItem id={item.id} name={item.name} address={item.address} images={item.images} key={item.id}
+                onPress={() => this.onVisitPlaceProfile(item.id)}
+              />
             </CardView>
           )}
         />

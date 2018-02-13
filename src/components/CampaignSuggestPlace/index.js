@@ -31,9 +31,9 @@ class SuggestPlace extends Component {
         /> */}
         <View style={styles.imageContainer}>
         {
-          this.props.images && this.props.images.map(item => {
+          this.props.images && this.props.images.map((item, index) => {
             return (
-              <CardView cardElevation={5} cardMaxElevation={5} cornerRadius={5} style={styles.ImageCard}>
+              <CardView cardElevation={5} cardMaxElevation={5} cornerRadius={5} style={styles.ImageCard} key={index}>
                 <Image source={{ uri: item}} style={styles.ItemImage} />
               </CardView>
             )
