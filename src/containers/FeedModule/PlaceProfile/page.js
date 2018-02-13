@@ -419,7 +419,7 @@ class PlaceProfile extends PureComponent {
         <Text style={[DFonts.Title, styles.titleText]}>{this.state.placeData.title}</Text>
         <TouchableOpacity onPress={this.onBookMarker}>
           <MaterialCommunityIcons name={this.state.placeData.bookmark ? "bookmark" : "bookmark-outline"} size={30}
-            color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} />
+            color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} style={{marginTop:3}}/>
         </TouchableOpacity>
       </View>
     )

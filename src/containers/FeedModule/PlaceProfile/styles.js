@@ -15,11 +15,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingLeft: getDeviceWidth(76),
     paddingRight: getDeviceWidth(76),
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
   titleText: {
     color: DARK_GRAY_COLOR,
-    fontSize: BIGGER_FONT_SIZE
+    fontSize: BIGGER_FONT_SIZE,
+    width: getDeviceWidth(1100),
   },
   imageContainer: {
     marginTop: getDeviceHeight(89),

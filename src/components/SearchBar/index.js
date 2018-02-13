@@ -416,7 +416,7 @@ const getStyles = (inputHeight) => {
     iconSearch: {
       flex: 1,
       position: 'absolute',
-      top: middleHeight - 2,
+      top: middleHeight,
       height: 20,
       width: 20
     },
@@ -425,8 +425,8 @@ const getStyles = (inputHeight) => {
     },
     iconDelete: {
       position: 'absolute',
-      right: 70,
-      top: middleHeight - 2,
+      right: 77,
+      top: middleHeight,
       height: 20,
       width: 20
     },
