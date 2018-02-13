@@ -54,7 +54,9 @@ const styles = StyleSheet.create({
   suggest: {
     color: color.LIGHT_GRAY_COLOR,
     fontSize: font.SMALL_FONT_SIZE,
-    marginBottom:2
+    marginTop:2,
+    marginBottom:2,
+    alignSelf:'flex-start'
   },
   followButton: {
     width: getDeviceWidth(455),
