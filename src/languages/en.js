@@ -147,5 +147,7 @@ export default {
   CAMPAIGN_BADGE_VIEW: 'Badge',
   CAMPAGIN_ALL_BADGES: 'All Badges',
   CAMPAIGN_SUUGESTED_PLACE: 'Suggested place',
-  CAMPAIGN_BADGE: 'Badges'
+  CAMPAIGN_BADGE: 'Badges',
+  CAMPAIGN_PLACE_DETAIL: 'Place Detail',
+  CAMPAGIN_RULES: 'Rules'
 }

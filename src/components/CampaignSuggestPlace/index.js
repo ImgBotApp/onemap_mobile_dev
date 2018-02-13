@@ -42,7 +42,7 @@ class SuggestPlace extends Component {
         </View>
         <View style={styles.DetailPart}>
           <Text style={[FontStyle.SubContent, styles.address]} numberOfLines={2} ellipsizeMode={'tail'}>{this.props.address}</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => this.props.onPress(this.props.id)}>
             <View style={styles.ViewMore}>
               <Text style={{color: '#0c80fe', fontSize: 8}}>{I18n.t('PROFILE_VIEW_MORE')}</Text>
             </View>
@@ -57,7 +57,8 @@ SuggestPlace.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   images: PropTypes.arrayOf(PropTypes.string),
-  address: PropTypes.string
+  address: PropTypes.string,
+  onPress: PropTypes.func.isRequired
 }
 //make this component available to the app
 export default SuggestPlace;

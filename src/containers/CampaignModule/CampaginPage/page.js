@@ -14,8 +14,9 @@ import I18n from '@language'
 import styles from './styles'
 import SuggestPlaceItem from '../../../components/CampaignSuggestPlace'
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
+import * as SCREEN from '../../../global/screenName'
 const SuggestPlace = [{
-  id: 'cjdbog6jmbo470191whdq90rj',
+  id: 'cjdjefc2anqin0180hlr8msd8',
   name: 'Khad Khong Tha  Lampang',
   images: [
     'https://placeimg.com/640/480/any',
@@ -26,7 +27,7 @@ const SuggestPlace = [{
   ],
   address: 'Talad Gao Rd, Suan Dok, Mueang Lampang, Lampang  52100'
 },{
-  id: 'cjdbodhg5bnp701912v6sa2xm',
+  id: 'cjdjecsnvnq0a0180zs953ez2',
   name: 'Khad Khong Tha  Lampang',
   images: [
     'https://placeimg.com/640/480/any',
@@ -110,6 +111,14 @@ class CampaignPage extends Component {
     })
   }
 
+  onNavigatePlaceDetail(detail) {
+    this.props.navigator.push({
+      screen: SCREEN.CAMPAIGN_PLACE_DETAIL_PAGE,
+      title: I18n.t('CAMPAIGN_PLACE_DETAIL'),
+      passProps: detail
+    })
+  }
+
   renderShortPart = () => {
     return (
       <TouchableOpacity onPress={() => this.setState({shortFlag: !this.state.shortFlag})}>
@@ -136,7 +145,11 @@ class CampaignPage extends Component {
               cornerRadius={5}
               style={styles.SPlaceItem}
             >
-              <SuggestPlaceItem id={item.id} name={item.name} address={item.address} images={item.images}/>
+              <SuggestPlaceItem id={item.id} name={item.name} address={item.address} images={item.images} onPress={(id) => this.onNavigatePlaceDetail({
+                  id: id,
+                  name: 'Test name',
+                  campaignName: this.props.title
+                })}/>
             </CardView>
           )}
         />
@@ -203,10 +216,11 @@ class CampaignPage extends Component {
                   latitude: condition.locationLat,
                   longitude: condition.locationLong
                 }}
-                // onPress={() => this.onNavigateCondition({
-                //   id: conditionGroup.id,
-                //   title: conditionGroup.title
-                // })}
+                onPress={() => this.onNavigatePlaceDetail({
+                  id: condition.id,
+                  name: condition.name,
+                  campaignName: this.props.title
+                })}
                 image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
               >
               {Platform.OS === 'ios' && (
