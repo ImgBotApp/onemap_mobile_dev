@@ -298,7 +298,7 @@ class Collections extends Component {
                 <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
               )}
               <Callout style={styles.customView} onPress={() => this.openPlaceProfile(item.id)}>
-                <Text style={[DFonts.Regular, { flexWrap: "nowrap" }]}>{item.address}</Text>
+                <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.Regular, { flexWrap: "nowrap",alignSelf:"center" }]}>{item.placeName}</Text>
               </Callout>
             </Marker>
           )}
