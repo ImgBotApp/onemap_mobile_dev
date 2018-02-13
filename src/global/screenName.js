@@ -31,3 +31,4 @@ export const BLOCKED_USER_PAGE = 'onemap.blocked_user_page'
 
 export const CAMPAIGN_PROFILE_PAGE = 'onemap.campaign_profile_page'
 export const CAMPAIGN_CONDITION_GROUP_PAGE = 'onemap.campaign_condition_group_page'
+export const CAMPAIGN_MAIN_PAGE = 'onemap.campaign_main_page'

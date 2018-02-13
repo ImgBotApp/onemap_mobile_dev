@@ -32,6 +32,7 @@ import BlockedUserPage from './containers/UserProfileModule/BlockedUser'
 // Campaign Module
 import CampaignProfilePage from './containers/CampaignModule/ProfilePage'
 import CampaignConditionGroupPage from './containers/CampaignModule/MapViewPage'
+import CampaignMainPage from './containers/CampaignModule/CampaginPage'
 
 export function registerScreens(store, Provider, client) {
 
@@ -66,4 +67,5 @@ export function registerScreens(store, Provider, client) {
   // Campaign Module
   Navigation.registerComponent(SCREEN.CAMPAIGN_PROFILE_PAGE, () => CampaignProfilePage, store, Provider, client)
   Navigation.registerComponent(SCREEN.CAMPAIGN_CONDITION_GROUP_PAGE, () => CampaignConditionGroupPage, store, Provider, client)
+  Navigation.registerComponent(SCREEN.CAMPAIGN_MAIN_PAGE, () => CampaignMainPage, store, Provider, client)
 }

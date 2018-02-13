@@ -89,7 +89,7 @@ class CampaignProfilePage extends Component {
       screen: CAMPAIGN_CONDITION_GROUP_PAGE,
       title: I18n.t('CAMPAGIN_ALL_BADGES'),
       passProps: {
-        conditionGroupId: id
+        conditionGroups: this.state.detail.conditionGroups
       }
     })
   }

@@ -6,7 +6,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import MapView, { PROVIDER_GOOGLE, ProviderPropType, Marker } from 'react-native-maps';
 import { LATITUDE, LONGITUDE, LATITUDE_DELTA, LONGITUDE_DELTA } from '@global/const'
-import { GetConditionByGroup } from '../../../graphql/condition'
+import * as SCREEN from '../../../global/screenName'
+import I18n from '../../../languages'
 import styles from './styles'
 // create a component
 class MapViewPage extends Component {
@@ -37,23 +38,15 @@ class MapViewPage extends Component {
   }
 
   fitMarkers = () => {
-    GetConditionByGroup(this.props.conditionGroupId)
-    .then(res => {
-      console.log(res)
-      this.setState({
-        conditions: res
-      },async () => {
-        const makers = await Promise.all(this.state.conditions.map(async (item, index) => {
-          return Promise.resolve({
-            latitude: item.locationLat,
-            longitude: item.locationLong
-          })
-        }))
-        this.map.fitToCoordinates(makers, {
-          edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
-          animated: true,
-        })
-      })
+    const makers = this.props.conditionGroups.map((item, index) => {
+      return {
+        latitude: item.locationLat,
+        longitude: item.locationLong
+      }
+    })
+    this.map.fitToCoordinates(makers, {
+      edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
+      animated: true,
     })
   }
 
@@ -64,6 +57,14 @@ class MapViewPage extends Component {
       }
     } else {
     }
+  }
+
+  onNavigateCondition = (conditionGroupData) => {
+    this.props.navigator.push({
+      screen: SCREEN.CAMPAIGN_MAIN_PAGE,
+      title: I18n.t('PROFILE_CAMPAIGN'),
+      passProps: conditionGroupData
+    })
   }
   render() {
     return (
@@ -81,17 +82,20 @@ class MapViewPage extends Component {
           ref={ref => { this.map = ref }}
         >
         {
-          this.state.conditions && this.state.conditions.map((condtion, index) => {
+          this.props.conditionGroups && this.props.conditionGroups.map((conditionGroup, index) => {
             return (
               <Marker
-                identifier = { 'condition' + index }
-                title={condtion.name}
+                identifier = { 'conditionGroup' + index }
+                title={conditionGroup.title}
                 key={index}
                 coordinate={{
-                  latitude: condtion.locationLat,
-                  longitude: condtion.locationLong
+                  latitude: conditionGroup.locationLat,
+                  longitude: conditionGroup.locationLong
                 }}
-                // onPress={() => this.onConditionGroup(condtion.id)}
+                onPress={() => this.onNavigateCondition({
+                  id: conditionGroup.id,
+                  title: conditionGroup.title
+                })}
                 image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
               >
               {Platform.OS === 'ios' && (
@@ -107,7 +111,12 @@ class MapViewPage extends Component {
 }
 
 MapViewPage.propTypes = {
-  conditionGroupId: PropTypes.string
+  conditionGroups: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    locationLat: PropTypes.number,
+    locationLong: PropTypes.number,
+    title: PropTypes.string
+  }))
 }
 
 MapViewPage.navigatorButtons = {

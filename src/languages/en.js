@@ -145,5 +145,7 @@ export default {
   CAMPAIGN_MAP_VIEW: 'MapView',
   CAMPAIGN_EVENT_VIEW: 'Events',
   CAMPAIGN_BADGE_VIEW: 'Badge',
-  CAMPAGIN_ALL_BADGES: 'All Badges'
+  CAMPAGIN_ALL_BADGES: 'All Badges',
+  CAMPAIGN_SUUGESTED_PLACE: 'Suggested place',
+  CAMPAIGN_BADGE: 'Badges'
 }
