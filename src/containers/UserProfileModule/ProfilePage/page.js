@@ -136,7 +136,7 @@ class ProfileComponent extends Component {
           <View style={styles.infoContainer}>
             <View style={styles.nameView}>
               <View>
-                <Text numberOfLines={2} ellipsizeMode={'tail'} style={styles.bigName}>{this.state.displayName}</Text>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.bigName}>{this.state.displayName}</Text>
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.userId}>
                   {this.state.username}
                 </Text>

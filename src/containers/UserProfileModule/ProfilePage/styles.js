@@ -3,7 +3,7 @@ import * as GLOBAL from '@global'
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
 import { DARK_GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../../theme/colors';
-import { SMALL_FONT_SIZE,APPFONTNAME } from '../../../theme/fonts';
+import { SMALL_FONT_SIZE,NORMAL_FONT_SIZE,APPFONTNAME } from '../../../theme/fonts';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
   bio: {
     fontFamily: APPFONTNAME.Regular,
-    fontSize: SMALL_FONT_SIZE,
+    fontSize: NORMAL_FONT_SIZE,
     color: DARK_GRAY_COLOR,
     marginTop: GLOBAL.getDeviceHeight(50)
   },
