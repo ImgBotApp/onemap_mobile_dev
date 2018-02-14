@@ -112,9 +112,17 @@ const styles = StyleSheet.create({
     marginBottom:2
   },
   informationContainer: {
+    flex:1,
+    flexDirection:'row',
     marginLeft: getDeviceWidth(76),
     marginRight: getDeviceWidth(76),
     marginTop: getDeviceHeight(89),
+  },
+  informationLabel:{
+    flex:0.32
+  },
+  informationContent:{
+    flex:0.68
   },
   interestContainer: {
     marginLeft: getDeviceWidth(76),

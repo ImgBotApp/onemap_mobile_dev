@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList, Image,Platform } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import AutoHeightImage from 'react-native-auto-height-image';
@@ -180,11 +180,15 @@ class ProfilePage extends Component {
               {followed && <Entypo name="user" size={17} color={BLUE_COLOR} />}
             </View>
             <View style={styles.propertyView}>
-              <Text style={[DFonts.Regular, styles.pText,{marginTop:getDeviceHeight(30)}]}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWERS')}</Text>
+              <Text style={[DFonts.Regular, styles.pText]}>
+                {I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWERS')}
+              </Text>
               <Text style={[DFonts.Regular, styles.p_val_Text]}>{calculateCount(user.followers)}</Text>
             </View>
             <View style={styles.propertyView}>
-              <Text style={[DFonts.Regular, styles.pText,{marginTop:getDeviceHeight(30)}]}>{I18n.t('FEED_FOLLOWER_PROFILE_VISITED')}</Text>
+              <Text style={[DFonts.Regular, styles.pText]}>
+                {I18n.t('FEED_FOLLOWER_PROFILE_VISITED')}
+              </Text>
               <Text style={[DFonts.Regular, styles.p_val_Text]}>{calculateCount(user.checked)}</Text>
             </View>
           </View>

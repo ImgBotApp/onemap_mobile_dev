@@ -486,14 +486,38 @@ class PlaceProfile extends PureComponent {
   }
 
   renderInfo() {
-    return (
+    return(
       <View style={styles.informationContainer}>
-        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_ADDRESS')}{`\t\t\t: `}{this.state.placeData.information.address}</Text>
-        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_NUMBER')}{`\t: `}{this.state.placeData.information.phoneNumber}</Text>
-        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_WEBSITE')}{`\t\t\t: `}{this.state.placeData.information.website}</Text>
-        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_OPENHOUR')}{`\t: `}{this.state.placeData.information.openingHours}</Text>
+        <View style={styles.informationLabel}>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {I18n.t('PLACE_ADDRESS')}
+          </Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {I18n.t('PLACE_NUMBER')}
+          </Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {I18n.t('PLACE_WEBSITE')}
+          </Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {I18n.t('PLACE_OPENHOUR')}
+          </Text>
+        </View>
+        <View style={styles.informationContent}>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {': '}{this.state.placeData.information.address}
+          </Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {': '}{this.state.placeData.information.phoneNumber}
+          </Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {': '}{this.state.placeData.information.website}
+          </Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {': '}{this.state.placeData.information.openingHours}
+          </Text>
+        </View>
       </View>
-    )
+    );
   }
 
   renderInterest() {

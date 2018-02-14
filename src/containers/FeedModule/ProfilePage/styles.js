@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet,Platform } from 'react-native'
 import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, LIGHT_BLUE } from '../../../theme/colors';
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
   },
   userInformationContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    height: getDeviceWidth(342)
   },
   userInformation: {
     flexDirection: 'row'
@@ -39,6 +40,7 @@ const styles = StyleSheet.create({
     color: DARK_GRAY_COLOR,
     fontFamily: APPFONTNAME.Bold,
     fontSize: BIG_FONT_SIZE,
+    lineHeight: BIG_FONT_SIZE+2,
     marginBottom:getDeviceHeight(20)
   },
   userId: {
@@ -53,27 +55,27 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:getDeviceHeight(60)
   },
   FollowingText: {
     color: 'white',
     backgroundColor: 'transparent',
   },
   propertyView: {
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   pText: {
     color: LIGHT_GRAY_COLOR,
-    fontSize: NORMAL_FONT_SIZE,
-    marginBottom: getDeviceHeight(10)
+    fontSize: SMALL_FONT_SIZE,
+    lineHeight:SMALL_FONT_SIZE+2
   },
   p_val_Text: {
     color: LIGHT_GRAY_COLOR,
     fontSize: BIG_FONT_SIZE,
-    marginBottom: getDeviceHeight(10)
+    lineHeight:BIG_FONT_SIZE,
   },
   propertyContainer: {
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   about: {
     marginTop: getDeviceHeight(50),

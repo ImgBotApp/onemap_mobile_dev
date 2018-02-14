@@ -107,7 +107,7 @@ class FollowerPeople extends Component {
           <Tabs selected={this.state.page} style={{ backgroundColor: 'white', position: 'relative' }}
             selectedStyle={{ color: 'red' }} onSelect={el => this.setState({ page: el.props.name })} >
             <Text name="followers"> Followers </Text>
-            <Text name="following"> Following </Text>
+            <Text name="following"> Followings </Text>
           </Tabs>
         </View>
         <View style={{ height: '100%' }}>

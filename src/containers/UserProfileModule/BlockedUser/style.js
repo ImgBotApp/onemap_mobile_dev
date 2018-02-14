@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet,Platform } from 'react-native'
 import { getDeviceWidth, getDeviceHeight } from '@global'
 import { APPFONTNAME } from '@theme/fonts';
 
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#efefef'
   },
   userRow: {
-    height: getDeviceHeight(223),
+    height: Platform.OS=='android'?getDeviceHeight(240):getDeviceHeight(223),
     width: '100%',
     backgroundColor: '#efefef'
   },

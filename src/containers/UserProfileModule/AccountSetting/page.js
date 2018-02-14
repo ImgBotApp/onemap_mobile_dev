@@ -103,7 +103,7 @@ class AccountSetting extends Component {
 
   }
   onTerms = () => {
-    const url = 'http://onemap.co/onemap-policies';
+    const url = 'http://onemap.co/privacy-policies/';
     Linking.canOpenURL(url).then(supported => {
       if (!supported) {
         alert('Can\'t open url: ' + url);
@@ -138,9 +138,10 @@ class AccountSetting extends Component {
         {/* <View style={styles.privateAccount}>
           <Text style={styles.buttons}>{I18n.t('SETTING_PRIVATE_ACCOUNT')}</Text>
           <Switch style={styles.switchAccount} value={this.state.privateAccount} onValueChange={(val) => this.setState({ privateAccount: val })} />
-        </View> */}
+        </View> 
         <View style={styles.line}></View>
         <Text style={styles.privateText}>{I18n.t('SETTING_PRIVATE_TEXT')}</Text>
+        */}
         <View style={styles.line}></View>
         <TouchableOpacity style={styles.logout} onPress={this.onLogOut.bind(this)}>
           <Text style={styles.buttons}>{I18n.t('LOGOUT')}</Text>
