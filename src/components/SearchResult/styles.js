@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native'
 import { BACKGROUNDCOLOR, LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '../../theme/colors';
 import { NORMAL_FONT_SIZE, BIG_FONT_SIZE, SMALL_FONT_SIZE } from '../../theme/fonts';
 import { getDeviceHeight, getDeviceWidth } from '@global'
+import { TABBAR_HEIGHT } from '@global/const';
 import { Platform } from 'react-native';
 
 // define your styles
@@ -11,6 +12,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'white',
+    paddingBottom:TABBAR_HEIGHT,
   },
   userRow: {
     height: Platform.OS=='android'?getDeviceHeight(240):getDeviceHeight(223),
