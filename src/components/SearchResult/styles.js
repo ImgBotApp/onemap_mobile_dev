@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   userRow: {
-    height: getDeviceHeight(223),
+    height: Platform.OS=='android'?getDeviceHeight(240):getDeviceHeight(223),
     width: '100%',
   },
   useritem:{
@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
   },
   userinfomation:{
     width: getDeviceWidth(1100),
-    borderBottomWidth: 1,
-    borderBottomColor: LIGHT_GRAY_COLOR,
+    //borderBottomWidth: 1,
+    //borderBottomColor: LIGHT_GRAY_COLOR,
     marginLeft: getDeviceWidth(41),
     justifyContent: 'center'
   },

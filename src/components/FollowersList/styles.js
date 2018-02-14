@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet,Platform } from 'react-native'
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
 import { DARK_GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../theme/colors';
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   userRow: {
-    height: getDeviceHeight(223),
+    height: Platform.OS=='android'?getDeviceHeight(240):getDeviceHeight(223),
     width: '100%',
     backgroundColor: '#efefef'
   },

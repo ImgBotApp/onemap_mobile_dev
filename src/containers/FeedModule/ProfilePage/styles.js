@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet,Platform } from 'react-native'
 import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, LIGHT_BLUE } from '../../../theme/colors';
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
@@ -65,12 +65,12 @@ const styles = StyleSheet.create({
   pText: {
     color: LIGHT_GRAY_COLOR,
     fontSize: NORMAL_FONT_SIZE,
-    marginBottom: getDeviceHeight(10)
+    marginBottom: Platform.OS=='android'?0:getDeviceHeight(10)
   },
   p_val_Text: {
     color: LIGHT_GRAY_COLOR,
     fontSize: BIG_FONT_SIZE,
-    marginBottom: getDeviceHeight(10)
+    marginBottom: Platform.OS=='android'?0:getDeviceHeight(10)
   },
   propertyContainer: {
     justifyContent: 'space-between'

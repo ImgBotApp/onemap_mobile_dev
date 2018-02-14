@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet,Platform } from 'react-native'
 import * as GLOBAL from '@global'
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
@@ -80,13 +80,13 @@ const styles = StyleSheet.create({
     fontFamily: APPFONTNAME.Regular,
     fontSize: NORMAL_FONT_SIZE,
     color: DARK_GRAY_COLOR,
-    marginBottom: GLOBAL.getDeviceHeight(10)
+    marginBottom: Platform.OS=='android'?0:GLOBAL.getDeviceHeight(10)
   },
   spec_val_Font:{
     fontFamily: APPFONTNAME.Regular,
     fontSize: BIG_FONT_SIZE,
     color: DARK_GRAY_COLOR,
-    marginBottom: GLOBAL.getDeviceHeight(10)
+    marginBottom: Platform.OS=='android'?0:GLOBAL.getDeviceHeight(10)
   },
   vCollections: {
     marginTop: GLOBAL.getDeviceHeight(62),
