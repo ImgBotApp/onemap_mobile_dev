@@ -147,19 +147,23 @@ class ProfileComponent extends Component {
                 </View>
               </TouchableOpacity>
             </View>
-            <View style={styles.spec}>
+            <View style={[styles.spec,{height:getDeviceWidth(342)}]}>
               <TouchableOpacity style={styles.spec} onPress={this.onFollowSetting}>
                 <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWING')}</Text>
                 <Text style={styles.spec_val_Font}>{follow_cnt}</Text>
-                <Text style={[styles.specFont,{marginTop:Platform.OS=='android'?0:getDeviceHeight(30)}]}>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.spec} onPress={this.onFollowSetting}>
+                <Text style={styles.specFont}>
                   {I18n.t('PROFILE_FOLLOWER')}
                 </Text>
                 <Text style={styles.spec_val_Font}>{follower_cnt}</Text>
               </TouchableOpacity>
-              <Text style={[styles.specFont,{marginTop:Platform.OS=='android'?0:getDeviceHeight(30)}]}>
-                {I18n.t('PROFILE_VISITED')}
-              </Text>
-              <Text style={styles.spec_val_Font}>{checked_cnt}</Text>
+              <TouchableOpacity style={styles.spec}>
+                <Text style={styles.specFont}>
+                  {I18n.t('PROFILE_VISITED')}
+                </Text>
+                <Text style={styles.spec_val_Font}>{checked_cnt}</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
