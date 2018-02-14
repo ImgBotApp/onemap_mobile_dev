@@ -1,4 +1,5 @@
 import { Dimensions } from 'react-native'
+import Moment from 'moment';
 
 import { DESIGN_WIDTH, DESIGN_HEIGHT } from './const'
 
@@ -29,6 +30,34 @@ export function calculateDuration(updateDate) {
   var year = Math.floor(months / 12)
   if (year == 0) return `Updated a Year ago`
   return `Updated ${year} years ago`
+}
+
+export function formattedTimeDiffString(time) {
+  let diff = (Date.now() - Moment(time)) / 1000;
+
+  const diffDate = Math.round(diff / (60 * 60 * 24));
+  const diffDateString = diffDate + (diffDate > 1 ? ' days' : ' day');
+  diff = diff % (60 * 60 * 24);
+
+  const diffHour = Math.round(diff / (60 * 60));
+  const diffHourString = diffHour + (diffHour > 1 ? ' hrs' : ' hr');
+  diff = diff % (60 * 60);
+
+  const diffMin = Math.round(diff / 60);
+  const diffMinString = diffMin + (diffMin > 1 ? ' mins' : ' min');
+
+  const diffSec = Math.round(diff % 60);
+  const diffSecString = diffSec + (diffSec > 1 ? ' seconds' : ' second');
+
+  if (diffDate) {
+    return diffDateString;
+  } else if (diffHour) {
+    return diffHourString + ' ' + diffMinString;
+  } else if (diffMin) {
+    return diffMinString;
+  } else {
+    return diffSecString;
+  }
 }
 
 export function getTimeDiff(date1, date2) {
