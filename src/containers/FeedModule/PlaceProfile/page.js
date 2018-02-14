@@ -35,7 +35,7 @@ import LoadingSpinner from '@components/LoadingSpinner'
 import ImageSliderComponent from '@components/ImageSliderComponent'
 import TitleImage from '@components/TitledImage'
 import ViewMoreText from '@components/ViewMoreText';
-import { calculateCount, clone, getDeviceWidth, calculateDuration, getTimeDiff } from '@global'
+import { calculateCount, clone, getDeviceWidth, formattedTimeDiffString, getTimeDiff } from '@global'
 import { uploadImage, uploadMedia } from '@global/cloudinary';
 import { getImageFromVideoURL, getMediaTypeFromURL } from '@global/const';
 import { fetchThumbFromCloudinary } from '@global/cloudinary';
@@ -114,7 +114,7 @@ class PlaceProfile extends PureComponent {
     this.state = {
       currentPlaceID: props.placeID ? props.placeID : props.place.id,
       placeData: {
-        description: props.place ? props.place.description : '',
+        description: '',
         information: {},
         image: [],
         map: null,
@@ -691,7 +691,10 @@ class PlaceProfile extends PureComponent {
       <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <CircleImage style={styles.storyWriterImage} uri={this.props.user.photoURL} radius={getDeviceWidth(67)} />
-          <Text style={[DFonts.Title, styles.storyWriterName]}>{this.props.user.displayName}</Text>
+          <View style={styles.userDescription}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.storyWriterName]}>{this.props.user.displayName}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.commentDate]}>{formattedTimeDiffString(this.state.myStory.updatedAt)}</Text>
+          </View>
         </View>
         <View style={styles.myImagesContainer}>
           {
@@ -927,9 +930,9 @@ class PlaceProfile extends PureComponent {
           <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
             <View style={{ flexDirection: 'row' }}>
               <CircleImage style={styles.storyWriterImage} uri={dataItem.createdBy.photoURL} radius={getDeviceWidth(67)} />
-              <View>
-                <Text style={[DFonts.Title, styles.storyWriterName]}>{dataItem.createdBy.displayName}</Text>
-                <Text style={[DFonts.SubTitle, styles.commentDate]}>{calculateDuration(dataItem.updatedAt)}</Text>
+              <View style={styles.userDescription}>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.storyWriterName]}>{dataItem.createdBy.displayName}</Text>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.commentDate]}>{formattedTimeDiffString(dataItem.updatedAt)}</Text>
               </View>
             </View>
             <OptimizedFlatList

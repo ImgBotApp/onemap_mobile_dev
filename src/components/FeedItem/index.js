@@ -8,7 +8,7 @@ import ViewMoreText from '@components/ViewMoreText';
 import styles from './styles'
 import DFonts from '@theme/fonts'
 import { RED_COLOR, LIGHT_GRAY_COLOR } from '@theme/colors';
-import { getDeviceWidth, getDeviceHeight, calculateDuration } from '@global'
+import { getDeviceWidth, getDeviceHeight, formattedTimeDiffString } from '@global'
 import { getImageFromVideoURL, getMediaTypeFromURL } from '@global/const';
 import { fetchThumbFromCloudinary } from '@global/cloudinary';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -43,13 +43,13 @@ class FeedItem extends Component {
               <CircleImage style={styles.profileImage} uri={this.props.data.user.photoURL} radius={getDeviceWidth(70)} />
               <View style={styles.userDescription}>
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.name, DFonts.Title]}>{this.props.data.user.displayName}</Text>
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.update, DFonts.SubTitle]}>{calculateDuration(this.props.data.user.updated)}</Text>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.update, DFonts.SubTitle]}>{formattedTimeDiffString(this.props.data.user.updated)}</Text>
               </View>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.onBookMarker.bind(this)}>
             <MaterialCommunityIcons name={this.props.data.bookmark ? "bookmark" : "bookmark-outline"} size={30}
-              color={this.props.data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} style = {{width:40,textAlign:'center',alignSelf:'flex-start'}}/>
+              color={this.props.data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} style={{ width: 40, textAlign: 'center', alignSelf: 'flex-start' }} />
           </TouchableOpacity>
         </View>
         {/* Feed Title */}
@@ -79,7 +79,7 @@ class FeedItem extends Component {
         </View>
         {/* Place Title */}
         <View>
-          <Text style={[DFonts.SubContent, styles.placeTitle]}>{this.props.data.place}</Text>
+          <Text style={[DFonts.SubContent, styles.placeTitle]}>{this.props.data.title}</Text>
         </View>
         {/* Border Bar */}
         {!!this.props.data.description &&

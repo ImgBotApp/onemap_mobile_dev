@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   writeStoryMain: {
-    width: getDeviceWidth(1178),
+    width: getDeviceWidth(1267),
     padding: Platform.OS == 'android' ? getDeviceWidth(60) : getDeviceWidth(30),
     marginTop: getDeviceHeight(89),
   },
@@ -198,9 +198,11 @@ const styles = StyleSheet.create({
     width: getDeviceWidth(134),
     height: getDeviceWidth(134)
   },
+  userDescription: {
+    marginLeft: getDeviceWidth(47),
+    width:getDeviceWidth(800),
+  },
   storyWriterName: {
-    flex: 1,
-    marginLeft: getDeviceWidth(40),
     color: DARK_GRAY_COLOR,
     fontSize: BIG_FONT_SIZE,
   },
@@ -216,7 +218,6 @@ const styles = StyleSheet.create({
   commentDate: {
     color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
-    marginLeft: getDeviceWidth(40),
   },
   commentTitle: {
     marginVertical: 5,

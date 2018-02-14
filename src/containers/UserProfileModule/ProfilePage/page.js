@@ -5,7 +5,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './styles'
 
-import { getDeviceWidth } from '@global'
+import { getDeviceHeight,getDeviceWidth } from '@global'
 import CircleImage from '@components/CircleImage'
 import TitleImage from '@components/TitledImage'
 import AutoHeightImage from 'react-native-auto-height-image';
@@ -150,12 +150,12 @@ class ProfileComponent extends Component {
             <View style={styles.spec}>
               <TouchableOpacity style={styles.spec} onPress={this.onFollowSetting}>
                 <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWING')}</Text>
-                <Text style={styles.specFont}>{follow_cnt}</Text>
-                <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWER')}</Text>
-                <Text style={styles.specFont}>{follower_cnt}</Text>
+                <Text style={styles.spec_val_Font}>{follow_cnt}</Text>
+                <Text style={[styles.specFont,{marginTop:getDeviceHeight(30)}]}>{I18n.t('PROFILE_FOLLOWER')}</Text>
+                <Text style={styles.spec_val_Font}>{follower_cnt}</Text>
               </TouchableOpacity>
-              <Text style={styles.specFont}>{I18n.t('PROFILE_VISITED')}</Text>
-              <Text style={styles.specFont}>{checked_cnt}</Text>
+              <Text style={[styles.specFont,{marginTop:getDeviceHeight(30)}]}>{I18n.t('PROFILE_VISITED')}</Text>
+              <Text style={styles.spec_val_Font}>{checked_cnt}</Text>
             </View>
           </View>
         </View>
