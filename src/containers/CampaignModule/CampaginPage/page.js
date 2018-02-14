@@ -66,7 +66,6 @@ class CampaignPage extends Component {
       badges: []
     }
     this.FetchBadgeData()
-    console.log(this.props)
   }
 
   componentWillMount = () => {
