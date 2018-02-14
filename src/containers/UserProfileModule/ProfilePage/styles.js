@@ -3,7 +3,7 @@ import * as GLOBAL from '@global'
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
 import { DARK_GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../../theme/colors';
-import { SMALL_FONT_SIZE,NORMAL_FONT_SIZE,APPFONTNAME } from '../../../theme/fonts';
+import { SMALL_FONT_SIZE,NORMAL_FONT_SIZE,BIG_FONT_SIZE,APPFONTNAME } from '../../../theme/fonts';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -30,21 +30,22 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flexDirection: 'row',
-    width: getDeviceWidth(841),
     justifyContent: 'space-between'
   },
   nameView: {
     justifyContent: 'space-between',
-    width:getDeviceWidth(626)
+    width:getDeviceWidth(650),
+    paddingRight:getDeviceWidth(30)
   },
   bigName: {
-    fontFamily: APPFONTNAME.Regular,
-    fontSize: 16,
-    color: DARK_GRAY_COLOR
+    fontFamily: APPFONTNAME.Bold,
+    fontSize: BIG_FONT_SIZE,
+    color: DARK_GRAY_COLOR,
+    marginBottom:getDeviceHeight(20)
   },
   userId: {
     fontFamily: APPFONTNAME.Regular,
-    fontSize: SMALL_FONT_SIZE,
+    fontSize: NORMAL_FONT_SIZE,
     color: '#575858'
   },
   editProfileContainer: {
@@ -55,6 +56,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 7,
     borderColor: '#575858',
+    marginBottom:getDeviceHeight(60)
   },
   editProfile: {
     color: '#575858',
@@ -72,12 +74,19 @@ const styles = StyleSheet.create({
   },
   spec: {
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   specFont: {
     fontFamily: APPFONTNAME.Regular,
-    fontSize: 8,
-    marginBottom: GLOBAL.getDeviceHeight(15)
+    fontSize: NORMAL_FONT_SIZE,
+    color: DARK_GRAY_COLOR,
+    marginBottom: GLOBAL.getDeviceHeight(10)
+  },
+  spec_val_Font:{
+    fontFamily: APPFONTNAME.Regular,
+    fontSize: BIG_FONT_SIZE,
+    color: DARK_GRAY_COLOR,
+    marginBottom: GLOBAL.getDeviceHeight(10)
   },
   vCollections: {
     marginTop: GLOBAL.getDeviceHeight(62),

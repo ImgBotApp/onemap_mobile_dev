@@ -175,17 +175,17 @@ class ProfilePage extends Component {
             </View>
           </View>
           <View style={styles.propertyContainer}>
-            <View style={[styles.propertyView, { height: 25 }]}>
+            <View style={styles.propertyView}>
               <Text style={[DFonts.Regular, styles.pText]}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWED')}</Text>
-              {followed && <Entypo name="user" size={12} color={BLUE_COLOR} />}
+              {followed && <Entypo name="user" size={17} color={BLUE_COLOR} />}
             </View>
             <View style={styles.propertyView}>
-              <Text style={[DFonts.Regular, styles.pText]}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWERS')}</Text>
-              <Text style={[DFonts.Regular, styles.pText]}>{calculateCount(user.followers)}</Text>
+              <Text style={[DFonts.Regular, styles.pText,{marginTop:getDeviceHeight(30)}]}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWERS')}</Text>
+              <Text style={[DFonts.Regular, styles.p_val_Text]}>{calculateCount(user.followers)}</Text>
             </View>
             <View style={styles.propertyView}>
-              <Text style={[DFonts.Regular, styles.pText]}>{I18n.t('FEED_FOLLOWER_PROFILE_VISITED')}</Text>
-              <Text style={[DFonts.Regular, styles.pText]}>{calculateCount(user.checked)}</Text>
+              <Text style={[DFonts.Regular, styles.pText,{marginTop:getDeviceHeight(30)}]}>{I18n.t('FEED_FOLLOWER_PROFILE_VISITED')}</Text>
+              <Text style={[DFonts.Regular, styles.p_val_Text]}>{calculateCount(user.checked)}</Text>
             </View>
           </View>
         </View>
