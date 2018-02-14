@@ -55,7 +55,9 @@ const styles = StyleSheet.create({
     height: getDeviceHeight(1911)
   },
   customView: {
-    width: 160,
+    width: getDeviceHeight(500),
+    justifyContent:"center",
+    alignItems:'center'
   },
   calloutcontainer: {
     flexDirection: 'column',
