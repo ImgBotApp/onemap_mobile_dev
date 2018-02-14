@@ -21,7 +21,8 @@ export function calculateDuration(updateDate) {
   //console.log(updatedTime);
   var duration = Math.floor((today - updatedTime) / one_day)
 
-  if (duration == 0) return `Updated yesterday`
+  if (duration == 0) return `Updated today`
+  if (duration == 1) return `Updated yesterday`
   if (duration < 31) return `Updated ${duration} Days ago`
   var months = Math.floor(duration / 30)
   if (months == 0) return `Updated a Month ago`
