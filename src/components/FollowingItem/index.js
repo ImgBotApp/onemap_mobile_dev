@@ -25,8 +25,8 @@ class FollowingItem extends Component {
               <CircleImage style={styles.itemImage} uri={item.photoURL} radius={getDeviceWidth(88)} />
             </TouchableOpacity>
             <View style={styles.itemInfo}>
-              <Text style={[DFonts.Title, styles.username]}>{item.displayName}</Text>
-              <Text style={[DFonts.SubTitle, styles.bio]} numberOfLines={2}>{item.bio}</Text>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.username]}>{item.displayName}</Text>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.bio]}>{item.bio}</Text>
             </View>
           </View>
           <View style={styles.labelContainer}>

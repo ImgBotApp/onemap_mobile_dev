@@ -122,12 +122,12 @@ class SearchResult extends Component {
 
   _onUserItem(item) {
     return (
-      <TouchableOpacity onPress={() => this.props.onUser(item)} >
-        <View style={styles.item}>
-          <CircleImage style={styles.profileImage} uri={item.photoURL} radius={getDeviceWidth(70)} />
-          <View style={styles.infomation}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.name]}>{item.displayName}</Text>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.following]}>{item.username}</Text>
+      <TouchableOpacity onPress={() => this.props.onUser(item)} style={styles.userRow}>
+        <View style={styles.useritem}>
+          <CircleImage style={styles.profileImage} uri={item.photoURL} radius={getDeviceWidth(88)} />
+          <View style={styles.userinfomation}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.username]}>{item.displayName}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.bio]}>{item.username}</Text>
           </View>
         </View>
       </TouchableOpacity>

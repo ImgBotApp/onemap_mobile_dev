@@ -12,6 +12,17 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'white',
   },
+  userRow: {
+    height: getDeviceHeight(223),
+    width: '100%',
+  },
+  useritem:{
+    marginTop: getDeviceHeight(43),
+    marginLeft: getDeviceWidth(91),
+    marginRight: getDeviceWidth(72),
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
   TabText: {
     color: LIGHT_GRAY_COLOR,
     fontSize: BIG_FONT_SIZE,
@@ -50,8 +61,23 @@ const styles = StyleSheet.create({
 
   },
   profileImage: {
-    width: getDeviceWidth(140),
-    height: getDeviceWidth(140)
+    width: getDeviceWidth(176),
+    height: getDeviceWidth(176)
+  },
+  userinfomation:{
+    width: getDeviceWidth(1100),
+    borderBottomWidth: 1,
+    borderBottomColor: LIGHT_GRAY_COLOR,
+    marginLeft: getDeviceWidth(41),
+    justifyContent: 'center'
+  },
+  username: {
+    fontSize: 16,
+    color: '#575858'
+  },
+  bio: {
+    fontSize: 13,
+    color: '#575858',
   },
   infomation: {
     marginLeft: getDeviceWidth(72),
