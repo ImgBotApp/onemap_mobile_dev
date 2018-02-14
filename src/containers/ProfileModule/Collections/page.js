@@ -58,7 +58,7 @@ class Collections extends Component {
       page: 'Grid View',
       places: props.places ? props.places : [],
       loading: false,
-      mapRegion:{
+      mapRegion: {
         latitude: 23, longitude: 101,
         latitudeDelta: 10.8, longitudeDelta: 30.4
       }
@@ -153,9 +153,8 @@ class Collections extends Component {
   }
   regionContainingPoints() {
     var minX, maxX, minY, maxY;
-    
-    if(this.state.places && this.state.places.length > 0)
-    {
+
+    if (this.state.places && this.state.places.length > 0) {
       // init first point
       ((point) => {
         minX = point.locationLat;
@@ -163,7 +162,7 @@ class Collections extends Component {
         minY = point.locationLong;
         maxY = point.locationLong;
       })(this.state.places[0]);
-    
+
       // calculate rect
       this.state.places.map((point) => {
         minX = Math.min(minX, point.locationLat);
@@ -171,19 +170,21 @@ class Collections extends Component {
         minY = Math.min(minY, point.locationLong);
         maxY = Math.max(maxY, point.locationLong);
       });
-    
+
       var midX = (minX + maxX) / 2;
       var midY = (minY + maxY) / 2;
       var midPoint = [midX, midY];
-    
+
       var deltaX = (maxX - minX);
       var deltaY = (maxY - minY);
 
       var padding = 0;
-      this.setState({mapRegion:{
-        latitude: midX, longitude: midY,
-        latitudeDelta: deltaX+padding, longitudeDelta: deltaY+padding,
-      }});
+      this.setState({
+        mapRegion: {
+          latitude: midX, longitude: midY,
+          latitudeDelta: deltaX + padding, longitudeDelta: deltaY + padding,
+        }
+      });
     }
   }
   _renderTabHeader(text) {
@@ -191,12 +192,12 @@ class Collections extends Component {
       <Text name={text} style={[DFonts.Title, styles.TabText]} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>
     )
   }
-  onCollectionItem(data) {
+  onCollectionItem(place) {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       animated: true,
       passProps: {
-        place: data
+        place
       }
     })
   }
@@ -242,7 +243,7 @@ class Collections extends Component {
           />
         </TouchableOpacity>
       )
-    return (<View/>);
+    return (<View />);
   }
   _keyExtractor = (item, index) => index;
 
@@ -297,8 +298,8 @@ class Collections extends Component {
               {Platform.OS === 'ios' && (
                 <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
               )}
-              <Callout style={styles.customView} onPress={() => this.openPlaceProfile(item.id)}>
-                <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.Regular, { flexWrap: "nowrap",alignSelf:"center" }]}>{item.placeName}</Text>
+              <Callout style={styles.customView} onPress={() => this.openPlaceProfile(item)}>
+                <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.Regular, { flexWrap: "nowrap", alignSelf: "center" }]}>{item.placeName}</Text>
               </Callout>
             </Marker>
           )}
@@ -307,12 +308,12 @@ class Collections extends Component {
     )
   }
 
-  openPlaceProfile(id) {
+  openPlaceProfile(place) {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       animated: true,
       passProps: {
-        placeID: id
+        place
       }
     });
 

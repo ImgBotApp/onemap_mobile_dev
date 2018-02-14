@@ -10,6 +10,9 @@ export const GET_FILTER_KEYWORDS = gql`
       places {
         id
         createdAt
+        createdBy {
+          id
+        }
         updatedAt
         description
         source

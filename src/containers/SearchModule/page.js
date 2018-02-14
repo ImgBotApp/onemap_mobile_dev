@@ -352,13 +352,13 @@ class SearchPage extends Component {
       }
     })
   }
-  onKeywordItem(id) {
-    if (!id) return;
+  onKeywordItem(place) {
+    if (!place.id) return;
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       animated: true,
       passProps: {
-        placeID: id
+        place
       }
     })
   }
@@ -392,7 +392,7 @@ class SearchPage extends Component {
             screen: SCREEN.PLACE_PROFILE_PAGE,
             animated: true,
             passProps: {
-              placeID: place.data.allPlaces[0].id
+              place: place.data.allPlaces[0]
             }
           })
         }
@@ -510,7 +510,7 @@ class SearchPage extends Component {
         title: I18n.t('PLACE_TITLE'),
         animated: true,
         passProps: {
-          placeID: result.data.createPlace.id
+          place: result.data.createPlace
         }
       })
     }).catch((error) => {

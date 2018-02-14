@@ -3,16 +3,23 @@ import { gql } from 'react-apollo'
 export const FEED_STORIES_PAGINATED = gql`
   query PlaceStories($first: Int!, $skip: Int!, $userId: ID!, $followsIds: [ID!]) {
     allStories(first: $first, skip: $skip, orderBy: updatedAt_DESC, filter: {
-      OR: [
+      AND: [
         {
-          createdBy: {
-            id: $userId
-          }
+          status: PUBLISHED
         },
         {
-          createdBy: {
-            id_in: $followsIds
-          }
+          OR: [
+            {
+              createdBy: {
+                id: $userId
+              }
+            },
+            {
+              createdBy: {
+                id_in: $followsIds
+              }
+            }
+          ]
         }
       ]
     }) {
@@ -32,6 +39,9 @@ export const FEED_STORIES_PAGINATED = gql`
           user {
             id
           }
+        }
+        createdBy {
+          id
         }
         locationLat
         locationLong
@@ -60,6 +70,9 @@ query getUserStories(
       hashtag
       place {
         id
+        createdBy {
+          id
+        }
         updatedAt
         description
         source
