@@ -927,9 +927,9 @@ class PlaceProfile extends PureComponent {
           <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
             <View style={{ flexDirection: 'row' }}>
               <CircleImage style={styles.storyWriterImage} uri={dataItem.createdBy.photoURL} radius={getDeviceWidth(67)} />
-              <View>
-                <Text style={[DFonts.Title, styles.storyWriterName]}>{dataItem.createdBy.displayName}</Text>
-                <Text style={[DFonts.SubTitle, styles.commentDate]}>{calculateDuration(dataItem.updatedAt)}</Text>
+              <View style={styles.userDescription}>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.storyWriterName]}>{dataItem.createdBy.displayName}</Text>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.commentDate]}>{calculateDuration(dataItem.updatedAt)}</Text>
               </View>
             </View>
             <OptimizedFlatList
