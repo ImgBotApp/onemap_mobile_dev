@@ -122,7 +122,7 @@ class CampaignPage extends Component {
     return (
       <TouchableOpacity onPress={() => this.setState({shortFlag: !this.state.shortFlag})}>
       <View style={styles.conditionGroupInfo}>
-        <Image source={this.props.icon ? {uri: this.props.uri} : require('@assets/images/badge/badge.png')} style={styles.conditionGroupImage}/>
+        <Image source={this.props.icon ? {uri: this.props.icon} : require('@assets/images/badge/badge.png')} style={styles.conditionGroupImage}/>
         <View style={styles.conditionGroupShort}>
           <Text style={[FontStyle.Header, styles.conditionGroupTitle]} numberOfLines={1} ellipsizeMode={'tail'}>{this.props.title}</Text>
           <Text style={[FontStyle.SubContent, styles.conditionGroupTitle]} numberOfLines={2} ellipsizeMode={'tail'} >{this.props.subtitle}</Text>

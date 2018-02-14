@@ -97,7 +97,8 @@ class MapViewPage extends Component {
                   id: conditionGroup.id,
                   title: conditionGroup.title,
                   subtitle: conditionGroup.subtitle,
-                  description: conditionGroup.description
+                  description: conditionGroup.description,
+                  icon: conditionGroup.iconUrl
                 })}
                 image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
               >
