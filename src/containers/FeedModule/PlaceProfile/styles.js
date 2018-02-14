@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   writeStoryMain: {
-    width: getDeviceWidth(1178),
+    width: getDeviceWidth(1267),
     padding: Platform.OS == 'android' ? getDeviceWidth(60) : getDeviceWidth(30),
     marginTop: getDeviceHeight(89),
   },
