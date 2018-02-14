@@ -9,7 +9,7 @@ import styles from './styles'
 import I18n from '@language'
 import CardView from 'react-native-cardview'
 import moment from 'moment'
-import { GetPlaceByCondition, GetRulesByCondition } from '../../../graphql/condition'
+import { GetPlaceByCondition, GetRulesByCondition, GetConditionDetail } from '../../../graphql/condition'
 import { getPlaceDetail } from '../../../graphql/places'
 import SuggestPlaceItem from '../../../components/CampaignSuggestPlace'
 import * as SCREEN from '../../../global/screenName'
@@ -54,21 +54,30 @@ class PlaceDetailPage extends Component {
 
     this.state = {
       place: {},
-      rules: {}
+      rules: {},
+      detail: {}
     }
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
-
   }
 
   componentWillMount() {
     this.FetchPlaceDetail()
     this.FetchRuleData()
+    this.FetchConditionDetail()
+  }
+
+  FetchConditionDetail =() => {
+    GetConditionDetail(this.props.id)
+    .then(res => {
+      this.setState({
+        detail: res
+      })
+    })
   }
 
   FetchPlaceDetail = () => {
     GetPlaceByCondition(this.props.id)
     .then(res => {
-      console.log(res)
       this.setState({
         place: res.places ? res.places[0] : null
       })
@@ -108,11 +117,11 @@ class PlaceDetailPage extends Component {
   renderCondtionDetail() {
     return (
       <View style={styles.detailPart}>
-        <Image source={ this.props.icon ? { uri: this.props.icon} : require('@assets/images/badge/badge.png')}  style={styles.detailImage}/>
+        <Image source={ this.state.detail.iconUrl ? { uri: this.state.detail.iconUrl} : require('@assets/images/badge/badge.png')}  style={styles.detailImage}/>
         <View style={styles.detailContainer}>
           <View>
-            <Text style={[FontStyle.Title, styles.detailName]}>{this.props.name}</Text>
-            <Text style={[FontStyle.SubTitle, styles.detailName, {marginTop: 10}]}>{this.props.campaignName}</Text>
+            <Text style={[FontStyle.Title, styles.detailName]}>{this.state.detail.name}</Text>
+            <Text style={[FontStyle.SubTitle, styles.detailName, {marginTop: 10}]}>{this.state.detail.subtitle}</Text>
           </View>
           <TouchableOpacity>
             <View style={styles.CheckInContainer}>
@@ -134,14 +143,14 @@ class PlaceDetailPage extends Component {
           >
           <FlatList 
             keyExtractor={(item, index) => index}
-            data={this.state.place.place ? this.state.place.place.pictureURL : []}
+            data={this.state.detail.imageUrl ? this.state.detail.imageUrl : []}
             style={styles.placeDetail}
             horizontal
             renderItem={({ item }) => (
               <Image source={{uri: item}} style={styles.placeImage} />
             )}
           />
-          <Text style={[FontStyle.SubTitle, styles.placeDescription]}>Description Here</Text>
+          <Text style={[FontStyle.SubTitle, styles.placeDescription]}>{this.state.detail.description}</Text>
           <TouchableOpacity onPress={() => this.onVisitPlaceProfile(this.state.place.place && this.state.place.place.id)}>
             <Text style={[FontStyle.SubTitle, styles.placeMore]}>{I18n.t('PROFILE_VIEW_MORE')}</Text>
           </TouchableOpacity>

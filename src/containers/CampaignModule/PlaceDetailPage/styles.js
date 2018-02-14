@@ -14,7 +14,10 @@ const styles = StyleSheet.create({
   detailImage: {
     width: getDeviceWidth(312),
     height: getDeviceWidth(312),
-    resizeMode: 'cover'
+    resizeMode: 'cover',
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: 'transparent'
   },
   detailContainer: {
     marginLeft: getDeviceWidth(98),

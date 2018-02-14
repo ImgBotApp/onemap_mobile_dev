@@ -75,3 +75,28 @@ export const GET_RULES_BY_CONDITION = gql`
     }).then(res => Promise.resolve(res.data))
     .then(res => res.Condition)
   }
+
+export const GET_CONDITION_DETAIL = gql`
+  query ConditionQuery($conditionId: ID!){
+    Condition(id: $conditionId) {
+      id
+      subtitle
+      description
+      imageUrl
+      iconUrl
+      name
+      places {
+        id
+      }
+    }
+  }`
+
+export function GetConditionDetail(conditionId) {
+  return client.query({
+    query: GET_CONDITION_DETAIL,
+    variables: {
+      conditionId: conditionId
+    }
+  }).then(res => Promise.resolve(res.data))
+  .then(res => res.Condition)
+}
