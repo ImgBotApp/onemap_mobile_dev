@@ -67,7 +67,7 @@ class CampaignProfilePage extends Component {
   FetchCampaignDetail(campaignId) {
     getCampaignDetail(campaignId)
     .then(res => {
-      console.log(res)
+      console.log('Campaign Detail', res)
       this.setState({
         detail: res,
         page: 'mapView'

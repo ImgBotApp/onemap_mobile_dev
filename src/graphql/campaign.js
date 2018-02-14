@@ -53,6 +53,8 @@ query CampaignQuery($campaignId:  ID!) {
       iconUrl
       title
       updatedAt
+      subtitle
+      description
     }
     events {
       id
