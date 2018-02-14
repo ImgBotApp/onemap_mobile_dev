@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 7,
     borderColor: '#575858',
-    marginBottom:getDeviceHeight(60)
+    marginBottom:getDeviceHeight(30)
   },
   editProfile: {
     color: '#575858',
