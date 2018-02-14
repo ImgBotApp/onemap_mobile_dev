@@ -8,13 +8,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: BACKGROUNDCOLOR,
     width: getDeviceWidth(1305),
-    height: getDeviceHeight(293),
+    height: getDeviceWidth(293),
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
   itemContainer: {
     width: getDeviceWidth(293),
-    height: getDeviceHeight(293)
+    height: getDeviceWidth(293)
   }
 });
 

@@ -29,9 +29,10 @@ export const EXIST_FACEBOOK_USER = gql`
 `
 
 export const FILER_USERS = gql`
-  query FilterUsers($keyword: String) {
+  query FilterUsers($keyword: String, $userId: ID!) {
     allUsers(filter: {
-      displayName_contains: $keyword
+      displayName_contains: $keyword,
+      id_not: $userId
     }) {
       id
       username

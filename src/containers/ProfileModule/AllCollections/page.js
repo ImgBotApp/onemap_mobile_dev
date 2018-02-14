@@ -75,6 +75,7 @@ class AllCollections extends Component {
     })
   }
   onItemRemove(item) {
+    if (this.props.collections) return;
     Alert.alert(
       item.name,
       'Do you want to remove ' + item.name + '?',

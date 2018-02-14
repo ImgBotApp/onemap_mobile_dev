@@ -55,13 +55,13 @@ class FollowerPeople extends Component {
     }
   }
 
-  onPressUserProfile(index) {
+  onPressUserProfile(user) {
     this.props.navigator.push({
       screen: SCREEN.USERS_PROFILE_PAGE,
       title: I18n.t('PROFILE_PAGE_TITLE'),
       animated: true,
       passProps: {
-        userInfo: this.props.follows[index]
+        userInfo: user
       }
     })
   }
@@ -95,7 +95,7 @@ class FollowerPeople extends Component {
     return (
       <FollowingItem
         data={item}
-        onPress={() => this.onPressUserProfile(index)}
+        onPress={() => this.onPressUserProfile(item)}
         onFollow={() => this.onFollowingPressed(index)}
       />
     )

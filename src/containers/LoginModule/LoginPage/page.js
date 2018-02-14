@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage, PermissionsAndroid, Platform } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage, Platform, PermissionsAndroid } from 'react-native'
 import FBSDK, { LoginManager } from 'react-native-fbsdk'
 
 import RoundButton from '@components/RoundButton'
@@ -15,6 +15,7 @@ import { GET_PROFILE } from '@graphql/userprofile';
 import { EXIST_FACEBOOK_USER } from '@graphql/users'
 import Orientation from 'react-native-orientation';
 import { APPFONTNAME } from '@theme/fonts';
+import Permissions from 'react-native-permissions'
 
 const { GraphRequest, GraphRequestManager, AccessToken } = FBSDK
 
@@ -31,6 +32,17 @@ class LoginPage extends Component {
   componentDidMount() {
     if (Platform.OS == 'android')
       this.requestLocationPermissionForAndroid();
+    else {
+      Permissions.check('location').then(response => {
+        if (response != 'authorized') {
+          Permissions.request('location').then(response => {
+            if (response == 'authorized') {
+
+            }
+          })
+        }
+      })
+    }
   }
   async requestLocationPermissionForAndroid() {
     try {
@@ -207,7 +219,7 @@ class LoginPage extends Component {
         new GraphRequestManager().addRequest(infoRequest).start();
       })
       .catch((err) => {
-        console.log(err)
+        alert(err.message);
         this.setState({ loading: false })
       });
   }

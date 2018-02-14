@@ -17,64 +17,7 @@ export const GET_ALL_PLACES = gql`
     }
   }
 `
-export const PLACES_PAGINATED = gql`
-  query Places($first: Int!, $skip: Int!, $userId: ID!, $followsIds: [ID!]) {
-    allPlaces(first: $first, skip: $skip, orderBy: updatedAt_DESC, filter: {
-      OR: [
-        {
-          stories_some: {
-            createdBy: {
-              id: $userId
-            }
-          }
-        },
-        {
-          stories_some: {
-            createdBy: {
-              id_in: $followsIds
-            }
-          }
-        }
-      ]
-    }) {
-      id
-      createdAt
-      updatedAt
-      description
-      source
-      sourceId
-      createSide
-      placeName
-      locationLat
-      locationLong
-      addressAreaDistrict
-      addressCityTown
-      addressStateProvince
-      addressCountry
-      addressPostalCode
-      addressStreet
-      address
-      phoneNumber
-      website
-      facebook
-      line
-      openingHrs
-      pictureURL
-      createdBy {
-        id
-        displayName
-        username
-        photoURL
-      }
-      collections {
-        id
-        user {
-          id
-        }
-      }
-    }
-  }
-`
+
 export const GET_PLACE_PROFILE = gql`
   query PlaceQuery($id: ID!) {
     Place(id: $id) {

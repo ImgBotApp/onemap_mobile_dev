@@ -128,7 +128,7 @@ export default {
   PLACE_KEYWORDS: "Place Keywords",
   PLACE_KEYWORD_DONE: "Done",
   PLACE_WRITE_STORY: "My Story",
-  PLACE_TITLE_BOLD:"Title (Bold)",
+  PLACE_TITLE_BOLD:"Title",
 
   // Map View
 

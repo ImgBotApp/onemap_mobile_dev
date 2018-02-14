@@ -13,12 +13,12 @@ import {
   TextInput,
   TouchableOpacity,
   Vibration,
-  View,
+  View
 } from 'react-native';
 
 import CardView from 'react-native-cardview';
 import ImagePicker from 'react-native-image-picker';
-import ImageCropPicker from 'react-native-image-crop-picker';
+import ImageCropPicker from 'react-native-image-crop-picker'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import Modal from 'react-native-modalbox';
@@ -35,7 +35,7 @@ import LoadingSpinner from '@components/LoadingSpinner'
 import ImageSliderComponent from '@components/ImageSliderComponent'
 import TitleImage from '@components/TitledImage'
 import ViewMoreText from '@components/ViewMoreText';
-import { calculateCount, clone, getDeviceWidth, calculateDuration, getTimeDiff } from '@global'
+import { calculateCount, clone, getDeviceWidth, formattedTimeDiffString, getTimeDiff } from '@global'
 import { uploadImage, uploadMedia } from '@global/cloudinary';
 import { getImageFromVideoURL, getMediaTypeFromURL } from '@global/const';
 import { fetchThumbFromCloudinary } from '@global/cloudinary';
@@ -52,7 +52,7 @@ import { GET_PLACE_PROFILE } from '@graphql/places'
 import styles from './styles'
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
 
-const ImagePickerOption = {
+const imagePickerOptions = {
   title: 'Take Media',
   takePhotoButtonTitle: 'Take Camera...',
   chooseFromLibraryButtonTitle: 'Choose from Library...',
@@ -61,6 +61,8 @@ const ImagePickerOption = {
     path: 'images'
   }
 }
+const MAXWIDTH = 1080;
+const MAXHEIGHT = 1920;
 
 const CANCEL_INDEX = 0
 const DESTRUCTIVE_INDEX = 4
@@ -77,14 +79,14 @@ class PlaceProfile extends PureComponent {
         disableIconTint: true
       }
     ],
-    rightButtons: [
-      {
-        title: '',
-        buttonColor: DARK_GRAY_COLOR,
-        id: 'more',
-        disableIconTint: true
-      }
-    ]
+    // rightButtons: [
+    //   {
+    //     title: '',
+    //     buttonColor: DARK_GRAY_COLOR,
+    //     id: 'more',
+    //     disableIconTint: true
+    //   }
+    // ]
   };
   constructor(props) {
     super(props)
@@ -97,22 +99,22 @@ class PlaceProfile extends PureComponent {
         }]
       })
     })
-    Ionicons.getImageSource('ios-more', 35, DARK_GRAY_COLOR).then(icon => {
-      props.navigator.setButtons({
-        rightButtons: [{
-          icon,
-          id: 'more',
-          disableIconTint: true
-        }]
-      })
-    })
+    // Ionicons.getImageSource('ios-more', 35, DARK_GRAY_COLOR).then(icon => {
+    //   props.navigator.setButtons({
+    //     rightButtons: [{
+    //       icon,
+    //       id: 'more',
+    //       disableIconTint: true
+    //     }]
+    //   })
+    // })
     if (props.place) {
       this.props.navigator.setTitle({ title: props.place.placeName });
     }
     this.state = {
       currentPlaceID: props.placeID ? props.placeID : props.place.id,
       placeData: {
-        description: props.place ? props.place.description : '',
+        description: '',
         information: {},
         image: [],
         map: null,
@@ -138,7 +140,9 @@ class PlaceProfile extends PureComponent {
       selectedMediaData: [],
       selectedCard: 0,
       imageUploading: false,
-      storyUpdated: false
+      storyUpdated: false,
+      isOpenImagePicker:false,
+      selectedMediaType:''
     }
     this.loading = false;
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
@@ -192,7 +196,7 @@ class PlaceProfile extends PureComponent {
             longitudeDelta: 0.00421
           },
           information: {
-            address: data.addressCityTown,
+            address: data.address,
             phoneNumber: data.phoneNumber,
             website: data.website,
             openingHours: [data.openingHrs]
@@ -309,7 +313,11 @@ class PlaceProfile extends PureComponent {
     const item = data[index];
     if (item && item.type === 'add') {
       return (
-        <TouchableOpacity onPress={this.showActionSheet.bind(this)}>
+        <TouchableOpacity onPress={()=>
+          {
+            this.setState({isOpenImagePicker:true})
+          }
+        }>
           <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
             <Image source={require('@assets/images/blankImage.png')} style={styles.imageItem} />
           </CardView>
@@ -411,7 +419,7 @@ class PlaceProfile extends PureComponent {
         <Text style={[DFonts.Title, styles.titleText]}>{this.state.placeData.title}</Text>
         <TouchableOpacity onPress={this.onBookMarker}>
           <MaterialCommunityIcons name={this.state.placeData.bookmark ? "bookmark" : "bookmark-outline"} size={30}
-            color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} />
+            color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} style={{marginTop:3}}/>
         </TouchableOpacity>
       </View>
     )
@@ -448,40 +456,41 @@ class PlaceProfile extends PureComponent {
 
   renderMapView() {
     return (
-      <TouchableOpacity onPress={this.goMapDetail.bind(this)}>
-        <View style={styles.mapView}>
-          <MapView
-            provider={PROVIDER_GOOGLE}
-            style={styles.map}
-            initialRegion={this.state.placeData.map}
-            region={this.state.placeData.map}
-            scrollEnabled={false}
-          >
-            {
-              this.state.placeData.map ? (
-                <MapView.Marker
-                  title={this.state.placeData.title}
-                  coordinate={this.state.placeData.map}
-                  image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
-                >
-                  {Platform.OS === 'ios' && (
-                    <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
-                  )}
-                </MapView.Marker>) : null
-            }
-          </MapView>
-        </View>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.mapView} onPress={this.goMapDetail.bind(this)}>
+          <View style={styles.mapWrapper}>
+            <MapView
+              provider={PROVIDER_GOOGLE}
+              style={styles.map}
+              initialRegion={this.state.placeData.map}
+              region={this.state.placeData.map}
+              scrollEnabled={false}
+            >
+              {
+                this.state.placeData.map ? (
+                  <MapView.Marker
+                    title={this.state.placeData.title}
+                    coordinate={this.state.placeData.map}
+                    image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
+                  >
+                    {Platform.OS === 'ios' && (
+                      <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
+                    )}
+                  </MapView.Marker>) : null
+              }
+            </MapView>
+          </View>
+        </TouchableOpacity>
+     
     )
   }
 
   renderInfo() {
     return (
       <View style={styles.informationContainer}>
-        <Text style={styles.informationText}>{I18n.t('PLACE_ADDRESS')}{`\t\t\t: `}{this.state.placeData.information.address}</Text>
-        <Text style={styles.informationText}>{I18n.t('PLACE_NUMBER')}{`\t\t: `}{this.state.placeData.information.phoneNumber}</Text>
-        <Text style={styles.informationText}>{I18n.t('PLACE_WEBSITE')}{`\t\t\t: `}{this.state.placeData.information.website}</Text>
-        <Text style={styles.informationText}>{I18n.t('PLACE_OPENHOUR')}{`\t\t: `}{this.state.placeData.information.openingHours}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_ADDRESS')}{`\t\t\t: `}{this.state.placeData.information.address}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_NUMBER')}{`\t: `}{this.state.placeData.information.phoneNumber}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_WEBSITE')}{`\t\t\t: `}{this.state.placeData.information.website}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_OPENHOUR')}{`\t: `}{this.state.placeData.information.openingHours}</Text>
       </View>
     )
   }
@@ -491,17 +500,17 @@ class PlaceProfile extends PureComponent {
     return (
       <View style={styles.interestContainer}>
         <View style={styles.interestInformation}>
-          <View style={styles.interestItem}>
-            <Foundation name="heart" size={12} color={RED_COLOR} />
-            <Text style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
+          <View style={[styles.interestItem,{flex:0.25}]}>
+            <Foundation name="heart" size={15} color={RED_COLOR} />
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
           </View>
-          <View style={styles.interestItem}>
-            <Foundation name="marker" size={12} color={BLUE_COLOR} />
-            <Text style={styles.interestText}>{calculateCount(this.state.placeData.checkIns.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
+          <View style={[styles.interestItem,{flex:0.25}]}>
+            <Foundation name="marker" size={15} color={BLUE_COLOR} />
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.checkIns.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
           </View>
-          <View style={styles.interestItem}>
-            <Foundation name="bookmark" size={12} color={RED_COLOR} />
-            <Text style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
+          <View style={[styles.interestItem,{flex:0.5}]}>
+            <Foundation name="bookmark" size={15} color={RED_COLOR} />
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
           </View>
         </View>
         <View style={styles.serparate}></View>
@@ -682,13 +691,18 @@ class PlaceProfile extends PureComponent {
       <CardView style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <CircleImage style={styles.storyWriterImage} uri={this.props.user.photoURL} radius={getDeviceWidth(67)} />
-          <Text style={[DFonts.Title, styles.storyWriterName]}>{this.props.user.displayName}</Text>
+          <View style={styles.userDescription}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.storyWriterName]}>{this.props.user.displayName}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.commentDate]}>{formattedTimeDiffString(this.state.myStory.updatedAt)}</Text>
+          </View>
         </View>
         <View style={styles.myImagesContainer}>
           {
             this.state.storyImages.length && this.state.storyImages[0].type === 'add' ?
               (
-                <TouchableOpacity onPress={this.showActionSheet.bind(this)}>
+                <TouchableOpacity onPress={()=>{
+                  this.setState({isOpenImagePicker:true})
+                }}>
                   <Image style={styles.myImages} source={require('@assets/images/blankImage.png')} />
                   {/* {this.state.imageUploading && <LoadingSpinner />} */}
                 </TouchableOpacity>
@@ -722,6 +736,7 @@ class PlaceProfile extends PureComponent {
     )
   }
   showActionSheet() {
+    this.setState({isOpenImagePicker:false});
     this.ActionSheet.show()
   }
 
@@ -730,82 +745,123 @@ class PlaceProfile extends PureComponent {
       selected: i
     })
     if (i == 2) {
-      this.addMediaToStory('video');
+      this.setState({selectedMediaType:'video'});
+      this.addMediaToStory(true);
     }
     else if (i == 1) {
-      this.addMediaToStory('photo');
+      this.setState({selectedMediaType:'photo'});
+      this.addMediaToStory(true);
     }
   }
-  addMediaToStory(type) {
-    if (true) {//TODO: should determine reasonable picker type
-      //Image Picker
-      ImagePicker.showImagePicker({
-        ...ImagePickerOption,
-        mediaType: type,
-        maxWidth: 1080,
-        maxHeight: 1920,
+  async addMediaToStory(isFromCamera) {
+    if(this.state.imageUploading)
+      return;
+
+    this.setState({isOpenImagePicker:false});
+    
+    let uploadedURLS = [];
+          
+    if(isFromCamera)
+    {
+      //this.state.selectedMediaType
+      console.log("Take Media Mode"+this.state.selectedMediaType);
+      ImagePicker.launchCamera({
+        mediaType:this.state.selectedMediaType,
+        maxWidth: MAXWIDTH,
+        maxHeight: MAXHEIGHT,
       }, (response) => {
+        
         if (response.didCancel) {
           console.log('User cancelled image picker');
+          Promise.resolve();
         } else if (response.error) {
           alert(response.error)
           console.log('ImagePicker Error: ', response.error);
+          Promise.resolve();
         } else {
-          if (type == 'photo') {
+          this.setState({ imageUploading: true });
+          if (this.state.selectedMediaType == 'photo') {
             let source = { uri: response.uri };
-            this.setState({ imageUploading: true });
             uploadImage(response.data, '#story').then(url => {
               if (url) {
-                var storyImages = clone(this.state.storyImages);
-                storyImages.pop();
-                storyImages.push({ 'uri': url });
-                storyImages.push({ type: 'add' });
-                this.setState({ storyImages });
-                this.saveStory();
+                this.updateStoryImages([url]);
               }
               this.setState({ imageUploading: false });
+              Promise.resolve();
             });
           } else {
-            this.setState({ imageUploading: true });
             uploadMedia(response, '#storyVideo').then(
               url => {
                 if (url) {
-                  let storyImages = clone(this.state.storyImages);
-                  storyImages.pop();
-                  storyImages.push({ 'uri': url });
-                  storyImages.push({ type: 'add' });
-                  this.setState({ storyImages });
-                  this.saveStory();
+                  this.updateStoryImages([url]);
                 }
                 this.setState({ imageUploading: false });
+                Promise.resolve();
               }
             );
           }
         }
       });
-    } else {
-      //Image Crop Picker
-      ImageCropPicker.openPicker({
-        compressImageMaxWidth: 1080,
-        compressImageMaxHeight: 1920,
-        includeBase64: true,
-        mediaType: 'any',
-        path: 'images'
-      }).then(response => {
-        let source = { uri: response.uri };
-        var storyImages = clone(this.state.storyImages);
-        storyImages.pop();
-        storyImages.push(source);
-        storyImages.push({ type: 'add' });
-        this.setState({ storyImages, imageUploading: true });
-        uploadImage(response.data, '#story').then(url => {
-          if (url) {
-            this.state.storyImages[this.state.storyImages.length - 2].uri = url;
-          }
-          this.setState({ imageUploading: false });
-        });
-      }).catch(err => console.log(err));
     }
+    else{//image picker
+        ImageCropPicker.openPicker({
+          width: MAXWIDTH,
+          height: MAXHEIGHT,
+          cropping: false,
+          includeBase64: true,
+          includeExif: true,
+          multiple:true,
+          maxFiles:10
+        }).then(imageArray => {
+          if(imageArray && !this.state.imageUploading)
+          {
+            this.setState({ imageUploading: true });
+            return Promise.all(
+              imageArray.map(imgData =>
+                {
+                  ////mime =='image/jpeg', 'video/mp4'
+                  if(imgData.mime && imgData.mime.substring(0,5)=='image')
+                  {
+                    return uploadImage(imgData.data, '#avatar').then(url => {
+                      if (url)
+                        uploadedURLS.push(url);
+                    })
+                  }else if(imgData.mime && imgData.mime.substring(0,5)=='video'){
+                    return uploadMedia({uri:imgData.path}, '#storyVideo').then(url => {
+                        if (url)
+                          uploadedURLS.push(url);
+                      }
+                    );
+                  }
+                  return null;
+                }
+              )
+            );
+          }
+          else Promise.resolve();
+        }).then(() => {
+          this.setState({ imageUploading: false });
+          if(uploadedURLS.length > 0)
+            this.updateStoryImages(uploadedURLS);
+          Promise.resolve();
+        }, err => { 
+          Promise.resolve();
+          this.setState({ imageUploading: false }) 
+        }).catch(e=> { Promise.resolve(); });
+      }
+    
+  }
+  updateStoryImages(imageArray){
+    if(!imageArray)
+      return;
+
+    let storyImages = clone(this.state.storyImages);
+    storyImages.pop();
+    imageArray.forEach(image=>{storyImages.push({ 'uri': image })});
+    storyImages.push({ type: 'add' });
+    this.setState({ storyImages });
+    this.saveStory();
+    this.setState({ imageUploading: false });
   }
   deleteImageFromStory(index) {
     Alert.alert(
@@ -874,9 +930,9 @@ class PlaceProfile extends PureComponent {
           <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
             <View style={{ flexDirection: 'row' }}>
               <CircleImage style={styles.storyWriterImage} uri={dataItem.createdBy.photoURL} radius={getDeviceWidth(67)} />
-              <View>
-                <Text style={[DFonts.Title, styles.storyWriterName]}>{dataItem.createdBy.displayName}</Text>
-                <Text style={[DFonts.SubTitle, styles.commentDate]}>{calculateDuration(dataItem.updatedAt)}</Text>
+              <View style={styles.userDescription}>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.storyWriterName]}>{dataItem.createdBy.displayName}</Text>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.commentDate]}>{formattedTimeDiffString(dataItem.updatedAt)}</Text>
               </View>
             </View>
             <OptimizedFlatList
@@ -929,6 +985,30 @@ class PlaceProfile extends PureComponent {
           destructiveButtonIndex={DESTRUCTIVE_INDEX}
           onPress={this.handlePress}
         />
+
+        <Modal style={styles.modalMediaView} backdrop={true} position={'center'}
+          isOpen={this.state.isOpenImagePicker}
+          onClosed={() => this.setState({ isOpenImagePicker: false })}
+        >
+          <View style={styles.modalMediaViewHeader}>
+            <Text style={styles.BlockTitle}>{'Take Media'}</Text>
+          </View>
+          <View style={styles.modalItem}>
+            <TouchableOpacity style={styles.modalButton} onPress={this.showActionSheet.bind(this)}>
+              <Text style={styles.buttonStr}>{'Take Camera...'}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modalItem}>
+            <TouchableOpacity style={styles.modalButton} onPress={()=>this.addMediaToStory(false)}>
+              <Text style={styles.buttonStr}>{'Choose from Library...'}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.modalItem}>
+            <TouchableOpacity style={styles.modalButton} onPress={()=>this.setState({ isOpenImagePicker: false })}>
+              <Text style={styles.cancelStr}>{'Cancel'}</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
         {this.state.imageUploading && <LoadingSpinner />}
       </View>
     );

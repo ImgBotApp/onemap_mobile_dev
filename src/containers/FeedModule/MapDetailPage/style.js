@@ -10,12 +10,14 @@ const styles = StyleSheet.create({
     backgroundColor: BACKGROUNDCOLOR
   },
   titleText: {
-    fontSize: BIG_FONT_SIZE,
-    color: DARK_GRAY_COLOR
+    color: DARK_GRAY_COLOR,
+    padding:10,
+    paddingBottom:3
   },
   addressText: {
-    fontSize: NORMAL_FONT_SIZE,
-    color: LIGHT_GRAY_COLOR
+    color: LIGHT_GRAY_COLOR,
+    padding:10,
+    paddingTop:3
   },
   mapView: {
     width: '100%',

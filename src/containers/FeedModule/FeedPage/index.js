@@ -6,7 +6,7 @@ import { GET_CAMPAIGN_BY_USER } from '../../../graphql/campaign'
 import { saveCollections, placeUpdated } from '@reducers/app/actions'
 import page from './page'
 
-const PLACES_PER_PAGE = 8;
+const STORIES_PER_PAGE = 8;
 
 function mapStateToProps(state) {
   return {
@@ -46,15 +46,15 @@ export default compose(
       }
     }
   }),
-  graphql(PLACES_PAGINATED, {
-    name: 'getPlacesPaginated',
+  graphql(FEED_STORIES_PAGINATED, {
+    name: 'getStoriesPaginated',
     options: (props) => {
       return {
         variables: {
           userId: props.user.id,
           followsIds: props.follows ? props.follows.map(item => item.id) : [],
           skip: 0,
-          first: PLACES_PER_PAGE
+          first: STORIES_PER_PAGE
         }
       }
     }

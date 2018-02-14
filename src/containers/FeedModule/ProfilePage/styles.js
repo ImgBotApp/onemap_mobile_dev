@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, LIGHT_BLUE } from '../../../theme/colors';
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
-import { BIG_FONT_SIZE, NORMAL_FONT_SIZE, SMALL_FONT_SIZE } from '../../../theme/fonts';
+import { BIG_FONT_SIZE, NORMAL_FONT_SIZE, SMALL_FONT_SIZE,APPFONTNAME } from '../../../theme/fonts';
 // define your styles
 const styles = StyleSheet.create({
   container: {
@@ -27,18 +27,22 @@ const styles = StyleSheet.create({
     marginLeft: -1 * getDeviceWidth(98)
   },
   userImage: {
-    width: getDeviceHeight(355),
-    height: getDeviceWidth(355)
+    width: getDeviceWidth(342),
+    height: getDeviceWidth(342)
   },
   userInfo: {
     marginLeft: getDeviceWidth(48),
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    width:getDeviceWidth(626)
   },
   userName: {
     color: DARK_GRAY_COLOR,
-    fontSize: BIG_FONT_SIZE
+    fontFamily: APPFONTNAME.Bold,
+    fontSize: BIG_FONT_SIZE,
+    marginBottom:getDeviceHeight(20)
   },
   userId: {
+    fontFamily: APPFONTNAME.Regular,
     color: LIGHT_GRAY_COLOR,
     fontSize: NORMAL_FONT_SIZE
   },
@@ -48,25 +52,32 @@ const styles = StyleSheet.create({
     backgroundColor: LIGHT_BLUE,
     borderRadius: 5,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom:getDeviceHeight(60)
   },
   FollowingText: {
     color: 'white',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   propertyView: {
     alignItems: 'center'
   },
   pText: {
     color: LIGHT_GRAY_COLOR,
-    fontSize: SMALL_FONT_SIZE
+    fontSize: NORMAL_FONT_SIZE,
+    marginBottom: getDeviceHeight(10)
+  },
+  p_val_Text: {
+    color: LIGHT_GRAY_COLOR,
+    fontSize: BIG_FONT_SIZE,
+    marginBottom: getDeviceHeight(10)
   },
   propertyContainer: {
     justifyContent: 'space-between'
   },
   about: {
-    marginTop: getDeviceHeight(97),
-    fontSize: SMALL_FONT_SIZE,
+    marginTop: getDeviceHeight(50),
+    fontSize: NORMAL_FONT_SIZE,
     color: DARK_GRAY_COLOR
   },
   collectionText: {

@@ -10,8 +10,9 @@ import { BIG_FONT_SIZE, NORMAL_FONT_SIZE } from '../../theme/fonts';
 const styles = StyleSheet.create({
   container: {
     width: getDeviceWidth(890),
-    height: Platform.OS=='android'?getDeviceHeight(410):getDeviceHeight(376),
+    //height: Platform.OS=='android'?getDeviceHeight(410):getDeviceHeight(376),
     marginBottom: 10,
+    marginRight: 15,
     flexDirection: 'row',
     padding: getDeviceWidth(39),
     borderRadius: getDeviceWidth(30),
@@ -19,18 +20,19 @@ const styles = StyleSheet.create({
     borderColor:'transparent',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   profileImage: {
     width: getDeviceWidth(304),
-    height: getDeviceHeight(304),
+    height: getDeviceWidth(304),
     borderRadius: getDeviceWidth(152),
     borderWidth: 1,
     borderColor:'transparent'
   },
   info: {
     width: getDeviceWidth(455),
-    height: getDeviceHeight(303),
+    marginRight: 5,
+    marginBottom: 5,
     alignItems: 'center',
     justifyContent: 'space-between'
   },
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
     fontSize: font.SMALLER_FONT_SIZE
   },
   separate: {
-    width: getDeviceWidth(120),
+    width: '100%',
     marginTop: 4,
     borderWidth: 1,
     borderColor: color.LIGHT_GRAY_COLOR
@@ -52,7 +54,9 @@ const styles = StyleSheet.create({
   suggest: {
     color: color.LIGHT_GRAY_COLOR,
     fontSize: font.SMALL_FONT_SIZE,
-    marginBottom:2
+    marginTop:4,
+    marginBottom:4,
+    alignSelf:'flex-start'
   },
   followButton: {
     width: getDeviceWidth(455),
@@ -66,7 +70,7 @@ const styles = StyleSheet.create({
   },
   followText: {
     color: WHITE_COLOR,
-    fontSize: NORMAL_FONT_SIZE
+    fontSize: NORMAL_FONT_SIZE,
   }
 });
 

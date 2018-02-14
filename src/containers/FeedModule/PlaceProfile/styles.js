@@ -15,11 +15,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingLeft: getDeviceWidth(76),
     paddingRight: getDeviceWidth(76),
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
   titleText: {
     color: DARK_GRAY_COLOR,
-    fontSize: BIGGER_FONT_SIZE
+    fontSize: BIGGER_FONT_SIZE,
+    width: getDeviceWidth(1100),
   },
   imageContainer: {
     marginTop: getDeviceHeight(89),
@@ -83,7 +84,17 @@ const styles = StyleSheet.create({
     marginLeft: getDeviceWidth(76),
     marginRight: getDeviceWidth(76),
     marginTop: getDeviceHeight(89),
-    height: getDeviceHeight(323)
+    height: getDeviceHeight(323),
+    overflow: 'hidden',
+    zIndex:10
+  },
+  mapWrapper:{
+    position:'absolute',
+    top:0,
+    left:0,
+    right:0,
+    bottom:-30,
+    zIndex:0
   },
   map: {
     width: '100%',
@@ -96,8 +107,9 @@ const styles = StyleSheet.create({
   },
   informationText: {
     color: LIGHT_GRAY_COLOR,
-    fontSize: SMALL_FONT_SIZE,
-    fontFamily: APPFONTNAME.Regular
+    fontSize: NORMAL_FONT_SIZE,
+    fontFamily: APPFONTNAME.Regular,
+    marginBottom:2
   },
   informationContainer: {
     marginLeft: getDeviceWidth(76),
@@ -112,16 +124,17 @@ const styles = StyleSheet.create({
   },
   interestItem: {
     flexDirection: 'row',
-    marginLeft: getDeviceWidth(60)
+    marginLeft: getDeviceWidth(30),
+    alignItems:'center',
   },
   interestInformation: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent:'center',
     width: '100%'
   },
   interestText: {
     color: LIGHT_GRAY_COLOR,
-    fontSize: SMALL_FONT_SIZE,
+    fontSize: NORMAL_FONT_SIZE-1,
     marginLeft: getDeviceWidth(20),
     fontFamily: APPFONTNAME.Regular
   },
@@ -177,17 +190,19 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   writeStoryMain: {
-    width: getDeviceWidth(1178),
+    width: getDeviceWidth(1267),
     padding: Platform.OS == 'android' ? getDeviceWidth(60) : getDeviceWidth(30),
     marginTop: getDeviceHeight(89),
   },
   storyWriterImage: {
     width: getDeviceWidth(134),
-    height: getDeviceHeight(134)
+    height: getDeviceWidth(134)
+  },
+  userDescription: {
+    marginLeft: getDeviceWidth(47),
+    width:getDeviceWidth(800),
   },
   storyWriterName: {
-    flex: 1,
-    marginLeft: getDeviceWidth(40),
     color: DARK_GRAY_COLOR,
     fontSize: BIG_FONT_SIZE,
   },
@@ -203,7 +218,6 @@ const styles = StyleSheet.create({
   commentDate: {
     color: LIGHT_GRAY_COLOR,
     fontSize: SMALL_FONT_SIZE,
-    marginLeft: getDeviceWidth(40),
   },
   commentTitle: {
     marginVertical: 5,
@@ -253,6 +267,57 @@ const styles = StyleSheet.create({
     right: Platform.OS == 'android' ? 15 : 5,
     bottom: Platform.OS == 'android' ? 18 : 5,
     fontWeight: "100"
+  },
+  modalMediaView:{
+    width: getDeviceWidth(1000),
+    height:getDeviceHeight(750),
+    backgroundColor: 'white',
+    borderColor: 'transparent',
+    borderWidth: 1,
+    borderRadius: 8,
+    alignItems: 'center',
+    // padding: getDeviceWidth(30),
+    justifyContent: 'space-between'
+  },
+  BlockTitle: {
+    fontSize: NORMAL_FONT_SIZE,
+    color: DARK_GRAY_COLOR,
+  },
+  modalMediaViewHeader: {
+    height:getDeviceHeight(150),
+    paddingTop: getDeviceWidth(30),
+    paddingLeft: getDeviceWidth(30),
+    paddingRight: getDeviceWidth(30),
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  },
+  modalItem: {
+    height:getDeviceHeight(200),
+    width: '100%',
+    borderColor: LIGHT_GRAY_COLOR,
+    borderTopWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  modalButton: {
+    flex: 1,
+    borderColor: LIGHT_GRAY_COLOR,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRightWidth: 1,
+    paddingLeft:20,
+    paddingRight:20
+  },
+  cancelStr: {
+    color: BLUE_COLOR,
+    fontSize: BIG_FONT_SIZE
+  },
+  buttonStr: {
+    width: getDeviceWidth(800),
+    color: 'black',
+    fontSize: BIG_FONT_SIZE,
+    width:'100%',
   }
 });
 

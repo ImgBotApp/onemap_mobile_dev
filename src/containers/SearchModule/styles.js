@@ -42,7 +42,17 @@ const styles = StyleSheet.create({
   },
   mapView: {
     width: '100%',
-    height: getDeviceHeight(1000)
+    height: getDeviceHeight(1000),
+    overflow: 'hidden',
+    zIndex:10
+  },
+  mapWrapper:{
+    position:'absolute',
+    top:0,
+    left:0,
+    right:0,
+    bottom:-30,
+    zIndex:0
   },
   map: {
     width: '100%',

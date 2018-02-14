@@ -23,7 +23,8 @@ class SearchResult extends Component {
       keywords: [],
       users: [],
       loading: false,
-      prevQuery: null
+      prevQuery: null,
+      forceRefresh:false
     };
   }
   componentWillMount() {
@@ -34,21 +35,24 @@ class SearchResult extends Component {
     this.onTextSearchPlace();
   }
   onTextSearchPlace() {
+    let queryWords = this.props.keyword;
+    
     if(this.state.loading)
       return;
 
     this.setState({ loading: true });
-
-    if(this.props.isAuto && this.state.page == 'Places')
-    {
+    
+    if ((this.props.isAuto && this.state.page == 'Places' && this.state.prevQuery != queryWords) || this.state.forceRefresh) {
+      this.setState({ prevQuery: queryWords, forceRefresh:false });
       const radius = 10000;
       const language = 'en';
-      const query = this.props.keyword.replace(/\s/g, "+");
+      const query = queryWords.replace(/\s/g, "+");
 
       if (this.props.coordinate == null) return;
-      
-      const autocompleteURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+this.props.keyword+"&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius+"&key=" + PLACES_APIKEY;
 
+      const autocompleteURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+query+"&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius+"&key=" + PLACES_APIKEY;
+
+      console.log("~~~~~~~~~~~~~~~~~~~ "+query);
       fetch(autocompleteURL, {
         method: 'GET',
         'Access-Control-Allow-Origin': '*',
@@ -56,9 +60,7 @@ class SearchResult extends Component {
       })
       .then((response) => response.json())
       .then((responseData) => {
-        let query = this.props.keyword;
-        this.setState({ prevQuery: query });
-        
+
         this.setState({ loading: false })
         if (responseData.predictions)
           this.setState({
@@ -74,42 +76,41 @@ class SearchResult extends Component {
         client.query({
           query: GET_FILTER_KEYWORDS,
           variables: {
-            keyword: this.props.keyword
+            keyword: queryWords
           }
         }).then((users) => {
           let placeArray = [];
-          if(users)
-          {
-            users.data.allKeywords.forEach(item=>{
-              if(item.places)
-              {
-                item.places.forEach(place=>{
-                  placeArray.push({...place,...{keyword:item.name}});
+          if (users) {
+            users.data.allKeywords.forEach(item => {
+              if (item.places) {
+                item.places.forEach(place => {
+                  placeArray.push({ ...place, ...{ keyword: item.name } });
                 })
               }
             });
           }
           this.setState({
             keywords: placeArray,
-            loading:false
+            loading: false
           })
         })
       }
-      else if(!this.props.isAuto && this.state.page == 'People'){
+      else if (!this.props.isAuto && this.state.page == 'People') {
         client.query({
           query: FILER_USERS,
           variables: {
             keyword: this.props.keyword,
-            loading:false
+            userId: this.props.userId,
+            loading: false
           }
         }).then((users) => {
           this.setState({
             users: users.data.allUsers,
-            loading:false
+            loading: false
           })
         })
-      }else{
-        this.setState({loading:false});
+      } else {
+        this.setState({ loading: false });
       }
     }
   }
@@ -125,8 +126,8 @@ class SearchResult extends Component {
         <View style={styles.item}>
           <CircleImage style={styles.profileImage} uri={item.photoURL} radius={getDeviceWidth(70)} />
           <View style={styles.infomation}>
-            <Text style={[DFonts.Title, styles.name]}>{item.displayName}</Text>
-            <Text style={[DFonts.SubTitle, styles.following]}>{item.username}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.name]}>{item.displayName}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.following]}>{item.username}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -139,8 +140,8 @@ class SearchResult extends Component {
         <View style={styles.item}>
           <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
           <View style={styles.infomation}>
-            <Text style={[DFonts.Title, styles.name]}>{item.structured_formatting.main_text}</Text>
-            <Text style={[DFonts.SubTitle, styles.following]}>{item.structured_formatting.secondary_text}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.name]}>{item.structured_formatting.main_text}</Text>
+            <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.following]}>{item.structured_formatting.secondary_text}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -158,20 +159,20 @@ class SearchResult extends Component {
     )
   }
   _onKeywordItem(item) {
-    
+
     const placeId = item.id ? item.id : '';
     return (
       <TouchableOpacity onPress={() => this.props.onKeywordItem(placeId)}>
         <View style={styles.item}>
           <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
           <View style={styles.infomation}>
-            <Text style={[DFonts.Title, styles.name]}>{item.placeName}</Text>
-            <Text style={[DFonts.SubTitle, styles.following]}>{item.address}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.name]}>{item.placeName}</Text>
+            <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.following]}>{item.address}</Text>
           </View>
         </View>
       </TouchableOpacity>
     )
-    
+
   }
   _onRenderItem(item) {
     if (item == null) return;
@@ -244,12 +245,20 @@ class SearchResult extends Component {
 
     )
   }
+  selectTabBar(el){
+    this.setState({ page: el.props.name })
+    if(el.props.name == 'Places')
+    {
+      this.setState({ forceRefresh:true });
+      this.onTextSearchPlace();
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.mainContainer}>
           <Tabs selected={this.state.page} style={styles.tabHeader}
-            selectedStyle={{ color: 'red' }} onSelect={el => this.setState({ page: el.props.name })}>
+            selectedStyle={{ color: 'red' }} onSelect={this.selectTabBar.bind(this)}>
             {this._renderTabHeader('Places')}
             {this._renderTabHeader('People')}
             {this._renderTabHeader('Keywords')}

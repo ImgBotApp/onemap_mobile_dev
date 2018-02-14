@@ -35,11 +35,15 @@ local.properties
 assets_*
 *.bundle*
 *.keystore
+gradle.properties
+settings.json
 
 bin/
 .project
 node_modules_reactnative*
-
+*.prefs
+*.classpath
+*.pro
 # node.js
 #
 node_modules/

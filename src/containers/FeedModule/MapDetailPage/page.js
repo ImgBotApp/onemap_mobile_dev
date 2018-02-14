@@ -54,8 +54,8 @@ class MapDetailPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={[DFonts.Title, styles.titleText]}>{this.props.title}</Text>
-        <Text style={[DFonts.SubTitle, styles.addressText]}>{this.props.address}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.titleText]}>{this.props.title}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.addressText]}>{this.props.address}</Text>
         <View style={styles.mapView}>
           <MapView
             provider={PROVIDER_GOOGLE}

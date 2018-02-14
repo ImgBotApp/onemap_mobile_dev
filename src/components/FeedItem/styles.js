@@ -17,14 +17,15 @@ const styles = StyleSheet.create({
   userInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
   user: {
     flexDirection: 'row',
-    width: '80%'
+    
   },
   userDescription: {
-    marginLeft: getDeviceWidth(47)
+    marginLeft: getDeviceWidth(47),
+    width:getDeviceWidth(800),
   },
   profileImage: {
     width: getDeviceWidth(140),

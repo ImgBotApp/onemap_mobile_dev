@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity, Alert, ActivityIndicator, Image, Platform } from 'react-native';
 import Tabs from 'react-native-tabs';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
-import MapView from 'react-native-map-clustering';
+import MapView from '@components/MapCluster';
 import { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
@@ -57,8 +57,13 @@ class Collections extends Component {
     this.state = {
       page: 'Grid View',
       places: props.places ? props.places : [],
-      loading: false
+      loading: false,
+      mapRegion:{
+        latitude: 23, longitude: 101,
+        latitudeDelta: 10.8, longitudeDelta: 30.4
+      }
     }
+    this.regionContainingPoints();
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
   componentWillMount() {
@@ -99,6 +104,7 @@ class Collections extends Component {
       }
     }).then(({ data }) => {
       this.setState({ places: data.User.likePlaces, loading: false });
+      this.regionContainingPoints();
     }).catch(err => alert(err))
   }
   getCheckedPlaces() {
@@ -110,6 +116,7 @@ class Collections extends Component {
       }
     }).then(({ data }) => {
       this.setState({ places: data.allPlaces, loading: false });
+      this.regionContainingPoints();
     }).catch(err => alert(err))
   }
   getCollectionPlaces() {
@@ -123,6 +130,7 @@ class Collections extends Component {
       }
     }).then(({ data }) => {
       this.setState({ places: data.Collection.places, loading: false });
+      this.regionContainingPoints();
     }).catch(err => alert(err))
   }
   getBookmarkedPlaces() {
@@ -140,9 +148,44 @@ class Collections extends Component {
         places = [...places, ...item.places];
       });
       this.setState({ places, loading: false });
+      this.regionContainingPoints();
     }).catch(err => alert(err))
   }
+  regionContainingPoints() {
+    var minX, maxX, minY, maxY;
+    
+    if(this.state.places && this.state.places.length > 0)
+    {
+      // init first point
+      ((point) => {
+        minX = point.locationLat;
+        maxX = point.locationLat;
+        minY = point.locationLong;
+        maxY = point.locationLong;
+      })(this.state.places[0]);
+    
+      // calculate rect
+      this.state.places.map((point) => {
+        minX = Math.min(minX, point.locationLat);
+        maxX = Math.max(maxX, point.locationLat);
+        minY = Math.min(minY, point.locationLong);
+        maxY = Math.max(maxY, point.locationLong);
+      });
+    
+      var midX = (minX + maxX) / 2;
+      var midY = (minY + maxY) / 2;
+      var midPoint = [midX, midY];
+    
+      var deltaX = (maxX - minX);
+      var deltaY = (maxY - minY);
 
+      var padding = 0;
+      this.setState({mapRegion:{
+        latitude: midX, longitude: midY,
+        latitudeDelta: deltaX+padding, longitudeDelta: deltaY+padding,
+      }});
+    }
+  }
   _renderTabHeader(text) {
     return (
       <Text name={text} style={[DFonts.Title, styles.TabText]} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>
@@ -238,10 +281,7 @@ class Collections extends Component {
         <MapView
           provider={PROVIDER_GOOGLE}
           style={styles.map}
-          region={{
-            latitude: 23, longitude: 101,
-            latitudeDelta: 10.8, longitudeDelta: 30.4
-          }}
+          region={this.state.mapRegion}
           clustering={true}
           clusterColor='#41C6F2'
           clusterTextColor='white'
@@ -258,7 +298,7 @@ class Collections extends Component {
                 <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
               )}
               <Callout style={styles.customView} onPress={() => this.openPlaceProfile(item.id)}>
-                <Text style={[DFonts.Regular, { flexWrap: "nowrap" }]}>{item.address}</Text>
+                <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.Regular, { flexWrap: "nowrap",alignSelf:"center" }]}>{item.placeName}</Text>
               </Callout>
             </Marker>
           )}
