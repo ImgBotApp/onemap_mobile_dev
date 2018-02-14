@@ -1,11 +1,12 @@
 import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import { GET_SUGGEST_USERS } from '@graphql/userprofile'
-import { PLACES_PAGINATED, ADD_COLLECTION_TO_PLACE, REMOVE_COLLECTION_FROM_PLACE } from "@graphql/places";
+import { ADD_COLLECTION_TO_PLACE, REMOVE_COLLECTION_FROM_PLACE } from '@graphql/places';
+import { FEED_STORIES_PAGINATED } from '@graphql/stories'
 import { saveCollections, placeUpdated } from '@reducers/app/actions'
 import page from './page'
 
-const PLACES_PER_PAGE = 8;
+const STORIES_PER_PAGE = 8;
 
 function mapStateToProps(state) {
   return {
@@ -45,15 +46,15 @@ export default compose(
       }
     }
   }),
-  graphql(PLACES_PAGINATED, {
-    name: 'getPlacesPaginated',
+  graphql(FEED_STORIES_PAGINATED, {
+    name: 'getStoriesPaginated',
     options: (props) => {
       return {
         variables: {
           userId: props.user.id,
           followsIds: props.follows ? props.follows.map(item => item.id) : [],
           skip: 0,
-          first: PLACES_PER_PAGE
+          first: STORIES_PER_PAGE
         }
       }
     }

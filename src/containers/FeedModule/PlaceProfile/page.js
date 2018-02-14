@@ -114,7 +114,7 @@ class PlaceProfile extends PureComponent {
     this.state = {
       currentPlaceID: props.placeID ? props.placeID : props.place.id,
       placeData: {
-        description: props.place ? props.place.description : '',
+        description: '',
         information: {},
         image: [],
         map: null,

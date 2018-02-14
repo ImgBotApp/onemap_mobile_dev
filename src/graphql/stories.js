@@ -1,5 +1,49 @@
 import { gql } from 'react-apollo'
 
+export const FEED_STORIES_PAGINATED = gql`
+  query PlaceStories($first: Int!, $skip: Int!, $userId: ID!, $followsIds: [ID!]) {
+    allStories(first: $first, skip: $skip, orderBy: updatedAt_DESC, filter: {
+      OR: [
+        {
+          createdBy: {
+            id: $userId
+          }
+        },
+        {
+          createdBy: {
+            id_in: $followsIds
+          }
+        }
+      ]
+    }) {
+      id
+      createdAt
+      createdBy {
+        id
+        displayName
+        username
+        photoURL
+      }
+      pictureURL
+      place {
+        id
+        collections {
+          id
+          user {
+            id
+          }
+        }
+        locationLat
+        locationLong
+        placeName
+      }
+      story
+      title
+      updatedAt
+    }
+  }
+`
+
 export const GET_USER_STORIES = gql`
 query getUserStories(
     $userId: ID! # user

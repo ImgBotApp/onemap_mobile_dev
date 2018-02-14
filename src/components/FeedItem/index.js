@@ -79,7 +79,7 @@ class FeedItem extends Component {
         </View>
         {/* Place Title */}
         <View>
-          <Text style={[DFonts.SubContent, styles.placeTitle]}>{this.props.data.place}</Text>
+          <Text style={[DFonts.SubContent, styles.placeTitle]}>{this.props.data.title}</Text>
         </View>
         {/* Border Bar */}
         {!!this.props.data.description &&

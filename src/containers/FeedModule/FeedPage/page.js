@@ -1,9 +1,11 @@
 //import liraries
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modalbox';
+import { OptimizedFlatList } from 'react-native-optimized-flatlist'
+import Orientation from 'react-native-orientation';
 
 import SuggestUser from '@components/SuggestUser'
 import FeedItem from '@components/FeedItem'
@@ -19,19 +21,15 @@ import DFonts, { SMALL_FONT_SIZE } from '@theme/fonts';
 
 import * as SCREEN from '@global/screenName'
 import { clone } from '@global';
-const PLACES_PER_PAGE = 8;
+const STORIES_PER_PAGE = 8;
 
 import { client } from '@root/main'
 import { graphql } from "react-apollo";
 
-import { PLACES_PAGINATED } from "@graphql/places";
 import { GET_SUGGEST_USERS } from '@graphql/userprofile'
 import { GET_MY_COLLECTIONS } from '@graphql/collections'
 
-import { OptimizedFlatList } from 'react-native-optimized-flatlist'
-import Orientation from 'react-native-orientation';
-// create a component
-class FeedPage extends Component {
+class FeedPage extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,7 +54,7 @@ class FeedPage extends Component {
     this.getMyCollections();
   }
   componentWillReceiveProps(nextProps) {
-    const { getSuggestUsers, getPlacesPaginated } = nextProps;
+    const { getSuggestUsers, getStoriesPaginated } = nextProps;
     if (!this.props.placeUpdated && nextProps.placeUpdated) {
       this.onRefresh();
       this.props.placeUpdate(false);
@@ -79,24 +77,25 @@ class FeedPage extends Component {
           });
         }
       }
-      if (getPlacesPaginated.allPlaces) {
-        if (getPlacesPaginated.allPlaces != this.props.getPlacesPaginated.allPlaces || this.state.loading) {
-          let graphcoolData = getPlacesPaginated.allPlaces.map((place) => {
+      if (getStoriesPaginated.allStories) {
+        if (getStoriesPaginated.allStories != this.props.getStoriesPaginated.allStories || this.state.loading) {
+          let graphcoolData = getStoriesPaginated.allStories.map((story) => {
             return {
-              id: place.id,
+              id: story.place.id,
               type: 'item',
               user: {
-                id: place.createdBy.id,
-                displayName: place.createdBy.displayName,
-                username: place.createdBy.username,
-                photoURL: place.createdBy.photoURL,
-                updated: new Date(place.updatedAt)
+                id: story.createdBy.id,
+                displayName: story.createdBy.displayName,
+                username: story.createdBy.username,
+                photoURL: story.createdBy.photoURL,
+                updated: new Date(story.updatedAt)
               },
-              placeName: place.placeName,
-              images: place.pictureURL ? place.pictureURL.map(uri => { return { uri } }) : [],
-              description: place.description || '',
-              bookmark: this.isBookmarked(place),
-              collectionIds: place.collections.map(collection => collection.id)//will be removed later
+              placeName: story.place.placeName,
+              images: story.pictureURL ? story.pictureURL.map(uri => { return { uri } }) : [],
+              title: story.title,
+              description: story.story,
+              bookmark: this.isBookmarked(story.place),
+              collectionIds: story.place.collections.map(collection => collection.id)//will be removed later
             }
           });
           this.setState({ items: graphcoolData, loading: false });
@@ -170,26 +169,25 @@ class FeedPage extends Component {
     })
   }
   onRefresh() {
-    this.props.getPlacesPaginated.refetch();
+    this.props.getStoriesPaginated.refetch();
   }
   onEndReached() {
-    const { getPlacesPaginated } = this.props;
-    if (!getPlacesPaginated.loading) {
-
-      getPlacesPaginated.fetchMore({
-        variables: {
-          skip: getPlacesPaginated.allPlaces.length + PLACES_PER_PAGE,
-        },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult || fetchMoreResult.allPlaces.length === 0) {
-            return previousResult;
-          }
-          return {
-            allPlaces: previousResult.allPlaces.concat(fetchMoreResult.allPlaces),
-          };
-        }
-      })
-    }
+    // const { getStoriesPaginated } = this.props;
+    // if (!getStoriesPaginated.loading) {
+    //   getStoriesPaginated.fetchMore({
+    //     variables: {
+    //       skip: getStoriesPaginated.allStories.length + STORIES_PER_PAGE,
+    //     },
+    //     updateQuery: (previousResult, { fetchMoreResult }) => {
+    //       if (!fetchMoreResult || fetchMoreResult.allStories.length === 0) {
+    //         return previousResult;
+    //       }
+    //       return {
+    //         allStories: previousResult.allStories.concat(fetchMoreResult.allStories),
+    //       };
+    //     }
+    //   });
+    // }
   }
   _renderSuggestedList(data) {
     if (this.state.suggestFlag == false) return <View />;
@@ -210,9 +208,9 @@ class FeedPage extends Component {
           horizontal
           renderItem={({ item }) =>
             <SuggestUser
-                data={item}
-                onPress={() => this.onPressUserProfile(item)}
-              />
+              data={item}
+              onPress={() => this.onPressUserProfile(item)}
+            />
           }
         />
       </View>
@@ -351,13 +349,13 @@ class FeedPage extends Component {
       );
     return (
       <View style={styles.container}>
-        <OptimizedFlatList
+        <FlatList
           keyExtractor={(item, index) => index}
           style={{ width: '100%', height: '100%' }}
           data={[...this.state.suggestUsers, ...this.state.items]}
           renderItem={this._renderItem.bind(this)}
           onEndReached={() => this.onEndReached()}
-          refreshing={this.props.getPlacesPaginated.networkStatus === 4}
+          refreshing={this.props.getStoriesPaginated.networkStatus === 4}
           onRefresh={this.onRefresh}
           removeClippedSubviews={true}
         />
