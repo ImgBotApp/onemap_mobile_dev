@@ -51,7 +51,6 @@ import { GET_PLACE_PROFILE } from '@graphql/places'
 
 import styles from './styles'
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
-//import MultiImage from 'react-native-multi-image-selector';
 
 const imagePickerOptions = {
   title: 'Take Media',
@@ -197,7 +196,7 @@ class PlaceProfile extends PureComponent {
             longitudeDelta: 0.00421
           },
           information: {
-            address: data.addressCityTown,
+            address: data.address,
             phoneNumber: data.phoneNumber,
             website: data.website,
             openingHours: [data.openingHrs]
@@ -420,7 +419,7 @@ class PlaceProfile extends PureComponent {
         <Text style={[DFonts.Title, styles.titleText]}>{this.state.placeData.title}</Text>
         <TouchableOpacity onPress={this.onBookMarker}>
           <MaterialCommunityIcons name={this.state.placeData.bookmark ? "bookmark" : "bookmark-outline"} size={30}
-            color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} />
+            color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} style={{marginTop:3}}/>
         </TouchableOpacity>
       </View>
     )
@@ -488,10 +487,10 @@ class PlaceProfile extends PureComponent {
   renderInfo() {
     return (
       <View style={styles.informationContainer}>
-        <Text style={styles.informationText}>{I18n.t('PLACE_ADDRESS')}{`\t\t\t: `}{this.state.placeData.information.address}</Text>
-        <Text style={styles.informationText}>{I18n.t('PLACE_NUMBER')}{`\t\t: `}{this.state.placeData.information.phoneNumber}</Text>
-        <Text style={styles.informationText}>{I18n.t('PLACE_WEBSITE')}{`\t\t\t: `}{this.state.placeData.information.website}</Text>
-        <Text style={styles.informationText}>{I18n.t('PLACE_OPENHOUR')}{`\t\t: `}{this.state.placeData.information.openingHours}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_ADDRESS')}{`\t\t\t: `}{this.state.placeData.information.address}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_NUMBER')}{`\t: `}{this.state.placeData.information.phoneNumber}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_WEBSITE')}{`\t\t\t: `}{this.state.placeData.information.website}</Text>
+        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_OPENHOUR')}{`\t: `}{this.state.placeData.information.openingHours}</Text>
       </View>
     )
   }
@@ -501,17 +500,17 @@ class PlaceProfile extends PureComponent {
     return (
       <View style={styles.interestContainer}>
         <View style={styles.interestInformation}>
-          <View style={styles.interestItem}>
-            <Foundation name="heart" size={12} color={RED_COLOR} />
-            <Text style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
+          <View style={[styles.interestItem,{flex:0.25}]}>
+            <Foundation name="heart" size={15} color={RED_COLOR} />
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
           </View>
-          <View style={styles.interestItem}>
-            <Foundation name="marker" size={12} color={BLUE_COLOR} />
-            <Text style={styles.interestText}>{calculateCount(this.state.placeData.checkIns.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
+          <View style={[styles.interestItem,{flex:0.25}]}>
+            <Foundation name="marker" size={15} color={BLUE_COLOR} />
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.checkIns.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
           </View>
-          <View style={styles.interestItem}>
-            <Foundation name="bookmark" size={12} color={RED_COLOR} />
-            <Text style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
+          <View style={[styles.interestItem,{flex:0.5}]}>
+            <Foundation name="bookmark" size={15} color={RED_COLOR} />
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
           </View>
         </View>
         <View style={styles.serparate}></View>
@@ -802,37 +801,6 @@ class PlaceProfile extends PureComponent {
       });
     }
     else{//image picker
-      /*
-      if(Platform.OS == 'android')
-      {
-        MultiImage.pickImage({
-          showCamera:false,
-          maxNum: 10,
-          multiple:true
-        }).then((imageArray)=> {
-          if(imageArray)
-          {
-            this.setState({ imageUploading: true });
-            Promise.all(
-              imageArray.map(imgData =>
-                uploadImage(imgData, '#avatar').then(url => {
-                  if (url)
-                    uploadedURLS.push(url);
-                })
-              )
-            ).then(() => {
-              Promise.resolve();
-              this.setState({ imageUploading: false });
-              this.updateStoryImages(uploadedURLS);
-            }, err => { 
-              this.setState({ imageUploading: false }) 
-            })
-          }
-          else Promise.resolve();
-        }).catch(e=> { Promise.resolve(); });
-      }
-      else{
-        */
         ImageCropPicker.openPicker({
           width: MAXWIDTH,
           height: MAXHEIGHT,
@@ -878,7 +846,6 @@ class PlaceProfile extends PureComponent {
           this.setState({ imageUploading: false }) 
         }).catch(e=> { Promise.resolve(); });
       }
-    //}
     
   }
   updateStoryImages(imageArray){

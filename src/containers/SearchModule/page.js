@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity, Platform,PermissionsAndroid } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, FlatList, Dimensions, Image, TouchableOpacity, Platform, PermissionsAndroid } from 'react-native';
 import RNPlaces from 'react-native-google-places'
 import RNGooglePlaces from 'react-native-google-places'
 import Search from '@components/SearchBar';
@@ -92,16 +92,16 @@ class SearchPage extends Component {
     try {
       Permissions.check('location').then(response => {
         if (response != 'authorized') {
-            console.log("request the Location")
-            Permissions.request('location').then(response => {
-              if (response == 'authorized') {
-                console.log("You can get the Location")
-                this.setGeoPositionEvent();
-              }else {
-                //Permissions.openSettings();
-              }
-            })
-        }else this.setGeoPositionEvent();
+          console.log("request the Location")
+          Permissions.request('location').then(response => {
+            if (response == 'authorized') {
+              console.log("You can get the Location")
+              this.setGeoPositionEvent();
+            } else {
+              //Permissions.openSettings();
+            }
+          })
+        } else this.setGeoPositionEvent();
       })
     } catch (err) {
       console.warn(err)
@@ -144,8 +144,7 @@ class SearchPage extends Component {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 }
     );
 
-    if(!this.watchID)
-    {
+    if (!this.watchID) {
       this.watchID = navigator.geolocation.watchPosition((position) => {
         if (position.coords) {
           console.log("watch position:" + position.coords.latitude);
@@ -159,14 +158,14 @@ class SearchPage extends Component {
     var getInitialRegion = {
       latitude: this.state.myPosition.latitude,
       longitude: this.state.myPosition.longitude,
-      latitudeDelta: this.initialPosition?this.initialPosition.latitudeDelta:LATTITUDE_DELTA,
-      longitudeDelta: this.initialPosition?this.initialPosition.longitudeDelta:LONGTITUDE_DELTA,
+      latitudeDelta: this.initialPosition ? this.initialPosition.latitudeDelta : LATTITUDE_DELTA,
+      longitudeDelta: this.initialPosition ? this.initialPosition.longitudeDelta : LONGTITUDE_DELTA,
     }
     var getInitialRegionMaker = {
       latitude: this.state.myPosition.latitude,
       longitude: this.state.myPosition.longitude,
     }
-    if(!this.state.initialPosition)
+    if (!this.state.initialPosition)
       this.setState({ initialPosition: getInitialRegion });
     this.setState({ initialMarker: getInitialRegionMaker });
     this.onSearchNearByPlace();
@@ -225,8 +224,8 @@ class SearchPage extends Component {
         this.setState({ nearByPlaces: results })
       })
       .catch((error) => {
-        console.log("error:" + error);
-        this.setState({ isCallingAPI: false })
+        alert(error.message);
+        this.setState({ isCallingAPI: false });
       }
       );
   }
@@ -398,15 +397,17 @@ class SearchPage extends Component {
           })
         }
       }
-      ).catch((error) => { this.setState({ loading: false }) });
+      ).catch((error) => {
+        this.setState({ loading: false });
+        alert(error.message)
+      });
   }
   async onFetchGooglePictures(ret_photos) {
     let redrictURLS = [];
     await Promise.all(
-      ret_photos.map(photo =>{
+      ret_photos.map(photo => {
         const url = "https://maps.googleapis.com/maps/api/place/photo?&maxwidth=1920&photoreference=" + photo.photo_reference + "&key=" + PLACES_APIKEY;
-        if(Platform.OS == 'android')
-        {
+        if (Platform.OS == 'android') {
           return axios.get(url)
             .then(function (response) {
               redrictURLS.push(response.request.responseURL);
@@ -414,7 +415,7 @@ class SearchPage extends Component {
             .catch(function (error) {
               this.setState({ loading: false })
             })
-        }else{
+        } else {
           return fetch(url)
             .then(function (response) {
               redrictURLS.push(response.url);
@@ -492,7 +493,7 @@ class SearchPage extends Component {
         addressCountry: country,
         addressPostalCode: pCode,
         addressStreet: street,
-        address: this.state.placeInf.vicinity || this.state.placeInf.formatted_address,
+        address: this.state.placeInf.address,
         phoneNumber: this.state.placeInf.phoneNumber || '',
         website: this.state.placeInf.website || '',
         facebook: this.state.placeInf.facebook || '',
@@ -517,7 +518,7 @@ class SearchPage extends Component {
     });
   }
   onShowResult(val) {
-    if(this.state.loading)
+    if (this.state.loading)
       return;
     this.setState({
       keyword: val,
@@ -527,8 +528,8 @@ class SearchPage extends Component {
     //else return this.setState({ result: true })
     this.forceUpdate()
   }
-  onAutoShowResult(val){
-    if(this.state.loading)
+  onAutoShowResult(val) {
+    if (this.state.loading)
       return;
     this.setState({
       keyword: val,

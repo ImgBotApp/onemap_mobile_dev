@@ -23,7 +23,8 @@ class SearchResult extends Component {
       keywords: [],
       users: [],
       loading: false,
-      prevQuery: null
+      prevQuery: null,
+      forceRefresh:false
     };
   }
   componentWillMount() {
@@ -35,14 +36,14 @@ class SearchResult extends Component {
   }
   onTextSearchPlace() {
     let queryWords = this.props.keyword;
-    this.setState({ prevQuery: queryWords });
-
+    
     if(this.state.loading)
       return;
 
     this.setState({ loading: true });
-
-    if (this.props.isAuto && this.state.page == 'Places') {
+    
+    if ((this.props.isAuto && this.state.page == 'Places' && this.state.prevQuery != queryWords) || this.state.forceRefresh) {
+      this.setState({ prevQuery: queryWords, forceRefresh:false });
       const radius = 10000;
       const language = 'en';
       const query = queryWords.replace(/\s/g, "+");
@@ -244,12 +245,20 @@ class SearchResult extends Component {
 
     )
   }
+  selectTabBar(el){
+    this.setState({ page: el.props.name })
+    if(el.props.name == 'Places')
+    {
+      this.setState({ forceRefresh:true });
+      this.onTextSearchPlace();
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.mainContainer}>
           <Tabs selected={this.state.page} style={styles.tabHeader}
-            selectedStyle={{ color: 'red' }} onSelect={el => this.setState({ page: el.props.name })}>
+            selectedStyle={{ color: 'red' }} onSelect={this.selectTabBar.bind(this)}>
             {this._renderTabHeader('Places')}
             {this._renderTabHeader('People')}
             {this._renderTabHeader('Keywords')}

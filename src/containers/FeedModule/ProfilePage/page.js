@@ -79,7 +79,7 @@ class ProfilePage extends Component {
       user.followers = User._followersMeta.count;
       user.checked = User._checkInsMeta.count;
       user.accountVerification = User.accountVerification;
-      this.setState({ user, collections: User.collections.filter(item => !item.privacy), stories: User.stories });
+      this.setState({ user, collections: User.collections, stories: User.stories });
     }).catch(err => alert(err))
   }
 
@@ -164,7 +164,7 @@ class ProfilePage extends Component {
             </View>
             <View style={styles.userInfo}>
               <View>
-                <Text numberOfLines={2} ellipsizeMode={'tail'} style={styles.userName}>{user.displayName}</Text>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.userName}>{user.displayName}</Text>
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.userId}>{user.username}</Text>
               </View>
               <TouchableOpacity onPress={() => this.onFollow(!followed)}>

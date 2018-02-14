@@ -20,7 +20,8 @@ export default styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     backgroundColor: 'transparent',
-    color: '#e2dfe1'
+    color: '#e2dfe1',
+    padding:3
   },
   container: {
     justifyContent: 'center',

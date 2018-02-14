@@ -69,8 +69,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   about: {
-    marginTop: getDeviceHeight(97),
-    fontSize: SMALL_FONT_SIZE,
+    marginTop: getDeviceHeight(50),
+    fontSize: NORMAL_FONT_SIZE,
     color: DARK_GRAY_COLOR
   },
   collectionText: {

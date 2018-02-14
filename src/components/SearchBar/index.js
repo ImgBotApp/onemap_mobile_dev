@@ -183,7 +183,7 @@ class Search extends PureComponent {
     return new Promise((resolve, reject) => {
       Animated.parallel([
         Animated.timing(this.inputFocusWidthAnimated, {
-          toValue: this.contentWidth - this.cancelButtonWidth,
+          toValue: this.contentWidth - this.cancelButtonWidth-10,
           duration: 200
         }).start(),
         Animated.timing(this.btnCancelAnimated, {
@@ -366,6 +366,8 @@ class Search extends PureComponent {
             ]}
           >
             <Text
+              numberOfLines={1} 
+              ellipsizeMode={'tail'}
               style={[DFonts.Title,
               styles.cancelButtonText,
               this.props.titleCancelColor && {
@@ -402,8 +404,8 @@ const getStyles = (inputHeight) => {
       height: containerHeight - 10,
       paddingTop: 5,
       paddingBottom: 5,
-      paddingRight: 20,
-      paddingLeft: 20,
+      paddingRight: 25,
+      paddingLeft: 25,
       borderColor: '#444',
       backgroundColor: '#f7f7f7',
       borderRadius: 5,
@@ -414,7 +416,7 @@ const getStyles = (inputHeight) => {
     iconSearch: {
       flex: 1,
       position: 'absolute',
-      top: middleHeight - 2,
+      top: middleHeight,
       height: 20,
       width: 20
     },
@@ -423,8 +425,8 @@ const getStyles = (inputHeight) => {
     },
     iconDelete: {
       position: 'absolute',
-      right: 70,
-      top: middleHeight - 2,
+      right: 77,
+      top: middleHeight,
       height: 20,
       width: 20
     },
@@ -435,7 +437,7 @@ const getStyles = (inputHeight) => {
       justifyContent: 'center',
       alignItems: 'flex-start',
       backgroundColor: 'transparent',
-      width: 60,
+      width: 70,
       height: 50,
 
     },

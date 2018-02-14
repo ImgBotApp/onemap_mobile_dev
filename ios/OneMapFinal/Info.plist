@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>18021206</string>
+	<string>18021313</string>
 	<key>FacebookAppID</key>
 	<string>163236004399299</string>
 	<key>FacebookDisplayName</key>
@@ -92,6 +92,8 @@
 	<string>Calendars Usage</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera Usage</string>
+	<key>NSLocationUsageDescription</key>
+	<string>OneMap would like to use your location services in order to find places around you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>OneMap would like to use your location services in order to find places around you.</string>
 	<key>NSMicrophoneUsageDescription</key>

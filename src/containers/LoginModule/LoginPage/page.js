@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage, Platform,PermissionsAndroid } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage, Platform, PermissionsAndroid } from 'react-native'
 import FBSDK, { LoginManager } from 'react-native-fbsdk'
 
 import RoundButton from '@components/RoundButton'
@@ -35,11 +35,11 @@ class LoginPage extends Component {
     else {
       Permissions.check('location').then(response => {
         if (response != 'authorized') {
-            Permissions.request('location').then(response => {
-              if (response == 'authorized') {
-                
-              }
-            })
+          Permissions.request('location').then(response => {
+            if (response == 'authorized') {
+
+            }
+          })
         }
       })
     }
@@ -219,7 +219,7 @@ class LoginPage extends Component {
         new GraphRequestManager().addRequest(infoRequest).start();
       })
       .catch((err) => {
-        console.log(err)
+        alert(err.message);
         this.setState({ loading: false })
       });
   }

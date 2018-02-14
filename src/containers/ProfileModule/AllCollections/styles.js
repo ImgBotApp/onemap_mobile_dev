@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
-    width: getDeviceWidth(itemWidth * 4),
+    width: getDeviceWidth(itemWidth * 4 + 2),
     alignSelf: 'center',
     marginTop: getDeviceHeight(20)
   },
