@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   conditionGroupShort: {
-    marginLeft: getDeviceWidth(86)
+    marginLeft: getDeviceWidth(86),
+    justifyContent: 'space-around'
   },
   conditionGroupTitle: {
     color: '#585958',

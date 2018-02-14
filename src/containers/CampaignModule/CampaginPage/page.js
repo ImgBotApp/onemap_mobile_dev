@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, Platform, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Image, Platform, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, ProviderPropType, Marker } from 'react-native-maps';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
@@ -65,6 +65,7 @@ class CampaignPage extends Component {
       shortFlag: false,
       badges: []
     }
+    console.log('Campaign Condition Groups' , this.props)
     this.FetchBadgeData()
   }
 
@@ -123,7 +124,8 @@ class CampaignPage extends Component {
       <View style={styles.conditionGroupInfo}>
         <Image source={this.props.icon ? {uri: this.props.uri} : require('@assets/images/badge/badge.png')} style={styles.conditionGroupImage}/>
         <View style={styles.conditionGroupShort}>
-          <Text style={[FontStyle.Content, styles.conditionGroupTitle]}>{this.props.title}</Text>
+          <Text style={[FontStyle.Header, styles.conditionGroupTitle]} numberOfLines={1} ellipsizeMode={'tail'}>{this.props.title}</Text>
+          <Text style={[FontStyle.SubContent, styles.conditionGroupTitle]} numberOfLines={2} ellipsizeMode={'tail'} >{this.props.subtitle}</Text>
         </View>
       </View>
       </TouchableOpacity>
@@ -233,8 +235,10 @@ class CampaignPage extends Component {
           cardMaxElevation={2}
           cornerRadius={5}
         >
+          <ScrollView>
           { this.renderShortPart()}
           { this.state.shortFlag ? this.renderFullPart() : null}
+          </ScrollView>
         </CardView>
       </View>
     );
@@ -256,7 +260,8 @@ CampaignPage.propTypes = {
   id: PropTypes.string,
   title: PropTypes.string,
   icon: PropTypes.string,
-  description: PropTypes.string
+  description: PropTypes.string,
+  subtitle: PropTypes.string
 }
 //make this component available to the app
 export default CampaignPage;

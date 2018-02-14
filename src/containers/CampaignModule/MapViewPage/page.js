@@ -94,7 +94,9 @@ class MapViewPage extends Component {
                 }}
                 onPress={() => this.onNavigateCondition({
                   id: conditionGroup.id,
-                  title: conditionGroup.title
+                  title: conditionGroup.title,
+                  subtitle: conditionGroup.subtitle,
+                  description: conditionGroup.description
                 })}
                 image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
               >

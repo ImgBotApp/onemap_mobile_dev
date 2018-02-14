@@ -156,7 +156,7 @@ class PlaceDetailPage extends Component {
       <CardView cardElevation={2}
         cardMaxElevation={2}
         cornerRadius={5}
-        style={{width: '55%'}}
+        style={{width: '55%', backgroundColor: 'white'}}
         >
         <Text style={[FontStyle.Content, styles.pointRewards]}>{this.state.rules.pointReward}{' Points'}</Text>
         <View style={styles.eventType}>

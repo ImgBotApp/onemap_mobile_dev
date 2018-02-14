@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
   RuleContainer: {
     marginTop: getDeviceWidth(98),
-    marginLeft: getDeviceWidth(151)
+    marginLeft: getDeviceWidth(151),
   },
   RuleLabel: {
     color: '#585958'    
