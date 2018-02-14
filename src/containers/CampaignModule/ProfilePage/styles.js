@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
     marginLeft: getDeviceWidth(54)
   },
   campaignName: {
-    color: '#575858'
+    color: '#575858',
+    maxWidth: getDeviceWidth(700)
   },
   campaignOwner: {
     color: '#575858'    

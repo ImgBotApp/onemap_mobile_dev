@@ -1,8 +1,10 @@
 import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import { GET_SUGGEST_USERS } from '@graphql/userprofile'
-import { PLACES_PAGINATED, ADD_COLLECTION_TO_PLACE, REMOVE_COLLECTION_FROM_PLACE } from "@graphql/places";
+import { PLACES_PAGINATED, REMOVE_COLLECTION_FROM_PLACE } from "@graphql/places";
 import { GET_CAMPAIGN_BY_USER } from '../../../graphql/campaign'
+import { ADD_COLLECTION_TO_PLACE } from '@graphql/places';
+import { FEED_STORIES_PAGINATED } from '@graphql/stories'
 import { saveCollections, placeUpdated } from '@reducers/app/actions'
 import page from './page'
 

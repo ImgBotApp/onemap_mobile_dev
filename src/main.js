@@ -32,7 +32,8 @@ const httpLink = new HttpLink({
     'cjb30vkvv434c0146sjjn4d4w'
     :
     // Production
-    'cjctwe3gj19zb01051chfehqy'
+    'cjb30vkvv434c0146sjjn4d4w'    
+    // 'cjctwe3gj19zb01051chfehqy'
   )
 })
 export const client = new ApolloClient({

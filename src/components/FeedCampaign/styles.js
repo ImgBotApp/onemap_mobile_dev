@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: BIG_FONT_SIZE,
-    color: DARK_GRAY_COLOR
+    color: DARK_GRAY_COLOR,
+    width:  getDeviceWidth(600)
   },
   campaign: {
     fontSize: SMALL_FONT_SIZE,

@@ -4,11 +4,12 @@ import { View, Text, StyleSheet, Platform, Image } from 'react-native';
 import PropTypes from 'prop-types'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
-import MapView, { PROVIDER_GOOGLE, ProviderPropType, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, ProviderPropType, Marker, Callout } from 'react-native-maps';
 import { LATITUDE, LONGITUDE, LATITUDE_DELTA, LONGITUDE_DELTA } from '@global/const'
 import * as SCREEN from '../../../global/screenName'
 import I18n from '../../../languages'
 import styles from './styles'
+import Fontstyle from '../../../theme/fonts'
 // create a component
 class MapViewPage extends Component {
   constructor(props) {
@@ -86,7 +87,7 @@ class MapViewPage extends Component {
             return (
               <Marker
                 identifier = { 'conditionGroup' + index }
-                title={conditionGroup.title}
+                // title={conditionGroup.title}
                 key={index}
                 coordinate={{
                   latitude: conditionGroup.locationLat,
@@ -100,6 +101,11 @@ class MapViewPage extends Component {
                 })}
                 image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
               >
+              <Callout >
+                <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+                  <Text style={[Fontstyle.Regular, {textAlign: 'center', width: '100%'}]}>{conditionGroup.title}</Text>
+                </View>
+              </Callout>
               {Platform.OS === 'ios' && (
                 <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
               )}

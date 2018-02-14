@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     borderWidth: 1,
     borderRadius: 5,
-    borderColor: 'transparent'
+    borderColor: 'transparent',
+    
   },
   detailContainer: {
     marginLeft: getDeviceWidth(98),

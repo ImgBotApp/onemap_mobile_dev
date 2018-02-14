@@ -126,15 +126,15 @@ class CampaignProfilePage extends Component {
       <View style={styles.tabContainer}>
         <Tabs selected={this.state.page} style={styles.tabView} onSelect={el => this.setState({page: el.props.name})} >
           <View style={styles.tabItem} name="mapView" >
-            <Text style={this.state.page=='mapView' ? styles.tabSelectItemText : styles.tabItemText}> {I18n.t('CAMPAIGN_MAP_VIEW')} </Text>
+            <Text style={[FontStyle.Content, this.state.page=='mapView' ? styles.tabSelectItemText : styles.tabItemText]}> {I18n.t('CAMPAIGN_MAP_VIEW')} </Text>
             <View style={this.state.page=='mapView' ? styles.separateSelect : styles.separate}></View>
           </View>
           <View style={styles.tabItem} name="events">
-            <Text style={this.state.page=='events' ? styles.tabSelectItemText : styles.tabItemText}> {I18n.t('CAMPAIGN_EVENT_VIEW')} </Text>
+            <Text style={[FontStyle.Content, this.state.page=='events' ? styles.tabSelectItemText : styles.tabItemText]}> {I18n.t('CAMPAIGN_EVENT_VIEW')} </Text>
             <View style={this.state.page=='events' ? styles.separateSelect : styles.separate}></View>
           </View>
           <View style={styles.tabItem} name="badge">
-            <Text style={this.state.page=='badge' ? styles.tabSelectItemText : styles.tabItemText}> {I18n.t('CAMPAIGN_BADGE_VIEW')} </Text>
+            <Text style={[FontStyle.Content, this.state.page=='badge' ? styles.tabSelectItemText : styles.tabItemText]}> {I18n.t('CAMPAIGN_BADGE_VIEW')} </Text>
             <View style={this.state.page=='badge' ? styles.separateSelect : styles.separate}></View>
           </View>
         </Tabs>

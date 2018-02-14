@@ -125,7 +125,7 @@ class PlaceDetailPage extends Component {
           </View>
           <TouchableOpacity>
             <View style={styles.CheckInContainer}>
-              <Text style={{color: '#585958'}}>{I18n.t('FEED_CHECK_IN')}</Text>
+              <Text style={[FontStyle.SubTitle, {color: '#585958'}]}>{I18n.t('FEED_CHECK_IN')}</Text>
             </View>
           </TouchableOpacity>
         </View>

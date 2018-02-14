@@ -1,7 +1,7 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, Platform, TouchableOpacity, FlatList, ScrollView } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, ProviderPropType, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, ProviderPropType, Marker, Callout } from 'react-native-maps';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import { LATITUDE, LONGITUDE, LATITUDE_DELTA, LONGITUDE_DELTA } from '@global/const'
@@ -210,7 +210,7 @@ class CampaignPage extends Component {
             return (
               <Marker
                 identifier = { 'conditionGroup' + index }
-                title={condition.name}
+                // title={condition.name}
                 key={index}
                 coordinate={{
                   latitude: condition.locationLat,
@@ -223,6 +223,11 @@ class CampaignPage extends Component {
                 })}
                 image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
               >
+              <Callout >
+                <View style={{justifyContent: 'center', alignItems: 'center', flex: 1 , maxHeight: 30}}>
+                  <Text style={[FontStyle.Regular, {textAlign: 'center', width: '100%'}]}>{condition.name}</Text>
+                </View>
+              </Callout>
               {Platform.OS === 'ios' && (
                 <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
               )}

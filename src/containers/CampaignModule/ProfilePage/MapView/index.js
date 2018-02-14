@@ -1,10 +1,10 @@
 //import liraries
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, Platform, Image } from 'react-native'
-import MapView, { PROVIDER_GOOGLE, ProviderPropType, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, ProviderPropType, Marker, Callout } from 'react-native-maps';
 import PropTypes from 'prop-types'
 import styles from './styles'
-
+import Fontstyle from '../../../../theme/fonts'
 import { LATITUDE, LONGITUDE, LATITUDE_DELTA, LONGITUDE_DELTA } from '@global/const'
 
 // create a component
@@ -66,6 +66,11 @@ class MapTabView extends Component {
                 onPress={() => this.onConditionGroup(item.id)}
                 image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
               >
+              <Callout >
+                <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+                  <Text style={[Fontstyle.Regular, {textAlign: 'center', width: '100%'}]}>{item.name}</Text>
+                </View>
+              </Callout>
               {Platform.OS === 'ios' && (
                 <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
               )}

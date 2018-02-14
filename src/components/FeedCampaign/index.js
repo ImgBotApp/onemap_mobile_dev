@@ -35,7 +35,7 @@ class FeedCampaign extends Component {
           <View style={{ flexDirection: 'row' }}>
             <Image source={{ uri: this.props.data.profile }} style={styles.markImage} />
             <View style={styles.campaignInfo}>
-              <Text style={styles.title}>{this.props.data.title}</Text>
+              <Text style={styles.title} numberOfLines={1}>{this.props.data.title}</Text>
               <Text style={styles.campaign}>{I18n.t('FEED_CAMPAIGN')}</Text>
             </View>
           </View>
