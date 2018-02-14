@@ -90,22 +90,7 @@ class EditProfile extends Component {
           this.refs.toast.show('User Name is required!')
           return;
         }
-        this.props.saveUserInfo({
-          id: this.state.id,
-          createdAt: new Date().toLocaleDateString(),
-          updatedAt: new Date().toLocaleDateString(),
-          loginMethod: this.state.loginMethod,
-          bio: this.state.bio,
-          gender: this.state.gender.toUpperCase(),
-          city: this.state.city,
-          country: this.state.country,
-          photoURL: this.state.photoURL,
-          firstName: this.state.firstName,
-          lastName: this.state.lastName,
-          displayName: this.state.displayName,
-          username: this.state.username,
-          accountVerification: this.state.accountVerification
-        });
+        this.setState({ processing: true });
         this.props.updateUser({
           variables: {
             id: this.state.id,
@@ -121,8 +106,36 @@ class EditProfile extends Component {
             username: this.state.username,
             group: 'USER'
           }
+        }).then(data =>{
+          this.setState({ processing: false });
+          if(data)
+          {
+            this.props.saveUserInfo({
+              id: this.state.id,
+              createdAt: new Date().toLocaleDateString(),
+              updatedAt: new Date().toLocaleDateString(),
+              loginMethod: this.state.loginMethod,
+              bio: this.state.bio,
+              gender: this.state.gender.toUpperCase(),
+              city: this.state.city,
+              country: this.state.country,
+              photoURL: this.state.photoURL,
+              firstName: this.state.firstName,
+              lastName: this.state.lastName,
+              displayName: this.state.displayName,
+              username: this.state.username,
+              accountVerification: this.state.accountVerification
+            });
+            this.props.navigator.pop({})
+          }
+        }).catch(err => {
+          Promise.resolve();
+          const msg = err.message.toLowerCase();
+          if(msg.includes("username") && msg.includes("unique constraint"))
+            alert("user name is duplicated.\nPlease input username again.");
+          else alert(msg);
+          this.setState({ processing: false });
         });
-        this.props.navigator.pop({})
       }
     }
   }
