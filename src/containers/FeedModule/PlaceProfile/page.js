@@ -35,7 +35,7 @@ import LoadingSpinner from '@components/LoadingSpinner'
 import ImageSliderComponent from '@components/ImageSliderComponent'
 import TitleImage from '@components/TitledImage'
 import ViewMoreText from '@components/ViewMoreText';
-import { calculateCount, clone, getDeviceWidth, calculateDuration, getTimeDiff } from '@global'
+import { calculateCount, clone, getDeviceWidth, formattedTimeDiffString, getTimeDiff } from '@global'
 import { uploadImage, uploadMedia } from '@global/cloudinary';
 import { getImageFromVideoURL, getMediaTypeFromURL } from '@global/const';
 import { fetchThumbFromCloudinary } from '@global/cloudinary';
@@ -929,7 +929,7 @@ class PlaceProfile extends PureComponent {
               <CircleImage style={styles.storyWriterImage} uri={dataItem.createdBy.photoURL} radius={getDeviceWidth(67)} />
               <View>
                 <Text style={[DFonts.Title, styles.storyWriterName]}>{dataItem.createdBy.displayName}</Text>
-                <Text style={[DFonts.SubTitle, styles.commentDate]}>{calculateDuration(dataItem.updatedAt)}</Text>
+                <Text style={[DFonts.SubTitle, styles.commentDate]}>{formattedTimeDiffString(dataItem.updatedAt)}</Text>
               </View>
             </View>
             <OptimizedFlatList

@@ -43,7 +43,7 @@ class FeedItem extends Component {
               <CircleImage style={styles.profileImage} uri={this.props.data.user.photoURL} radius={getDeviceWidth(70)} />
               <View style={styles.userDescription}>
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.name, DFonts.Title]}>{this.props.data.user.displayName}</Text>
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.update, DFonts.SubTitle]}>{'Updated ' + formattedTimeDiffString(this.props.data.user.updated) + ' ago'}</Text>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.update, DFonts.SubTitle]}>{formattedTimeDiffString(this.props.data.user.updated)}</Text>
               </View>
             </View>
           </TouchableOpacity>

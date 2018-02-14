@@ -49,15 +49,18 @@ export function formattedTimeDiffString(time) {
   const diffSec = Math.round(diff % 60);
   const diffSecString = diffSec + (diffSec > 1 ? ' seconds' : ' second');
 
+  let str;
   if (diffDate) {
-    return diffDateString;
+    str = diffDateString;
   } else if (diffHour) {
-    return diffHourString + ' ' + diffMinString;
+    str = diffHourString + ' ' + diffMinString;
   } else if (diffMin) {
-    return diffMinString;
+    str = diffMinString;
   } else {
-    return diffSecString;
+    str = diffSecString;
   }
+
+  return 'Updated ' + str + ' ago';
 }
 
 export function getTimeDiff(date1, date2) {

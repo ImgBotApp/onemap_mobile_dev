@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import CardView from 'react-native-cardview'
 import styles from './styles'
 
-import { calculateDuration } from '@global'
+import { formattedTimeDiffString } from '@global'
 import DFonts from '@theme/fonts'
 // create a component
 class FeedEvent extends Component {
@@ -18,7 +18,7 @@ class FeedEvent extends Component {
             <Image source={{uri: this.props.data.user.uri}} style={styles.userImage} />
             <View style={styles.userInfo}>
               <Text style={[styles.userName,DFonts.Regular]}>{this.props.data.user.name}</Text>
-              <Text style={[styles.update, DFonts.Regular]}>{calculateDuration(this.props.data.user.updated)}</Text>
+              <Text style={[styles.update, DFonts.Regular]}>{formattedTimeDiffString(this.props.data.user.updated)}</Text>
             </View>
           </View>
           {/* Place */}
