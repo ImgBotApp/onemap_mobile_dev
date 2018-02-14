@@ -243,7 +243,6 @@ class FeedPage extends Component {
     )
   }
   _renderFeedItem(data, index) {
-    console.log('here', data)
     return (
       <View style={styles.feedItem}>
         <FeedItem
