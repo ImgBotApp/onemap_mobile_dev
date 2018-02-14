@@ -70,7 +70,6 @@ class CampaignPage extends Component {
 
   componentWillMount = () => {
     GetConditionByGroup(this.props.id).then(res => {
-      console.log(res)
       this.setState({
         conditions: res
       })
