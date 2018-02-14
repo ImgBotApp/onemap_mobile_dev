@@ -22,7 +22,8 @@ export function calculateDuration(updateDate) {
   //console.log(updatedTime);
   var duration = Math.floor((today - updatedTime) / one_day)
 
-  if (duration == 0) return `Updated yesterday`
+  if (duration == 0) return `Updated today`
+  if (duration == 1) return `Updated yesterday`
   if (duration < 31) return `Updated ${duration} Days ago`
   var months = Math.floor(duration / 30)
   if (months == 0) return `Updated a Month ago`
@@ -33,6 +34,8 @@ export function calculateDuration(updateDate) {
 }
 
 export function formattedTimeDiffString(time) {
+  if (!time) return '';
+
   let diff = (Date.now() - Moment(time)) / 1000;
 
   const diffDate = Math.round(diff / (60 * 60 * 24));

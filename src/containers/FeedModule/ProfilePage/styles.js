@@ -36,15 +36,15 @@ const styles = StyleSheet.create({
     width:getDeviceWidth(626)
   },
   userName: {
-    fontFamily: APPFONTNAME.Regular,
     color: DARK_GRAY_COLOR,
-    fontSize: 16,
+    fontFamily: APPFONTNAME.Bold,
     fontSize: BIG_FONT_SIZE,
+    marginBottom:getDeviceHeight(20)
   },
   userId: {
     fontFamily: APPFONTNAME.Regular,
     color: LIGHT_GRAY_COLOR,
-    fontSize: SMALL_FONT_SIZE
+    fontSize: NORMAL_FONT_SIZE
   },
   FollowingButton: {
     width: getDeviceWidth(626),
@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
     backgroundColor: LIGHT_BLUE,
     borderRadius: 5,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom:getDeviceHeight(60)
   },
   FollowingText: {
     color: 'white',
@@ -63,7 +64,13 @@ const styles = StyleSheet.create({
   },
   pText: {
     color: LIGHT_GRAY_COLOR,
-    fontSize: SMALL_FONT_SIZE
+    fontSize: NORMAL_FONT_SIZE,
+    marginBottom: getDeviceHeight(10)
+  },
+  p_val_Text: {
+    color: LIGHT_GRAY_COLOR,
+    fontSize: BIG_FONT_SIZE,
+    marginBottom: getDeviceHeight(10)
   },
   propertyContainer: {
     justifyContent: 'space-between'
