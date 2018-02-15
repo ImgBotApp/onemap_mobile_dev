@@ -89,13 +89,13 @@ const styles = StyleSheet.create({
     lineHeight:BIG_FONT_SIZE,
   },
   vCollections: {
-    marginTop: GLOBAL.getDeviceHeight(62),
+    marginTop: getDeviceHeight(110),
     marginLeft: GLOBAL.getDeviceWidth(86),
     marginRight: GLOBAL.getDeviceWidth(86)
   },
   collectionTitle: {
     fontFamily: APPFONTNAME.Regular,
-    fontSize: 14,
+    fontSize: BIG_FONT_SIZE,
     marginBottom: GLOBAL.getDeviceHeight(69),
     color: '#575858'
   },
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   },
   storyTitle: {
     fontFamily: APPFONTNAME.Regular,
-    fontSize: 14,
+    fontSize: BIG_FONT_SIZE,
     color: '#575858',
     marginBottom: GLOBAL.getDeviceHeight(83)
   },
