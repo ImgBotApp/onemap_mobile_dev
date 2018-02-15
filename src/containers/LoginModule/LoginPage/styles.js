@@ -13,8 +13,9 @@ const styles = StyleSheet.create({
   },
   marker: {
     marginTop: getDeviceHeight(560),
-    width: getDeviceWidth(1010),
-    height: getDeviceHeight(226)
+    width: getDeviceWidth(1210),
+    resizeMode:'contain',
+    height: getDeviceHeight(276)
   },
   login_str: {
     textAlign: 'center',

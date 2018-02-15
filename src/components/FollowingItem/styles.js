@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
   },
   itemInfo: {
     marginLeft: getDeviceWidth(41),
-    justifyContent: 'center'
+    width: getDeviceWidth(1050),
+    justifyContent: 'center',
   },
   username: {
     fontSize: 16,

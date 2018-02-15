@@ -19,7 +19,7 @@ class FollowingItem extends Component {
     };
     return (
       <View style={styles.userRow}>
-        <View style={styles.mainItem}>
+        <TouchableOpacity style={styles.mainItem} onPress={this.props.onPress}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <TouchableOpacity onPress={this.props.onPress}>
               <CircleImage style={styles.itemImage} uri={item.photoURL} radius={getDeviceWidth(88)} />
@@ -29,6 +29,7 @@ class FollowingItem extends Component {
               <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.bio]}>{item.bio}</Text>
             </View>
           </View>
+          {/*
           <View style={styles.labelContainer}>
             <TouchableOpacity onPress={this.props.onFollow}>
               <View style={styles.followText}>
@@ -36,7 +37,8 @@ class FollowingItem extends Component {
               </View>
             </TouchableOpacity>
           </View>
-        </View>
+          */}
+        </TouchableOpacity>
       </View>
     );
   }

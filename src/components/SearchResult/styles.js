@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
     marginLeft: getDeviceWidth(69),
     alignItems: 'center',
     flexDirection: 'row',
-
   },
   profileImage: {
     width: getDeviceWidth(176),

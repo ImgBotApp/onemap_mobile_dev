@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     backgroundColor: BACKGROUNDCOLOR,
     paddingTop: getDeviceHeight(71),
     paddingLeft: getDeviceWidth(79),
-    paddingRight: getDeviceWidth(60)
+    paddingRight: getDeviceWidth(60),
   },
   userInformationContainer: {
     flexDirection: 'row',
