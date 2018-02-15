@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   },
   myImagesContainer: {
     marginTop: getDeviceHeight(89),
-    width: getDeviceWidth(1118),
+    width: '100%',
     height: getDeviceHeight(393)
   },
   myImages: {
