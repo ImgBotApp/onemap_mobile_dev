@@ -168,7 +168,7 @@ class ProfileCreatePage extends Component {
             Promise.resolve();
             const msg = err.message.toLowerCase();
             if(msg.includes("username") && msg.includes("unique constraint"))
-              alert("user name is duplicated.\nPlease input username again.");
+              alert("You have entered a username that already exists.\n Only unique username is allowed.");
             else alert(msg);
             this.setState({ processing: false });
           });

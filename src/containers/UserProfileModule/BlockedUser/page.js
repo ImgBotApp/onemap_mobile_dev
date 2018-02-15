@@ -1,7 +1,7 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ListView, TouchableOpacity } from 'react-native';
-import Modal from 'react-native-modal'
+import Modal from 'react-native-modalbox'
 import { graphql } from "react-apollo";
 
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
@@ -10,10 +10,13 @@ import CircleImage from '@components/CircleImage'
 import styles from './style'
 import I18n from '@language'
 import { getDeviceWidth, getDeviceHeight } from '@global'
+import { TABBAR_HEIGHT } from '@global/const';
 import { DARK_GRAY_COLOR } from '../../../theme/colors';
-
-import { GET_BLOCKUSRS } from "@graphql/userprofile";
+import { clone } from '@global'
+import { GET_BLOCKUSRS,UNBLOCK_USER } from "@graphql/userprofile";
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import * as SCREEN from '@global/screenName'
+import { client } from '@root/main'
 
 const BLOCKUSERS_PER_PAGE = 20;
 
@@ -41,7 +44,9 @@ class BlockedUser extends Component {
       })
     })
     this.state = {
-      modalVisible: false
+      modalVisible: false,
+      selectedItem:null,
+      blockedUsers:[]
     }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
@@ -52,96 +57,139 @@ class BlockedUser extends Component {
       }
     }
   }
-  _renderModal() {
-    return (
-      <View style={styles.modalFrame}>
-        <View style={styles.modalBody}>
-          <Text style={{ fontSize: 20, marginBottom: getDeviceHeight(47) }}> {I18n.t('BLOCKED_STR')}: </Text>
-          <Text style={{ color: '#a1a1a1', textAlign: 'center', padding: 5, fontSize: 12 }}>{I18n.t('SETTING_BLOCKED_USER_DESCRIPTION')}</Text>
-        </View>
-        <View style={styles.modalFooter}>
-          <TouchableOpacity onPress={this._modalHide.bind(this)}>
-            <View style={styles.footerButton}>
-              <Text style={{ fontSize: 20, color: '#007aff' }}>{I18n.t('CANCEL_STR')}</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this._modalHide.bind(this)}>
-            <View style={styles.footerButton}>
-              <Text style={{ fontSize: 20, color: '#fc5151' }}>{I18n.t('BLOCKED_STR')}</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
-    )
-  }
-  _modalHide() {
-    this.setState({
-      modalVisible: false
+  
+  onPressUserProfile(user) {
+    if(this.props.user.blockByUsers.length > 0)
+    {
+      let ids = this.props.user.blockByUsers.map(item => item.id);
+      let index = ids.indexOf(user.id);
+      if(index >=0 )
+      {
+        alert(I18n.t('UNREACHABLE_STR'));
+        return;
+      }
+    }
+    this.props.navigator.push({
+      screen: SCREEN.USERS_PROFILE_PAGE,
+      title: I18n.t('PROFILE_PAGE_TITLE'),
+      animated: true,
+      passProps: {
+        userInfo: user
+      }
     })
   }
-  _keyExtractor = (item, index) => index;
+  onUnBlockUser(){
+    if(!this.state.selectedItem)
+      return;
+    
+    this.props.unBlockUser({
+      variables: {
+        blockUserId: this.props.user.id,
+        mainUserId:this.state.selectedItem.id
+      }
+    }).then(({ data }) => {
+      let blocks = clone(this.state.blockedUsers);
+      let index = blocks.indexOf(this.state.selectedItem);
+      blocks.splice(index, 1);
+      this.setState({ blockedUsers:blocks });
+      client.resetStore();
+    }).catch(err => alert(err));
+  }
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.data.loading && (nextProps.data.User.blockUsers != this.state.blockedUsers)) {
+      this.setState({ blockedUsers:nextProps.data.User.blockUsers });
+    }
+  }
+  _keyExtractor = (item, index) => item.id;
   render() {
 
-    let blockUsers = [];
-    if (!this.props.data.loading) {
-      blockUsers = this.props.data.User.blockUsers.map((user) => {
-        return {
-          id: user.id,
-          displayName: user.displayName,
-          email: user.email,
-          bio: user.bio ? user.bio : "",
-          photoURL: user.photoURL,
-        }
-      });
-    }
     return (
       <View style={styles.container}>
-        <SwipeListView
-          keyExtractor={this._keyExtractor}
-          useFlatList
-          style={styles.userList}
-          data={blockUsers}
-          renderItem={(data, rowMap) => (
-            <View style={styles.userRow}>
-              <View style={styles.mainItem}>
-                <View style={{ flexDirection: 'row' }}>
-                  <CircleImage style={styles.itemImage} uri={data.item.photoURL} radius={getDeviceWidth(88)} />
-                  <View style={styles.itemInfo}>
-                    <Text style={styles.username}>{data.item.displayName}</Text>
-                    <Text style={styles.bio}>{data.item.bio}</Text>
+        <View style={{ height: '100%' }}>
+          <SwipeListView
+            keyExtractor={this._keyExtractor}
+            useFlatList
+            style={styles.userList}
+            data={this.state.blockedUsers}
+            renderItem={(data, rowMap) => (
+              <TouchableOpacity style={styles.userRow} onPress={() => this.onPressUserProfile(data.item)}>
+                <View style={styles.mainItem}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <CircleImage style={styles.itemImage} uri={data.item.photoURL} radius={getDeviceWidth(88)} />
+                    <View style={styles.itemInfo}>
+                      <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.username}>{data.item.displayName}</Text>
+                      <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.bio}>{data.item.bio}</Text>
+                    </View>
                   </View>
                 </View>
+              </TouchableOpacity>
+            )}
+            renderHiddenItem={(data, rowMap) => (
+              <View>
+                <Text>Left</Text>
+                <View style={styles.rightHidden}>
+                  <TouchableOpacity style={{ width: '100%', height: '100%', justifyContent: 'center' }} onPress={() => {
+                    this.setState({
+                      modalVisible: true,
+                      selectedItem:data.item
+                    })
+                  }}>
+                    <Text style={styles.rightHiddenText}>{I18n.t('UNBLOCK')}</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          )}
-          renderHiddenItem={(data, rowMap) => (
-            <View>
-              <Text>Left</Text>
-              <View style={styles.rightHidden}>
-                <TouchableOpacity style={{ width: '100%', height: '100%', justifyContent: 'center' }} onPress={() => {
-                  this.setState({
-                    modalVisible: true
-                  })
-                }}>
-                  <Text style={styles.rightHiddenText}>{I18n.t('BLOCKED_STR')}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
-          leftOpenValue={70}
-          disableRightSwipe={true}
-          rightOpenValue={-75}
-          onRowOpen={(data, secId, rowId) => {
-          }}
-        />
-        <Modal isVisible={this.state.modalVisible}>
-          {this._renderModal()}
-        </Modal>
+            )}
+            leftOpenValue={70}
+            disableRightSwipe={true}
+            rightOpenValue={-75}
+            onRowOpen={(data, secId, rowId) => {
+            }}
+            closeOnRowPress = {true}
+            closeOnScroll = {true}
+            closeOnRowBeginSwipe = {true}
+            previewFirstRow={false}
+          />
+        </View>
+        { this._renderBlockedUserModal() }
       </View>
     );
   }
+  
+  _renderBlockedUserModal() {
+    return (
+      <Modal style={styles.modalContainer} backdrop={true} position={'center'}
+        isOpen={this.state.modalVisible}
+        onClosed={() => this.setState({ modalVisible: false })}
+      >
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.modalTitle}>{I18n.t('UNBLOCK')}</Text>
+          <Text style={styles.modalDescription}>{I18n.t('SETTING_UNBLOCKED_USER_DESCRIPTION')}</Text>
+        </View>
+        <View style={styles.FollowerBottom}>
+
+          <View style={[styles.modalButton, { borderRightWidth: 1 }]}>
+            <TouchableOpacity onPress={() => {
+                this.setState({ modalVisible: false });
+              }}>
+              <Text style={styles.cancelStr}>{I18n.t('CANCEL_STR')}</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.modalButton}>
+            <TouchableOpacity onPress={() => {
+                this.setState({ modalVisible: false });
+                this.onUnBlockUser();
+              }}>
+              <Text style={styles.unblockStr}>{I18n.t('UNBLOCK')}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    )
+  }
 }
 
+let container = graphql(UNBLOCK_USER, { name: 'unBlockUser' })(BlockedUser);
 const ComponentWithQueries = graphql(GET_BLOCKUSRS, {
   options: (props) => ({
     variables: {
@@ -151,6 +199,6 @@ const ComponentWithQueries = graphql(GET_BLOCKUSRS, {
     },
   }),
 })
-  (BlockedUser);
+  (container);
 //make this component available to the app
 export default ComponentWithQueries;

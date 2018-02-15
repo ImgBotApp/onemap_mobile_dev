@@ -18,7 +18,7 @@ class FollowingItem extends Component {
       photoURL: user.photoURL,
     };
     return (
-      <View style={styles.userRow}>
+      <TouchableOpacity style={styles.userRow} onPress={this.props.onPress}>
         <View style={styles.mainItem}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <TouchableOpacity onPress={this.props.onPress}>
@@ -29,6 +29,7 @@ class FollowingItem extends Component {
               <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.bio]}>{item.bio}</Text>
             </View>
           </View>
+          {/*
           <View style={styles.labelContainer}>
             <TouchableOpacity onPress={this.props.onFollow}>
               <View style={styles.followText}>
@@ -36,8 +37,9 @@ class FollowingItem extends Component {
               </View>
             </TouchableOpacity>
           </View>
+          */}
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 }

@@ -58,7 +58,23 @@ const styles = StyleSheet.create({
   blockStr: {
     color: RED_COLOR,
     fontSize: BIG_FONT_SIZE
-  }
+  },
+  rightHidden: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    height: getDeviceHeight(223),
+    backgroundColor: '#fc5151',
+    justifyContent: 'center',
+    width: getDeviceWidth(311)
+  },
+  rightHiddenText: {
+    color: 'white',
+    fontSize: 13,
+    textAlign: 'center',
+    width: getDeviceWidth(311)
+  },
 });
 
 export default styles

@@ -11,8 +11,7 @@ import { LIGHT_GRAY_COLOR } from '@theme/colors';
 import DFonts from '@theme/fonts';
 
 import { graphql } from "react-apollo";
-import { GET_FOLLOWERS } from "@graphql/userprofile";
-const FOLLOWERS_PER_PAGE = 20;
+
 
 class FollowerList extends Component {
   constructor(props) {
@@ -22,31 +21,18 @@ class FollowerList extends Component {
     }
   }
 
-  _keyExtractor = (item, index) => index;
+  _keyExtractor = (item, index) => item.id;
 
   render() {
-    let followerUsers = [];
-    if (!this.props.data.loading) {
-      followerUsers = this.props.data.User.followers.map((user) => {
-        return {
-          id: user.id,
-          displayName: user.displayName,
-          email: user.email,
-          bio: user.bio ? user.bio : "",
-          key: true,//optional
-          photoURL: user.photoURL,
-        }
-      });
-    }
     return (
       <View style={styles.container}>
         <SwipeListView
           keyExtractor={this._keyExtractor}
           style={styles.userList}
           useFlatList
-          data={followerUsers}
-          renderItem={({ item }) => (
-            <View style={styles.userRow}>
+          data={this.props.followerUsers}
+          renderItem={({ item,index }) => (
+            <TouchableOpacity style={styles.userRow} onPress={() => this.props.onPress(item)}>
               <View style={styles.mainItem}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <TouchableOpacity onPress={() => this.props.onPress(item)}>
@@ -68,9 +54,9 @@ class FollowerList extends Component {
                   )
                 }
               </View>
-            </View>
+            </TouchableOpacity>
           )}
-          renderHiddenItem={({ item }) => (
+          renderHiddenItem={({ item,index }) => (
             <View>
               <Text>Left</Text>
               <View style={styles.rightHidden}>
@@ -95,22 +81,16 @@ class FollowerList extends Component {
               openedRow: ''
             })
           }}
+          closeOnRowPress = {true}
+          closeOnScroll = {true}
+          closeOnRowBeginSwipe = {true}
+          previewFirstRow={true}
         />
       </View>
     );
   }
 }
 
-const ComponentWithQueries = graphql(GET_FOLLOWERS, {
-  options: (props) => ({
-    variables: {
-      userId: props.userid,
-      skip: 0,
-      first: FOLLOWERS_PER_PAGE
-    }
-  })
-})
-  (FollowerList);
 //make this component available to the app
-export default ComponentWithQueries;
+export default FollowerList;
 

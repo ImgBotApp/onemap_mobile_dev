@@ -5,6 +5,7 @@ export default {
   OR_STR          : "OR",
   DONE_STR        : "Done",
   BLOCKED_STR     : "Block",
+  UNBLOCK         : "Unblock",
   CANCEL_STR      : "Cancel",
   UNFOLLOW        : "Unfollow",
   OK_STR          : "Ok",
@@ -77,8 +78,10 @@ export default {
   SETTING_VERIFY_RESEND:" Resend Code",
 
   // Blocked User Page
+  UNREACHABLE_STR : "Unreachable this user at this time. Try again later, please.",
   SETTING_BLOCKED_USER_TITLE: "Blocked User",
   SETTING_BLOCKED_USER_DESCRIPTION: "They won't be able to find your profile, poss or story on One Map. One Map won't let them know you blocked them",
+  SETTING_UNBLOCKED_USER_DESCRIPTION: "They would be able to find your profile, poss or story on One Map.",
   SETTING_UNFOLLOW_USER_DESCRIPTION: "They won’t be able to follow you, see your collections,read your stories or search for you. OneMap will not let them know that you have blocked them.",
 
   // Story Setting
