@@ -32,8 +32,8 @@ class FollowerList extends Component {
           useFlatList
           data={this.props.followerUsers}
           renderItem={({ item,index }) => (
-            <TouchableOpacity style={styles.userRow} onPress={() => this.props.onPress(item)}>
-              <View style={styles.mainItem}>
+            <View style={styles.userRow}>
+              <TouchableOpacity style={styles.mainItem}  onPress={() => this.props.onPress(item)}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <TouchableOpacity onPress={() => this.props.onPress(item)}>
                     <CircleImage style={styles.itemImage} uri={item.photoURL} radius={getDeviceWidth(88)} />
@@ -53,8 +53,8 @@ class FollowerList extends Component {
                     </View>
                   )
                 }
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           )}
           renderHiddenItem={({ item,index }) => (
             <View>

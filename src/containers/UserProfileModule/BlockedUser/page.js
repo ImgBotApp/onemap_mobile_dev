@@ -113,8 +113,8 @@ class BlockedUser extends Component {
             style={styles.userList}
             data={this.state.blockedUsers}
             renderItem={(data, rowMap) => (
-              <TouchableOpacity style={styles.userRow} onPress={() => this.onPressUserProfile(data.item)}>
-                <View style={styles.mainItem}>
+              <View style={styles.userRow}>
+                <TouchableOpacity style={styles.mainItem} onPress={() => this.onPressUserProfile(data.item)}>
                   <View style={{ flexDirection: 'row' }}>
                     <CircleImage style={styles.itemImage} uri={data.item.photoURL} radius={getDeviceWidth(88)} />
                     <View style={styles.itemInfo}>
@@ -122,8 +122,8 @@ class BlockedUser extends Component {
                       <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle,styles.bio]}>{data.item.bio}</Text>
                     </View>
                   </View>
-                </View>
-              </TouchableOpacity>
+                </TouchableOpacity>
+              </View>
             )}
             renderHiddenItem={(data, rowMap) => (
               <View>
@@ -148,7 +148,7 @@ class BlockedUser extends Component {
             closeOnRowPress = {true}
             closeOnScroll = {true}
             closeOnRowBeginSwipe = {true}
-            previewFirstRow={false}
+            previewFirstRow={true}
           />
         </View>
         { this._renderBlockedUserModal() }

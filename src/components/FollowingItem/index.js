@@ -18,8 +18,8 @@ class FollowingItem extends Component {
       photoURL: user.photoURL,
     };
     return (
-      <TouchableOpacity style={styles.userRow} onPress={this.props.onPress}>
-        <View style={styles.mainItem}>
+      <View style={styles.userRow}>
+        <TouchableOpacity style={styles.mainItem} onPress={this.props.onPress}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <TouchableOpacity onPress={this.props.onPress}>
               <CircleImage style={styles.itemImage} uri={item.photoURL} radius={getDeviceWidth(88)} />
@@ -38,8 +38,8 @@ class FollowingItem extends Component {
             </TouchableOpacity>
           </View>
           */}
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
     );
   }
 }

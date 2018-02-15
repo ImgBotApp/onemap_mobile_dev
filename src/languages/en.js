@@ -80,9 +80,9 @@ export default {
   // Blocked User Page
   UNREACHABLE_STR : "Unreachable this user at this time. Try again later, please.",
   SETTING_BLOCKED_USER_TITLE: "Blocked User",
-  SETTING_BLOCKED_USER_DESCRIPTION: "They won't be able to find your profile, poss or story on One Map. One Map won't let them know you blocked them",
-  SETTING_UNBLOCKED_USER_DESCRIPTION: "They would be able to find your profile, poss or story on One Map.",
-  SETTING_UNFOLLOW_USER_DESCRIPTION: "They won’t be able to follow you, see your collections,read your stories or search for you. OneMap will not let them know that you have blocked them.",
+  SETTING_BLOCKED_USER_DESCRIPTION: "They won't be able to find your profile, post or story on One Map. One Map won't let them know you blocked them",
+  SETTING_UNBLOCKED_USER_DESCRIPTION: "They would be able to find your profile, post or story on One Map.",
+  SETTING_UNFOLLOW_USER_DESCRIPTION: "They won’t be able to follow you, see your collections,read your stories or search for you.",
 
   // Story Setting
   SETTING_STORY_ALLOW_PLACEHOLDER: "Allow Message Replies",
