@@ -241,23 +241,33 @@ class FollowerPeople extends Component {
   _renderFollowingModal() {
     return (
       <Modal style={styles.modalContainer} backdrop={true} position={'center'}
-        isOpen={this.state.isFollowingDialog}
-        onClosed={() => this.setState({ isFollowingDialog: false })} >
-        <View style={styles.FollowerdescriptionContainer}>
-          <Text style={styles.BlockTitle}>{'Unfollow'}</Text>
-          <Text style={styles.BlockDescription}>{I18n.t('SETTING_UNFOLLOW_USER_DESCRIPTION')}</Text>
-        </View>
-        <View style={styles.FollowerBottom}>
-          <View style={styles.modalButton}>
-            <TouchableOpacity onPress={() => {
-              this.setState({ isFollowingDialog: false });
-              this.onUnfollow();
-            }}>
-              <Text style={styles.blockStr}>{I18n.t('UNFOLLOW')}</Text>
-            </TouchableOpacity>
+          isOpen={this.state.isFollowingDialog}
+          onClosed={() => this.setState({ isFollowingDialog: false })}
+        >
+          <View style={styles.FollowerdescriptionContainer}>
+            <Text style={styles.BlockTitle}>{I18n.t('UNFOLLOW')}</Text>
+            <Text style={styles.BlockDescription}>{I18n.t('SETTING_UNFOLLOW_USER_DESCRIPTION')}</Text>
           </View>
-        </View>
-      </Modal>
+          <View style={styles.FollowerBottom}>
+
+            <View style={[styles.modalButton, { borderRightWidth: 1 }]}>
+              <TouchableOpacity onPress={() => {
+                  this.setState({ isFollowingDialog: false });
+                }}>
+                <Text style={styles.cancelStr}>{I18n.t('CANCEL_STR')}</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.modalButton}>
+              <TouchableOpacity onPress={() => {
+                  this.setState({ isFollowingDialog: false });
+                  this.onUnfollow();
+                }}>
+                <Text style={styles.blockStr}>{I18n.t('UNFOLLOW')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
     )
   }
 }
