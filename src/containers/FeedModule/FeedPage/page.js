@@ -90,6 +90,7 @@ class FeedPage extends PureComponent {
                 photoURL: story.createdBy.photoURL,
                 updated: new Date(story.updatedAt)
               },
+              createdBy: story.place.createdBy,
               placeName: story.place.placeName,
               images: story.pictureURL ? story.pictureURL.map(uri => { return { uri } }) : [],
               title: story.title,

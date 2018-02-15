@@ -131,8 +131,13 @@ query GetOneMapperProfile($userId: ID!) {
       pictureURL
       place {
         id
+        createdBy {
+          id
+        }
         pictureURL
         placeName
+        locationLat
+        locationLong
       }
       createdBy {
         id
@@ -361,6 +366,9 @@ query GetLikedPlaces($userId: ID!) {
     likePlaces {
       id
       createdAt
+      createdBy {
+        id
+      }
       updatedAt
       description
       source

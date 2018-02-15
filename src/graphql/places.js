@@ -18,7 +18,7 @@ export const GET_ALL_PLACES = gql`
 `
 
 export const GET_PLACE_PROFILE = gql`
-  query PlaceQuery($id: ID!) {
+  query PlaceQuery($id: ID!, $userId: ID, $createdById: ID) {
     Place(id: $id) {
       id
       createdBy {
@@ -53,7 +53,20 @@ export const GET_PLACE_PROFILE = gql`
         }
         name
       }
-      stories(orderBy: updatedAt_DESC) {
+      stories(orderBy: updatedAt_DESC, filter: {
+        OR: [
+          {
+            createdBy: {
+              id: $userId
+            }
+          },
+          {
+            createdBy: {
+              id: $createdById
+            }
+          }
+        ]
+      }) {
         id
         title
         story
@@ -63,14 +76,6 @@ export const GET_PLACE_PROFILE = gql`
           photoURL
         }
         pictureURL
-        place {
-          id
-          address
-          description
-          locationLat
-          locationLong
-          pictureURL
-        }
         updatedAt
       }
       checkIns {
@@ -142,6 +147,9 @@ export const CREATE_PLACE = gql`
       createdById: $createdById
     ) {
         id
+        createdBy {
+          id
+        }
     }
   }
 `
@@ -150,6 +158,9 @@ export const GET_PLACES_FROM_GOOGLEId = gql`
   query getPlacesFromSourceId($sourceId: String!) {
     allPlaces(filter: {source: GOOGLE_PLACE, sourceId: $sourceId}) {
       id
+      createdBy {
+        id
+      }
     }
  }
  `
@@ -205,6 +216,9 @@ query GetCheckedPlaces($userId: ID!) {
   }) {
     id
     createdAt
+    createdBy {
+      id
+    }
     updatedAt
     description
     source
