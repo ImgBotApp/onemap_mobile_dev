@@ -17,6 +17,7 @@ import { GET_BLOCKUSRS,UNBLOCK_USER } from "@graphql/userprofile";
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import * as SCREEN from '@global/screenName'
 import { client } from '@root/main'
+import DFonts from '@theme/fonts';
 
 const BLOCKUSERS_PER_PAGE = 20;
 
@@ -117,8 +118,8 @@ class BlockedUser extends Component {
                   <View style={{ flexDirection: 'row' }}>
                     <CircleImage style={styles.itemImage} uri={data.item.photoURL} radius={getDeviceWidth(88)} />
                     <View style={styles.itemInfo}>
-                      <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.username}>{data.item.displayName}</Text>
-                      <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.bio}>{data.item.bio}</Text>
+                      <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title,styles.username]}>{data.item.displayName}</Text>
+                      <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle,styles.bio]}>{data.item.bio}</Text>
                     </View>
                   </View>
                 </View>
