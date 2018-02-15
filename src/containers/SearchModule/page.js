@@ -22,7 +22,7 @@ import Permissions from 'react-native-permissions'
 
 import Places from 'google-places-web'
 
-import { PLACES_APIKEY } from '@global/const';
+import { PLACES_APIKEY,TABBAR_HEIGHT } from '@global/const';
 import Toast, { DURATION } from 'react-native-easy-toast'
 import axios from 'axios';
 
@@ -250,8 +250,8 @@ class SearchPage extends Component {
           {
             this.state.result == false ?
               (
-                <View style={{ width: '100%' }}>
-                  <View style={styles.mapView}>
+                <View style={{ width: '100%',height:'100%',paddingBottom:TABBAR_HEIGHT }}>
+                  <View style={[styles.mapView,{flex:0.75}]}>
                     <View style={styles.mapWrapper}>
                       <MapView
                         // showsUserLocation={true}
@@ -299,7 +299,7 @@ class SearchPage extends Component {
                   </View>
                   <FlatList
                     keyExtractor={(item, index) => index}
-                    style={{ paddingTop: getDeviceHeight(50) }}
+                    style={{ paddingTop: getDeviceHeight(50),flex:0.25}}
                     data={this.state.nearByPlaces}
                     renderItem={({ item }) =>
                       <View>

@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
   },
   mapView: {
     width: '100%',
-    height: getDeviceHeight(1000),
     overflow: 'hidden',
     zIndex:10
   },

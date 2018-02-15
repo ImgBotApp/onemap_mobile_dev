@@ -296,6 +296,7 @@ export const GET_BLOCKUSRS = gql`
         count
       }
       blockUsers(skip: $skip, first: $first) {
+        id
         email
         username
         firstName
@@ -386,4 +387,31 @@ query GetLikedPlaces($userId: ID!) {
     }
   }
 }
+`
+/**
+ * Block other user
+ */
+export const BLOCK_USER = gql`
+  mutation BlockUser($mainUserId: ID!, $blockUserId: ID!) {
+    addToUserBlockUser(blockUsersUserId: $blockUserId blockByUsersUserId: $mainUserId) {
+      blockUsersUser {
+        id
+      }
+      blockByUsersUser {
+        id
+      }
+    }
+  }
+`
+export const UNBLOCK_USER = gql`
+  mutation unblockUser($mainUserId: ID!, $blockUserId: ID!){
+    removeFromUserBlockUser(blockUsersUserId: $mainUserId, blockByUsersUserId: $blockUserId) {
+      blockUsersUser {
+        id
+      }
+      blockByUsersUser {
+        id
+      }
+    }
+  }
 `

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet,Platform } from 'react-native'
 import * as GLOBAL from '@global'
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
@@ -33,13 +33,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   nameView: {
+    paddingHorizontal: getDeviceWidth(48),
     justifyContent: 'space-between',
-    width:getDeviceWidth(650),
-    paddingRight:getDeviceWidth(30)
+    width:getDeviceWidth(720)
   },
   bigName: {
     fontFamily: APPFONTNAME.Bold,
     fontSize: BIG_FONT_SIZE,
+    lineHeight:BIG_FONT_SIZE+2,
     color: DARK_GRAY_COLOR,
     marginBottom:getDeviceHeight(20)
   },
@@ -56,12 +57,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 7,
     borderColor: '#575858',
-    marginBottom:getDeviceHeight(60)
   },
   editProfile: {
     color: '#575858',
     fontFamily: APPFONTNAME.Regular,
-    fontSize: SMALL_FONT_SIZE
+    fontSize: SMALL_FONT_SIZE,
   },
   bio: {
     fontFamily: APPFONTNAME.Regular,
@@ -78,24 +78,24 @@ const styles = StyleSheet.create({
   },
   specFont: {
     fontFamily: APPFONTNAME.Regular,
-    fontSize: NORMAL_FONT_SIZE,
+    fontSize: SMALL_FONT_SIZE,
     color: DARK_GRAY_COLOR,
-    marginBottom: GLOBAL.getDeviceHeight(10)
+    lineHeight:SMALL_FONT_SIZE+2
   },
   spec_val_Font:{
     fontFamily: APPFONTNAME.Regular,
     fontSize: BIG_FONT_SIZE,
     color: DARK_GRAY_COLOR,
-    marginBottom: GLOBAL.getDeviceHeight(10)
+    lineHeight:BIG_FONT_SIZE,
   },
   vCollections: {
-    marginTop: GLOBAL.getDeviceHeight(62),
+    marginTop: getDeviceHeight(110),
     marginLeft: GLOBAL.getDeviceWidth(86),
     marginRight: GLOBAL.getDeviceWidth(86)
   },
   collectionTitle: {
     fontFamily: APPFONTNAME.Regular,
-    fontSize: 14,
+    fontSize: BIG_FONT_SIZE,
     marginBottom: GLOBAL.getDeviceHeight(69),
     color: '#575858'
   },
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   },
   storyTitle: {
     fontFamily: APPFONTNAME.Regular,
-    fontSize: 14,
+    fontSize: BIG_FONT_SIZE,
     color: '#575858',
     marginBottom: GLOBAL.getDeviceHeight(83)
   },
