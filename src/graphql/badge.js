@@ -4,18 +4,14 @@ import { client } from '@root/main'
 export const GET_BADGES_BY_CAMPAIGN = gql`
 query BadgeQuery($campaignId: ID!) {
   allBadges(filter: {
-    conditions_every: {
-      conditionGroup: {
-        campaign:{
-          id: $campaignId
-        }
+    city: {
+      campaign: {
+        id: $campaignId
       }
     }
   }) {
     id
-    createdAt
-    name
-    photoURL
+    iconUrl
   }
 }`
 

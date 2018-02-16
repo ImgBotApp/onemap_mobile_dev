@@ -15,16 +15,23 @@ class BadgeTab extends Component {
       <View style={styles.container}>
       {
         this.props.badges ?
-        this.props.badges.map(badge => {
+        this.props.badges.map((badge, index) => {
           return (
-            <View style={styles.badgeContainer}>
-              <Image source={ badge.photoURL ? {uri: badge.photoURL } : require('@assets/images/greenPin_old.png')} style={styles.badgeImage}/>
+            <View style={styles.badgeContainer} key={index}>
+              <Image source={ badge.iconUrl ? {uri: badge.iconUrl } : require('@assets/images/greenPin_old.png')} style={styles.badgeImage}/>
             </View>
           )
         })
         : null
       }
-        
+      {
+        this.props.badges.length % 3 == 2 ? 
+        (
+          <View style={styles.emptyElement}>
+          </View>
+        )
+        : null
+      }
       </View>
     );
   }
@@ -35,7 +42,7 @@ BadgeTab.propTypes = {
     id: PropTypes.string,
     createdAt: PropTypes.string,
     name: PropTypes.string,
-    photoURL: PropTypes
+    iconUrl: PropTypes.string
   }))
 }
 //make this component available to the app

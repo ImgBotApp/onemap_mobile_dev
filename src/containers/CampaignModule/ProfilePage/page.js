@@ -47,7 +47,7 @@ class CampaignProfilePage extends Component {
       page: ''
     }
     this.FetchCampaignDetail(props.campaignId)
-    // this.FetchBadgesByCampaign(props.campaignId)
+    this.FetchBadgesByCampaign(props.campaignId)
   }
 
   onNaviagtorEvent(event) {

@@ -25,6 +25,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'cover'
+  },
+  emptyElement: {
+    width: getDeviceWidth(374),
+    height: getDeviceWidth(374),
   }
 });
 
