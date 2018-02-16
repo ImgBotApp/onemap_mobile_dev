@@ -13,30 +13,6 @@ import { GetPlaceByCondition, GetRulesByCondition, GetConditionDetail } from '..
 import { getPlaceDetail } from '../../../graphql/places'
 import SuggestPlaceItem from '../../../components/CampaignSuggestPlace'
 import * as SCREEN from '../../../global/screenName'
-const SuggestPlace = [{
-  id: 'cjdbog6jmbo470191whdq90rj',
-  name: 'Khad Khong Tha  Lampang',
-  images: [
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any'
-  ],
-  address: 'Talad Gao Rd, Suan Dok, Mueang Lampang, Lampang  52100'
-},{
-  id: 'cjdbodhg5bnp701912v6sa2xm',
-  name: 'Khad Khong Tha  Lampang',
-  images: [
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any'
-  ],
-  address: 'Talad Gao Rd, Suan Dok, Mueang Lampang, Lampang  52100'
-}
-]
 
 // create a component
 class PlaceDetailPage extends Component {
@@ -238,9 +214,9 @@ class PlaceDetailPage extends Component {
       <View style={styles.container}>
       <ScrollView>        
         { this.renderCondtionDetail() }
-        { this.renderPlaceDetail() }
+        {/* { this.renderPlaceDetail() }
         { this.renderRules() }
-        { this.renderSuggestPlaces() }
+        { this.renderSuggestPlaces() } */}
       </ScrollView>      
       </View>
     );
@@ -249,6 +225,12 @@ class PlaceDetailPage extends Component {
 
 PlaceDetailPage.propTypes = {
   id: PropTypes.string,
+  suggestPlaces: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    address: PropTypes.string,
+    pictureURL: PropTypes.arrayOf(PropTypes.string),
+    placeName: PropTypes.str
+  })),
   name: PropTypes.string,
   campaignName: PropTypes.string
 }

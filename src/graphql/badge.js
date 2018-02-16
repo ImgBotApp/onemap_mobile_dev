@@ -80,3 +80,35 @@ export function GetBadgesByCity(cityId) {
   }).then(res => Promise.resolve(res.data))
   .then(res => res.allBadges)
 }
+
+export const GET_BADGE_DETAIL = gql`
+query BadgeQuery($badgeId: ID!, $userId: ID!) {
+  Badge(id: $badgeId) {
+    id
+    iconUrl
+    title
+    subtitle
+    receivedBy(filter: {
+      user:{
+        id: $userId
+      }
+    }) {
+      id
+    }
+    description
+    places {
+      pictureURL
+    }
+  }
+}`
+
+export function GetBadgeDetail(badgeId, userId) {
+  return client.query({
+    query: GET_BADGE_DETAIL,
+    variables: {
+      badgeId:  badgeId,
+      userId: userId
+    }
+  }).then(res => Promise.resolve(res.data))
+  .then(res => Promise.resolve(res.Badge))
+}

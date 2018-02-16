@@ -115,7 +115,15 @@ class CampaignPage extends Component {
       })
       console.log('goto place detail')
     } else {
-      console.log('Badge detail')
+      this.props.navigator.push({
+        screen: SCREEN.CAMPAIGN_PLACE_DETAIL_PAGE,
+        title: I18n.t('CAMPAIGN_PLACE_DETAIL'),
+        passProps: {
+          suggestPlaces: this.state.suggestPlaces,
+          id: place.badges[0].id
+        }
+      })
+      console.log('goto Badge detail')
     }
   }
 
