@@ -63,7 +63,6 @@ class Collections extends Component {
         latitudeDelta: 10.8, longitudeDelta: 30.4
       }
     }
-    this.regionContainingPoints();
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
   componentWillMount() {
@@ -85,6 +84,7 @@ class Collections extends Component {
       }
     } else {
       this.props.navigator.setTitle({ title: I18n.t('DRAWER_STORIES') });
+      this.regionContainingPoints();
     }
   }
   onNavigatorEvent(event) {
@@ -103,8 +103,9 @@ class Collections extends Component {
         userId: this.props.userId ? this.props.userId : this.props.user.id,
       }
     }).then(({ data }) => {
-      this.setState({ places: data.User.likePlaces, loading: false });
+      this.state.places = data.User.likePlaces;
       this.regionContainingPoints();
+      this.setState({ loading: false });
     }).catch(err => alert(err))
   }
   getCheckedPlaces() {
@@ -115,8 +116,9 @@ class Collections extends Component {
         userId: this.props.userId ? this.props.userId : this.props.user.id,
       }
     }).then(({ data }) => {
-      this.setState({ places: data.allPlaces, loading: false });
+      this.state.places = data.allPlaces;
       this.regionContainingPoints();
+      this.setState({ loading: false });
     }).catch(err => alert(err))
   }
   getCollectionPlaces() {
@@ -129,8 +131,9 @@ class Collections extends Component {
         skip: 0
       }
     }).then(({ data }) => {
-      this.setState({ places: data.Collection.places, loading: false });
+      this.state.places = data.Collection.places;
       this.regionContainingPoints();
+      this.setState({ loading: false });
     }).catch(err => alert(err))
   }
   getBookmarkedPlaces() {
@@ -147,8 +150,9 @@ class Collections extends Component {
       data.allCollections.forEach(item => {
         places = [...places, ...item.places];
       });
-      this.setState({ places, loading: false });
+      this.state.places = places;
       this.regionContainingPoints();
+      this.setState({ loading: false });
     }).catch(err => alert(err))
   }
   regionContainingPoints() {
@@ -179,12 +183,10 @@ class Collections extends Component {
       var deltaY = (maxY - minY);
 
       var padding = 0;
-      this.setState({
-        mapRegion: {
-          latitude: midX, longitude: midY,
-          latitudeDelta: deltaX + padding, longitudeDelta: deltaY + padding,
-        }
-      });
+      this.state.mapRegion = {
+        latitude: midX, longitude: midY,
+        latitudeDelta: deltaX + padding, longitudeDelta: deltaY + padding
+      };
     }
   }
   _renderTabHeader(text) {
