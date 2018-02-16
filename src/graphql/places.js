@@ -242,3 +242,27 @@ query GetCheckedPlaces($userId: ID!) {
   }
 }
 `
+
+export const GET_SUGGEST_PLACES = gql`
+query PlaceQuery() {
+  {
+    allPlaces(filter:{
+      isSuggest:true
+    }) {
+      id
+      placeName
+      address
+      pictureURL
+      badges {
+        id
+      }
+    }
+  }
+}`
+
+export function GetSuggestPlaces() {
+  return client.query({
+    query: GET_SUGGEST_PLACES
+  }).then(res => Promise.resolve(res.data))
+  .then(res => Promise.resolve(res.allPlaces))
+}

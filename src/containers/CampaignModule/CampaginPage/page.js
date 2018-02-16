@@ -248,7 +248,7 @@ class CampaignPage extends Component {
         <CardView style={styles.conditionGroup}
           cardElevation={2}
           cardMaxElevation={2}
-          cornerRadius={5}
+          cornerRadius={8}
         >
           <ScrollView>
           { this.renderShortPart()}
