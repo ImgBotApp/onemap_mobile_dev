@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   },
   RuleContainer: {
     marginTop: getDeviceWidth(98),
-    marginLeft: getDeviceWidth(151),
+    marginLeft: getDeviceWidth(87),
   },
   RuleLabel: {
     color: '#585958'    
@@ -141,6 +141,10 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: '#585958',
     width: getDeviceWidth(1100)
+  },
+  RuleContainerItem: {
+    paddingBottom: 10,
+    width: getDeviceWidth(1236)
   }
 });
 

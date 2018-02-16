@@ -96,7 +96,12 @@ class PlaceDetailPage extends Component {
   renderBadgeDetail() {
     return (
       <View style={styles.detailPart}>
+        <CardView cardElevation={2}
+          cardMaxElevation={2}
+          cornerRadius={15}
+          >
         <Image source={ this.state.detail.iconUrl ? { uri: this.state.detail.iconUrl} : require('@assets/images/badge/badge.png')}  style={styles.detailImage}/>
+        </CardView>
         <View style={styles.detailContainer}>
           <View style={{justifyContent: 'space-between'}}>
             <Text style={[FontStyle.Title, styles.detailName]} numberOfLines={2}>{this.state.detail.title}</Text>
@@ -141,9 +146,11 @@ class PlaceDetailPage extends Component {
               <Text style={[FontStyle.SubContent, styles.PlaceDetailCardPlaceName]} numberOfLines={2}>{this.state.detail.places.placeName}</Text>
               <View style={styles.SperateBar}></View>
               <Text style={[FontStyle.SubTitle, styles.placeDescription]}>{this.state.detail.places.description}</Text>
-            <TouchableOpacity onPress={() => this.onVisitPlaceProfile(this.state.place.place && this.state.place.place.id)}>
-              <Text style={[FontStyle.SubTitle, styles.placeMore]}>{I18n.t('PROFILE_VIEW_MORE')}</Text>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.onVisitPlaceProfile(this.state.place.place && this.state.place.place.id)}
+                style={{width: '30%'}}
+              >
+                <Text style={[FontStyle.SubTitle, styles.placeMore]}>{I18n.t('PROFILE_VIEW_MORE')}</Text>
+              </TouchableOpacity>
           </View>
         </CardView>
       </View>
@@ -156,27 +163,19 @@ class PlaceDetailPage extends Component {
       <CardView cardElevation={2}
         cardMaxElevation={2}
         cornerRadius={5}
-        style={{width: '55%', backgroundColor: 'white'}}
+        style={styles.RuleContainerItem}
         >
-        <Text style={[FontStyle.Content, styles.pointRewards]}>{this.state.rules.pointReward}{' Points'}</Text>
+        <Text style={[FontStyle.Content, styles.pointRewards]}>{this.state.detail.point}{' Points'}</Text>
         <View style={styles.eventType}>
           <Image source={require('@assets/images/badge/checkin.png')} style={styles.checkInImage}/>
-          <Text style={[FontStyle.SubContent, styles.ruleText]}>{' '}{this.state.rules.type}{' '}{this.state.rules.distance}{' m'}</Text>
+          <Text style={[FontStyle.SubContent, styles.ruleText]}>{' '}{I18n.t('FEED_CHECK_IN')}{' '}{this.state.detail.distance}{' m'}</Text>
         </View>
         <View style={styles.eventType}>
           <Image source={require('@assets/images/badge/time.png')} style={styles.checkInImage}/>
           <View>
-          {
-            this.state.rules.dates && this.state.rules.dates.map((item, index) => {
-              return (
-                <View key={index}>
-                <Text style={[FontStyle.SubContent, styles.ruleText]}>
-                  {' '}{ moment(item.fromDateTime).format('DD MMM YY')} {' - '} { moment(item.toDateTime).format('DD MMM YY')} 
-                </Text>
-                </View>
-              )
-            })
-          }
+            <Text style={[FontStyle.SubContent, styles.ruleText]}>
+              {' '}{ moment(this.state.detail.startDate).format('DD MMM YY')} {' - '} { moment(this.state.detail.endDate).format('DD MMM YY')} 
+            </Text>
           </View>
         </View>
       </CardView>
@@ -230,7 +229,7 @@ class PlaceDetailPage extends Component {
       <ScrollView>        
         { this.renderBadgeDetail() }
         { this.renderPlaceDetail() }
-        {/* { this.renderRules() } */}
+        { this.renderRules() }
         {/* { this.renderSuggestPlaces() } */}
       </ScrollView>      
       </View>
