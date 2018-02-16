@@ -32,7 +32,9 @@ class PlaceDetailPage extends Component {
     this.state = {
       place: {},
       rules: {},
-      detail: {}
+      detail: {
+        places: {}
+      }
     }
     console.log(this.props)
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
@@ -197,7 +199,7 @@ class PlaceDetailPage extends Component {
       <View style={styles.SuggestPlaceContainer}>
         <FlatList
           keyExtractor={(item, index) => index}
-          data={SuggestPlace}
+          data={this.props.suggestPlaces}
           horizontal
           renderItem={({ item }) => (
             <CardView cardElevation={2}
@@ -205,7 +207,7 @@ class PlaceDetailPage extends Component {
               cornerRadius={5}
               style={styles.SPlaceItem}
             >
-              <SuggestPlaceItem id={item.id} name={item.name} address={item.address} images={item.images} key={item.id}
+              <SuggestPlaceItem id={item.id} name={item.placeName} address={item.address} images={item.pictureURL}
                 onPress={() => this.onVisitPlaceProfile(item.id)}
               />
             </CardView>
@@ -230,7 +232,7 @@ class PlaceDetailPage extends Component {
         { this.renderBadgeDetail() }
         { this.renderPlaceDetail() }
         { this.renderRules() }
-        {/* { this.renderSuggestPlaces() } */}
+        { this.renderSuggestPlaces() }
       </ScrollView>      
       </View>
     );

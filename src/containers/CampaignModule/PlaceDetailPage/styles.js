@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   SuggestContainer: {
     marginTop: getDeviceWidth(103),
-    marginLeft: getDeviceWidth(138),    
+    marginLeft: getDeviceWidth(87),    
   },
   SuggestPlaceContainer: {
     marginTop: getDeviceWidth(66)
