@@ -8,7 +8,7 @@ import ViewMoreText from '@components/ViewMoreText'
 import { LATITUDE, LONGITUDE, LATITUDE_DELTA, LONGITUDE_DELTA } from '@global/const'
 import { GetConditionByGroup } from '../../../graphql/condition'
 import { GetBadgesByCondtionGroup, GetBadgesByCity } from '../../../graphql/badge'
-import { GetSuggestPlaces } from '../../../graphql/places'
+import { GetSuggestPlaces, getPlaceDetail } from '../../../graphql/places'
 import PropTypes from 'prop-types'
 import CardView from 'react-native-cardview'
 import FontStyle from '../../../theme/fonts'
@@ -17,30 +17,7 @@ import styles from './styles'
 import SuggestPlaceItem from '../../../components/CampaignSuggestPlace'
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
 import * as SCREEN from '../../../global/screenName'
-const SuggestPlace = [{
-  id: 'cjdjefc2anqin0180hlr8msd8',
-  name: 'Khad Khong Tha  Lampang',
-  images: [
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any'
-  ],
-  address: 'Talad Gao Rd, Suan Dok, Mueang Lampang, Lampang  52100'
-},{
-  id: 'cjdjecsnvnq0a0180zs953ez2',
-  name: 'Khad Khong Tha  Lampang',
-  images: [
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any'
-  ],
-  address: 'Talad Gao Rd, Suan Dok, Mueang Lampang, Lampang  52100'
-}
-]
+
 // create a component
 class CampaignPage extends Component {
   constructor(props) {
@@ -120,13 +97,26 @@ class CampaignPage extends Component {
     })
   }
 
-  onNavigatePlaceDetail(index) {
+  onNavigatePlaceDetail(place) {
     // this.props.navigator.push({
     //   screen: SCREEN.CAMPAIGN_PLACE_DETAIL_PAGE,
     //   title: I18n.t('CAMPAIGN_PLACE_DETAIL'),
     //   passProps: detail
     // })
-    console.log(index)
+    if (place.badges.length == 0) {
+      getPlaceDetail(place.id)
+      .then(res => {
+        this.props.navigator.push({
+          screen: SCREEN.PLACE_PROFILE_PAGE,
+          passProps: {
+            place: res
+          }
+        })
+      })
+      console.log('goto place detail')
+    } else {
+      console.log('Badge detail')
+    }
   }
 
   renderShortPart = () => {
