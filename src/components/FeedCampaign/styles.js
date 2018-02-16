@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
     height: getDeviceWidth(127),
     borderRadius: getDeviceWidth(63),
     borderColor: 'transparent',
-    borderWidth: 1
+    borderWidth: 1,
+    resizeMode: 'cover'
   },
   campaignInfo: {
     justifyContent: 'space-between',

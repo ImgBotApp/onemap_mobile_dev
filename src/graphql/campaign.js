@@ -10,9 +10,11 @@ export const GET_CAMPAIGN_BY_USER = gql`
     }) 
     {
       id
-      name
+      title
+      subtitle
       description
-      photoUrl
+      pictureUrl
+      iconUrl
       partner {
         id
         username
@@ -28,7 +30,8 @@ export function getCampaignByUser(userId) {
     variables: {
       userId: userId
     }
-  })
+  }).then(res => Promise.resolve(res.data))
+  .then(res => res.allCampaigns)
 }
 
 export const GET_CAMPAIGN_DETAIL = gql`
@@ -36,6 +39,27 @@ query CampaignQuery($campaignId:  ID!) {
   Campaign(id: $campaignId) {
     id
     active
+    cities {
+      id
+      locationLat
+      locationLong
+      subtitle
+      title
+    }
+    createdAt
+    description
+    events {
+      id
+      active
+      fromDateTime
+      toDateTime
+      name
+      description
+    }
+    iconUrl
+    _joinedByMeta {
+      count
+    }
     name
     partner {
       id
@@ -45,25 +69,9 @@ query CampaignQuery($campaignId:  ID!) {
         count
       }
     }
-    description
-    conditionGroups {
-      id
-      locationLat
-      locationLong
-      iconUrl
-      title
-      updatedAt
-      subtitle
-      description
-    }
-    events {
-      id
-      active
-      fromDateTime
-      toDateTime
-      name
-      description
-    }
+    pictureUrl
+    subtitle
+    title
   }
 }`
 

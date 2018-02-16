@@ -40,13 +40,14 @@ class CampaignProfilePage extends Component {
       detail: {
         partner: {
           _followersMeta: {}
-        }
+        },
+        _joinedByMeta: {}
       },
       badges: [],
       page: ''
     }
     this.FetchCampaignDetail(props.campaignId)
-    this.FetchBadgesByCampaign(props.campaignId)
+    // this.FetchBadgesByCampaign(props.campaignId)
   }
 
   onNaviagtorEvent(event) {
@@ -67,6 +68,7 @@ class CampaignProfilePage extends Component {
   FetchCampaignDetail(campaignId) {
     getCampaignDetail(campaignId)
     .then(res => {
+      console.log('Campaign Detail', res)
       this.setState({
         detail: res,
         page: 'mapView'
@@ -89,7 +91,7 @@ class CampaignProfilePage extends Component {
       screen: CAMPAIGN_CONDITION_GROUP_PAGE,
       title: I18n.t('CAMPAGIN_ALL_BADGES'),
       passProps: {
-        conditionGroups: this.state.detail.conditionGroups
+        conditionGroups: this.state.detail.cities
       }
     })
   }
@@ -98,16 +100,15 @@ class CampaignProfilePage extends Component {
     return (
       <View style={styles.infoContainer}>
         <View style={styles.profileImage}>
-          <CircleImage uri={this.state.detail.partner.photoURL} radius={getDeviceWidth(170)}/>
+          <CircleImage uri={this.state.detail.iconUrl} radius={getDeviceWidth(170)}/>
           <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage} />
         </View>
         <View style={styles.userInfoContainer}>
           <Text style={[FontStyle.Title,styles.campaignName]}>{this.state.detail.name}</Text>
-          <Text style={[FontStyle.SubTitle, styles.campaignOwner]}>{this.state.detail.partner.username}</Text>
         </View>
         <View style={styles.followerContainer}>
-          <Text style={[FontStyle.SubTitle, styles.followerText]}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWERS')}</Text>
-          <Text style={[FontStyle.Content, styles.followerCount]}>{this.state.detail.partner._followersMeta.count}</Text>
+          <Text style={[FontStyle.SubTitle, styles.followerText]}>{I18n.t('CAMPAIGN_JOINED')}</Text>
+          <Text style={[FontStyle.Content, styles.followerCount]}>{this.state.detail._joinedByMeta.count}</Text>
         </View>
       </View>
     )
@@ -129,10 +130,10 @@ class CampaignProfilePage extends Component {
             <Text style={[FontStyle.Content, this.state.page=='mapView' ? styles.tabSelectItemText : styles.tabItemText]}> {I18n.t('CAMPAIGN_MAP_VIEW')} </Text>
             <View style={this.state.page=='mapView' ? styles.separateSelect : styles.separate}></View>
           </View>
-          <View style={styles.tabItem} name="events">
+          {/* <View style={styles.tabItem} name="events">
             <Text style={[FontStyle.Content, this.state.page=='events' ? styles.tabSelectItemText : styles.tabItemText]}> {I18n.t('CAMPAIGN_EVENT_VIEW')} </Text>
             <View style={this.state.page=='events' ? styles.separateSelect : styles.separate}></View>
-          </View>
+          </View> */}
           <View style={styles.tabItem} name="badge">
             <Text style={[FontStyle.Content, this.state.page=='badge' ? styles.tabSelectItemText : styles.tabItemText]}> {I18n.t('CAMPAIGN_BADGE_VIEW')} </Text>
             <View style={this.state.page=='badge' ? styles.separateSelect : styles.separate}></View>
@@ -144,7 +145,7 @@ class CampaignProfilePage extends Component {
 
   _renderMainPart() {
     if (this.state.page == 'mapView') {
-      const condGroup = this.state.detail.conditionGroups.map(item => {
+      const cities = this.state.detail.cities.map(item => {
         return {
           id: item.id,
           lat: item.locationLat,
@@ -153,7 +154,7 @@ class CampaignProfilePage extends Component {
         }
       })
       return (
-        <MapTabView  places = {condGroup} onConditionGroup={(id) => this.onNavigateConditionGroupPage(id)}/>
+        <MapTabView  places = {cities} onConditionGroup={(id) => this.onNavigateConditionGroupPage(id)}/>
       )
     }
     if (this.state.page == 'events') {

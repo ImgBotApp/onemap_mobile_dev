@@ -7,6 +7,7 @@ import ViewMoreText from '@components/ViewMoreText'
 import I18n from '@language'
 import DFonts from '@theme/fonts'
 import PropTypes from 'prop-types'
+import FontStyle from '../../theme/fonts'
 /**
  * Props Event
  * 
@@ -18,10 +19,11 @@ class FeedCampaign extends Component {
   static propTypes = {
     data: PropTypes.shape({
       id: PropTypes.string.isRequired,
-      profile: PropTypes.string,
+      iconUrl: PropTypes.string,
       title: PropTypes.string,
+      subtitle: PropTypes.string,
       description: PropTypes.string,
-      image: PropTypes.string
+      pictureUrl: PropTypes.arrayOf(PropTypes.string)
     }),
     onVisitProfile: PropTypes.func.isRequired
   }
@@ -33,10 +35,10 @@ class FeedCampaign extends Component {
       <CardView style={styles.container} cardElevation={2} cardMaxElevation={2} cornerRadius={5}>
         <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row' }}>
-            <Image source={{ uri: this.props.data.profile }} style={styles.markImage} />
+            <Image source={{ uri: this.props.data.iconUrl }} style={styles.markImage} />
             <View style={styles.campaignInfo}>
-              <Text style={styles.title} numberOfLines={1}>{this.props.data.title}</Text>
-              <Text style={styles.campaign}>{I18n.t('FEED_CAMPAIGN')}</Text>
+              <Text style={[FontStyle.Title, styles.title]} numberOfLines={1}>{this.props.data.title}</Text>
+              <Text style={[FontStyle.SubTitle, styles.campaign]}>{this.props.data.subtitle}</Text>
             </View>
           </View>
           <TouchableOpacity onPress={() => this.props.onVisitProfile(this.props.data.id)}>
@@ -50,11 +52,11 @@ class FeedCampaign extends Component {
             numberOfLines={3}
             renderViewMore={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read more</Text>)}
             renderViewLess={(onPress) => (<Text onPress={onPress} style={styles.additionalText}>read less</Text>)}
-            textStyle={styles.description}>
+            textStyle={[FontStyle.Regular, styles.description]}>
             {this.props.data.description}
           </ViewMoreText>
         </View>
-        <Image source={{ uri: this.props.data.image }} style={styles.image} />
+        <Image source={{ uri: this.props.data.pictureUrl.length && this.props.data.pictureUrl[0] }} style={styles.image} />
       </CardView>
     );
   }

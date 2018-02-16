@@ -149,5 +149,6 @@ export default {
   CAMPAIGN_SUUGESTED_PLACE: 'Suggested place',
   CAMPAIGN_BADGE: 'Badges',
   CAMPAIGN_PLACE_DETAIL: 'Place Detail',
-  CAMPAGIN_RULES: 'Rules'
+  CAMPAGIN_RULES: 'Rules',
+  CAMPAIGN_JOINED: 'Joined'
 }

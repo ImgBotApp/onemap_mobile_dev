@@ -63,12 +63,8 @@ class FeedPage extends Component {
     this.getMyCollections();
     getCampaignByUser(this.props.user.id)
     .then(res => {
-      const campaigns = res.data.allCampaigns.map(item => ({
-        id: item.id,
-        profile: item.partner.photoURL,
-        title: item.name,
-        description: item.description,
-        image: item.photoUrl,
+      const campaigns = res.map(item => ({
+        ...item,
         type: 'campaign'
       }))
       this.setState({

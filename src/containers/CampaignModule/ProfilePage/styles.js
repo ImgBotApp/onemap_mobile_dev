@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   campaignName: {
     color: '#575858',
-    maxWidth: getDeviceWidth(700)
+    maxWidth: getDeviceWidth(670)
   },
   campaignOwner: {
     color: '#575858'    
