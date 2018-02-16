@@ -244,18 +244,16 @@ query GetCheckedPlaces($userId: ID!) {
 `
 
 export const GET_SUGGEST_PLACES = gql`
-query PlaceQuery() {
-  {
-    allPlaces(filter:{
-      isSuggest:true
-    }) {
+query PlaceQuery {
+  allPlaces(filter:{
+    isSuggest:true
+  }) {
+    id
+    placeName
+    address
+    pictureURL
+    badges {
       id
-      placeName
-      address
-      pictureURL
-      badges {
-        id
-      }
     }
   }
 }`

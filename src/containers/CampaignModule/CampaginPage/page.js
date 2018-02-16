@@ -8,6 +8,7 @@ import ViewMoreText from '@components/ViewMoreText'
 import { LATITUDE, LONGITUDE, LATITUDE_DELTA, LONGITUDE_DELTA } from '@global/const'
 import { GetConditionByGroup } from '../../../graphql/condition'
 import { GetBadgesByCondtionGroup, GetBadgesByCity } from '../../../graphql/badge'
+import { GetSuggestPlaces } from '../../../graphql/places'
 import PropTypes from 'prop-types'
 import CardView from 'react-native-cardview'
 import FontStyle from '../../../theme/fonts'
@@ -93,7 +94,6 @@ class CampaignPage extends Component {
   FetchBadgeData() {
     GetBadgesByCity(this.props.id)
     .then(res => {
-      console.log('Badge Data', res)
       this.setState({
         badges: res
       })
@@ -170,7 +170,7 @@ class CampaignPage extends Component {
           renderItem={({item}) => (
             <CardView cardElevation={2}
               cardMaxElevation={2}
-              cornerRadius={5}
+              cornerRadius={15}
               style={styles.BadgeItem}
             >
               <Image source={item.photoURL ? {uri: item.photoURL} : require('@assets/images/badge/badge.png')} style={styles.badgeImage}/>

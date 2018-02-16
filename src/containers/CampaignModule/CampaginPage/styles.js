@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
   BadgeItem: {
     width: getDeviceWidth(292),
     height: getDeviceWidth(293),
-    marginLeft: 10
+    marginLeft: 10,
+    marginBottom: 10
   },
   badgeImage: {
     width: '100%',
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     borderWidth: 1,
     borderColor:  'transparent',
-    borderRadius: 5
+    borderRadius: 5,
   }
 });
 
