@@ -10,6 +10,7 @@ import I18n from '@language'
 import CardView from 'react-native-cardview'
 import moment from 'moment'
 import { GetPlaceByCondition, GetRulesByCondition, GetConditionDetail } from '../../../graphql/condition'
+import { GetBadgeDetail } from '../../../graphql/badge'
 import { getPlaceDetail } from '../../../graphql/places'
 import SuggestPlaceItem from '../../../components/CampaignSuggestPlace'
 import * as SCREEN from '../../../global/screenName'
@@ -33,13 +34,14 @@ class PlaceDetailPage extends Component {
       rules: {},
       detail: {}
     }
+    console.log(this.props)
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
   }
 
   componentWillMount() {
     this.FetchPlaceDetail()
-    this.FetchRuleData()
-    this.FetchConditionDetail()
+    // this.FetchRuleData()
+    // this.FetchConditionDetail()
   }
 
   FetchConditionDetail =() => {
@@ -52,10 +54,11 @@ class PlaceDetailPage extends Component {
   }
 
   FetchPlaceDetail = () => {
-    GetPlaceByCondition(this.props.id)
+    GetBadgeDetail(this.props.id, this.props.user.id)
     .then(res => {
+      console.log(res)
       this.setState({
-        place: res.places ? res.places[0] : null
+        detail: res
       })
     })
   }
@@ -90,20 +93,15 @@ class PlaceDetailPage extends Component {
     })
   }
 
-  renderCondtionDetail() {
+  renderBadgeDetail() {
     return (
       <View style={styles.detailPart}>
         <Image source={ this.state.detail.iconUrl ? { uri: this.state.detail.iconUrl} : require('@assets/images/badge/badge.png')}  style={styles.detailImage}/>
         <View style={styles.detailContainer}>
-          <View>
-            <Text style={[FontStyle.Title, styles.detailName]}>{this.state.detail.name}</Text>
-            <Text style={[FontStyle.SubTitle, styles.detailName, {marginTop: 10}]}>{this.state.detail.subtitle}</Text>
+          <View style={{justifyContent: 'space-between'}}>
+            <Text style={[FontStyle.Title, styles.detailName]} numberOfLines={2}>{this.state.detail.title}</Text>
+            <Text style={[FontStyle.SubTitle, styles.detailName, {marginTop: 10}]} numberOfLines={1}>{this.state.detail.subtitle}</Text>
           </View>
-          <TouchableOpacity>
-            <View style={styles.CheckInContainer}>
-              <Text style={[FontStyle.SubTitle, {color: '#585958'}]}>{I18n.t('FEED_CHECK_IN')}</Text>
-            </View>
-          </TouchableOpacity>
         </View>
       </View>
     )
@@ -213,7 +211,7 @@ class PlaceDetailPage extends Component {
     return (
       <View style={styles.container}>
       <ScrollView>        
-        { this.renderCondtionDetail() }
+        { this.renderBadgeDetail() }
         {/* { this.renderPlaceDetail() }
         { this.renderRules() }
         { this.renderSuggestPlaces() } */}

@@ -18,14 +18,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     borderColor: 'transparent',
-    
+    resizeMode: 'cover'    
   },
   detailContainer: {
     marginLeft: getDeviceWidth(98),
     justifyContent: 'space-between'
   },
   detailName: {
-    color: '#585958'
+    color: '#585958',
+    width: getDeviceWidth(841)
   },
   CheckInContainer: {
     width: getDeviceWidth(841),
