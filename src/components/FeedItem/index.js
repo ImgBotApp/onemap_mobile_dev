@@ -40,10 +40,10 @@ class FeedItem extends Component {
         <View style={styles.userInfo}>
           <TouchableOpacity onPress={this._onUserInformation.bind(this)}>
             <View style={styles.user}>
-              <CircleImage style={styles.profileImage} uri={this.props.data.user.photoURL} radius={getDeviceWidth(70)} />
+              <CircleImage style={styles.profileImage} uri={this.props.data.createdBy.photoURL} radius={getDeviceWidth(70)} />
               <View style={styles.userDescription}>
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.name, DFonts.Title]}>{this.props.data.user.displayName}</Text>
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.update, DFonts.SubTitle]}>{formattedTimeDiffString(this.props.data.user.updated)}</Text>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.name, DFonts.Title]}>{this.props.data.createdBy.displayName}</Text>
+                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[styles.update, DFonts.SubTitle]}>{formattedTimeDiffString(this.props.data.updated)}</Text>
               </View>
             </View>
           </TouchableOpacity>

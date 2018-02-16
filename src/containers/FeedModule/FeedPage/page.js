@@ -83,14 +83,13 @@ class FeedPage extends PureComponent {
             return {
               id: story.place.id,
               type: 'item',
-              user: {
+              createdBy: {
                 id: story.createdBy.id,
                 displayName: story.createdBy.displayName,
                 username: story.createdBy.username,
                 photoURL: story.createdBy.photoURL,
-                updated: new Date(story.updatedAt)
               },
-              createdBy: story.place.createdBy,
+              updated: new Date(story.updatedAt),
               placeName: story.place.placeName,
               images: story.pictureURL ? story.pictureURL.map(uri => { return { uri } }) : [],
               title: story.title,
@@ -222,7 +221,7 @@ class FeedPage extends PureComponent {
       <View style={styles.feedItem}>
         <FeedItem
           data={data}
-          onPress={place => this.onPressUserProfile(place.user)}
+          onPress={place => this.onPressUserProfile(place.createdBy)}
           onBookMarker={() => this.onBookMarker(data, index)}
           onPlace={() => this.onPlace(data, index)}
         />
