@@ -41,6 +41,8 @@ query CampaignQuery($campaignId:  ID!) {
     active
     cities {
       id
+      description
+      iconUrl
       locationLat
       locationLong
       subtitle
