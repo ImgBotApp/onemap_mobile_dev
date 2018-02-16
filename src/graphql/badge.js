@@ -95,9 +95,15 @@ query BadgeQuery($badgeId: ID!, $userId: ID!) {
     }) {
       id
     }
+    distance
+    startDate
+    endDate
+    point
     description
     places {
+      placeName
       pictureURL
+      description
     }
   }
 }`

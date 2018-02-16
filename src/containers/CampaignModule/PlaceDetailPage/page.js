@@ -115,19 +115,36 @@ class PlaceDetailPage extends Component {
           cornerRadius={5}
           style={styles.placeDetailContainer}
           >
-          <FlatList 
-            keyExtractor={(item, index) => index}
-            data={this.state.detail.imageUrl ? this.state.detail.imageUrl : []}
-            style={styles.placeDetail}
-            horizontal
-            renderItem={({ item }) => (
-              <Image source={{uri: item}} style={styles.placeImage} />
-            )}
-          />
-          <Text style={[FontStyle.SubTitle, styles.placeDescription]}>{this.state.detail.description}</Text>
-          <TouchableOpacity onPress={() => this.onVisitPlaceProfile(this.state.place.place && this.state.place.place.id)}>
-            <Text style={[FontStyle.SubTitle, styles.placeMore]}>{I18n.t('PROFILE_VIEW_MORE')}</Text>
-          </TouchableOpacity>
+            <View style={styles.PlaceDetailCardContainer}>
+              <Text style={[FontStyle.Title, styles.detailName]}>{this.state.detail.title}</Text>
+              <View style={styles.PlaceDetailCardDestinationContainer}>
+                <Text style={[FontStyle.SubTitle, styles.PlaceDetailCardDestinationText]}>
+                  {I18n.t('CAMPAIGN_DISTANCE')}{' '}
+                  {'100'}{'km'}
+                  {'('}
+                  {'30min'}
+                  {')'}
+                </Text>
+                <TouchableOpacity style={styles.PlaceDetailCardCheckIn}>
+                  <Text style={[FontStyle.SubTitle, styles.PlaceDetailCardCheckInText]}>{I18n.t('FEED_CHECK_IN')}</Text>
+                </TouchableOpacity>
+              </View>
+              <FlatList 
+                keyExtractor={(item, index) => index}
+                data={this.state.detail.places.pictureURL ? this.state.detail.places.pictureURL : []}
+                style={styles.placeDetail}
+                horizontal
+                renderItem={({ item }) => (
+                  <Image source={{uri: item}} style={styles.placeImage} />
+                )}
+              />
+              <Text style={[FontStyle.SubContent, styles.PlaceDetailCardPlaceName]} numberOfLines={2}>{this.state.detail.places.placeName}</Text>
+              <View style={styles.SperateBar}></View>
+              <Text style={[FontStyle.SubTitle, styles.placeDescription]}>{this.state.detail.places.description}</Text>
+            <TouchableOpacity onPress={() => this.onVisitPlaceProfile(this.state.place.place && this.state.place.place.id)}>
+              <Text style={[FontStyle.SubTitle, styles.placeMore]}>{I18n.t('PROFILE_VIEW_MORE')}</Text>
+            </TouchableOpacity>
+          </View>
         </CardView>
       </View>
     )
@@ -212,9 +229,9 @@ class PlaceDetailPage extends Component {
       <View style={styles.container}>
       <ScrollView>        
         { this.renderBadgeDetail() }
-        {/* { this.renderPlaceDetail() }
-        { this.renderRules() }
-        { this.renderSuggestPlaces() } */}
+        { this.renderPlaceDetail() }
+        {/* { this.renderRules() } */}
+        {/* { this.renderSuggestPlaces() } */}
       </ScrollView>      
       </View>
     );

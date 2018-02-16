@@ -46,24 +46,25 @@ const styles = StyleSheet.create({
   },
   placeDetail: {
     marginTop: getDeviceWidth(63),
-    marginLeft: getDeviceWidth(42)
+    // marginLeft: getDeviceWidth(42)
   },
   placeImage: {
     width:  getDeviceWidth(428),
     height: getDeviceWidth(300),
-    marginLeft: 10,
+    // marginLeft: 10,
+    marginBottom: 10,
     resizeMode: 'cover',
     borderWidth: 1,
     borderColor: 'transparent',
     borderRadius: 5
   },
   placeDescription: {
-    marginLeft: getDeviceWidth(60),
-    marginTop: getDeviceWidth(101)
+    // marginLeft: getDeviceWidth(60),
+    marginTop: getDeviceWidth(41)
   },
   placeMore: {
-    marginLeft: getDeviceWidth(60),
-    color: '#007aff'    
+    // marginLeft: getDeviceWidth(60),
+    color: '#007aff'
   },
   RuleContainer: {
     marginTop: getDeviceWidth(98),
@@ -82,12 +83,12 @@ const styles = StyleSheet.create({
     color: '#585958',
   },
   ruleText: {
-    color: '#585958',    
+    color: '#585958',
   },
   eventType: {
     marginTop: getDeviceWidth(29),
     marginLeft: getDeviceWidth(46),
-    flexDirection: 'row'   
+    flexDirection: 'row'
   },
   checkInImage: {
     width: getDeviceWidth(49),
@@ -104,6 +105,42 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginLeft: 6,
     marginBottom: 6
+  },
+  PlaceDetailCardContainer: {
+    marginLeft: getDeviceWidth(60),
+    marginTop: getDeviceWidth(60),
+    marginRight: 0,
+  },
+  PlaceDetailCardDestinationContainer: {
+    marginTop: getDeviceWidth(20),
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  PlaceDetailCardDestinationText: {
+    color: '#585958',
+  },
+  PlaceDetailCardCheckIn: {
+    marginRight: 10,
+    width: getDeviceWidth(250),
+    height: getDeviceWidth(80),
+    borderColor: '#007aff',
+    borderWidth: 1,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  PlaceDetailCardCheckInText: {
+    color: '#007aff'
+  },
+  PlaceDetailCardPlaceName: {
+    color: '#585958',    
+  },
+  SperateBar: {
+    marginTop: 10,
+    borderWidth: 0.5,
+    borderColor: '#585958',
+    width: getDeviceWidth(1100)
   }
 });
 

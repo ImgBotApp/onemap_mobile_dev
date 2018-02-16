@@ -150,5 +150,6 @@ export default {
   CAMPAIGN_BADGE: 'Badges',
   CAMPAIGN_PLACE_DETAIL: 'Place Detail',
   CAMPAGIN_RULES: 'Rules',
-  CAMPAIGN_JOINED: 'Joined'
+  CAMPAIGN_JOINED: 'Joined',
+  CAMPAIGN_DISTANCE: 'Destination',
 }
