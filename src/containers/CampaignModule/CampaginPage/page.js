@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import { LATITUDE, LONGITUDE, LATITUDE_DELTA, LONGITUDE_DELTA } from '@global/const'
 import { GetConditionByGroup } from '../../../graphql/condition'
-import { GetBadgesByCondtionGroup } from '../../../graphql/badge'
+import { GetBadgesByCondtionGroup, GetBadgesByCity } from '../../../graphql/badge'
 import PropTypes from 'prop-types'
 import CardView from 'react-native-cardview'
 import FontStyle from '../../../theme/fonts'
@@ -65,7 +65,6 @@ class CampaignPage extends Component {
       shortFlag: false,
       badges: []
     }
-    console.log('Campaign Condition Groups' , this.props)
     this.FetchBadgeData()
   }
 
@@ -91,14 +90,17 @@ class CampaignPage extends Component {
   }
 
   FetchBadgeData() {
-    GetBadgesByCondtionGroup(this.props.id)
+    GetBadgesByCity(this.props.id)
     .then(res => {
-      this.setState({badges: res})
+      console.log('Badge Data', res)
+      this.setState({
+        badges: res
+      })
     })
   }
 
   fitMarkers = () => {
-    const makers = this.state.conditions.map((item, index) => {
+    const makers = this.state.badges.map((item, index) => {
       return {
         latitude: item.locationLat,
         longitude: item.locationLong
@@ -203,10 +205,10 @@ class CampaignPage extends Component {
           }}
           onLayout={() => this.fitMarkers()}
           ref={ref => { this.map = ref }}
-          scrollEnabled={false}
+          // scrollEnabled={false}
         >
         {
-          this.state.conditions && this.state.conditions.map((condition, index) => {
+          this.state.badges && this.state.badges.map((condition, index) => {
             return (
               <Marker
                 identifier = { 'conditionGroup' + index }
