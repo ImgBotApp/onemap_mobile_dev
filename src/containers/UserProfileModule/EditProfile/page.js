@@ -132,7 +132,7 @@ class EditProfile extends Component {
           Promise.resolve();
           const msg = err.message.toLowerCase();
           if(msg.includes("username") && msg.includes("unique constraint"))
-            alert("You have entered a username that already exists.\n Only unique username is allowed.");
+            alert("The username "+this.state.username+" already exists. Please use a different username.");
           else alert(msg);
           this.setState({ processing: false });
         });

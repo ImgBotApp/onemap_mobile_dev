@@ -177,7 +177,7 @@ class ProfilePage extends Component {
           <View style={styles.propertyContainer}>
             <View style={styles.propertyView}>
               <Text style={[DFonts.Regular, styles.pText]}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWED')}</Text>
-              {followed && <Entypo name="user" size={17} color={BLUE_COLOR} />}
+              <Entypo name="user" size={17} color={followed?BLUE_COLOR:'white'} />
             </View>
             <View style={styles.propertyView}>
               <Text style={[DFonts.Regular, styles.pText]}>
