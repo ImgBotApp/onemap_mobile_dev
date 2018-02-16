@@ -113,7 +113,6 @@ class CampaignPage extends Component {
           }
         })
       })
-      console.log('goto place detail')
     } else {
       this.props.navigator.push({
         screen: SCREEN.CAMPAIGN_PLACE_DETAIL_PAGE,
@@ -123,7 +122,6 @@ class CampaignPage extends Component {
           id: place.badges[0].id
         }
       })
-      console.log('goto Badge detail')
     }
   }
 
@@ -200,6 +198,18 @@ class CampaignPage extends Component {
       </View>
     )
   }
+
+  onNavigateBadgeDetailPage(id) {
+    this.props.navigator.push({
+      screen: SCREEN.CAMPAIGN_PLACE_DETAIL_PAGE,
+      title: I18n.t('CAMPAIGN_PLACE_DETAIL'),
+      passProps: {
+        suggestPlaces: this.state.suggestPlaces,
+        id: id
+      }
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -212,6 +222,7 @@ class CampaignPage extends Component {
             latitudeDelta: this.state.lat_delta,
             longitudeDelta: this.state.long_delta,
           }}
+          onPress={() => this.setState({shortFlag: false})}
           onLayout={() => this.fitMarkers()}
           ref={ref => { this.map = ref }}
           // scrollEnabled={false}
@@ -227,11 +238,7 @@ class CampaignPage extends Component {
                   latitude: condition.locationLat,
                   longitude: condition.locationLong
                 }}
-                onPress={() => this.onNavigatePlaceDetail({
-                  id: condition.id,
-                  name: condition.name,
-                  campaignName: this.props.title
-                })}
+                onPress={() => this.onNavigateBadgeDetailPage(condition.id)}
                 image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
               >
               <Callout >

@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   placeImage: {
     width:  getDeviceWidth(428),
     height: getDeviceWidth(300),
-    // marginLeft: 10,
+    marginRight: 10,
     marginBottom: 10,
     resizeMode: 'cover',
     borderWidth: 1,
