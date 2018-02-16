@@ -64,6 +64,11 @@ export const GET_PLACE_PROFILE = gql`
             createdBy: {
               id: $createdById
             }
+          },
+          {#added for test
+            createdBy: {
+              id_not: $createdById
+            }
           }
         ]
       }) {

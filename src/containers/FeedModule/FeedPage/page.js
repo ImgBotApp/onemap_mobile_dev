@@ -172,22 +172,22 @@ class FeedPage extends PureComponent {
     this.props.getStoriesPaginated.refetch();
   }
   onEndReached() {
-    // const { getStoriesPaginated } = this.props;
-    // if (!getStoriesPaginated.loading) {
-    //   getStoriesPaginated.fetchMore({
-    //     variables: {
-    //       skip: getStoriesPaginated.allStories.length + STORIES_PER_PAGE,
-    //     },
-    //     updateQuery: (previousResult, { fetchMoreResult }) => {
-    //       if (!fetchMoreResult || fetchMoreResult.allStories.length === 0) {
-    //         return previousResult;
-    //       }
-    //       return {
-    //         allStories: previousResult.allStories.concat(fetchMoreResult.allStories),
-    //       };
-    //     }
-    //   });
-    // }
+    const { getStoriesPaginated } = this.props;
+    if (!getStoriesPaginated.loading) {
+      getStoriesPaginated.fetchMore({
+        variables: {
+          skip: getStoriesPaginated.allStories.length + STORIES_PER_PAGE,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult || fetchMoreResult.allStories.length === 0) {
+            return previousResult;
+          }
+          return {
+            allStories: previousResult.allStories.concat(fetchMoreResult.allStories),
+          };
+        }
+      });
+    }
   }
   _renderSuggestedList(data) {
     if (this.state.suggestFlag == false) return <View />;
