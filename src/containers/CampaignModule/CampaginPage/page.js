@@ -94,6 +94,7 @@ class CampaignPage extends Component {
   FetchBadgeData() {
     GetBadgesByCity(this.props.id)
     .then(res => {
+      console.log('Badge Data', res)
       this.setState({
         badges: res
       })
@@ -173,7 +174,7 @@ class CampaignPage extends Component {
               cornerRadius={15}
               style={styles.BadgeItem}
             >
-              <Image source={item.photoURL ? {uri: item.photoURL} : require('@assets/images/badge/badge.png')} style={styles.badgeImage}/>
+              <Image source={item.iconUrl ? {uri: item.iconUrl} : require('@assets/images/badge/badge.png')} style={styles.badgeImage}/>
             </CardView>
           )}
         />

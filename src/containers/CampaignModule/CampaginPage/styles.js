@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     borderWidth: 1,
     borderColor:  'transparent',
-    borderRadius: 5,
+    borderRadius: 15,
   }
 });
 
