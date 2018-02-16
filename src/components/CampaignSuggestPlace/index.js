@@ -18,7 +18,7 @@ class SuggestPlace extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={[FontStyle.SubContent, styles.PlaceName]}>{this.props.name}</Text>
+        <Text style={[FontStyle.SubContent, styles.PlaceName]} numberOfLines={1}>{this.props.name}</Text>
         {/* <OptimizedFlatList
           keyExtractor={(item, index) => item.uri}
           data={this.props.images}

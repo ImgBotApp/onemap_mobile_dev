@@ -63,8 +63,9 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   SPlaceItem: {
-    marginRight: 10,
-    marginBottom: 10
+    marginLeft: 10,
+    marginBottom: 10,
+    backgroundColor: '#efeeee'
   },
   Badges: {
     color: '#575858',

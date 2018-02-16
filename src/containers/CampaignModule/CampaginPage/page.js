@@ -65,17 +65,14 @@ class CampaignPage extends Component {
       long_delta: LONGITUDE_DELTA,
       conditions: [],
       shortFlag: false,
-      badges: []
+      badges: [],
+      suggestPlaces: []
     }
     this.FetchBadgeData()
+    this.FetchSuggestPlace()
   }
 
   componentWillMount = () => {
-    GetConditionByGroup(this.props.id).then(res => {
-      this.setState({
-        conditions: res
-      })
-    })
   }
 
   onNaviagtorEvent = (event) => {
@@ -94,9 +91,18 @@ class CampaignPage extends Component {
   FetchBadgeData() {
     GetBadgesByCity(this.props.id)
     .then(res => {
-      console.log('Badge Data', res)
       this.setState({
         badges: res
+      })
+    })
+  }
+
+  FetchSuggestPlace() {
+    GetSuggestPlaces()
+    .then(res => {
+      console.log('Suggest Place', res)
+      this.setState({
+        suggestPlaces: res
       })
     })
   }
@@ -114,12 +120,13 @@ class CampaignPage extends Component {
     })
   }
 
-  onNavigatePlaceDetail(detail) {
-    this.props.navigator.push({
-      screen: SCREEN.CAMPAIGN_PLACE_DETAIL_PAGE,
-      title: I18n.t('CAMPAIGN_PLACE_DETAIL'),
-      passProps: detail
-    })
+  onNavigatePlaceDetail(index) {
+    // this.props.navigator.push({
+    //   screen: SCREEN.CAMPAIGN_PLACE_DETAIL_PAGE,
+    //   title: I18n.t('CAMPAIGN_PLACE_DETAIL'),
+    //   passProps: detail
+    // })
+    console.log(index)
   }
 
   renderShortPart = () => {
@@ -140,8 +147,8 @@ class CampaignPage extends Component {
     return (
       <View style={styles.SuggestPlaceContainer}>
         <FlatList
-          keyExtractor={(item, index) => item.index}
-          data={SuggestPlace}
+          keyExtractor={(item, index) => index}
+          data={this.state.suggestPlaces}
           horizontal
           renderItem={({ item }) => (
             <CardView cardElevation={2}
@@ -149,11 +156,7 @@ class CampaignPage extends Component {
               cornerRadius={5}
               style={styles.SPlaceItem}
             >
-              <SuggestPlaceItem id={item.id} name={item.name} address={item.address} images={item.images} onPress={(id) => this.onNavigatePlaceDetail({
-                  id: id,
-                  name: 'Test name',
-                  campaignName: this.props.title
-                })}/>
+              <SuggestPlaceItem id={item.id} name={item.placeName} address={item.address} images={item.pictureURL} onPress={(id) => this.onNavigatePlaceDetail(item)}/>
             </CardView>
           )}
         />
@@ -192,7 +195,6 @@ class CampaignPage extends Component {
           textStyle={[FontStyle.SubContent, styles.description]}>
           {this.props.description}
         </ViewMoreText>
-        {/* <Text style={[FontStyle.SubContent,styles.conditionGroupDescription]}>{this.props.description}</Text> */}
         <Text style={[FontStyle.Title, styles.SuggestPlace]}>{I18n.t('CAMPAIGN_SUUGESTED_PLACE')}</Text>
         { this.renderSuggestedPlace() }
         <Text style={[FontStyle.Title, styles.Badges]}>{I18n.t('CAMPAIGN_BADGE')}</Text>
