@@ -68,6 +68,7 @@ query BadgeQuery($cityId: ID!) {
     locationLat
     locationLong
     iconUrl
+    title
   }
 }`
 

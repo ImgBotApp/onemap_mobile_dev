@@ -243,7 +243,7 @@ class CampaignPage extends Component {
               >
               <Callout >
                 <View style={{justifyContent: 'center', alignItems: 'center', flex: 1 , maxHeight: 30}}>
-                  <Text style={[FontStyle.Regular, {textAlign: 'center', width: '100%'}]}>{condition.name}</Text>
+                  <Text style={[FontStyle.Regular, {textAlign: 'center', width: '100%'}]}>{condition.title}</Text>
                 </View>
               </Callout>
               {Platform.OS === 'ios' && (
