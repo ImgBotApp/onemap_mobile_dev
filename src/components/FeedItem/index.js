@@ -87,7 +87,7 @@ class FeedItem extends Component {
         }
         {/* Description */}
         {!!this.props.data.description &&
-          <View style={styles.descriptionText}>
+          <View style={[DFonts.Regular, styles.descriptionText]}>
             <ViewMoreText
               numberOfLines={3}
               renderViewMore={(onPress) => (<Text onPress={onPress} style={[DFonts.Regular, styles.additionalText]}>read more</Text>)}
