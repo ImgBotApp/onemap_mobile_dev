@@ -53,7 +53,7 @@ export function getImageFromVideoURL(videourl) {
 export function convertImageToThumbURL(url){
   //https://lh3.googleusercontent.com/p/AF1QipPYcHqGh5yfPkVAN6PPQGobh079i_sN5hW24nRh=s300
   let result = url;
-  
+
   if (url) {
     let splitUrl = url.split('/');
     if (splitUrl && splitUrl.length > 2) {

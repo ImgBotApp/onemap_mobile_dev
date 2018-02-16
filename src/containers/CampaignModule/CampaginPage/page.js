@@ -45,11 +45,11 @@ class CampaignPage extends Component {
       badges: [],
       suggestPlaces: []
     }
-    this.FetchBadgeData()
-    this.FetchSuggestPlace()
   }
 
   componentWillMount = () => {
+    this.FetchBadgeData()
+    this.FetchSuggestPlace()
   }
 
   onNaviagtorEvent = (event) => {
@@ -77,7 +77,6 @@ class CampaignPage extends Component {
   FetchSuggestPlace() {
     GetSuggestPlaces()
     .then(res => {
-      console.log('Suggest Place', res)
       this.setState({
         suggestPlaces: res
       })
@@ -98,11 +97,6 @@ class CampaignPage extends Component {
   }
 
   onNavigatePlaceDetail(place) {
-    // this.props.navigator.push({
-    //   screen: SCREEN.CAMPAIGN_PLACE_DETAIL_PAGE,
-    //   title: I18n.t('CAMPAIGN_PLACE_DETAIL'),
-    //   passProps: detail
-    // })
     if (place.badges.length == 0) {
       getPlaceDetail(place.id)
       .then(res => {
@@ -260,7 +254,11 @@ class CampaignPage extends Component {
         >
           <ScrollView>
           { this.renderShortPart()}
-          { this.state.shortFlag ? this.renderFullPart() : null}
+          <View style={{display: this.state.shortFlag ? 'flex': 'none',}}>
+            {
+              this.renderFullPart()
+            }
+          </View>
           </ScrollView>
         </CardView>
       </View>
