@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
   conditionGroup: {
     width: getDeviceWidth(1346),
     minHeight: getDeviceWidth(280),
+    maxHeight: getDeviceWidth(1959),
     paddingLeft: getDeviceWidth(101),
     paddingTop: getDeviceWidth(32),
     marginBottom: 10,
@@ -43,6 +44,14 @@ const styles = StyleSheet.create({
   },
   conditionGroupDescription: {
     marginTop: getDeviceWidth(113)
+  },
+  description: {
+    width: getDeviceWidth(1198),
+    color: '#585958',
+    marginTop: getDeviceWidth(113)
+  },
+  additionalText: {
+    color: '#007aff'
   },
   SuggestPlace: {
     color: '#575858',

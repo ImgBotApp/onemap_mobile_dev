@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Image, Platform, TouchableOpacity, FlatList, Sc
 import MapView, { PROVIDER_GOOGLE, ProviderPropType, Marker, Callout } from 'react-native-maps';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
+import ViewMoreText from '@components/ViewMoreText'
 import { LATITUDE, LONGITUDE, LATITUDE_DELTA, LONGITUDE_DELTA } from '@global/const'
 import { GetConditionByGroup } from '../../../graphql/condition'
 import { GetBadgesByCondtionGroup, GetBadgesByCity } from '../../../graphql/badge'
@@ -183,7 +184,14 @@ class CampaignPage extends Component {
   renderFullPart = () => {
     return (
       <View style={styles.conditionGroupFullInfo}>
-        <Text style={[FontStyle.SubContent,styles.conditionGroupDescription]}>{this.props.description}</Text>
+        <ViewMoreText
+          numberOfLines={3}
+          renderViewMore={(onPress) => (<Text onPress={onPress} style={[FontStyle.SubContent, styles.additionalText]}>read more</Text>)}
+          renderViewLess={(onPress) => (<Text onPress={onPress} style={[FontStyle.SubContent, styles.additionalText]}>read less</Text>)}
+          textStyle={[FontStyle.SubContent, styles.description]}>
+          {this.props.description}
+        </ViewMoreText>
+        {/* <Text style={[FontStyle.SubContent,styles.conditionGroupDescription]}>{this.props.description}</Text> */}
         <Text style={[FontStyle.Title, styles.SuggestPlace]}>{I18n.t('CAMPAIGN_SUUGESTED_PLACE')}</Text>
         { this.renderSuggestedPlace() }
         <Text style={[FontStyle.Title, styles.Badges]}>{I18n.t('CAMPAIGN_BADGE')}</Text>
