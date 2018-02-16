@@ -37,6 +37,7 @@ assets_*
 *.keystore
 gradle.properties
 settings.json
+release/
 
 bin/
 .project

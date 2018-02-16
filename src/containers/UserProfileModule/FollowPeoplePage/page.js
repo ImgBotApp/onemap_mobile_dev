@@ -12,6 +12,10 @@ import * as SCREEN from '@global/screenName'
 import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
 import styles from './styles'
+import { SwipeListView } from 'react-native-swipe-list-view'
+import DFonts from '@theme/fonts';
+import { TABBAR_HEIGHT } from '@global/const';
+import { client } from '@root/main'
 
 // create a component
 class FollowerPeople extends Component {
@@ -42,7 +46,9 @@ class FollowerPeople extends Component {
       page: 'followers',
       isFollowerDialog: false,
       isFollowingDialog: false,
-      selectedIndex: 0
+      selectedIndex: 0,
+      selectedUser:null,
+      followerUsers:[]
     }
   }
   onNavigatorEvent = (event) => {
@@ -56,6 +62,16 @@ class FollowerPeople extends Component {
   }
 
   onPressUserProfile(user) {
+    if(this.props.user.blockByUsers.length > 0)
+    {
+      let ids = this.props.user.blockByUsers.map(item => item.id);
+      let index = ids.indexOf(user.id);
+      if(index >=0 )
+      {
+        alert(I18n.t('UNREACHABLE_STR'));
+        return;
+      }
+    }
     this.props.navigator.push({
       screen: SCREEN.USERS_PROFILE_PAGE,
       title: I18n.t('PROFILE_PAGE_TITLE'),
@@ -65,15 +81,20 @@ class FollowerPeople extends Component {
       }
     })
   }
-  onFollowingPressed(index) {
+  onFollowingPressed(item) {
     this.setState({
       isFollowingDialog: true,
-      selectedIndex: index
+      selectedUser: item
     })
   }
   onUnfollow() {
+    if(!this.state.selectedUser)
+      return;
+    
     let followsIds = clone(this.props.follows.map(item => item.id));
-    followsIds.splice(this.state.selectedIndex, 1);
+    let index = followsIds.indexOf(this.state.selectedUser.id);
+    
+    followsIds.splice(index, 1);
 
     this.props.unfollowUser({
       variables: {
@@ -82,13 +103,34 @@ class FollowerPeople extends Component {
       }
     }).then(({ data }) => {
       this.props.saveUserFollows(data.updateUser.follows);
+      this.forceUpdate();
+      client.resetStore();
     }).catch(err => alert(err));
   }
 
   onFollowerBlock = (userData) => {
     this.setState({
-      isFollowerDialog: true
+      isFollowerDialog: true,
+      selectedUser:userData
     })
+  }
+
+  onBlockUser(){
+    if(!this.state.selectedUser)
+      return;
+    
+    this.props.addBlockUser({
+      variables: {
+        mainUserId: this.props.user.id,
+        blockUserId:this.state.selectedUser.id
+      }
+    }).then(({ data }) => {
+      let followers = clone(this.state.followerUsers);
+      let index = followers.indexOf(this.state.selectedUser);
+      followers.splice(index, 1);
+      this.setState({ followerUsers:followers });
+      client.resetStore();
+    }).catch(err => alert(err));
   }
 
   renderFollowItem = ({ item, index }) => {
@@ -100,6 +142,12 @@ class FollowerPeople extends Component {
       />
     )
   }
+  componentWillReceiveProps(nextProps) {
+    let followers = [];
+    if (!nextProps.data.loading && (nextProps.data.User.followers != this.state.followerUsers)) {
+      this.setState({ followerUsers:nextProps.data.User.followers });
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -107,22 +155,49 @@ class FollowerPeople extends Component {
           <Tabs selected={this.state.page} style={{ backgroundColor: 'white', position: 'relative' }}
             selectedStyle={{ color: 'red' }} onSelect={el => this.setState({ page: el.props.name })} >
             <Text name="followers"> Followers </Text>
-            <Text name="following"> Following </Text>
+            <Text name="following"> Followings </Text>
           </Tabs>
         </View>
-        <View style={{ height: '100%' }}>
+        <View style={{ height: '100%',paddingBottom:TABBAR_HEIGHT-8 }}>
           {/* <Search /> */}
           {
             this.state.page == 'followers' ?
               <FollowerList
                 onPress={this.onPressUserProfile.bind(this)}
                 onItemPress={this.onFollowerBlock.bind(this)}
-                userid={this.props.user.id}
+                user={this.props.user}
+                followerUsers={ this.state.followerUsers }
               /> :
-              <FlatList
-                keyExtractor={(item, index) => index}
+              <SwipeListView
+                keyExtractor={(item, index) => item.id}
+                useFlatList
                 data={this.props.follows}
                 renderItem={this.renderFollowItem}
+                renderHiddenItem={({ item,index }) => (
+                  <View>
+                    <Text>Left</Text>
+                    <View style={styles.rightHidden}>
+                      <TouchableOpacity style={{ width: '100%', height: '100%', justifyContent: 'center' }} onPress={() => {
+                        this.onFollowingPressed(item)
+                      }}>
+                        <Text style={[DFonts.Title, styles.rightHiddenText]}>{I18n.t('UNFOLLOW')}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )}
+                leftOpenValue={70}
+                disableRightSwipe={true}
+                rightOpenValue={-77}
+                onRowOpen={(rowKey, rowMap) => {
+                  //rowMap[rowKey].closeRow();
+                }}
+                onRowClose={(rowKey, rowMap) => {
+                  
+                }}
+                closeOnRowPress = {true}
+                closeOnScroll = {true}
+                closeOnRowBeginSwipe = {true}
+                previewFirstRow={false}
               />
           }
         </View>
@@ -138,19 +213,24 @@ class FollowerPeople extends Component {
         onClosed={() => this.setState({ isFollowerDialog: false })}
       >
         <View style={styles.FollowerdescriptionContainer}>
-          <Text style={styles.BlockTitle}>{'Block: test'}</Text>
+          <Text style={styles.BlockTitle}>{I18n.t('BLOCKED_STR')}</Text>
           <Text style={styles.BlockDescription}>{I18n.t('SETTING_BLOCKED_USER_DESCRIPTION')}</Text>
         </View>
         <View style={styles.FollowerBottom}>
 
           <View style={[styles.modalButton, { borderRightWidth: 1 }]}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => {
+                this.setState({ isFollowerDialog: false });
+              }}>
               <Text style={styles.cancelStr}>{I18n.t('CANCEL_STR')}</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.modalButton}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => {
+                this.setState({ isFollowerDialog: false });
+                this.onBlockUser();
+              }}>
               <Text style={styles.blockStr}>{I18n.t('BLOCKED_STR')}</Text>
             </TouchableOpacity>
           </View>
@@ -161,23 +241,33 @@ class FollowerPeople extends Component {
   _renderFollowingModal() {
     return (
       <Modal style={styles.modalContainer} backdrop={true} position={'center'}
-        isOpen={this.state.isFollowingDialog}
-        onClosed={() => this.setState({ isFollowingDialog: false })} >
-        <View style={styles.FollowerdescriptionContainer}>
-          <Text style={styles.BlockTitle}>{'Unfollow'}</Text>
-          <Text style={styles.BlockDescription}>{I18n.t('SETTING_UNFOLLOW_USER_DESCRIPTION')}</Text>
-        </View>
-        <View style={styles.FollowerBottom}>
-          <View style={styles.modalButton}>
-            <TouchableOpacity onPress={() => {
-              this.setState({ isFollowingDialog: false });
-              this.onUnfollow();
-            }}>
-              <Text style={styles.blockStr}>{I18n.t('UNFOLLOW')}</Text>
-            </TouchableOpacity>
+          isOpen={this.state.isFollowingDialog}
+          onClosed={() => this.setState({ isFollowingDialog: false })}
+        >
+          <View style={styles.FollowerdescriptionContainer}>
+            <Text style={styles.BlockTitle}>{I18n.t('UNFOLLOW')}</Text>
+            <Text style={styles.BlockDescription}>{I18n.t('SETTING_UNFOLLOW_USER_DESCRIPTION')}</Text>
           </View>
-        </View>
-      </Modal>
+          <View style={styles.FollowerBottom}>
+
+            <View style={[styles.modalButton, { borderRightWidth: 1 }]}>
+              <TouchableOpacity onPress={() => {
+                  this.setState({ isFollowingDialog: false });
+                }}>
+                <Text style={styles.cancelStr}>{I18n.t('CANCEL_STR')}</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.modalButton}>
+              <TouchableOpacity onPress={() => {
+                  this.setState({ isFollowingDialog: false });
+                  this.onUnfollow();
+                }}>
+                <Text style={styles.blockStr}>{I18n.t('UNFOLLOW')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
     )
   }
 }

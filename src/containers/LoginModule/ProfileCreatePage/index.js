@@ -116,29 +116,7 @@ class ProfileCreatePage extends Component {
         // })
         var valid = this.checkValidation()
         if (valid) {
-          this.setState({
-            success: true
-          })
-          this.props.saveUserInfo({
-            id: this.state.userId,
-            country: this.state.country,
-            city: this.state.city,
-            displayName: this.state.displayName,
-            email: this.props.info.mail,
-            username: this.state.username,
-            accountStatus: "ENABLE",
-            bio: this.state.bio,
-            firstName: this.props.info.first_name,
-            lastName: this.props.info.last_name,
-            birthdate: '',
-            photoURL: this.state.photoURL,
-            registrationDate: new Date().toLocaleDateString(),
-            mobileVerification: false,
-            mobile: "iPhone",
-            gender: this.state.gender.toUpperCase(),
-            checkIns: [],
-            blockByUsers: []
-          });
+          this.setState({ processing: true });
           this.props.updateUser({
             variables: {
               id: this.state.userId,
@@ -155,14 +133,45 @@ class ProfileCreatePage extends Component {
               group: 'USER'
             }
           }).then(result => {
-            if (result)
-              console.log("result =" + result);
-          }
-            );
-          AsyncStorage.setItem(APP_USER_KEY, JSON.stringify({
-            id: this.state.userId
-          }))
-          this.props.login();
+            this.setState({ processing: false });
+            if(result)
+            {
+              this.setState({
+                success: true
+              })
+              this.props.saveUserInfo({
+                id: this.state.userId,
+                country: this.state.country,
+                city: this.state.city,
+                displayName: this.state.displayName,
+                email: this.props.info.mail,
+                username: this.state.username,
+                accountStatus: "ENABLE",
+                bio: this.state.bio,
+                firstName: this.props.info.first_name,
+                lastName: this.props.info.last_name,
+                birthdate: '',
+                photoURL: this.state.photoURL,
+                registrationDate: new Date().toLocaleDateString(),
+                mobileVerification: false,
+                mobile: "iPhone",
+                gender: this.state.gender.toUpperCase(),
+                checkIns: [],
+                blockByUsers: []
+              });
+              AsyncStorage.setItem(APP_USER_KEY, JSON.stringify({
+                id: this.state.userId
+              }))
+              this.props.login();
+            }
+          }).catch(err => {
+            Promise.resolve();
+            const msg = err.message.toLowerCase();
+            if(msg.includes("username") && msg.includes("unique constraint"))
+              alert("The username "+this.state.username+" already exists. Please use a different username.");
+            else alert(msg);
+            this.setState({ processing: false });
+          });
         }
       }
     }

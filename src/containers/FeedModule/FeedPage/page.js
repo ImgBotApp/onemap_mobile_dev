@@ -102,13 +102,13 @@ class FeedPage extends Component {
             return {
               id: story.place.id,
               type: 'item',
-              user: {
+              createdBy: {
                 id: story.createdBy.id,
                 displayName: story.createdBy.displayName,
                 username: story.createdBy.username,
                 photoURL: story.createdBy.photoURL,
-                updated: new Date(story.updatedAt)
               },
+              updated: new Date(story.updatedAt),
               placeName: story.place.placeName,
               images: story.pictureURL ? story.pictureURL.map(uri => { return { uri } }) : [],
               title: story.title,
@@ -191,22 +191,22 @@ class FeedPage extends Component {
     this.props.getStoriesPaginated.refetch();
   }
   onEndReached() {
-    // const { getStoriesPaginated } = this.props;
-    // if (!getStoriesPaginated.loading) {
-    //   getStoriesPaginated.fetchMore({
-    //     variables: {
-    //       skip: getStoriesPaginated.allStories.length + STORIES_PER_PAGE,
-    //     },
-    //     updateQuery: (previousResult, { fetchMoreResult }) => {
-    //       if (!fetchMoreResult || fetchMoreResult.allStories.length === 0) {
-    //         return previousResult;
-    //       }
-    //       return {
-    //         allStories: previousResult.allStories.concat(fetchMoreResult.allStories),
-    //       };
-    //     }
-    //   });
-    // }
+    const { getStoriesPaginated } = this.props;
+    if (!getStoriesPaginated.loading) {
+      getStoriesPaginated.fetchMore({
+        variables: {
+          skip: getStoriesPaginated.allStories.length + STORIES_PER_PAGE,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult || fetchMoreResult.allStories.length === 0) {
+            return previousResult;
+          }
+          return {
+            allStories: previousResult.allStories.concat(fetchMoreResult.allStories),
+          };
+        }
+      });
+    }
   }
   _renderSuggestedList(data) {
     if (this.state.suggestFlag == false) return <View />;
@@ -240,7 +240,7 @@ class FeedPage extends Component {
       <View style={styles.feedItem}>
         <FeedItem
           data={data}
-          onPress={place => this.onPressUserProfile(place.user)}
+          onPress={place => this.onPressUserProfile(place.createdBy)}
           onBookMarker={() => this.onBookMarker(data, index)}
           onPlace={() => this.onPlace(data, index)}
         />

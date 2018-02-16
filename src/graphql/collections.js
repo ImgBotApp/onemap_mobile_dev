@@ -67,6 +67,9 @@ query GetCollectionWithPlaces($id: ID!, $first: Int, $skip: Int) {
     places(first: $first, skip: $skip) {
       id
       createdAt
+      createdBy {
+        id
+      }
       updatedAt
       description
       source
@@ -124,6 +127,9 @@ query BookmarkCollectionsQuery($id: ID!, $first: Int, $skip: Int) {
     places(first: $first, skip: $skip) {
       id
       createdAt
+      createdBy {
+        id
+      }
       updatedAt
       description
       source

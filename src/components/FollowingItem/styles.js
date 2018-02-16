@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet,Platform } from 'react-native'
 import { BACKGROUNDCOLOR, LIGHT_GRAY_COLOR, DARK_GRAY_COLOR, BLUE_COLOR } from '@theme/colors';
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     backgroundColor: BACKGROUNDCOLOR,
   },
   userRow: {
-    height: getDeviceHeight(223),
+    height: Platform.OS=='android'?getDeviceHeight(240):getDeviceHeight(223),
     width: '100%',
     backgroundColor: '#efefef'
   },
@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
   },
   itemInfo: {
     marginLeft: getDeviceWidth(41),
-    justifyContent: 'center'
+    width: getDeviceWidth(1050),
+    justifyContent: 'center',
   },
   username: {
     fontSize: 16,

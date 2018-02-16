@@ -15,6 +15,8 @@ export function getDeviceHeight(height) {
 }
 
 export function calculateDuration(updateDate) {
+  if(!updateDate || updateDate.length <= 0)
+    return '';
   var one_day = 1000 * 60 * 60 * 24;
   var today = new Date().getTime()
   //console.log(today);

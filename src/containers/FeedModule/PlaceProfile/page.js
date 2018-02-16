@@ -112,7 +112,6 @@ class PlaceProfile extends PureComponent {
       this.props.navigator.setTitle({ title: props.place.placeName });
     }
     this.state = {
-      currentPlaceID: props.placeID ? props.placeID : props.place.id,
       placeData: {
         description: '',
         information: {},
@@ -169,7 +168,9 @@ class PlaceProfile extends PureComponent {
     client.query({
       query: GET_PLACE_PROFILE,
       variables: {
-        id: this.state.currentPlaceID
+        id: this.props.place.id,
+        userId: this.props.user.id,
+        createdById: this.props.place.createdBy.id 
       }
     }).then((place) => {
       let data = place.data.Place;
@@ -253,7 +254,7 @@ class PlaceProfile extends PureComponent {
     placeData.collectionIds = [...placeData.collectionIds, ...this.state.selectedCollections];
     this.props.addCollectionToPlace({
       variables: {
-        id: this.state.currentPlaceID,
+        id: this.props.place.id,
         collectionIds: placeData.collectionIds
       }
     }).then(places => {
@@ -272,7 +273,7 @@ class PlaceProfile extends PureComponent {
     collectionIds = collectionIds.filter(id => !this.props.collections.map(collection => collection.id).includes(id));
     this.props.removeCollectionFromPlace({
       variables: {
-        id: this.state.currentPlaceID,
+        id: this.props.place.id,
         collectionIds
       }
     }).then(places => {
@@ -485,14 +486,38 @@ class PlaceProfile extends PureComponent {
   }
 
   renderInfo() {
-    return (
+    return(
       <View style={styles.informationContainer}>
-        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_ADDRESS')}{`\t\t\t: `}{this.state.placeData.information.address}</Text>
-        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_NUMBER')}{`\t: `}{this.state.placeData.information.phoneNumber}</Text>
-        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_WEBSITE')}{`\t\t\t: `}{this.state.placeData.information.website}</Text>
-        <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>{I18n.t('PLACE_OPENHOUR')}{`\t: `}{this.state.placeData.information.openingHours}</Text>
+        <View style={styles.informationLabel}>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {I18n.t('PLACE_ADDRESS')}
+          </Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {I18n.t('PLACE_NUMBER')}
+          </Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {I18n.t('PLACE_WEBSITE')}
+          </Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {I18n.t('PLACE_OPENHOUR')}
+          </Text>
+        </View>
+        <View style={styles.informationContent}>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {': '}{this.state.placeData.information.address}
+          </Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {': '}{this.state.placeData.information.phoneNumber}
+          </Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {': '}{this.state.placeData.information.website}
+          </Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
+            {': '}{this.state.placeData.information.openingHours}
+          </Text>
+        </View>
       </View>
-    )
+    );
   }
 
   renderInterest() {
