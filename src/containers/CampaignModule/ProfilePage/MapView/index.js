@@ -28,7 +28,7 @@ class MapTabView extends Component {
     }))
     this.map.fitToCoordinates(makers, {
       edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
-      animated: true,
+      animated: false,
     })
   }
 
@@ -50,7 +50,7 @@ class MapTabView extends Component {
           }}
           onLayout={() => this.fitMarkers()}
           ref={ref => { this.map = ref }}
-          // scrollEnabled={false}
+          scrollEnabled={false}
         >
         {
           this.props.places && this.props.places.map((item, index) => {

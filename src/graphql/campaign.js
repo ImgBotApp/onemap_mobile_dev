@@ -23,13 +23,31 @@ export const GET_CAMPAIGN_BY_USER = gql`
     }
   }`
 
+  export const GET_CAMPAIGN = gql`
+  query CampaignQuery {
+    allCampaigns {
+      id
+      title
+      subtitle
+      description
+      pictureUrl
+      iconUrl
+      partner {
+        id
+        username
+        photoURL
+      }
+    }
+  }`
+
 
 export function getCampaignByUser(userId) {
   return client.query({
-    query: GET_CAMPAIGN_BY_USER,
-    variables: {
-      userId: userId
-    }
+    // query: GET_CAMPAIGN_BY_USER,
+    // variables: {
+    //   userId: userId
+    // }
+    query: GET_CAMPAIGN
   }).then(res => Promise.resolve(res.data))
   .then(res => res.allCampaigns)
 }
