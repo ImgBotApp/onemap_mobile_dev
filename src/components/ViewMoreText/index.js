@@ -133,7 +133,7 @@ class ViewMoreText extends React.Component {
       <View>
         <View onLayout={this.onLayout} style={this.getWrapperStyle()}>
           <Text
-            style={[DFonts.Text, this.props.textStyle]}
+            style={[DFonts.Regular, this.props.textStyle]}
             numberOfLines={this.state.numberOfLines}
           >
             {this.props.children}
