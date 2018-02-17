@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList, Image,Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList, Image, Platform } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import AutoHeightImage from 'react-native-auto-height-image';
@@ -140,11 +140,14 @@ class ProfilePage extends Component {
     })
   }
 
-  onStoryItem(place) {
+  onStoryItem(story) {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       title: 'OneMapper Stories',
-      passProps: { place },
+      passProps: {
+        place: story.place,
+        oneMapperId: story.createdBy.id
+      }
     });
   }
 
@@ -177,7 +180,7 @@ class ProfilePage extends Component {
           <View style={styles.propertyContainer}>
             <View style={styles.propertyView}>
               <Text style={[DFonts.Regular, styles.pText]}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWED')}</Text>
-              <Entypo name="user" size={17} color={followed?BLUE_COLOR:'white'} />
+              <Entypo name="user" size={17} color={followed ? BLUE_COLOR : 'white'} />
             </View>
             <View style={styles.propertyView}>
               <Text style={[DFonts.Regular, styles.pText]}>

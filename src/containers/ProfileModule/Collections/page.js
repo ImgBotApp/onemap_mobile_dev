@@ -199,7 +199,8 @@ class Collections extends Component {
       screen: SCREEN.PLACE_PROFILE_PAGE,
       animated: true,
       passProps: {
-        place
+        place,
+        oneMapperId: this.props.userId
       }
     })
   }
@@ -315,7 +316,8 @@ class Collections extends Component {
       screen: SCREEN.PLACE_PROFILE_PAGE,
       animated: true,
       passProps: {
-        place
+        place,
+        oneMapperId: this.props.userId
       }
     });
 

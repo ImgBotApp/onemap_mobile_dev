@@ -293,7 +293,11 @@ class FeedPage extends PureComponent {
       screen: SCREEN.PLACE_PROFILE_PAGE,
       animated: true,
       passProps: {
-        place: data,
+        place: {
+          id: data.id,
+          placeName: data.placeName
+        },
+        oneMapperId: data.createdById,
         onPlaceUpdate: place => this.onPlaceUpdate(place, index),
       }
     })

@@ -18,7 +18,7 @@ export const GET_ALL_PLACES = gql`
 `
 
 export const GET_PLACE_PROFILE = gql`
-  query PlaceQuery($id: ID!, $userId: ID, $createdById: ID) {
+  query PlaceQuery($id: ID!, $userId: ID, $oneMapperId: ID) {
     Place(id: $id) {
       id
       createdBy {
@@ -62,12 +62,7 @@ export const GET_PLACE_PROFILE = gql`
           },
           {
             createdBy: {
-              id: $createdById
-            }
-          },
-          {#added for test
-            createdBy: {
-              id_not: $createdById
+              id: $oneMapperId
             }
           }
         ]
