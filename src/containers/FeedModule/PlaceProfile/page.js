@@ -944,13 +944,13 @@ class PlaceProfile extends PureComponent {
   _renderCommentStory({ item, index }) {
     return (
       <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-        <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => this.onPressUserProfile(item.createdBy)}>
           <CircleImage style={styles.storyWriterImage} uri={item.createdBy.photoURL} radius={getDeviceWidth(67)} />
           <View style={styles.userDescription}>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.storyWriterName]}>{item.createdBy.displayName}</Text>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.commentDate]}>{formattedTimeDiffString(item.updatedAt)}</Text>
           </View>
-        </View>
+        </TouchableOpacity>
         <OptimizedFlatList
           keyExtractor={(item, index) => index}
           style={[styles.imageFlatList, { marginTop: 10 }]}
@@ -962,6 +962,21 @@ class PlaceProfile extends PureComponent {
         <Text style={[DFonts.SubTitle, styles.commentDescription]}>{item.story}</Text>
       </CardView>
     )
+  }
+
+  onPressUserProfile(userInfo) {
+    if (userInfo.id === this.props.user.id) {
+      this.props.navigator.switchToTab({ tabIndex: 2 });
+    } else {
+      this.props.navigator.push({
+        screen: SCREEN.USERS_PROFILE_PAGE,
+        title: I18n.t('PROFILE_PAGE_TITLE'),
+        animated: true,
+        passProps: {
+          userInfo
+        }
+      })
+    }
   }
 
   onEndReached() {
