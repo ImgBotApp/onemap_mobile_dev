@@ -22,6 +22,7 @@ import DFonts, { SMALL_FONT_SIZE } from '@theme/fonts'
 import * as SCREEN from '../../../global/screenName'
 import { clone } from '@global'
 const PLACES_PER_PAGE = 8;
+const STORIES_PER_PAGE = 8
 
 import { client } from '@root/main'
 import { graphql } from "react-apollo"

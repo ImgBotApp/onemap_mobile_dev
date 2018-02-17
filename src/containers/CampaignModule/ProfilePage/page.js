@@ -47,7 +47,7 @@ class CampaignProfilePage extends Component {
       page: ''
     }
     this.FetchCampaignDetail(props.campaignId)
-    this.FetchBadgesByCampaign(props.campaignId)
+    this.FetchBadgesByCampaign(props.campaignId, props.user.id)
   }
 
   onNaviagtorEvent(event) {
@@ -75,9 +75,10 @@ class CampaignProfilePage extends Component {
     })
   }
 
-  FetchBadgesByCampaign(campaignId) {
-    GetBadgesByCampaign(campaignId)
+  FetchBadgesByCampaign(campaignId, userId) {
+    GetBadgesByCampaign(campaignId, userId)
     .then(res => {
+      console.log('badge Details', res)
       this.setState({
         badges: res
       })

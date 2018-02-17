@@ -2,7 +2,7 @@ import { gql } from 'react-apollo'
 import { client } from '@root/main'
 
 export const GET_BADGES_BY_CAMPAIGN = gql`
-query BadgeQuery($campaignId: ID!) {
+query BadgeQuery($campaignId: ID!, $userId: ID!) {
   allBadges(filter: {
     city: {
       campaign: {
@@ -12,14 +12,22 @@ query BadgeQuery($campaignId: ID!) {
   }) {
     id
     iconUrl
+    receivedBy {
+      user (filter: {
+        id: $userId
+      }) {
+        id
+      }
+    }
   }
 }`
 
-export function GetBadgesByCampaign(campaignId) {
+export function GetBadgesByCampaign(campaignId, userId) {
   return client.query({
     query: GET_BADGES_BY_CAMPAIGN,
     variables: {
-      campaignId: campaignId
+      campaignId: campaignId,
+      userId: userId
     }
   }).then(res => Promise.resolve(res.data))
   .then(res => res.allBadges)

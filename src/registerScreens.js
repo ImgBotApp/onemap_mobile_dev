@@ -33,7 +33,7 @@ import BlockedUserPage from './containers/UserProfileModule/BlockedUser'
 import CampaignProfilePage from './containers/CampaignModule/ProfilePage'
 import CampaignConditionGroupPage from './containers/CampaignModule/MapViewPage'
 import CampaignMainPage from './containers/CampaignModule/CampaginPage'
-import CampaignPlaceDetailPage from './containers/CampaignModule/PlaceDetailPage'
+import CampaignPlaceDetailPage from './containers/CampaignModule/BadgeDetailPage'
 
 export function registerScreens(store, Provider, client) {
 

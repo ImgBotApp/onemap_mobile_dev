@@ -1,8 +1,8 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types'
-
+import { getGrayImage } from '../../../../global/cloudinary'
 import styles from './styles'
 // create a component
 class BadgeTab extends Component {
@@ -17,9 +17,11 @@ class BadgeTab extends Component {
         this.props.badges ?
         this.props.badges.map((badge, index) => {
           return (
-            <View style={styles.badgeContainer} key={index}>
-              <Image source={ badge.iconUrl ? {uri: badge.iconUrl } : require('@assets/images/greenPin_old.png')} style={styles.badgeImage}/>
-            </View>
+            <TouchableOpacity key={index}>
+              <View style={styles.badgeContainer} >
+                <Image source={ badge.iconUrl ? {uri: this.getBadgeWithStatus(badge) } : require('@assets/images/greenPin_old.png')} style={styles.badgeImage}/>
+              </View>
+            </TouchableOpacity>
           )
         })
         : null
@@ -34,6 +36,14 @@ class BadgeTab extends Component {
       }
       </View>
     );
+  }
+
+  getBadgeWithStatus(badge) {
+    if ( badge.receivedBy.length == 0 ) {
+      return getGrayImage(badge.iconUrl)
+    } else {
+      return badge.iconUrl
+    }
   }
 }
 

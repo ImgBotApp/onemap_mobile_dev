@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   badgeImage: {
     width: '100%',
     height: '100%',
-    resizeMode: 'cover'
+    resizeMode: 'cover',
   },
   emptyElement: {
     width: getDeviceWidth(374),
