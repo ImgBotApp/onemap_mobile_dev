@@ -232,14 +232,13 @@ class CampaignPage extends Component {
           onPress={() => this.setState({shortFlag: false})}
           onLayout={() => this.fitMarkers()}
           ref={ref => { this.map = ref }}
-          // scrollEnabled={false}
+          scrollEnabled={false}
         >
         {
           this.state.badges && this.state.badges.map((condition, index) => {
             return (
               <Marker
                 identifier = { 'conditionGroup' + index }
-                // title={condition.name}
                 key={index}
                 coordinate={{
                   latitude: condition.locationLat,
@@ -297,5 +296,4 @@ CampaignPage.propTypes = {
   description: PropTypes.string,
   subtitle: PropTypes.string
 }
-//make this component available to the app
 export default CampaignPage;

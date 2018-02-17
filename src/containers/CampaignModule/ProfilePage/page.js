@@ -10,13 +10,12 @@ import { getCampaignDetail } from '../../../graphql/campaign'
 import { GetBadgesByCampaign } from '../../../graphql/badge'
 import { GetSuggestPlaces } from '../../../graphql/places'
 import styles from './styles'
-import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
+import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors'
 import { getDeviceWidth } from '../../../global'
 import I18n from '@language'
 import FontStyle from '../../../theme/fonts'
 // Tab View
 import MapTabView from './MapView'
-import EventView from './EventView'
 import BadgeTabView from './BadgeView'
 
 import { CAMPAIGN_CONDITION_GROUP_PAGE, CAMPAIGN_BADGE_DETAIL_PAGE } from '../../../global/screenName'
@@ -56,13 +55,6 @@ class CampaignProfilePage extends Component {
       if (event.id == 'backButton') {
         return this.props.navigator.pop()
       }
-    } else {
-      // if (event.id == 'willAppear') {
-      //   this.setState({
-      //     campaignId: this.props.campaignId
-      //   })
-      //   this.FetchCampaignDetail(this.props.campaignId)
-      // }
     }
   }
 
@@ -144,10 +136,6 @@ class CampaignProfilePage extends Component {
             <Text style={[FontStyle.Content, this.state.page=='mapView' ? styles.tabSelectItemText : styles.tabItemText]}> {I18n.t('CAMPAIGN_MAP_VIEW')} </Text>
             <View style={this.state.page=='mapView' ? styles.separateSelect : styles.separate}></View>
           </View>
-          {/* <View style={styles.tabItem} name="events">
-            <Text style={[FontStyle.Content, this.state.page=='events' ? styles.tabSelectItemText : styles.tabItemText]}> {I18n.t('CAMPAIGN_EVENT_VIEW')} </Text>
-            <View style={this.state.page=='events' ? styles.separateSelect : styles.separate}></View>
-          </View> */}
           <View style={styles.tabItem} name="badge">
             <Text style={[FontStyle.Content, this.state.page=='badge' ? styles.tabSelectItemText : styles.tabItemText]}> {I18n.t('CAMPAIGN_BADGE_VIEW')} </Text>
             <View style={this.state.page=='badge' ? styles.separateSelect : styles.separate}></View>
@@ -169,11 +157,6 @@ class CampaignProfilePage extends Component {
       })
       return (
         <MapTabView  places = {cities} onConditionGroup={(id) => this.onNavigateConditionGroupPage(id)}/>
-      )
-    }
-    if (this.state.page == 'events') {
-      return (
-        <EventView events={this.state.detail.events}/>
       )
     }
     if (this.state.page == 'badge') {
