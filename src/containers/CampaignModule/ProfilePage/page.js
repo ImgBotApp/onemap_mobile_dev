@@ -8,6 +8,7 @@ import CircleImage from '../../../components/CircleImage'
 
 import { getCampaignDetail } from '../../../graphql/campaign'
 import { GetBadgesByCampaign } from '../../../graphql/badge'
+import { GetSuggestPlaces } from '../../../graphql/places'
 import styles from './styles'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import { getDeviceWidth } from '../../../global'
@@ -18,7 +19,7 @@ import MapTabView from './MapView'
 import EventView from './EventView'
 import BadgeTabView from './BadgeView'
 
-import { CAMPAIGN_CONDITION_GROUP_PAGE } from '../../../global/screenName'
+import { CAMPAIGN_CONDITION_GROUP_PAGE, CAMPAIGN_BADGE_DETAIL_PAGE } from '../../../global/screenName'
 // create a component
 class CampaignProfilePage extends Component {
 
@@ -95,6 +96,20 @@ class CampaignProfilePage extends Component {
     })
   }
 
+  onNavigateBadgeDetailPage = (id) => {
+    GetSuggestPlaces()
+    .then(res => {
+      this.props.navigator.push({
+        screen: CAMPAIGN_BADGE_DETAIL_PAGE,
+        title: I18n.t('CAMPAIGN_BADGE_DETAIL'),
+        passProps: {
+          suggestPlaces: res,
+          id: id
+        }
+      })
+    })
+  }
+
   _renderHeaderPart() {
     return (
       <View style={styles.infoContainer}>
@@ -163,7 +178,7 @@ class CampaignProfilePage extends Component {
     }
     if (this.state.page == 'badge') {
       return (
-        <BadgeTabView badges={this.state.badges}/>
+        <BadgeTabView badges={this.state.badges} onPress={(id) => this.onNavigateBadgeDetailPage(id)}/>
       )
     }
   }

@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     height: getDeviceWidth(312),
     resizeMode: 'cover',
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 15,
     borderColor: 'transparent',
     resizeMode: 'cover'    
   },

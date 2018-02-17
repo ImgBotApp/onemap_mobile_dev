@@ -17,7 +17,7 @@ class BadgeTab extends Component {
         this.props.badges ?
         this.props.badges.map((badge, index) => {
           return (
-            <TouchableOpacity key={index}>
+            <TouchableOpacity key={index} onPress={() => this.props.onPress(badge.id)}>
               <View style={styles.badgeContainer} >
                 <Image source={ badge.iconUrl ? {uri: this.getBadgeWithStatus(badge) } : require('@assets/images/greenPin_old.png')} style={styles.badgeImage}/>
               </View>
@@ -53,7 +53,8 @@ BadgeTab.propTypes = {
     createdAt: PropTypes.string,
     name: PropTypes.string,
     iconUrl: PropTypes.string
-  }))
+  })),
+  onPress: PropTypes.func
 }
 //make this component available to the app
 export default BadgeTab;

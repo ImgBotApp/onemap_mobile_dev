@@ -69,5 +69,5 @@ export function registerScreens(store, Provider, client) {
   Navigation.registerComponent(SCREEN.CAMPAIGN_PROFILE_PAGE, () => CampaignProfilePage, store, Provider, client)
   Navigation.registerComponent(SCREEN.CAMPAIGN_CONDITION_GROUP_PAGE, () => CampaignConditionGroupPage, store, Provider, client)
   Navigation.registerComponent(SCREEN.CAMPAIGN_MAIN_PAGE, () => CampaignMainPage, store, Provider, client)
-  Navigation.registerComponent(SCREEN.CAMPAIGN_PLACE_DETAIL_PAGE, () => CampaignPlaceDetailPage, store, Provider, client)
+  Navigation.registerComponent(SCREEN.CAMPAIGN_BADGE_DETAIL_PAGE, () => CampaignPlaceDetailPage, store, Provider, client)
 }

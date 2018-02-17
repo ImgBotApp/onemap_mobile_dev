@@ -151,7 +151,7 @@ export default {
   CAMPAGIN_ALL_BADGES: 'All Badges',
   CAMPAIGN_SUUGESTED_PLACE: 'Suggested place',
   CAMPAIGN_BADGE: 'Badges',
-  CAMPAIGN_PLACE_DETAIL: 'Place Detail',
+  CAMPAIGN_BADGE_DETAIL: 'Badge Detail',
   CAMPAGIN_RULES: 'How to get badge',
   CAMPAIGN_JOINED: 'Joined',
   CAMPAIGN_DISTANCE: 'Destination',

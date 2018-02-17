@@ -109,8 +109,8 @@ class CampaignPage extends Component {
       })
     } else {
       this.props.navigator.push({
-        screen: SCREEN.CAMPAIGN_PLACE_DETAIL_PAGE,
-        title: I18n.t('CAMPAIGN_PLACE_DETAIL'),
+        screen: SCREEN.CAMPAIGN_BADGE_DETAIL_PAGE,
+        title: I18n.t('CAMPAIGN_BADGE_DETAIL'),
         passProps: {
           suggestPlaces: this.state.suggestPlaces,
           id: place.badges[0].id
@@ -195,7 +195,7 @@ class CampaignPage extends Component {
 
   onNavigateBadgeDetailPage(id) {
     this.props.navigator.push({
-      screen: SCREEN.CAMPAIGN_PLACE_DETAIL_PAGE,
+      screen: SCREEN.CAMPAIGN_BADGE_DETAIL_PAGE,
       title: I18n.t('CAMPAIGN_PLACE_DETAIL'),
       passProps: {
         suggestPlaces: this.state.suggestPlaces,
