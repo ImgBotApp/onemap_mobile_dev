@@ -78,7 +78,7 @@ class FeedPage extends PureComponent {
       }
       if (getStoriesPaginated.allStories) {
         if (getStoriesPaginated.allStories != this.props.getStoriesPaginated.allStories || this.state.loading) {
-          let graphcoolData = getStoriesPaginated.allStories.map((story) => {
+          let graphcoolData = getStoriesPaginated.allStories.filter(story => story.place).map(story => {
             return {
               id: story.place.id,
               type: 'item',
@@ -296,7 +296,7 @@ class FeedPage extends PureComponent {
           id: data.id,
           placeName: data.placeName
         },
-        oneMapperId: data.createdById,
+        oneMapperId: data.createdBy.id !== this.props.user.id ? data.createdBy.id : '',
         onPlaceUpdate: place => this.onPlaceUpdate(place, index),
       }
     })

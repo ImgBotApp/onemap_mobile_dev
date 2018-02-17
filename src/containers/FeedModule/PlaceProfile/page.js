@@ -52,6 +52,8 @@ import { GET_PLACE_PROFILE } from '@graphql/places'
 import styles from './styles'
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
 
+const STORIES_PER_PAGE = 8;
+
 const imagePickerOptions = {
   title: 'Take Media',
   takePhotoButtonTitle: 'Take Camera...',
@@ -120,8 +122,7 @@ class PlaceProfile extends PureComponent {
         heartedIds: [],
         checkIns: [],
         collectionIds: [],
-        keywords: [],
-        comments: [],
+        keywords: []
       },
       keywordText: '',
       myStory: {
@@ -178,8 +179,7 @@ class PlaceProfile extends PureComponent {
       this.props.navigator.setTitle({ title: data.placeName });
 
       const myStories = data.stories.filter(item => item.createdBy.id === this.props.user.id);
-      const ownerStories = data.stories.filter(item => item.createdBy.id === this.props.oneMapperId);
-      const otherStories = data.stories.filter(item => !myStories.includes(item) && !ownerStories.includes(item));
+      this.oneMapperStory = data.stories.filter(item => item.createdBy.id === this.props.oneMapperId)[0];
       this.setState({
         placeData: {
           id: data.id,
@@ -206,7 +206,6 @@ class PlaceProfile extends PureComponent {
           checkIns: data.checkIns,
           collectionIds: this.props.place && this.props.place.collectionIds ? this.props.place.collectionIds : data.collections.map(item => item.id),
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
-          comments: [...ownerStories, ...otherStories],
           bookmark: this.isBookmarked(data.collections),
         },
         myStory: myStories.length ? myStories[0] : this.state.myStory,
@@ -942,33 +941,47 @@ class PlaceProfile extends PureComponent {
     }
   }
 
-  _renderCommentStory() {
-    return this.state.placeData.comments
-      .filter(comment => comment.createdBy.id !== this.props.user.id)
-      .map((dataItem, index) => {
-        return (
-          <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-            <View style={{ flexDirection: 'row' }}>
-              <CircleImage style={styles.storyWriterImage} uri={dataItem.createdBy.photoURL} radius={getDeviceWidth(67)} />
-              <View style={styles.userDescription}>
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.storyWriterName]}>{dataItem.createdBy.displayName}</Text>
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.commentDate]}>{formattedTimeDiffString(dataItem.updatedAt)}</Text>
-              </View>
-            </View>
-            <OptimizedFlatList
-              keyExtractor={(item, index) => index}
-              style={[styles.imageFlatList, { marginTop: 10 }]}
-              horizontal
-              data={dataItem.pictureURL}
-              renderItem={({ index }) => this._renderItem(dataItem.pictureURL.map(item => ({ uri: item })), index)}
-            />
-            <Text style={[DFonts.Title, styles.commentTitle]}>{dataItem.title}</Text>
-            <Text style={[DFonts.SubTitle, styles.commentDescription]}>{dataItem.story}</Text>
-          </CardView>
-        )
-      })
+  _renderCommentStory({ item, index }) {
+    return (
+      <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
+        <View style={{ flexDirection: 'row' }}>
+          <CircleImage style={styles.storyWriterImage} uri={item.createdBy.photoURL} radius={getDeviceWidth(67)} />
+          <View style={styles.userDescription}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.storyWriterName]}>{item.createdBy.displayName}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.commentDate]}>{formattedTimeDiffString(item.updatedAt)}</Text>
+          </View>
+        </View>
+        <OptimizedFlatList
+          keyExtractor={(item, index) => index}
+          style={[styles.imageFlatList, { marginTop: 10 }]}
+          horizontal
+          data={item.pictureURL}
+          renderItem={({ index }) => this._renderItem(item.pictureURL.map(url => ({ uri: url })), index)}
+        />
+        <Text style={[DFonts.Title, styles.commentTitle]}>{item.title}</Text>
+        <Text style={[DFonts.SubTitle, styles.commentDescription]}>{item.story}</Text>
+      </CardView>
+    )
   }
 
+  onEndReached() {
+    const { getFollowingStoriesPaginated } = this.props;
+    if (!getFollowingStoriesPaginated.loading) {
+      getFollowingStoriesPaginated.fetchMore({
+        variables: {
+          skip: getFollowingStoriesPaginated.allStories.length + STORIES_PER_PAGE,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult || fetchMoreResult.allStories.length === 0) {
+            return previousResult;
+          }
+          return {
+            allStories: previousResult.allStories.concat(fetchMoreResult.allStories),
+          };
+        }
+      });
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -984,14 +997,21 @@ class PlaceProfile extends PureComponent {
           {this.renderInfo()}
           {this.renderInterest()}
           {this.renderKeywords()}
-          {/* my stories */}
+          {/* my story */}
           <View style={styles.WriteStory}>
             <Text style={[DFonts.Title, styles.writeStoryTitle]}>{I18n.t('PLACE_WRITE_STORY')}</Text>
             {this._renderWriteStory()}
           </View>
-          {/* other stories */}
           <View style={[styles.WriteStory, { marginBottom: 15 }]}>
-            {this._renderCommentStory()}
+            {/* onemapper story */}
+            {this.oneMapperStory && this._renderCommentStory({ item: this.oneMapperStory })}
+            {/* following stories */}
+            <OptimizedFlatList
+              keyExtractor={(item, index) => index}
+              data={this.props.getFollowingStoriesPaginated.allStories}
+              renderItem={data => this._renderCommentStory(data)}
+              onEndReached={() => this.onEndReached()}
+            />
           </View>
         </KeyboardAwareScrollView>
 
