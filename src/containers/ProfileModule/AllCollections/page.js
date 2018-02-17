@@ -148,6 +148,7 @@ class AllCollections extends Component {
                   insideStyle={styles.collection}
                   uri={item.pictureURL}
                   title={item.name}
+                  locked={item.privacy}
                   radius={8}
                   onPress={() => this.onItemPress(item)}
                   onLongPress={() => this.props.myCollections && this.onItemRemove(item)}

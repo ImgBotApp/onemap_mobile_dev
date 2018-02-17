@@ -353,15 +353,4 @@ class Collections extends Component {
   }
 }
 
-/*
-const ComponentWithQueries = graphql(GET_COLLECTION_WITH_PLACES, {
-  options: (props) => ({
-    variables: {
-      collectionId: props.collection.id,
-    }
-  })
-})
-  (Collections);
-*/
-//make this component available to the app
 export default Collections;

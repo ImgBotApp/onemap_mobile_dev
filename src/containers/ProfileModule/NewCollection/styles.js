@@ -1,4 +1,4 @@
-import { StyleSheet,Platform } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import { BACKGROUNDCOLOR, LIGHT_GRAY_COLOR, DARK_GRAY_COLOR, BLUE_COLOR } from '../../../theme/colors';
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
@@ -18,9 +18,9 @@ const styles = StyleSheet.create({
   },
   collectionInput: {
     marginTop: getDeviceHeight(76),
-    height: Platform.OS=='android'?getDeviceHeight(140):getDeviceHeight(120),
+    height: Platform.OS === 'android' ? getDeviceHeight(140) : getDeviceHeight(120),
     paddingLeft: getDeviceWidth(59),
-    backgroundColor: LIGHT_GRAY_COLOR
+    backgroundColor: '#e9e8ea'
   },
   privacyContainer: {
     marginTop: getDeviceHeight(166)
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   privacy: {
     marginTop: getDeviceHeight(45),
     flexDirection: 'row',
-    justifyContent:'space-between',
+    justifyContent: 'space-between',
     alignItems: 'center'
   },
   privacyText: {
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   modalButtonText: {
     textAlign: 'center',
     fontSize: BIG_FONT_SIZE,
-    
+
     color: BLUE_COLOR
   },
   leftBorder: {

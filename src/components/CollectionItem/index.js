@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import TitleImage from '@components/TitledImage'
 
 import styles from './styles'
@@ -31,6 +31,12 @@ class CollectionItem extends Component {
           onPress={this.props.onPress ? this.props.onPress : null}
           onLongPress={this.props.onLongPress ? this.props.onLongPress : null}
         />
+        {this.props.locked &&
+          <Image
+            source={require('@assets/images/lock.png')}
+            style={styles.lock}
+          />
+        }
       </View>
     );
   }
