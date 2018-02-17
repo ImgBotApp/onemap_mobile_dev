@@ -36,12 +36,9 @@ export default compose(
   graphql(GET_SUGGEST_USERS, {
     name: 'getSuggestUsers',
     options: (props) => {
-      const { user: { id, blockByUsers }, follows } = props;
       return {
         variables: {
-          currentUserId: id,
-          currentUserFollowsIds: follows ? follows.map(item => item.id) : [],
-          currentUserBlockByUsersIds: blockByUsers ? blockByUsers.map(item => item.id) : []
+          currentUserId: props.user.id
         }
       }
     }
@@ -52,7 +49,6 @@ export default compose(
       return {
         variables: {
           userId: props.user.id,
-          followsIds: props.follows ? props.follows.map(item => item.id) : [],
           skip: 0,
           first: STORIES_PER_PAGE
         }

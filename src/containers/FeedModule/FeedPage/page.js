@@ -26,7 +26,6 @@ const STORIES_PER_PAGE = 8;
 import { client } from '@root/main'
 import { graphql } from "react-apollo";
 
-import { GET_SUGGEST_USERS } from '@graphql/userprofile'
 import { GET_MY_COLLECTIONS } from '@graphql/collections'
 
 class FeedPage extends PureComponent {

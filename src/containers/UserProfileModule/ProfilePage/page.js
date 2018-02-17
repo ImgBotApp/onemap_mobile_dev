@@ -64,8 +64,7 @@ class ProfileComponent extends Component {
     client.query({
       query: GET_FOLLOWS,
       variables: {
-        userId: this.props.user.id,
-        blockUsersIds: []
+        userId: this.props.user.id
       }
     }).then(({ data }) => {
       this.props.saveUserFollows(data.User.follows);
