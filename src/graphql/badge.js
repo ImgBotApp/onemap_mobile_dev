@@ -60,7 +60,7 @@ export function GetBadgesByCondtionGroup(groupId) {
 }
 
 export const GET_BADGES_BY_CITY = gql`
-query BadgeQuery($cityId: ID!) {
+query BadgeQuery($cityId: ID!, $userId: ID!) {
   allBadges(filter:{
     city: {
       id: $cityId
@@ -73,14 +73,22 @@ query BadgeQuery($cityId: ID!) {
     locationLong
     iconUrl
     title
+    receivedBy {
+      user (filter: {
+        id: $userId
+      }) {
+        id
+      }
+    }
   }
 }`
 
-export function GetBadgesByCity(cityId) {
+export function GetBadgesByCity(cityId, userId) {
   return client.query({
     query: GET_BADGES_BY_CITY,
     variables: {
-      cityId: cityId
+      cityId: cityId,
+      userId: userId
     }
   }).then(res => Promise.resolve(res.data))
   .then(res => res.allBadges)

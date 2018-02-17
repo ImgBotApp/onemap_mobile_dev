@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import ViewMoreText from '@components/ViewMoreText'
 import { LATITUDE, LONGITUDE, LATITUDE_DELTA, LONGITUDE_DELTA } from '@global/const'
+import { getGrayImage } from '../../../global/cloudinary'
 import { GetConditionByGroup } from '../../../graphql/condition'
 import { GetBadgesByCondtionGroup, GetBadgesByCity } from '../../../graphql/badge'
 import { GetSuggestPlaces, getPlaceDetail } from '../../../graphql/places'
@@ -66,7 +67,7 @@ class CampaignPage extends Component {
   }
 
   FetchBadgeData() {
-    GetBadgesByCity(this.props.id)
+    GetBadgesByCity(this.props.id, this.props.user.id)
     .then(res => {
       this.setState({
         badges: res
@@ -119,6 +120,8 @@ class CampaignPage extends Component {
     }
   }
 
+  
+
   renderShortPart = () => {
     return (
       <TouchableOpacity onPress={() => this.setState({shortFlag: !this.state.shortFlag})}>
@@ -162,17 +165,27 @@ class CampaignPage extends Component {
           data={this.state.badges}
           horizontal
           renderItem={({item}) => (
+            <TouchableOpacity onPress={() => this.onNavigateBadgeDetailPage(item.id)}>
             <CardView cardElevation={2}
               cardMaxElevation={2}
               cornerRadius={15}
               style={styles.BadgeItem}
             >
-              <Image source={item.iconUrl ? {uri: item.iconUrl} : require('@assets/images/badge/badge.png')} style={styles.badgeImage}/>
+              <Image source={item.iconUrl ? {uri: this.getBadgeWithStatus(item)} : require('@assets/images/badge/badge.png')} style={styles.badgeImage}/>
             </CardView>
+            </TouchableOpacity>
           )}
         />
       </View>
     )
+  }
+
+  getBadgeWithStatus(badge) {
+    if ( badge.receivedBy.length == 0 ) {
+      return getGrayImage(badge.iconUrl)
+    } else {
+      return badge.iconUrl
+    }
   }
 
   renderFullPart = () => {
@@ -196,7 +209,7 @@ class CampaignPage extends Component {
   onNavigateBadgeDetailPage(id) {
     this.props.navigator.push({
       screen: SCREEN.CAMPAIGN_BADGE_DETAIL_PAGE,
-      title: I18n.t('CAMPAIGN_PLACE_DETAIL'),
+      title: I18n.t('CAMPAIGN_BADGE_DETAIL'),
       passProps: {
         suggestPlaces: this.state.suggestPlaces,
         id: id
