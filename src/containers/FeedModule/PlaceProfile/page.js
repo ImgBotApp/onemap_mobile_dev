@@ -178,7 +178,7 @@ class PlaceProfile extends PureComponent {
       this.props.navigator.setTitle({ title: data.placeName });
 
       const myStories = data.stories.filter(item => item.createdBy.id === this.props.user.id);
-      const ownerStories = data.stories.filter(item => item.createdBy.id === data.createdBy.id);
+      const ownerStories = data.stories.filter(item => item.createdBy.id === this.props.oneMapperId);
       const otherStories = data.stories.filter(item => !myStories.includes(item) && !ownerStories.includes(item));
       this.setState({
         placeData: {
@@ -310,7 +310,7 @@ class PlaceProfile extends PureComponent {
       title: I18n.t('COLLECTION_CREATE_NEW'),
     })
   }
-  _renderItem(data, index) {
+  _renderItem(data, index, editable) {
     const item = data[index];
     if (item && item.type === 'add') {
       return (
@@ -328,7 +328,7 @@ class PlaceProfile extends PureComponent {
       <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
         <TouchableOpacity
           onPress={() => this.setState({ sliderShow: true, selectedMediaData: data.filter(item => item.type !== 'add'), selectedCard: index })}
-          onLongPress={() => this.deleteImageFromStory(index)}
+          onLongPress={() => editable && this.deleteImageFromStory(index)}
         >
           <Image source={{ uri: fetchThumbFromCloudinary(getImageFromVideoURL(item.uri)) }} style={styles.imageItem} />
           {
@@ -736,7 +736,7 @@ class PlaceProfile extends PureComponent {
                   horizontal
                   style={styles.myImages}
                   data={this.state.storyImages}
-                  renderItem={({ index }) => this._renderItem(this.state.storyImages, index)}
+                  renderItem={({ index }) => this._renderItem(this.state.storyImages, index, true)}
                 />
               )
           }
