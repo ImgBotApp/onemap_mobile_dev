@@ -46,7 +46,6 @@ class CampaignPage extends Component {
       badges: [],
       suggestPlaces: []
     }
-    console.log('Campaign Page', this.props)
   }
 
   componentWillMount = () => {
@@ -148,7 +147,8 @@ class CampaignPage extends Component {
           keyExtractor={(item, index) => index}
           data={this.props.badges}
           horizontal
-          renderItem={({item}) => (
+          renderItem={({item}) => {
+            return (
             <TouchableOpacity onPress={() => this.onNavigateBadgeDetailPage(item.id)}>
             <CardView cardElevation={2}
               cardMaxElevation={2}
@@ -158,7 +158,7 @@ class CampaignPage extends Component {
               <Image source={item.iconUrl ? {uri: this.getBadgeWithStatus(item)} : require('@assets/images/badge/badge.png')} style={styles.badgeImage}/>
             </CardView>
             </TouchableOpacity>
-          )}
+          )}}
         />
       </View>
     )
