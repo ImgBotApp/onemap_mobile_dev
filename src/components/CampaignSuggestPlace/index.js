@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image,ScrollView } from 'react-native';
 import PropTypes from 'prop-types'
 import styles from './styles'
 import I18n from '@language'
@@ -20,15 +20,17 @@ class SuggestPlace extends Component {
       <View style={styles.container}>
         <Text style={[FontStyle.SubContent, styles.PlaceName]} numberOfLines={1}>{this.props.name}</Text>
         <View style={styles.imageContainer}>
-        {
-          this.props.images && this.props.images.map((item, index) => {
-            return index < 3 && (
-              <CardView cardElevation={5} cardMaxElevation={5} cornerRadius={5} style={styles.ImageCard} key={index}>
-                <Image source={{ uri: fetchThumbFromCloudinary(item)}} style={styles.ItemImage} />
-              </CardView>
-            )
-          })
-        }
+          <ScrollView horizontal={true}>
+          {
+            this.props.images && this.props.images.map((item, index) => {
+              return (
+                <CardView cardElevation={5} cardMaxElevation={5} cornerRadius={5} style={styles.ImageCard} key={index}>
+                  <Image source={{ uri: fetchThumbFromCloudinary(item)}} style={styles.ItemImage} />
+                </CardView>
+              )
+            })
+          }
+          </ScrollView>
         </View>
         <View style={styles.DetailPart}>
           <Text style={[FontStyle.SubContent, styles.address]} numberOfLines={1} ellipsizeMode={'tail'}>{this.props.address}</Text>
