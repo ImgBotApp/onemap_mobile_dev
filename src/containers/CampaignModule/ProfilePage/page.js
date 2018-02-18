@@ -7,7 +7,7 @@ import Tabs from 'react-native-tabs'
 import CircleImage from '../../../components/CircleImage'
 
 import { getCampaignDetail } from '../../../graphql/campaign'
-import { GetBadgesByCampaign } from '../../../graphql/badge'
+import { GetBadgesByCampaign, GetBadgeDetail } from '../../../graphql/badge'
 import { GetSuggestPlaces } from '../../../graphql/places'
 import styles from './styles'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors'
@@ -89,14 +89,39 @@ class CampaignProfilePage extends Component {
   }
 
   onNavigateBadgeDetailPage = (id) => {
-    GetSuggestPlaces()
-    .then(res => {
+    // GetBadgeDetail(id, this.props.user.id)
+    // .then(res => {
+    //   this.props.navigator.push({
+    //     screen: SCREEN.CAMPAIGN_BADGE_DETAIL_PAGE,
+    //     title: I18n.t('CAMPAIGN_BADGE_DETAIL'),
+    //     passProps: {
+    //       suggestPlaces: this.state.suggestPlaces,
+    //       id: id,
+    //       detail: res
+    //     }
+    //   })
+    // })
+    // GetSuggestPlaces()
+    // .then(res => {
+    //   this.props.navigator.push({
+    //     screen: CAMPAIGN_BADGE_DETAIL_PAGE,
+    //     title: I18n.t('CAMPAIGN_BADGE_DETAIL'),
+    //     passProps: {
+    //       suggestPlaces: res,
+    //       id: id
+    //     }
+    //   })
+    // })
+
+    Promise.all([GetBadgeDetail(id, this.props.user.id), GetSuggestPlaces()])
+    .then(ress => {
       this.props.navigator.push({
         screen: CAMPAIGN_BADGE_DETAIL_PAGE,
         title: I18n.t('CAMPAIGN_BADGE_DETAIL'),
         passProps: {
-          suggestPlaces: res,
-          id: id
+          suggestPlaces: ress[1],
+          id: id,
+          detail: ress[0]
         }
       })
     })

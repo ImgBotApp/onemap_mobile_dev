@@ -8,7 +8,7 @@ import ViewMoreText from '@components/ViewMoreText'
 import { LATITUDE, LONGITUDE, LATITUDE_DELTA, LONGITUDE_DELTA } from '@global/const'
 import { getGrayImage } from '../../../global/cloudinary'
 import { GetConditionByGroup } from '../../../graphql/condition'
-import { GetBadgesByCity, GetBadgeDetail} from '../../../graphql/badge'
+import { GetBadgeDetail} from '../../../graphql/badge'
 import { GetSuggestPlaces, getPlaceDetail } from '../../../graphql/places'
 import PropTypes from 'prop-types'
 import CardView from 'react-native-cardview'
@@ -194,7 +194,6 @@ class CampaignPage extends Component {
 
     GetBadgeDetail(id, this.props.user.id)
     .then(res => {
-      
       this.props.navigator.push({
         screen: SCREEN.CAMPAIGN_BADGE_DETAIL_PAGE,
         title: I18n.t('CAMPAIGN_BADGE_DETAIL'),
