@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import { CHECK_IN_PLACE } from '@graphql/checkin';
 import { CREATE_KEYWORD, DELETE_KEYWORD } from "@graphql/keywords";
-import { ADD_COLLECTION_TO_PLACE, REMOVE_COLLECTION_FROM_PLACE, LIKE_PLACE } from "@graphql/places";
+import { ADD_COLLECTION_TO_PLACE, REMOVE_COLLECTION_FROM_PLACE, LIKE_PLACE, UNLIKE_PLACE } from "@graphql/places";
 import { CREATE_STORY, UPDATE_STORY, FOLLOWING_STORIES_PAGINATED } from "@graphql/stories";
 
 import { saveUserInfo } from '@reducers/user/actions'
@@ -33,6 +33,7 @@ export default compose(
   graphql(ADD_COLLECTION_TO_PLACE, { name: 'addCollectionToPlace' }),
   graphql(REMOVE_COLLECTION_FROM_PLACE, { name: 'removeCollectionFromPlace' }),
   graphql(LIKE_PLACE, { name: 'likePlace' }),
+  graphql(UNLIKE_PLACE, { name: 'unlikePlace' }),
   graphql(CHECK_IN_PLACE, { name: 'checkInPlace' }),
   graphql(CREATE_KEYWORD, { name: 'addKeyword' }),
   graphql(DELETE_KEYWORD, { name: 'deleteKeyword' }),

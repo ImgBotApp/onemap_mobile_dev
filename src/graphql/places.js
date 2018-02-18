@@ -194,13 +194,37 @@ export const REMOVE_COLLECTION_FROM_PLACE = gql`
 export const LIKE_PLACE = gql`
   mutation (
     $id: ID!,
-    $heartedIds: [ID!]
+    $userId: ID!
   ) {
-    updatePlace(
-      id: $id,
-      usersLikeIds: $heartedIds
+    addToUserLikePlace(
+      likePlacesPlaceId: $id,
+      usersLikeUserId: $userId
     ) {
-      id
+      likePlacesPlace {
+        id
+        usersLike {
+          id
+        }
+      }
+    }
+  }
+`
+
+export const UNLIKE_PLACE = gql`
+  mutation (
+    $id: ID!,
+    $userId: ID!
+  ) {
+    removeFromUserLikePlace(
+      likePlacesPlaceId: $id,
+      usersLikeUserId: $userId
+    ) {
+      likePlacesPlace {
+        id
+        usersLike {
+          id
+        }
+      }
     }
   }
 `

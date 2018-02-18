@@ -358,24 +358,30 @@ class PlaceProfile extends PureComponent {
 
   onHeartClick(hearted) {
     let placeData = clone(this.state.placeData);
-    let hearts = placeData.heartedIds;
     if (hearted) {
       Vibration.vibrate();
-      hearts.push(this.props.user.id);
+      this.props.likePlace({
+        variables: {
+          id: placeData.id,
+          userId: this.props.user.id
+        }
+      }).then(({ data }) => {
+        placeData.heartedIds = data.addToUserLikePlace.likePlacesPlace.usersLike.map(item => item.id);
+        this.setState({ placeData });
+        client.resetStore();
+      }).catch(err => alert(err));
     } else {
-      const index = hearts.indexOf(this.props.user.id);
-      hearts.splice(index, 1);
+      this.props.unlikePlace({
+        variables: {
+          id: placeData.id,
+          userId: this.props.user.id
+        }
+      }).then(({ data }) => {
+        placeData.heartedIds = data.removeFromUserLikePlace.likePlacesPlace.usersLike.map(item => item.id);
+        this.setState({ placeData });
+        client.resetStore();
+      }).catch(err => alert(err));
     }
-
-    this.props.likePlace({
-      variables: {
-        id: placeData.id,
-        heartedIds: hearts
-      }
-    }).then(({ data }) => {
-      this.setState({ placeData });
-      client.resetStore();
-    }).catch(err => alert(err));
   }
 
   onCheckInClick() {
