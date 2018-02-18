@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import MapView, { PROVIDER_GOOGLE, ProviderPropType, Marker, Callout } from 'react-native-maps';
 import { LATITUDE, LONGITUDE, LATITUDE_DELTA, LONGITUDE_DELTA } from '@global/const'
+import { GetBadgesByCity } from '../../../graphql/badge'
 import * as SCREEN from '../../../global/screenName'
 import I18n from '../../../languages'
 import styles from './styles'
@@ -57,10 +58,17 @@ class MapViewPage extends Component {
   }
 
   onNavigateCondition = (conditionGroupData) => {
-    this.props.navigator.push({
-      screen: SCREEN.CAMPAIGN_MAIN_PAGE,
-      title: I18n.t('PROFILE_CAMPAIGN'),
-      passProps: conditionGroupData
+
+    GetBadgesByCity(conditionGroupData.id, this.props.user.id)
+    .then(res => {
+      this.props.navigator.push({
+        screen: SCREEN.CAMPAIGN_MAIN_PAGE,
+        title: I18n.t('PROFILE_CAMPAIGN'),
+        passProps: {
+          ...conditionGroupData,
+          badges: res
+        }
+      })
     })
   }
   render() {

@@ -32,9 +32,7 @@ class PlaceDetailPage extends Component {
     this.state = {
       place: {},
       rules: {},
-      detail: {
-        places: {}
-      }
+      detail: this.props.detail
     }
     console.log(this.props)
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));

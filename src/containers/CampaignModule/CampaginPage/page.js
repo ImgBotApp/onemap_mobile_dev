@@ -8,7 +8,7 @@ import ViewMoreText from '@components/ViewMoreText'
 import { LATITUDE, LONGITUDE, LATITUDE_DELTA, LONGITUDE_DELTA } from '@global/const'
 import { getGrayImage } from '../../../global/cloudinary'
 import { GetConditionByGroup } from '../../../graphql/condition'
-import { GetBadgesByCondtionGroup, GetBadgesByCity } from '../../../graphql/badge'
+import { GetBadgesByCity, GetBadgeDetail} from '../../../graphql/badge'
 import { GetSuggestPlaces, getPlaceDetail } from '../../../graphql/places'
 import PropTypes from 'prop-types'
 import CardView from 'react-native-cardview'
@@ -37,8 +37,8 @@ class CampaignPage extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
 
     this.state = {
-      lat: LATITUDE,
-      long: LONGITUDE,
+      lat: this.props.badges.length ? this.props.badges[0].locationLat : LATITUDE,
+      long: this.props.badges.length ? this.props.badges[0].locationLong : LONGITUDE,
       lat_delta: LATITUDE_DELTA,
       long_delta: LONGITUDE_DELTA,
       conditions: [],
@@ -46,10 +46,11 @@ class CampaignPage extends Component {
       badges: [],
       suggestPlaces: []
     }
+    console.log('Campaign Page', this.props)
   }
 
   componentWillMount = () => {
-    this.FetchBadgeData()
+    // this.FetchBadgeData()
     this.FetchSuggestPlace()
   }
 
@@ -66,17 +67,6 @@ class CampaignPage extends Component {
     this.fitMarkers()
   }
 
-  FetchBadgeData() {
-    console.log('City Id: ', this.props.id, 'user id: ', this.props.user.id)
-    GetBadgesByCity(this.props.id, this.props.user.id)
-    .then(res => {
-      console.log('Badges By city', res)
-      this.setState({
-        badges: res
-      })
-    })
-  }
-
   FetchSuggestPlace() {
     GetSuggestPlaces()
     .then(res => {
@@ -87,7 +77,7 @@ class CampaignPage extends Component {
   }
 
   fitMarkers = () => {
-    const makers = this.state.badges.map((item, index) => {
+    const makers = this.props.badges.map((item, index) => {
       return {
         latitude: item.locationLat,
         longitude: item.locationLong
@@ -95,7 +85,6 @@ class CampaignPage extends Component {
     })
     this.map.fitToCoordinates(makers, {
       edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
-      animated: false,
     })
   }
 
@@ -111,14 +100,7 @@ class CampaignPage extends Component {
         })
       })
     } else {
-      this.props.navigator.push({
-        screen: SCREEN.CAMPAIGN_BADGE_DETAIL_PAGE,
-        title: I18n.t('CAMPAIGN_BADGE_DETAIL'),
-        passProps: {
-          suggestPlaces: this.state.suggestPlaces,
-          id: place.badges[0].id
-        }
-      })
+      this.onNavigateBadgeDetailPage(place.badges[0].id)
     }
   }
 
@@ -164,7 +146,7 @@ class CampaignPage extends Component {
       <View style={styles.badgeContainer}>
         <FlatList 
           keyExtractor={(item, index) => index}
-          data={this.state.badges}
+          data={this.props.badges}
           horizontal
           renderItem={({item}) => (
             <TouchableOpacity onPress={() => this.onNavigateBadgeDetailPage(item.id)}>
@@ -209,13 +191,19 @@ class CampaignPage extends Component {
   }
 
   onNavigateBadgeDetailPage(id) {
-    this.props.navigator.push({
-      screen: SCREEN.CAMPAIGN_BADGE_DETAIL_PAGE,
-      title: I18n.t('CAMPAIGN_BADGE_DETAIL'),
-      passProps: {
-        suggestPlaces: this.state.suggestPlaces,
-        id: id
-      }
+
+    GetBadgeDetail(id, this.props.user.id)
+    .then(res => {
+      
+      this.props.navigator.push({
+        screen: SCREEN.CAMPAIGN_BADGE_DETAIL_PAGE,
+        title: I18n.t('CAMPAIGN_BADGE_DETAIL'),
+        passProps: {
+          suggestPlaces: this.state.suggestPlaces,
+          id: id,
+          detail: res
+        }
+      })
     })
   }
 
@@ -225,19 +213,13 @@ class CampaignPage extends Component {
         <MapView
           provider={PROVIDER_GOOGLE}
           style={styles.map}
-          initialRegion={{
-            latitude: this.state.lat,
-            longitude: this.state.long,
-            latitudeDelta: this.state.lat_delta,
-            longitudeDelta: this.state.long_delta,
-          }}
           onPress={() => this.setState({shortFlag: false})}
           onLayout={() => this.fitMarkers()}
           ref={ref => { this.map = ref }}
           scrollEnabled={true}
         >
         {
-          this.state.badges && this.state.badges.map((condition, index) => {
+          this.props.badges && this.props.badges.map((condition, index) => {
             return (
               <Marker
                 identifier = { 'conditionGroup' + index }
@@ -269,9 +251,9 @@ class CampaignPage extends Component {
           <ScrollView>
           { this.renderShortPart()}
           <View style={{display: this.state.shortFlag ? 'flex': 'none',}}>
-            {
-              this.renderFullPart()
-            }
+          {
+            this.renderFullPart()
+          }
           </View>
           </ScrollView>
         </CardView>
