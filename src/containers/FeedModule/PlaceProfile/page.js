@@ -51,6 +51,7 @@ import { GET_PLACE_PROFILE } from '@graphql/places'
 
 import styles from './styles'
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
+import openMap,{ createOpenLink } from 'react-native-open-maps';
 
 const imagePickerOptions = {
   title: 'Take Media',
@@ -346,6 +347,7 @@ class PlaceProfile extends PureComponent {
 
   goMapDetail() {
     // this.props.navigation.navigate('MapViewPage')
+    /*
     this.props.navigator.push({
       screen: SCREEN.MAP_DETAIL_PAGE,
       title: I18n.t('MAPVIEW_TITLE'),
@@ -355,7 +357,11 @@ class PlaceProfile extends PureComponent {
         address: this.state.placeData.information.address,
         map: this.state.placeData.map
       }
-    })
+    })*/
+    openMap({ 
+      latitude: this.state.placeData.map.latitude, 
+      longitude: this.state.placeData.map.longitude,
+      provider: Platform.OS=='android'?'google':'apple'});
   }
 
   onHeartClick(hearted) {
