@@ -12,10 +12,12 @@ query BadgeQuery($campaignId: ID!, $userId: ID!) {
   }) {
     id
     iconUrl
-    receivedBy {
-      user (filter: {
+    receivedBy(filter: {
+      user: {
         id: $userId
-      }) {
+      }
+    }) {
+      user {
         id
       }
     }
