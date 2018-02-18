@@ -9,7 +9,7 @@ query MyCollectionsQuery($id: ID!) {
         id: $id
       }
     },
-    orderBy: createdAt_DESC
+    orderBy: updatedAt_DESC
   ) {
       id
       createdAt
@@ -24,19 +24,33 @@ query MyCollectionsQuery($id: ID!) {
 
 export const CREATE_USER_COLLECTION = gql`
   mutation(
+    $id: ID!,
     $name: String!, 
     $pictureURL: String,
-    $privacy: Boolean!,
-    $userId: ID!
+    $privacy: Boolean!
   ) {
-      createCollection(
-        name: $name, 
-        pictureURL: $pictureURL,
-        privacy: $privacy,
-        type: USER,
-        userId: $userId
+      updateOrCreateCollection(
+        update: {
+          id: $id
+          name: $name 
+          pictureURL: $pictureURL
+          privacy: $privacy
+        }
+        create: {
+          userId: $id
+          name: $name 
+          pictureURL: $pictureURL
+          privacy: $privacy
+          type: USER
+        }
       ) {
         id
+        createdAt
+        name
+        pictureURL
+        privacy
+        type
+        updatedAt
       }
     }
 `

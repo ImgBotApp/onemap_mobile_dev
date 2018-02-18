@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, Switch, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Switch, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
 import CardView from 'react-native-cardview';
 import ImagePicker from 'react-native-image-picker'
 import Modal from 'react-native-modalbox'
@@ -42,23 +42,26 @@ class NewCollection extends Component {
           disableIconTint: true
         }]
       })
-    })
+    });
     this.state = {
-      isPublic: false,
+      isPublic: !props.collection.privacy,
+      name: props.collection ? props.collection.name : '',
+      pictureURL: props.collection ? props.collection.pictureURL : '',
       isModal: false,
     }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
   onNavigatorEvent(event) {
-    if (event.type == 'NavBarButtonPress') {
+    if (event.type == 'NavBarButtonPress' && !this.state.isModal) {
       if (event.id == 'backButton') {
         this.props.navigator.pop();
       }
       if (event.id == 'add') {
         if (this.state.name) {
+          if (this.state.imageUploading) return;
           this.createUserCollection({
             name: this.state.name,
-            privacy: this.state.isPublic,
+            privacy: !this.state.isPublic,
             pictureURL: this.state.pictureURL
           });
         } else {
@@ -67,23 +70,36 @@ class NewCollection extends Component {
       }
     }
   }
-  createUserCollection(data) {
+  createUserCollection(params) {
     this.props.createUserCollection({
       variables: {
-        ...data,
-        userId: this.props.user.id,
+        ...params,
+        id: this.props.collection ? this.props.collection.id : this.props.user.id,
       }
-    }).then(collection => {
+    }).then(({ data }) => {
       let collections = clone(this.props.collections);
-      collections.unshift({
-        id: collection.data.createCollection.id,
-        type: 'USER',
-        ...data
-      });
+      if (this.props.collection) {
+        collections[this.props.collectionIndex] = data.updateOrCreateCollection;
+      } else {
+        collections.unshift(data.updateOrCreateCollection);
+      }
       this.props.saveCollections(collections);
       this.props.navigator.pop();
-    })
+    }).catch(err => alert(err));
   }
+  deleteUserCollection() {
+    const { id } = this.props.collection;
+    this.props.deleteUserCollection({
+      variables: {
+        id
+      }
+    }).then(({ data }) => {
+      let collections = this.props.collections.filter(item => item.id !== id);
+      this.props.saveCollections(collections);
+      this.props.navigator.pop();
+    }).catch(err => alert(err));
+  }
+
   onValueChange = (val) => {
     this.setState({
       isModal: val ? true : false,
@@ -121,6 +137,17 @@ class NewCollection extends Component {
   }
   deleteImage() {
     this.setState({ pictureURL: '' });
+  }
+
+  deleteCollection = () => {
+    Alert.alert(
+      this.state.name,
+      'Do you want to remove this collection?',
+      [
+        { text: 'OK', onPress: () => this.deleteUserCollection() },
+        { text: 'Cancel', style: 'cancel' }
+      ]
+    )
   }
 
   renderImageView() {
@@ -166,6 +193,16 @@ class NewCollection extends Component {
         </View>
         <View style={styles.separate}></View>
         {this.renderImageView()}
+        {this.props.collection &&
+          <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+            <TouchableOpacity style={styles.deleteContainer} onPress={this.deleteCollection}>
+              <Text style={styles.deleteText}>
+                {'Delete Collection'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        }
+
         <Modal style={styles.modalContainer} backdrop={true} position={"center"} isOpen={this.state.isModal} onClosed={this.onModalClosed.bind(this)}>
           <Text style={styles.modalTitle}>{I18n.t('COLLECTION_CHANGE_PRIVACY')}</Text>
           <Text style={styles.modalDescription}>{I18n.t('COLLECTION_CHANGE_PRIVACY_DES')}</Text>

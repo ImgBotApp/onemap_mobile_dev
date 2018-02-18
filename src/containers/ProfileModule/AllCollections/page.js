@@ -74,28 +74,18 @@ class AllCollections extends Component {
       }
     })
   }
-  onItemRemove(item) {
-    if (this.props.collections) return;
-    Alert.alert(
-      item.name,
-      'Do you want to remove ' + item.name + '?',
-      [
-        { text: 'OK', onPress: () => this.deleteUserCollection(item.id) },
-        { text: 'Cancel', style: 'cancel' }
-      ]
-    )
-  }
-  deleteUserCollection(id) {
-    this.props.deleteUserCollection({
-      variables: {
-        id
+  onItemDetail(item, index) {
+    if (this.props.collections) return;//for my collection only
+    this.props.navigator.push({
+      screen: SCREEN.FEED_NEW_COLLECTION,
+      title: 'Edit Collection',
+      passProps: {
+        collection: item,
+        collectionIndex: index
       }
-    }).then(collection => {
-      let collections = this.props.myCollections.filter(item => item.id !== id);
-      this.props.saveCollections(collections);
-    }).catch(err => alert(err));
+    });
   }
-
+  
   onViewCollectionItem = (item) => {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
@@ -151,7 +141,7 @@ class AllCollections extends Component {
                   locked={item.privacy}
                   radius={8}
                   onPress={() => this.onItemPress(item)}
-                  onLongPress={() => this.props.myCollections && this.onItemRemove(item)}
+                  onLongPress={() => this.props.myCollections && this.onItemDetail(item, index)}
                 />
               )
             })}

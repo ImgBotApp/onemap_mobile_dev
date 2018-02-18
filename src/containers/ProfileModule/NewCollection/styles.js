@@ -1,8 +1,8 @@
 import { StyleSheet, Platform } from 'react-native'
-import { BACKGROUNDCOLOR, LIGHT_GRAY_COLOR, DARK_GRAY_COLOR, BLUE_COLOR } from '../../../theme/colors';
+import { BACKGROUNDCOLOR, LIGHT_GRAY_COLOR, DARK_GRAY_COLOR, BLUE_COLOR } from '@theme/colors';
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
-import { BIG_FONT_SIZE, NORMAL_FONT_SIZE, SMALL_FONT_SIZE } from '../../../theme/fonts';
+import { APPFONTNAME, BIG_FONT_SIZE, NORMAL_FONT_SIZE, SMALL_FONT_SIZE } from '@theme/fonts';
 // define your styles
 const styles = StyleSheet.create({
   container: {
@@ -101,6 +101,23 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 10
   },
+  deleteContainer: {
+    width: getDeviceWidth(600),
+    height: getDeviceHeight(150),
+    marginBottom: getDeviceHeight(100),
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderColor: '#575858',
+    borderRadius: 5
+  },
+  deleteText: {
+    color: '#575858',
+    textAlign: 'center',
+    fontFamily: APPFONTNAME.Regular,
+    fontSize: NORMAL_FONT_SIZE,
+    padding: 0
+  }
 });
 
 
