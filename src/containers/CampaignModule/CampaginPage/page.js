@@ -67,8 +67,10 @@ class CampaignPage extends Component {
   }
 
   FetchBadgeData() {
+    console.log('City Id: ', this.props.id, 'user id: ', this.props.user.id)
     GetBadgesByCity(this.props.id, this.props.user.id)
     .then(res => {
+      console.log('Badges By city', res)
       this.setState({
         badges: res
       })
@@ -93,7 +95,7 @@ class CampaignPage extends Component {
     })
     this.map.fitToCoordinates(makers, {
       edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
-      animated: true,
+      animated: false,
     })
   }
 
@@ -232,7 +234,7 @@ class CampaignPage extends Component {
           onPress={() => this.setState({shortFlag: false})}
           onLayout={() => this.fitMarkers()}
           ref={ref => { this.map = ref }}
-          scrollEnabled={false}
+          scrollEnabled={true}
         >
         {
           this.state.badges && this.state.badges.map((condition, index) => {

@@ -26,16 +26,12 @@ class MapViewPage extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
 
     this.state = {
-      lat: LATITUDE,
-      long: LONGITUDE,
+      lat: this.props.conditionGroups.length ? this.props.conditionGroups[0].locationLat : LATITUDE,
+      long: this.props.conditionGroups.length ? this.props.conditionGroups[0].locationLat : LONGITUDE,
       lat_delta: LATITUDE_DELTA,
       long_delta: LONGITUDE_DELTA,
       conditions: []
     }
-  }
-
-  componentWillMount() {
-
   }
 
   fitMarkers = () => {
@@ -47,7 +43,7 @@ class MapViewPage extends Component {
     })
     this.map.fitToCoordinates(makers, {
       edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
-      animated: true,
+      animated: false,
     })
   }
 
@@ -81,13 +77,13 @@ class MapViewPage extends Component {
           }}
           onLayout={() => this.fitMarkers()}
           ref={ref => { this.map = ref }}
+          scrollEnabled={true}
         >
         {
           this.props.conditionGroups && this.props.conditionGroups.map((conditionGroup, index) => {
             return (
               <Marker
                 identifier = { 'conditionGroup' + index }
-                // title={conditionGroup.title}
                 key={index}
                 coordinate={{
                   latitude: conditionGroup.locationLat,

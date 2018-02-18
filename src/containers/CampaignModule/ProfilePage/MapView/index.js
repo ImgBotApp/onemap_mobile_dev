@@ -12,23 +12,32 @@ class MapTabView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      lat: LATITUDE,
-      long: LONGITUDE,
+      lat: this.props.places.length ? this.props.places[0].lat : LATITUDE,
+      long: this.props.places.length ? this.props.places[0].long : LONGITUDE,
       lat_delta: LATITUDE_DELTA,
       long_delta: LONGITUDE_DELTA
     }
+
+    console.log('Map Init: ', this.state)
   }
 
-  async fitMarkers() {
-    const makers = await Promise.all(this.props.places.map(async (item, index) => {
-      return Promise.resolve({
+  componentWillReceiveProps (nextProps) {
+    this.setState({
+      lat: this.props.places.length ? this.props.places[0].lat : LATITUDE,
+      long: this.props.places.length ? this.props.places[0].long : LONGITUDE
+    })
+  }
+  
+
+  fitMarkers() {
+    const makers = this.props.places.map((item, index) => {
+      return {
         latitude: item.lat,
         longitude: item.long
-      })
-    }))
+      }
+    })
     this.map.fitToCoordinates(makers, {
-      edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
-      animated: false,
+      edgePadding: { top: 100, right: 100, bottom: 100, left: 100 }
     })
   }
 
@@ -50,7 +59,7 @@ class MapTabView extends Component {
           }}
           onLayout={() => this.fitMarkers()}
           ref={ref => { this.map = ref }}
-          scrollEnabled={false}
+          scrollEnabled={true}
         >
         {
           this.props.places && this.props.places.map((item, index) => {
