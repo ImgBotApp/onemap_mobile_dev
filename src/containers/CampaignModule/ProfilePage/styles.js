@@ -21,12 +21,6 @@ const styles = StyleSheet.create({
     width: getDeviceWidth(341),
     height: getDeviceWidth(341),
   },
-  checkImage: {
-    width: getDeviceWidth(98),
-    height: getDeviceWidth(98),
-    alignSelf: 'flex-end',
-    marginTop: -1 * getDeviceWidth(98)
-  },
   userInfoContainer: {
     marginLeft: getDeviceWidth(54)
   },

@@ -9,9 +9,10 @@ query BadgeQuery($campaignId: ID!, $userId: ID!) {
         id: $campaignId
       }
     }
-  }) {
+  }, orderBy: type_ASC) {
     id
     iconUrl
+    type
     receivedBy(filter: {
       user: {
         id: $userId

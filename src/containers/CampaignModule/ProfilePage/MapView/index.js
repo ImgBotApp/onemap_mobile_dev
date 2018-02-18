@@ -15,10 +15,9 @@ class MapTabView extends Component {
       lat: this.props.places.length ? this.props.places[0].lat : LATITUDE,
       long: this.props.places.length ? this.props.places[0].long : LONGITUDE,
       lat_delta: LATITUDE_DELTA,
-      long_delta: LONGITUDE_DELTA
+      long_delta: LONGITUDE_DELTA,
+      markerFlag: false
     }
-
-    console.log('Map Init: ', this.state)
   }
 
   componentWillReceiveProps (nextProps) {
@@ -59,6 +58,7 @@ class MapTabView extends Component {
           }}
           onLayout={() => this.fitMarkers()}
           ref={ref => { this.map = ref }}
+          onPress={() => this.onConditionGroup(0)}
           scrollEnabled={true}
         >
         {
@@ -72,10 +72,19 @@ class MapTabView extends Component {
                   latitude: item.lat,
                   longitude: item.long
                 }}
-                onPress={() => this.onConditionGroup(item.id)}
+                onPress={e => {
+                  e.stopPropagation()
+                  this.props.onNavigateCity({
+                    id: item.id,
+                    title: item.name,
+                    subtitle: item.subtitle,
+                    description: item.description,
+                    icon: item.iconUrl
+                  })
+                }}
                 image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
               >
-              <Callout >
+              <Callout>
                 <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
                   <Text style={[Fontstyle.Regular, {textAlign: 'center', width: '100%'}]}>{item.name}</Text>
                 </View>
@@ -97,10 +106,14 @@ MapTabView.propTypes = {
     id: PropTypes.string,
     lat: PropTypes.number,
     long: PropTypes.number,
-    name: PropTypes.string
+    name: PropTypes.string,
+    subtitle: PropTypes.string,
+    description: PropTypes.string,
+    iconUrl: PropTypes.string
   })),
   provider: ProviderPropType,
-  onConditionGroup: PropTypes.func.isRequired
+  onConditionGroup: PropTypes.func.isRequired,
+  onNavigateCity: PropTypes.func.isRequired
 }
 
 //make this component available to the app

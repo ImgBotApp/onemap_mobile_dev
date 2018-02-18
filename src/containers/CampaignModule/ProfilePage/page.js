@@ -9,6 +9,7 @@ import CircleImage from '../../../components/CircleImage'
 import { getCampaignDetail } from '../../../graphql/campaign'
 import { GetBadgesByCampaign, GetBadgeDetail } from '../../../graphql/badge'
 import { GetSuggestPlaces } from '../../../graphql/places'
+import { GetBadgesByCity } from '../../../graphql/badge'
 import styles from './styles'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors'
 import { getDeviceWidth } from '../../../global'
@@ -18,7 +19,7 @@ import FontStyle from '../../../theme/fonts'
 import MapTabView from './MapView'
 import BadgeTabView from './BadgeView'
 
-import { CAMPAIGN_CONDITION_GROUP_PAGE, CAMPAIGN_BADGE_DETAIL_PAGE } from '../../../global/screenName'
+import { CAMPAIGN_CONDITION_GROUP_PAGE, CAMPAIGN_BADGE_DETAIL_PAGE, CAMPAIGN_MAIN_PAGE } from '../../../global/screenName'
 // create a component
 class CampaignProfilePage extends Component {
 
@@ -71,7 +72,6 @@ class CampaignProfilePage extends Component {
   FetchBadgesByCampaign(campaignId, userId) {
     GetBadgesByCampaign(campaignId, userId)
     .then(res => {
-      console.log('badge Details', res)
       this.setState({
         badges: res
       })
@@ -89,29 +89,6 @@ class CampaignProfilePage extends Component {
   }
 
   onNavigateBadgeDetailPage = (id) => {
-    // GetBadgeDetail(id, this.props.user.id)
-    // .then(res => {
-    //   this.props.navigator.push({
-    //     screen: SCREEN.CAMPAIGN_BADGE_DETAIL_PAGE,
-    //     title: I18n.t('CAMPAIGN_BADGE_DETAIL'),
-    //     passProps: {
-    //       suggestPlaces: this.state.suggestPlaces,
-    //       id: id,
-    //       detail: res
-    //     }
-    //   })
-    // })
-    // GetSuggestPlaces()
-    // .then(res => {
-    //   this.props.navigator.push({
-    //     screen: CAMPAIGN_BADGE_DETAIL_PAGE,
-    //     title: I18n.t('CAMPAIGN_BADGE_DETAIL'),
-    //     passProps: {
-    //       suggestPlaces: res,
-    //       id: id
-    //     }
-    //   })
-    // })
 
     Promise.all([GetBadgeDetail(id, this.props.user.id), GetSuggestPlaces()])
     .then(ress => {
@@ -127,12 +104,25 @@ class CampaignProfilePage extends Component {
     })
   }
 
+  onNavigateCity = (data) => {
+    GetBadgesByCity(data.id, this.props.user.id)
+    .then(res => {
+      this.props.navigator.push({
+        screen: CAMPAIGN_MAIN_PAGE,
+        title: I18n.t('PROFILE_CAMPAIGN'),
+        passProps: {
+          ...data,
+          badges: res
+        }
+      })
+    })
+  }
+
   _renderHeaderPart() {
     return (
       <View style={styles.infoContainer}>
         <View style={styles.profileImage}>
           <CircleImage uri={this.state.detail.iconUrl} radius={getDeviceWidth(170)}/>
-          <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage} />
         </View>
         <View style={styles.userInfoContainer}>
           <Text style={[FontStyle.Title,styles.campaignName]}>{this.state.detail.name}</Text>
@@ -177,11 +167,14 @@ class CampaignProfilePage extends Component {
           id: item.id,
           lat: item.locationLat,
           long: item.locationLong,
-          name: item.title
+          name: item.title,
+          subtitle: item.subtitle,
+          description: item.description,
+          iconUrl: item.iconUrl
         }
       })
       return (
-        <MapTabView  places = {cities} onConditionGroup={(id) => this.onNavigateConditionGroupPage(id)}/>
+        <MapTabView  places = {cities} onConditionGroup={(id) => this.onNavigateConditionGroupPage(id)} onNavigateCity={(id) => this.onNavigateCity(id)}/>
       )
     }
     if (this.state.page == 'badge') {
