@@ -205,9 +205,10 @@ class Collections extends Component {
     })
   }
   onRemovePlace(data) {
+    if (!this.props.collection) return;
     Alert.alert(
       data.item.address,
-      'Do you want to remove this place?',
+      'Do you want to remove this place from ' + this.props.collection.name + '?',
       [
         { text: 'OK', onPress: () => this.deletePlace(data) },
         { text: 'Cancel', style: 'cancel' }

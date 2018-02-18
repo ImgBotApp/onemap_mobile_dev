@@ -89,7 +89,18 @@ const styles = StyleSheet.create({
   leftBorder: {
     borderLeftWidth: 1,
     borderLeftColor: DARK_GRAY_COLOR
-  }
+  },
+  imageItemContainer: {
+    width: getDeviceHeight(600),
+    height: getDeviceHeight(600),
+    alignSelf: 'center',
+    marginTop: getDeviceWidth(166)
+  },
+  imageItem: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 10
+  },
 });
 
 

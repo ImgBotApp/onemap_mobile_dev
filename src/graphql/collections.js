@@ -25,7 +25,7 @@ query MyCollectionsQuery($id: ID!) {
 export const CREATE_USER_COLLECTION = gql`
   mutation(
     $name: String!, 
-    $pictureURL: String!,
+    $pictureURL: String,
     $privacy: Boolean!,
     $userId: ID!
   ) {

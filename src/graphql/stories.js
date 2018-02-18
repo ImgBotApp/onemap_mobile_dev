@@ -198,7 +198,7 @@ export const UPDATE_STORY = gql`
 `
 
 export const FOLLOWING_STORIES_PAGINATED = gql`
-query FollowingStories($first: Int!, $skip: Int!, $id: ID!, $userId: ID!, $oneMapperId: ID!) {
+query FollowingStories($first: Int!, $skip: Int!, $id: ID!, $userId: ID!, $oneMapperId: ID) {
   allStories(first: $first, skip: $skip, orderBy: updatedAt_DESC, filter: {
     AND: [
       {
