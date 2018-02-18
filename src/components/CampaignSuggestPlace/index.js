@@ -19,22 +19,12 @@ class SuggestPlace extends Component {
     return (
       <View style={styles.container}>
         <Text style={[FontStyle.SubContent, styles.PlaceName]} numberOfLines={1}>{this.props.name}</Text>
-        {/* <OptimizedFlatList
-          keyExtractor={(item, index) => item.uri}
-          data={this.props.images}
-          horizontal
-          renderItem={({ item }) => (
-            <CardView cardElevation={5} cardMaxElevation={5} cornerRadius={5} style={styles.ImageCard}>
-              <Image source={{ uri: item}} style={styles.ItemImage} />
-            </CardView>
-          )}
-        /> */}
         <View style={styles.imageContainer}>
         {
           this.props.images && this.props.images.map((item, index) => {
-            return index > 3 && (
+            return index < 3 && (
               <CardView cardElevation={5} cardMaxElevation={5} cornerRadius={5} style={styles.ImageCard} key={index}>
-                <Image source={{ uri: item}} style={styles.ItemImage} />
+                <Image source={{ uri: fetchThumbFromCloudinary(item)}} style={styles.ItemImage} />
               </CardView>
             )
           })

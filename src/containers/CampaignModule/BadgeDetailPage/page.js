@@ -14,7 +14,7 @@ import { GetBadgeDetail } from '../../../graphql/badge'
 import { getPlaceDetail } from '../../../graphql/places'
 import SuggestPlaceItem from '../../../components/CampaignSuggestPlace'
 import * as SCREEN from '../../../global/screenName'
-
+import { fetchThumbFromCloudinary } from '../../../global/cloudinary'
 // create a component
 class PlaceDetailPage extends Component {
   constructor (props) {
@@ -34,18 +34,16 @@ class PlaceDetailPage extends Component {
       rules: {},
       detail: this.props.detail
     }
-    console.log(this.props)
     this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
   }
 
   componentWillMount() {
-    this.FetchPlaceDetail()
+    // this.FetchPlaceDetail()
   }
 
   FetchPlaceDetail = () => {
     GetBadgeDetail(this.props.id, this.props.user.id)
     .then(res => {
-      console.log(res)
       this.setState({
         detail: res
       })
@@ -120,13 +118,13 @@ class PlaceDetailPage extends Component {
                 style={styles.placeDetail}
                 horizontal
                 renderItem={({ item }) => (
-                  <Image source={{uri: item}} style={styles.placeImage} />
+                  <Image source={{uri: fetchThumbFromCloudinary(item)}} style={styles.placeImage} />
                 )}
               />
               <Text style={[FontStyle.SubContent, styles.PlaceDetailCardPlaceName]} numberOfLines={2}>{this.state.detail.places.placeName}</Text>
               <View style={styles.SperateBar}></View>
               <Text style={[FontStyle.SubTitle, styles.placeDescription]}>{this.state.detail.places.description}</Text>
-              <TouchableOpacity onPress={() => this.onVisitPlaceProfile(this.state.place.place && this.state.place.place.id)}
+              <TouchableOpacity onPress={() => this.onVisitPlaceProfile(this.state.detail.places.id)}
                 style={{width: '30%'}}
               >
                 <Text style={[FontStyle.SubTitle, styles.placeMore]}>{I18n.t('PROFILE_VIEW_MORE')}</Text>
