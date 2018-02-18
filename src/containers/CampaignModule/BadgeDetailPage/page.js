@@ -42,17 +42,6 @@ class PlaceDetailPage extends Component {
 
   componentWillMount() {
     this.FetchPlaceDetail()
-    // this.FetchRuleData()
-    // this.FetchConditionDetail()
-  }
-
-  FetchConditionDetail =() => {
-    GetConditionDetail(this.props.id)
-    .then(res => {
-      this.setState({
-        detail: res
-      })
-    })
   }
 
   FetchPlaceDetail = () => {
@@ -61,15 +50,6 @@ class PlaceDetailPage extends Component {
       console.log(res)
       this.setState({
         detail: res
-      })
-    })
-  }
-
-  FetchRuleData = () => {
-    GetRulesByCondition(this.props.id)
-    .then(res => {
-      this.setState({
-        rules: res
       })
     })
   }
