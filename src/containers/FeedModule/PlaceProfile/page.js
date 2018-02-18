@@ -29,6 +29,7 @@ import Foundation from 'react-native-vector-icons/Foundation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import geolib from 'geolib';
 
 import CircleImage from '@components/CircleImage'
 import LoadingSpinner from '@components/LoadingSpinner'
@@ -159,6 +160,14 @@ class PlaceProfile extends PureComponent {
     this.keyboardDidHideListener.remove();
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { location } = nextProps.user;
+    if (this.state.placeData.locationLat && location && (!this.props.user.location || location.latitude !== this.props.user.location.latitude || location.longitude !== this.props.user.location.longitude)) {
+      const distance = geolib.getDistance(location, this.state.placeData.map);
+      this.setState({ distance });
+    }
+  }
+
   _keyboardDidHide = () => {
     if (this.state.storyUpdated) {
       this.saveStory();
@@ -178,8 +187,21 @@ class PlaceProfile extends PureComponent {
 
       this.props.navigator.setTitle({ title: data.placeName });
 
+      const myLastChecked = data.checkIns.filter(item => item.user.id === this.props.user.id);
+      if (myLastChecked.length) {
+        this.lastChecked = myLastChecked[myLastChecked.length - 1].createdAt;
+      }
+
       const myStories = data.stories.filter(item => item.createdBy.id === this.props.user.id);
       this.oneMapperStory = data.stories.filter(item => item.createdBy.id === this.props.oneMapperId)[0];
+
+      if (this.props.user.location) {
+        this.state.distance = geolib.getDistance(this.props.user.location, {
+          latitude: data.locationLat,
+          longitude: data.locationLong
+        });
+      }
+
       this.setState({
         placeData: {
           id: data.id,
@@ -209,12 +231,8 @@ class PlaceProfile extends PureComponent {
           bookmark: this.isBookmarked(data.collections),
         },
         myStory: myStories.length ? myStories[0] : this.state.myStory,
-        storyImages: myStories.length ? [...myStories[0].pictureURL.map(item => ({ uri: item })), ...this.state.storyImages] : this.state.storyImages
+        storyImages: myStories.length ? [...myStories[0].pictureURL.map(item => ({ uri: item })), ...this.state.storyImages] : this.state.storyImages,
       });
-      const myLastChecked = data.checkIns.filter(item => item.user.id === this.props.user.id);
-      if (myLastChecked.length) {
-        this.lastChecked = myLastChecked[myLastChecked.length - 1].createdAt;
-      }
     }).catch(err => alert(err));
   }
 
@@ -385,10 +403,6 @@ class PlaceProfile extends PureComponent {
   }
 
   onCheckInClick() {
-    if (this.lastChecked && (getTimeDiff(new Date(this.lastChecked), new Date()) < 20/* 60*/)) {// 20 min
-      alert('You have to wait 20 min after last check-in');
-      return;
-    }
     Vibration.vibrate();
     let placeData = this.state.placeData;
     this.props.checkInPlace({
@@ -526,18 +540,19 @@ class PlaceProfile extends PureComponent {
 
   renderInterest() {
     const liked = this.state.placeData.heartedIds.includes(this.props.user.id);
+    const checkable = (this.state.distance && this.state.distance < 500) && (!this.lastChecked || getTimeDiff(new Date(this.lastChecked), new Date()) > 20/* * 60*/);
     return (
       <View style={styles.interestContainer}>
         <View style={styles.interestInformation}>
-          <View style={[styles.interestItem, { flex: 0.25 }]}>
+          <View style={styles.interestItem}>
             <Foundation name="heart" size={15} color={RED_COLOR} />
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
           </View>
-          <View style={[styles.interestItem, { flex: 0.25 }]}>
+          <View style={styles.interestItem}>
             <Foundation name="marker" size={15} color={BLUE_COLOR} />
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.checkIns.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
           </View>
-          <View style={[styles.interestItem, { flex: 0.5 }]}>
+          <View style={styles.interestItem}>
             <Foundation name="bookmark" size={15} color={RED_COLOR} />
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
           </View>
@@ -547,8 +562,8 @@ class PlaceProfile extends PureComponent {
           <TouchableOpacity onPress={() => this.onHeartClick(!liked)}>
             <Foundation name="heart" size={35} color={liked ? RED_COLOR : LIGHT_GRAY_COLOR} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.onCheckInClick.bind(this)}>
-            <Foundation name="marker" size={35} color={BLUE_COLOR} />
+          <TouchableOpacity disabled={!checkable} onPress={this.onCheckInClick.bind(this)}>
+            <Foundation name="marker" size={35} color={checkable ? BLUE_COLOR : LIGHT_GRAY_COLOR} />
           </TouchableOpacity>
           <TouchableOpacity onPress={this.onShareClick.bind(this)}>
             <Foundation name="share" size={35} color={GREEN_COLOR} />
