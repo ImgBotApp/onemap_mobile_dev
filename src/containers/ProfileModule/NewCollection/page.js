@@ -1,5 +1,5 @@
 //import liraries
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import { View, Text, StyleSheet, TextInput, Switch, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
 import CardView from 'react-native-cardview';
 import ImagePicker from 'react-native-image-picker'
@@ -12,8 +12,7 @@ import { uploadImage } from '@global/cloudinary';
 import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import DFonts from '@theme/fonts';
 
-// create a component
-class NewCollection extends Component {
+class NewCollection extends PureComponent {
   static navigatorButtons = {
     leftButtons: [
       {
@@ -44,7 +43,7 @@ class NewCollection extends Component {
       })
     });
     this.state = {
-      isPublic: !props.collection.privacy,
+      isPublic: !props.collection || !props.collection.privacy,
       name: props.collection ? props.collection.name : '',
       pictureURL: props.collection ? props.collection.pictureURL : '',
       isModal: false,
@@ -152,7 +151,12 @@ class NewCollection extends Component {
 
   renderImageView() {
     return (
-      <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={10}>
+      <CardView
+        style={styles.imageItemContainer}
+        cardElevation={this.state.isModal ? 0 : 3}
+        cardMaxElevation={3}
+        cornerRadius={10}
+      >
         <TouchableOpacity
           style={{ alignItems: 'center', justifyContent: 'center' }}
           onPress={this.showImagePicker}
