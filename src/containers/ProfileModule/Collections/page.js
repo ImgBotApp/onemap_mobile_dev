@@ -215,14 +215,14 @@ class Collections extends Component {
     )
   }
   deletePlace(data) {
-    let places = clone(this.state.places);
-    places.splice(data.index, 1);
     this.props.removePlace({
       variables: {
         id: this.props.collection.id,
-        placeIds: places.map((item) => item.id)
+        placeId: data.item.id
       }
     }).then(collections => {
+      let places = clone(this.state.places);
+      places.splice(data.index, 1);
       this.setState({ places });
       this.props.placeUpdated(true);
     }).catch(err => alert(err));

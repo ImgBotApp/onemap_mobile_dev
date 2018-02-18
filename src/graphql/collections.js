@@ -101,13 +101,15 @@ query GetCollectionWithPlaces($id: ID!, $first: Int, $skip: Int) {
 export const REMOVE_PLACE_FROM_COLLECTION = gql`
   mutation(
     $id: ID!,
-    $placeIds: [ID!]
+    $placeId: ID!
   ) {
-      updateCollection(
-        id: $id,
-        placesIds: $placeIds
+      removeFromCollectionOnPlace(
+        collectionsCollectionId: $id,
+        placesPlaceId: $placeId
       ) {
-        id
+        collectionsCollection {
+          id
+        }
       }
     }
 `
