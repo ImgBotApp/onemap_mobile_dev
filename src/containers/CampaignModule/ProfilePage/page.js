@@ -90,7 +90,9 @@ class CampaignProfilePage extends Component {
 
   onNavigateBadgeDetailPage = (id, type) => {
 
-    
+    if (type == 'CITY') {
+      return
+    }
 
     Promise.all([GetBadgeDetail(id, this.props.user.id), GetSuggestPlaces()])
     .then(ress => {

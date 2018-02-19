@@ -41,7 +41,8 @@ query BadgeQuery($cityId: ID!, $userId: ID!) {
   allBadges(filter:{
     city: {
       id: $cityId
-    }
+    },
+    type:PLACE
   }, , orderBy: type_ASC) {
     id
     createdAt
