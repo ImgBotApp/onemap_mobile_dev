@@ -8,6 +8,7 @@ import styles from './styles'
 class BadgeTab extends Component {
   constructor(props) {
     super(props)
+    console.log(this.props.badges)
   }
 
   render() {
@@ -17,7 +18,7 @@ class BadgeTab extends Component {
         this.props.badges ?
         this.props.badges.map((badge, index) => {
           return (
-            <TouchableOpacity key={index} onPress={() => this.props.onPress(badge.id)}>
+            <TouchableOpacity key={index} onPress={() => this.props.onPress(badge.id, badge.type)}>
               <View style={styles.badgeContainer} >
                 <Image source={ badge.iconUrl ? {uri: this.getBadgeWithStatus(badge) } : require('@assets/images/greenPin_old.png')} style={styles.badgeImage}/>
               </View>
@@ -52,7 +53,8 @@ BadgeTab.propTypes = {
     id: PropTypes.string,
     createdAt: PropTypes.string,
     name: PropTypes.string,
-    iconUrl: PropTypes.string
+    iconUrl: PropTypes.string,
+    type: PropTypes.string
   })),
   onPress: PropTypes.func
 }

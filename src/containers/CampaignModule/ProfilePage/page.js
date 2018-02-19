@@ -88,7 +88,9 @@ class CampaignProfilePage extends Component {
     })
   }
 
-  onNavigateBadgeDetailPage = (id) => {
+  onNavigateBadgeDetailPage = (id, type) => {
+
+    
 
     Promise.all([GetBadgeDetail(id, this.props.user.id), GetSuggestPlaces()])
     .then(ress => {
@@ -179,7 +181,7 @@ class CampaignProfilePage extends Component {
     }
     if (this.state.page == 'badge') {
       return (
-        <BadgeTabView badges={this.state.badges} onPress={(id) => this.onNavigateBadgeDetailPage(id)}/>
+        <BadgeTabView badges={this.state.badges} onPress={(id, type) => this.onNavigateBadgeDetailPage(id, type)}/>
       )
     }
   }
