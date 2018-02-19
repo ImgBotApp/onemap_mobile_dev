@@ -1,7 +1,7 @@
 import { gql } from 'react-apollo'
 
 export const FEED_STORIES_PAGINATED = gql`
-  query PlaceStories($first: Int!, $skip: Int!, $userId: ID!, $followsIds: [ID!]) {
+  query PlaceStories($first: Int!, $skip: Int!, $userId: ID!) {
     allStories(first: $first, skip: $skip, orderBy: updatedAt_DESC, filter: {
       AND: [
         {
@@ -15,9 +15,22 @@ export const FEED_STORIES_PAGINATED = gql`
               }
             },
             {
-              createdBy: {
-                id_in: $followsIds
-              }
+              AND: [
+                {
+                  createdBy: {
+                    followers_some: {
+                      id: $userId
+                    }
+                  }
+                },
+                {
+                  createdBy: {
+                    blockUsers_none: {
+                      id: $userId
+                    }
+                  }
+                }
+              ]
             }
           ]
         }
@@ -184,37 +197,56 @@ export const UPDATE_STORY = gql`
   }
 `
 
-export const LIST_PLACE_STORIES = gql` #unused
-  query getPlaceStories(
-    $placeId: ID! # place
-    $orderBy: StoryOrderBy # title_ASC, title_DESC, createdAt_ASC, createdAt_DESC
-    $skip: Int # for pagination, 0 for no skip
-    $first: Int # limit result to number
-  ) {
-    allStories(orderBy: $orderBy, first: $first, skip: $skip, filter: {place: {id: $placeId}}) {
+export const FOLLOWING_STORIES_PAGINATED = gql`
+query FollowingStories($first: Int!, $skip: Int!, $id: ID!, $userId: ID!, $oneMapperId: ID) {
+  allStories(first: $first, skip: $skip, orderBy: updatedAt_DESC, filter: {
+    AND: [
+      {
+        status: PUBLISHED
+      },
+      {
+        place: {
+          id: $id
+        }
+      },
+      {
+        createdBy: {
+          id_not: $userId
+        }
+      },
+      {
+        createdBy: {
+          id_not: $oneMapperId
+        }
+      },
+      {
+        createdBy: {
+          followers_some: {
+            id: $userId
+          }
+        }
+      },
+      {
+        createdBy: {
+          blockUsers_none: {
+            id: $userId
+          }
+        }
+      }
+    ]
+  }) {
+    id
+    createdAt
+    createdBy {
       id
-      createdAt
-      updatedAt
-      title
-      story
-      hashtag
-      place {
-        id
-        placeName
-        pictureURL
-      }
-      usersLike {
-        id
-      }
-      createdBy {
-        id
-        username
-        lastName
-        firstName
-        photoURL
-      }
-      status
-      pictureURL
+      displayName
+      username
+      photoURL
     }
+    pictureURL
+    story
+    title
+    updatedAt
+  }
 }
 `

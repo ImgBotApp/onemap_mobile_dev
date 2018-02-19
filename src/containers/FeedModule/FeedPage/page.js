@@ -26,7 +26,6 @@ const STORIES_PER_PAGE = 8;
 import { client } from '@root/main'
 import { graphql } from "react-apollo";
 
-import { GET_SUGGEST_USERS } from '@graphql/userprofile'
 import { GET_MY_COLLECTIONS } from '@graphql/collections'
 
 class FeedPage extends PureComponent {
@@ -79,7 +78,7 @@ class FeedPage extends PureComponent {
       }
       if (getStoriesPaginated.allStories) {
         if (getStoriesPaginated.allStories != this.props.getStoriesPaginated.allStories || this.state.loading) {
-          let graphcoolData = getStoriesPaginated.allStories.map((story) => {
+          let graphcoolData = getStoriesPaginated.allStories.filter(story => story.place).map(story => {
             return {
               id: story.place.id,
               type: 'item',
@@ -293,7 +292,11 @@ class FeedPage extends PureComponent {
       screen: SCREEN.PLACE_PROFILE_PAGE,
       animated: true,
       passProps: {
-        place: data,
+        place: {
+          id: data.id,
+          placeName: data.placeName
+        },
+        oneMapperId: data.createdBy.id !== this.props.user.id ? data.createdBy.id : '',
         onPlaceUpdate: place => this.onPlaceUpdate(place, index),
       }
     })

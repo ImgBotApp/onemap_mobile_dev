@@ -3,6 +3,7 @@ import { graphql } from 'react-apollo'
 
 import { CREATE_PLACE } from '@graphql/places'
 
+import { saveLocation } from '@reducers/user/actions'
 import page from './page'
 
 function mapStateToProps(state) {
@@ -13,7 +14,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-
+    saveLocation: data => {
+      dispatch(saveLocation(data))
+    }
   }
 }
 

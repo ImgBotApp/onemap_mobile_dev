@@ -36,7 +36,7 @@ class StoryBoard extends Component {
   _renderStoryItem(item) {
     return (
       <View>
-        <TouchableOpacity onPress={() => this.props.onPressItem(item.place)}>
+        <TouchableOpacity onPress={() => this.props.onPressItem(item)}>
           <AutoHeightTitledImage uri={item.pictureURL ? item.pictureURL[0] : ""}
             title={item.title} vAlign={'center'} hAlign={'center'}
             style={{ marginBottom: 10 }}
