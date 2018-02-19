@@ -9,7 +9,7 @@ import CircleImage from '../../../components/CircleImage'
 import { getCampaignDetail } from '../../../graphql/campaign'
 import { GetBadgesByCampaign, GetBadgeDetail } from '../../../graphql/badge'
 import { GetSuggestPlaces } from '../../../graphql/places'
-import { GetBadgesByCity } from '../../../graphql/badge'
+import { GetBadgesByCity, GetCityIdByBadge } from '../../../graphql/badge'
 import styles from './styles'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors'
 import { getDeviceWidth } from '../../../global'
@@ -62,6 +62,7 @@ class CampaignProfilePage extends Component {
   FetchCampaignDetail(campaignId) {
     getCampaignDetail(campaignId)
     .then(res => {
+      console.log(res)
       this.setState({
         detail: res,
         page: 'mapView'
@@ -91,6 +92,16 @@ class CampaignProfilePage extends Component {
   onNavigateBadgeDetailPage = (id, type) => {
 
     if (type == 'CITY') {
+      GetCityIdByBadge(id)
+      .then(res => {
+        this.onNavigateCity({
+          id: res.id,
+          title: res.title,
+          subtitle: res.subtitle,
+          description: res.description,
+          icon: res.iconUrl
+        })
+      })
       return
     }
 

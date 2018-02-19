@@ -112,3 +112,27 @@ export function GetBadgeDetail(badgeId, userId) {
   }).then(res => Promise.resolve(res.data))
   .then(res => Promise.resolve(res.Badge))
 }
+
+export const GET_CITYID_BY_BADGE = gql`
+query BadgeQuery($badgeId: ID!) {
+  Badge(id: $badgeId) {
+    city {
+      id
+      title
+      subtitle
+      description
+      iconUrl
+		}
+  }
+}`
+
+export function GetCityIdByBadge(badgeId) {
+  return client.query({
+    query: GET_CITYID_BY_BADGE,
+    variables: {
+      badgeId: badgeId
+    }
+  }).then(res => Promise.resolve(res.data))
+  .then(res => Promise.resolve(res.Badge))
+  .then(res => Promise.resolve(res.city))
+}
