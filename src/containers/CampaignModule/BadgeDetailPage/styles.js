@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import { getDeviceWidth } from '@global'
 // define your styles
 const styles = StyleSheet.create({
@@ -11,14 +11,20 @@ const styles = StyleSheet.create({
     marginTop: getDeviceWidth(96),
     flexDirection: 'row'
   },
+  CardBadgeImage: {
+    width: getDeviceWidth(312),
+    height: getDeviceWidth(312),
+  },
   detailImage: {
     width: getDeviceWidth(312),
     height: getDeviceWidth(312),
     resizeMode: 'cover',
     borderWidth: 1,
-    borderRadius: 15,
+    borderRadius: 5,
     borderColor: 'transparent',
-    resizeMode: 'cover'    
+    resizeMode: 'cover',
+    marginLeft: Platform.OS == 'ios' ? 0 : -getDeviceWidth(16),
+    marginTop: Platform.OS == 'ios' ? 0 : -getDeviceWidth(16)
   },
   detailContainer: {
     marginLeft: getDeviceWidth(98),
@@ -88,7 +94,8 @@ const styles = StyleSheet.create({
   eventType: {
     marginTop: getDeviceWidth(29),
     marginLeft: getDeviceWidth(46),
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   checkInImage: {
     width: getDeviceWidth(49),
@@ -108,7 +115,8 @@ const styles = StyleSheet.create({
   },
   PlaceDetailCardContainer: {
     marginLeft: getDeviceWidth(60),
-    marginTop: getDeviceWidth(60),
+    marginTop: Platform.OS == 'ios' ? getDeviceWidth(60) : 0,
+    marginBottom: Platform.OS == 'ios' ? 0 : 10,
     marginRight: 0,
   },
   PlaceDetailCardDestinationContainer: {
@@ -143,8 +151,8 @@ const styles = StyleSheet.create({
     width: getDeviceWidth(1100)
   },
   RuleContainerItem: {
-    paddingBottom: 10,
-    width: getDeviceWidth(1236)
+    paddingBottom: Platform.OS == 'ios' ? 10 : 20,
+    width: getDeviceWidth(1236),
   }
 });
 

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform, PlatformIOS } from 'react-native'
 import { getDeviceWidth } from '@global' 
 // define your styles
 const styles = StyleSheet.create({
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   conditionGroup: {
     width: getDeviceWidth(1346),
-    minHeight: getDeviceWidth(280),
+    minHeight: Platform.OS == 'ios' ? getDeviceWidth(280) : getDeviceWidth(320),
     maxHeight: getDeviceWidth(1959),
     paddingLeft: getDeviceWidth(101),
     paddingTop: getDeviceWidth(32),
@@ -79,15 +79,17 @@ const styles = StyleSheet.create({
     width: getDeviceWidth(292),
     height: getDeviceWidth(293),
     marginLeft: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   badgeImage: {
-    width: '100%',
-    height: '100%',
+    width: getDeviceWidth(292),
+    height: getDeviceWidth(293),
     resizeMode: 'cover',
     borderWidth: 1,
     borderColor:  'transparent',
-    borderRadius: 15,
+    borderRadius: 5,
+    marginLeft: Platform.OS == 'ios' ? 0 : -5,
+    marginTop: Platform.OS == 'ios' ? 0 : -5
   }
 });
 

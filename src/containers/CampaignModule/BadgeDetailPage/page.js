@@ -76,7 +76,8 @@ class PlaceDetailPage extends Component {
       <View style={styles.detailPart}>
         <CardView cardElevation={2}
           cardMaxElevation={2}
-          cornerRadius={15}
+          cornerRadius={5}
+          style={styles.CardBadgeImage}
           >
         <Image source={ this.state.detail.iconUrl ? { uri: this.state.detail.iconUrl} : require('@assets/images/badge/badge.png')}  style={styles.detailImage}/>
         </CardView>

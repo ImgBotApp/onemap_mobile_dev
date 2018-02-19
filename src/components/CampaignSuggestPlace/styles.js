@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#efeeee',
     width: getDeviceWidth(761),
     minHeight:  getDeviceWidth(457),
+    marginLeft: Platform.OS == 'ios' ? 0 : -5
   },
   PlaceName: {
     marginTop: getDeviceWidth(31),
@@ -57,7 +58,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: getDeviceWidth(252),
-    height: getDeviceWidth(57)
+    height: getDeviceWidth(57),
+    marginRight: Platform.OS == 'ios' ? 0 : getDeviceWidth(28),    
   }
 });
 
