@@ -98,6 +98,7 @@ class ProfilePage extends Component {
         followsIds
       }
     }).then(({ data }) => {
+      client.resetStore();
       this.props.saveUserFollows(data.updateUser.follows);
     }).catch(err => alert(err));
   }
