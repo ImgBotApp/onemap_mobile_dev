@@ -22,7 +22,7 @@ import Permissions from 'react-native-permissions'
 
 import Places from 'google-places-web'
 
-import { PLACES_APIKEY,TABBAR_HEIGHT } from '@global/const';
+import { PLACES_APIKEY, TABBAR_HEIGHT } from '@global/const';
 import Toast, { DURATION } from 'react-native-easy-toast'
 import axios from 'axios';
 
@@ -80,7 +80,6 @@ class SearchPage extends Component {
     }
   }
   componentDidMount() {
-    _this = this;
     Permissions.check('location').then(response => {
       if (response == 'authorized') {
         this.setGeoPositionEvent();
@@ -137,6 +136,7 @@ class SearchPage extends Component {
         if (position.coords) {
           console.log("current position:" + position.coords.latitude);
           this.setState({ myPosition: position.coords });
+          this.props.saveLocation(position.coords);
           this.updateMapView();
         }
       },
@@ -149,6 +149,7 @@ class SearchPage extends Component {
         if (position.coords) {
           console.log("watch position:" + position.coords.latitude);
           this.setState({ myPosition: position.coords });
+          this.props.saveLocation(position.coords);
           this.updateMapView();
         }
       }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 });
@@ -250,8 +251,8 @@ class SearchPage extends Component {
           {
             this.state.result == false ?
               (
-                <View style={{ width: '100%',height:'100%',paddingBottom:TABBAR_HEIGHT }}>
-                  <View style={[styles.mapView,{flex:0.75}]}>
+                <View style={{ width: '100%', height: '100%', paddingBottom: TABBAR_HEIGHT }}>
+                  <View style={[styles.mapView, { flex: 0.75 }]}>
                     <View style={styles.mapWrapper}>
                       <MapView
                         // showsUserLocation={true}
@@ -299,7 +300,7 @@ class SearchPage extends Component {
                   </View>
                   <FlatList
                     keyExtractor={(item, index) => index}
-                    style={{ paddingTop: getDeviceHeight(50),flex:0.25}}
+                    style={{ paddingTop: getDeviceHeight(50), flex: 0.25 }}
                     data={this.state.nearByPlaces}
                     renderItem={({ item }) =>
                       <View>

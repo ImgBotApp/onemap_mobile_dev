@@ -2,7 +2,7 @@ import { StyleSheet, Platform } from 'react-native'
 import { BACKGROUNDCOLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR } from '../../../theme/colors';
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
-import { BIG_FONT_SIZE, SMALL_FONT_SIZE, SMALLER_FONT_SIZE, NORMAL_FONT_SIZE, BIGGER_FONT_SIZE,APPFONTNAME } from '../../../theme/fonts';
+import { BIG_FONT_SIZE, SMALL_FONT_SIZE, SMALLER_FONT_SIZE, NORMAL_FONT_SIZE, BIGGER_FONT_SIZE, APPFONTNAME } from '../../../theme/fonts';
 // define your styles
 const styles = StyleSheet.create({
   container: {
@@ -86,15 +86,15 @@ const styles = StyleSheet.create({
     marginTop: getDeviceHeight(89),
     height: getDeviceHeight(323),
     overflow: 'hidden',
-    zIndex:10
+    zIndex: 10
   },
-  mapWrapper:{
-    position:'absolute',
-    top:0,
-    left:0,
-    right:0,
-    bottom:-30,
-    zIndex:0
+  mapWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: -30,
+    zIndex: 0
   },
   map: {
     width: '100%',
@@ -109,20 +109,20 @@ const styles = StyleSheet.create({
     color: LIGHT_GRAY_COLOR,
     fontSize: NORMAL_FONT_SIZE,
     fontFamily: APPFONTNAME.Regular,
-    marginBottom:2
+    marginBottom: 2
   },
   informationContainer: {
-    flex:1,
-    flexDirection:'row',
+    flex: 1,
+    flexDirection: 'row',
     marginLeft: getDeviceWidth(76),
     marginRight: getDeviceWidth(76),
     marginTop: getDeviceHeight(89),
   },
-  informationLabel:{
-    flex:0.32
+  informationLabel: {
+    flex: 0.32
   },
-  informationContent:{
-    flex:0.68
+  informationContent: {
+    flex: 0.68
   },
   interestContainer: {
     marginLeft: getDeviceWidth(76),
@@ -133,16 +133,16 @@ const styles = StyleSheet.create({
   interestItem: {
     flexDirection: 'row',
     marginLeft: getDeviceWidth(30),
-    alignItems:'center',
+    alignItems: 'center',
   },
   interestInformation: {
     flexDirection: 'row',
-    justifyContent:'center',
+    justifyContent: 'space-between',
     width: '100%'
   },
   interestText: {
     color: LIGHT_GRAY_COLOR,
-    fontSize: NORMAL_FONT_SIZE-1,
+    fontSize: NORMAL_FONT_SIZE - 1,
     marginLeft: getDeviceWidth(20),
     fontFamily: APPFONTNAME.Regular
   },
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
   },
   userDescription: {
     marginLeft: getDeviceWidth(47),
-    width:getDeviceWidth(800),
+    width: getDeviceWidth(800),
   },
   storyWriterName: {
     color: DARK_GRAY_COLOR,
@@ -276,9 +276,9 @@ const styles = StyleSheet.create({
     bottom: Platform.OS == 'android' ? 18 : 5,
     fontWeight: "100"
   },
-  modalMediaView:{
+  modalMediaView: {
     width: getDeviceWidth(1000),
-    height:getDeviceHeight(750),
+    height: getDeviceHeight(750),
     backgroundColor: 'white',
     borderColor: 'transparent',
     borderWidth: 1,
@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
     color: DARK_GRAY_COLOR,
   },
   modalMediaViewHeader: {
-    height:getDeviceHeight(150),
+    height: getDeviceHeight(150),
     paddingTop: getDeviceWidth(30),
     paddingLeft: getDeviceWidth(30),
     paddingRight: getDeviceWidth(30),
@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   modalItem: {
-    height:getDeviceHeight(200),
+    height: getDeviceHeight(200),
     width: '100%',
     borderColor: LIGHT_GRAY_COLOR,
     borderTopWidth: 1,
@@ -314,8 +314,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRightWidth: 1,
-    paddingLeft:20,
-    paddingRight:20
+    paddingLeft: 20,
+    paddingRight: 20
   },
   cancelStr: {
     color: BLUE_COLOR,
@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
     width: getDeviceWidth(800),
     color: 'black',
     fontSize: BIG_FONT_SIZE,
-    width:'100%',
+    width: '100%',
   }
 });
 

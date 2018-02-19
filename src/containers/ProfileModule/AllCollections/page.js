@@ -74,26 +74,16 @@ class AllCollections extends Component {
       }
     })
   }
-  onItemRemove(item) {
-    if (this.props.collections) return;
-    Alert.alert(
-      item.name,
-      'Do you want to remove ' + item.name + '?',
-      [
-        { text: 'OK', onPress: () => this.deleteUserCollection(item.id) },
-        { text: 'Cancel', style: 'cancel' }
-      ]
-    )
-  }
-  deleteUserCollection(id) {
-    this.props.deleteUserCollection({
-      variables: {
-        id
+  onItemDetail(item, index) {
+    if (this.props.collections) return;//for my collection only
+    this.props.navigator.push({
+      screen: SCREEN.FEED_NEW_COLLECTION,
+      title: 'Edit Collection',
+      passProps: {
+        collection: item,
+        collectionIndex: index
       }
-    }).then(collection => {
-      let collections = this.props.myCollections.filter(item => item.id !== id);
-      this.props.saveCollections(collections);
-    }).catch(err => alert(err));
+    });
   }
 
   onViewCollectionItem = (item) => {
@@ -130,31 +120,30 @@ class AllCollections extends Component {
     const collections = this.props.collections ? this.props.collections : this.props.myCollections;
     return (
       <ScrollView style={styles.main}>
-        <View>
-          <View style={styles.firstContainer}>
-            <Collections
-              allText={'+\nAll'}
-              onViewItem={this.onViewCollectionItem}
-              onViewStories={this.onViewStories}
-              onViewAll={this.onViewCollectionsAll}
-            />
-          </View>
-          <View style={styles.container}>
-            {collections.map((item, index) => {
-              return (
-                <CollectionItem
-                  key={index}
-                  style={styles.cell}
-                  insideStyle={styles.collection}
-                  uri={item.pictureURL}
-                  title={item.name}
-                  radius={8}
-                  onPress={() => this.onItemPress(item)}
-                  onLongPress={() => this.props.myCollections && this.onItemRemove(item)}
-                />
-              )
-            })}
-          </View>
+        <View style={styles.firstContainer}>
+          <Collections
+            allText={'+\nAll'}
+            onViewItem={this.onViewCollectionItem}
+            onViewStories={this.onViewStories}
+            onViewAll={this.onViewCollectionsAll}
+          />
+        </View>
+        <View style={styles.container}>
+          {collections.map((item, index) => {
+            return (
+              <CollectionItem
+                key={index}
+                style={styles.cell}
+                insideStyle={styles.collection}
+                uri={item.pictureURL}
+                title={item.name}
+                locked={item.privacy}
+                radius={8}
+                onPress={() => this.onItemPress(item)}
+                onLongPress={() => this.props.myCollections && this.onItemDetail(item, index)}
+              />
+            )
+          })}
         </View>
       </ScrollView>
     );
