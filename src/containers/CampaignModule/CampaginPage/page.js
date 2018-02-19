@@ -152,7 +152,7 @@ class CampaignPage extends Component {
             <TouchableOpacity onPress={() => this.onNavigateBadgeDetailPage(item.id)}>
             <CardView cardElevation={2}
               cardMaxElevation={2}
-              cornerRadius={15}
+              cornerRadius={5}
               style={styles.BadgeItem}
             >
               <Image source={item.iconUrl ? {uri: this.getBadgeWithStatus(item)} : require('@assets/images/badge/badge.png')} style={styles.badgeImage}/>
