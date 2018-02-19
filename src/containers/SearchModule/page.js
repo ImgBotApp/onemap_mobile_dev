@@ -131,7 +131,7 @@ class SearchPage extends Component {
 
   }
 
-  setGeoPositionEvent() {
+  async setGeoPositionEvent() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         if (position.coords) {
@@ -154,7 +154,7 @@ class SearchPage extends Component {
       }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 });
     }
   }
-  updateMapView() {
+  async updateMapView() {
     var getInitialRegion = {
       latitude: this.state.myPosition.latitude,
       longitude: this.state.myPosition.longitude,
