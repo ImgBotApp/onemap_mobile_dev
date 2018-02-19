@@ -85,7 +85,7 @@ class AllCollections extends Component {
       }
     });
   }
-  
+
   onViewCollectionItem = (item) => {
     this.props.navigator.push({
       screen: SCREEN.COLLECTIONS_PAGE,
@@ -120,32 +120,30 @@ class AllCollections extends Component {
     const collections = this.props.collections ? this.props.collections : this.props.myCollections;
     return (
       <ScrollView style={styles.main}>
-        <View>
-          <View style={styles.firstContainer}>
-            <Collections
-              allText={'+\nAll'}
-              onViewItem={this.onViewCollectionItem}
-              onViewStories={this.onViewStories}
-              onViewAll={this.onViewCollectionsAll}
-            />
-          </View>
-          <View style={styles.container}>
-            {collections.map((item, index) => {
-              return (
-                <CollectionItem
-                  key={index}
-                  style={styles.cell}
-                  insideStyle={styles.collection}
-                  uri={item.pictureURL}
-                  title={item.name}
-                  locked={item.privacy}
-                  radius={8}
-                  onPress={() => this.onItemPress(item)}
-                  onLongPress={() => this.props.myCollections && this.onItemDetail(item, index)}
-                />
-              )
-            })}
-          </View>
+        <View style={styles.firstContainer}>
+          <Collections
+            allText={'+\nAll'}
+            onViewItem={this.onViewCollectionItem}
+            onViewStories={this.onViewStories}
+            onViewAll={this.onViewCollectionsAll}
+          />
+        </View>
+        <View style={styles.container}>
+          {collections.map((item, index) => {
+            return (
+              <CollectionItem
+                key={index}
+                style={styles.cell}
+                insideStyle={styles.collection}
+                uri={item.pictureURL}
+                title={item.name}
+                locked={item.privacy}
+                radius={8}
+                onPress={() => this.onItemPress(item)}
+                onLongPress={() => this.props.myCollections && this.onItemDetail(item, index)}
+              />
+            )
+          })}
         </View>
       </ScrollView>
     );

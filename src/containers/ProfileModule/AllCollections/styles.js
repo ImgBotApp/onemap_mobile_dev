@@ -1,12 +1,14 @@
 import { StyleSheet } from 'react-native'
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
+import { BACKGROUNDCOLOR } from '@theme/colors';
 
 const itemWidth = 335;
 
 const styles = StyleSheet.create({
   main: {
-    // alignItems: 'center'
+    flex: 1,
+    backgroundColor: BACKGROUNDCOLOR
   },
   firstContainer: {
     alignItems: 'center',
