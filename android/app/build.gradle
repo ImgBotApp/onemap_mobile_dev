@@ -96,10 +96,10 @@ def enableProguardInReleaseBuilds = false
 android {
     signingConfigs {
         debug {
-            keyAlias 'android'
-            keyPassword 'android'
-            storeFile file('D:/20171124/onemap_mobile_dev/android/keystores/debug.keystore')
-            storePassword 'android'
+            keyAlias 'onemap'
+            keyPassword 'onemap'
+            storeFile file('/Volumes/Work/Work/ReactNative/onemap_mobile_dev/onemap.keystore')
+            storePassword 'onemap'
         }
         release {
             if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
@@ -113,7 +113,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
     defaultConfig {
-        applicationId "com.writingfuture.onemap"
+        applicationId "com.writingfuture.onemap123"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 2
