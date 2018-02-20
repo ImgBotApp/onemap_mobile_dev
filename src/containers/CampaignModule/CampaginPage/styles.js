@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
   },
   conditionGroupTitle: {
     color: '#585958',
-    fontWeight: 'bold'
   },
   conditionGroupFullInfo: {
 
