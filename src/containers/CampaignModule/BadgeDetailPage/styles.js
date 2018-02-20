@@ -99,10 +99,11 @@ const styles = StyleSheet.create({
   },
   checkInImage: {
     width: getDeviceWidth(49),
-    height: getDeviceWidth(48)
+    height: getDeviceWidth(48),
+    resizeMode: 'cover'
   },
   SuggestContainer: {
-    marginTop: getDeviceWidth(103),
+    marginTop: Platform.OS == 'ios' ? getDeviceWidth(103) : getDeviceWidth(153),
     marginLeft: getDeviceWidth(87),    
   },
   SuggestPlaceContainer: {
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     marginLeft: getDeviceWidth(60),
     marginTop: Platform.OS == 'ios' ? getDeviceWidth(60) : 0,
     marginBottom: Platform.OS == 'ios' ? 0 : 10,
-    marginRight: 0,
+    marginRight: Platform.OS == 'ios' ? 0 : 10,
   },
   PlaceDetailCardDestinationContainer: {
     marginTop: getDeviceWidth(20),

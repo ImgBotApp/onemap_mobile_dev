@@ -12,7 +12,7 @@ import { GetBadgeDetail} from '../../../graphql/badge'
 import { GetSuggestPlaces, getPlaceDetail } from '../../../graphql/places'
 import PropTypes from 'prop-types'
 import CardView from 'react-native-cardview'
-import FontStyle from '../../../theme/fonts'
+import FontStyle, { APPFONTNAME } from '../../../theme/fonts'
 import I18n from '@language'
 import styles from './styles'
 import SuggestPlaceItem from '../../../components/CampaignSuggestPlace'
@@ -21,6 +21,10 @@ import * as SCREEN from '../../../global/screenName'
 
 // create a component
 class CampaignPage extends Component {
+  static navigatorStyle = {
+    navBarTextFontFamily: APPFONTNAME.Regular
+  };
+
   constructor(props) {
     super(props)
 
@@ -112,7 +116,7 @@ class CampaignPage extends Component {
         <Image source={this.props.icon ? {uri: this.props.icon} : require('@assets/images/badge/badge.png')} style={styles.conditionGroupImage}/>
         <View style={styles.conditionGroupShort}>
           <Text style={[FontStyle.Header, styles.conditionGroupTitle]} numberOfLines={1} ellipsizeMode={'tail'}>{this.props.title}</Text>
-          <Text style={[FontStyle.SubContent, styles.conditionGroupTitle]} numberOfLines={2} ellipsizeMode={'tail'} >{this.props.subtitle}</Text>
+          <Text style={[FontStyle.Regular, styles.conditionGroupTitle]} numberOfLines={2} ellipsizeMode={'tail'} >{this.props.subtitle}</Text>
         </View>
       </View>
       </TouchableOpacity>

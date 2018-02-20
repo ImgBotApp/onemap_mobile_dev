@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
 import { BLUE_COLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../theme/colors';
@@ -11,6 +11,10 @@ const styles = StyleSheet.create({
     width: getDeviceWidth(1267),
     borderRadius: 5,
     padding: getDeviceWidth(45)
+  },
+  CardContainer: {
+    marginRight: Platform.OS == 'ios' ? 0 : 8,
+    marginBottom: Platform.OS == 'ios' ? 0 : 10
   },
   visitProfile: {
     width: getDeviceWidth(391),

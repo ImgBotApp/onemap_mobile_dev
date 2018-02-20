@@ -33,6 +33,7 @@ class FeedCampaign extends Component {
   render() {
     return (
       <CardView style={styles.container} cardElevation={2} cardMaxElevation={2} cornerRadius={5}>
+        <View style={styles.CardContainer}>
         <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row' }}>
             <Image source={{ uri: this.props.data.iconUrl }} style={styles.markImage} />
@@ -57,6 +58,7 @@ class FeedCampaign extends Component {
           </ViewMoreText>
         </View>
         <Image source={{ uri: this.props.data.pictureUrl.length && this.props.data.pictureUrl[0] }} style={styles.image} />
+        </View>
       </CardView>
     );
   }
