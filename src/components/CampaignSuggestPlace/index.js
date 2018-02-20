@@ -24,17 +24,19 @@ class SuggestPlace extends Component {
           {
             this.props.images && this.props.images.map((item, index) => {
               return (
-                <CardView cardElevation={5} cardMaxElevation={5} cornerRadius={5} style={styles.ImageCard} key={index}>
+                // <CardView cardElevation={1} cardMaxElevation={1} cornerRadius={5} style={styles.ImageCard} key={index}>
                   <Image source={{ uri: fetchThumbFromCloudinary(item)}} style={styles.ItemImage} />
-                </CardView>
+                // </CardView>
               )
             })
           }
           </ScrollView>
         </View>
         <View style={styles.DetailPart}>
+          <View>
           <Text style={[FontStyle.SubContent, styles.address]} numberOfLines={1} ellipsizeMode={'tail'}>{this.props.address}</Text>
-          <TouchableOpacity onPress={() => this.props.onPress(this.props.id)}>
+          </View>
+          <TouchableOpacity onPress={() => this.props.onPress(this.props.id)} style={{justifyContent: 'center'}}>
             <View style={styles.ViewMore}>
               <Text style={{color: '#0c80fe', fontSize: 8}}>{I18n.t('PROFILE_VIEW_MORE')}</Text>
             </View>

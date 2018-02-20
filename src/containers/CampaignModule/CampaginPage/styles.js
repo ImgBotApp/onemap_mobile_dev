@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   SPlaceItem: {
-    marginLeft: 10,
+    marginLeft: Platform.OS == 'ios' ? 10 : 0,
     marginBottom: 10,
     backgroundColor: '#efeeee'
   },

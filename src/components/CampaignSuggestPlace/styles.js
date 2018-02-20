@@ -17,13 +17,13 @@ const styles = StyleSheet.create({
   imageContainer: {
     flexDirection: 'row',
     overflow: 'hidden',
-    marginLeft: getDeviceWidth(28),
+    marginLeft: getDeviceWidth(50),
     marginTop: getDeviceWidth(69)
   },
   ImageCard: {
     width: getDeviceWidth(263),
     height: getDeviceWidth(185),
-    marginRight: 10
+    marginRight: Platform.OS == 'ios' ? 10 : 0
   },
   playButton: {
     position: "absolute",
@@ -35,18 +35,20 @@ const styles = StyleSheet.create({
     fontWeight: "100"
   },
   ItemImage: {
-    height: '100%',
-    width: '100%',
+    height: getDeviceWidth(185),
+    width: getDeviceWidth(263),
     borderWidth: 1,
     borderColor: 'transparent',
     borderRadius: 5,
-    resizeMode: 'cover'
+    resizeMode: 'cover',
+    marginRight: 10
   },
   DetailPart: {
     marginTop: getDeviceWidth(39),
-    marginLeft: getDeviceWidth(28),
+    marginLeft: getDeviceWidth(50),
     marginBottom: 10,
     flexDirection: 'row',
+    justifyContent: 'center'
   },
   address: {
     width: getDeviceWidth(450),
