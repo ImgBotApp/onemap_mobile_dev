@@ -31,13 +31,24 @@ export const EXIST_FACEBOOK_USER = gql`
 export const FILER_USERS = gql`
   query FilterUsers($keyword: String, $userId: ID!) {
     allUsers(filter: {
-      displayName_contains: $keyword,
-      id_not: $userId
+      AND: [
+        {blockUsers_none: {
+          id: $userId
+        }}
+        {accountStatus: ENABLE},
+        {
+          OR: [
+            {displayName_contains: $keyword}
+            {username_contains: $keyword}
+          ]
+        }
+      ]
     }) {
       id
       username
       displayName
       photoURL
+      accountVerification
     }
   }
 `
