@@ -140,5 +140,20 @@ export default {
   // User profile
   USERPROFILE_TITLE: "Profile",
   USERPROFILE_USER_REQUSET_MODIFICATION: "Request to be modification",
-  USERPROFILE_TERMS: "Terms"
+  USERPROFILE_TERMS: "Terms",
+
+  // Report
+  REPORT_ONEMAP_TITLE: "Report this profile",
+  REPORT_ONEMAP_DESCRIPTION1: "Contain Hate speech or Promo graphic in nature.",
+  REPORT_ONEMAP_DESCRIPTION2: "This person pretending to be me or someone I know.",
+  REPORT_ONEMAP_CONFIRM: "Are you sure to report this profile?",
+  REPORT_PLACE_TITLE: "Suggest Edit",
+  REPORT_PLACE_DESCRIPTION1: "Permanently closed.",
+  REPORT_PLACE_DESCRIPTION2: "Location is wrong.",
+  REPORT_PLACE_CONFIRM: "Are you sure to report this place?",
+  REPORT_STORY_TITLE: "Report this story",
+  REPORT_STORY_DESCRIPTION1: "This story contain fault information.",
+  REPORT_STORY_DESCRIPTION2: "This story contain Hate speech or nudity.",
+  REPORT_PLACE_CONFIRM: "Are you sure to report this story?",
+  REPORT_THANKS: "Thank you for your information",
 }

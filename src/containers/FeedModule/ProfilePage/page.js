@@ -1,9 +1,11 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList, Image, Platform } from 'react-native';
+import ActionSheet from 'react-native-actionsheet'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import AutoHeightImage from 'react-native-auto-height-image';
+import ActionDialog from '@components/ActionDialog'
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import CampaignList from '@components/CampaignList'
 import Collections from '@components/Collections'
@@ -20,17 +22,10 @@ import DFonts from '@theme/fonts'
 import { client } from '@root/main'
 import { GET_ONEMAPPER_PROFILE } from '@graphql/userprofile'
 
+const CANCEL_INDEX = 0
+const DESTRUCTIVE_INDEX = 4
+
 class ProfilePage extends Component {
-  static navigatorButtons = {
-    leftButtons: [
-      {
-        title: '',
-        id: 'backButton',
-        buttonColor: DARK_GRAY_COLOR,
-        disableIconTint: true
-      }
-    ]
-  };
 
   constructor(props) {
     super(props);
@@ -40,6 +35,15 @@ class ProfilePage extends Component {
         leftButtons: [{
           icon,
           id: 'backButton',
+          disableIconTint: true
+        }]
+      })
+    })
+    Ionicons.getImageSource('ios-more', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        rightButtons: [{
+          icon,
+          id: 'more',
           disableIconTint: true
         }]
       })
@@ -63,6 +67,8 @@ class ProfilePage extends Component {
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'backButton') {
         this.props.navigator.pop({})
+      } else if (event.id == 'more') {
+        this.reportActionSheet.show();
       }
     }
   }
@@ -152,6 +158,9 @@ class ProfilePage extends Component {
     });
   }
 
+  onReport = reason => {
+    alert(I18n.t('REPORT_THANKS'));
+  }
 
   render() {
     const { user, collections, stories, campaigns } = this.state;
@@ -230,6 +239,20 @@ class ProfilePage extends Component {
             onPressItem={this.onStoryItem.bind(this)}
           />
         </View>
+
+        <ActionSheet
+          ref={o => this.reportActionSheet = o}
+          title={'Select Action'}
+          options={['Cancel', I18n.t('REPORT_ONEMAP_TITLE')]}
+          cancelButtonIndex={CANCEL_INDEX}
+          destructiveButtonIndex={DESTRUCTIVE_INDEX}
+          onPress={(index) => index && this.refs.actionDialog.show()}
+        />
+        <ActionDialog
+          ref={'actionDialog'}
+          type={'onemap'}
+          onConfirm={this.onReport}
+        />
       </ScrollView>
     );
   }
