@@ -963,6 +963,7 @@ class PlaceProfile extends PureComponent {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
             this.setState({ reportType: 'story' });
+            this.reportStoryId = item.id;
             setTimeout(() => {
               this.reportActionSheet.show();
             });
@@ -1003,7 +1004,27 @@ class PlaceProfile extends PureComponent {
   }
 
   onReport = reason => {
-    alert(I18n.t('REPORT_THANKS'));
+    if (this.state.reportType === 'place') {
+      this.props.reportPlace({
+        variables: {
+          placeId: this.state.placeData.id,
+          reason,
+          userId: this.props.user.id
+        }
+      }).then(({ data }) => {
+        alert(I18n.t('REPORT_THANKS'));
+      }).catch(err => alert(err));
+    } else {
+      this.props.reportStory({
+        variables: {
+          storyId: this.reportStoryId,
+          reason,
+          userId: this.props.user.id
+        }
+      }).then(({ data }) => {
+        alert(I18n.t('REPORT_THANKS'));
+      }).catch(err => alert(err));
+    }
   }
 
   onEndReached() {

@@ -159,7 +159,15 @@ class ProfilePage extends Component {
   }
 
   onReport = reason => {
-    alert(I18n.t('REPORT_THANKS'));
+    this.props.reportProfile({
+      variables: {
+        onemapId: this.state.user.id,
+        reason,
+        userId: this.props.user.id
+      }
+    }).then(({ data }) => {
+      alert(I18n.t('REPORT_THANKS'));
+    }).catch(err => alert(err));
   }
 
   render() {
