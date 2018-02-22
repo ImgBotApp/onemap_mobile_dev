@@ -7,6 +7,8 @@ import PropType from 'prop-types'
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors'
 import { GetBadgesByCampaign } from '../../../graphql/badge'
 import { getGrayImage } from '../../../global/cloudinary'
+import * as SCREEN from '../../../global/screenName'
+import I18n from '@language'
 import styles from './styles'
 // create a component
 class UserPageListPage extends Component {
@@ -64,7 +66,7 @@ class UserPageListPage extends Component {
       {
         this.state.badges.map((badge, index) => {
           return (
-            <TouchableOpacity style={styles.badgeItem} key={index}>
+            <TouchableOpacity style={styles.badgeItem} key={index} onPress={() => this.onNavigateBadgeStatusPage(badge)}>
               <Image source={badge.iconUrl ? { uri: this.getBadgeWithStatus(badge) } : require('@assets/images/badge/badge.png')} style={styles.badgeImage}/>
             </TouchableOpacity>
           )
@@ -78,6 +80,19 @@ class UserPageListPage extends Component {
       </View>
       
     );
+  }
+
+  onNavigateBadgeStatusPage = (badge) => {
+    this.props.navigator.push({
+      screen: SCREEN.CAMPAIGN_USER_BADGE_STATUS_PAGE,
+      title: I18n.t('BADGE_STR'),
+      navigatorStyle: {
+        navBarComponentAlignment: 'center'
+      },
+      passProps: {
+        badge: badge
+      }
+    })
   }
 }
 

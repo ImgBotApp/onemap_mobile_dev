@@ -50,7 +50,6 @@ class ProfileComponent extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
   componentWillMount() {
-    this.getMyFollows();
     getUserRewardCampaignBadge(this.props.user.id)
     .then(res => {
       this.setState({
@@ -58,7 +57,8 @@ class ProfileComponent extends Component {
       }, () => {
         this.getMyTotalPoints()
       })
-    }) 
+    })
+    this.getMyFollows();    
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.user != this.props.user) {
