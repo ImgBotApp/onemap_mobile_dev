@@ -1,8 +1,7 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator,Platform } from 'react-native';
-import EvilIcons from 'react-native-vector-icons/EvilIcons'
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import styles from './styles'
 
 import { getDeviceHeight,getDeviceWidth } from '@global'
@@ -46,7 +45,7 @@ class ProfileComponent extends Component {
       ...props.user,
       displayName: props.user.displayName || props.user.firstName + " " + props.user.lastName,
       campaigns: [],
-      totalPoints: '0'
+      totalPoints: 0
     }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
@@ -157,12 +156,16 @@ class ProfileComponent extends Component {
 
   renderCampaignItem(campaign) {
     let mostBadges = this.getMostBadge(campaign)
-    let points = mostBadges.points ? mostBadges.points : '0'
+    let points = mostBadges.points 
     return (
       <CardView cardElevation={1} cardMaxElevation={1} cornerRadius={5} style={campaignStyles.campaignItemCotainer}>
         <View style={campaignStyles.PointContainer}>
           <Text style={[FONTSTYLE.Header, campaignStyles.pointText]}>{I18n.t('POINTS_STR')}</Text>
-          <Text style={[FONTSTYLE.MostBig, campaignStyles.pointText]}> { points} </Text>
+          {
+            points == 0 ? 
+            <Text style={[FONTSTYLE.MostBig, campaignStyles.pointText]}> 0 </Text>
+            : <Text style={[FONTSTYLE.MostBig, campaignStyles.pointText]}> { points } </Text>  
+          }
         </View>
         <View style={ campaignStyles.badgeContainer}>
           {
@@ -170,12 +173,22 @@ class ProfileComponent extends Component {
               return <Image key={index} source={{uri: fetchThumbFromCloudinary(badge.iconUrl)}} style={campaignStyles.badgeStyle}/>
             })
           }
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => this.onNavigateUserBadgeList(campaign.id)}>
             <Image source={require('@assets/images/badge/viewMore.png')} style={[campaignStyles.badgeStyle, { marginRight: 5}]}/>
           </TouchableOpacity>
         </View>
       </CardView>
     )
+  }
+
+  onNavigateUserBadgeList = (id) => {
+    this.props.navigator.push({
+      screen: SCREEN.CAMPAIGN_USER_BADGE_LIST_PAGE,
+      animated: true,
+      passProps: {
+        id: id
+      }
+    })
   }
 
   renderCampagin() {
@@ -223,7 +236,11 @@ class ProfileComponent extends Component {
                 </Text>
                 {/* User Points */}
                 <Text style={[FONTSTYLE.Regular, { color: DARK_GRAY_COLOR, marginTop: 5}]}>
-                  <Text style={styles.points}>{' '}{ this.state.totalPoints }{' '} </Text>
+                  {
+                    this.state.totalPoints == 0 ? 
+                    <Text style={styles.points}>0</Text>
+                    : <Text style={styles.points}>{' '}{ this.state.totalPoints ? this.state.totalPoints : '0' }{' '} </Text>
+                  }
                   {'  '}{I18n.t('POINTS_STR')}
                 </Text>
               </View>

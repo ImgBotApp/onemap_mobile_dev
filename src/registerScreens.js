@@ -34,6 +34,7 @@ import CampaignProfilePage from './containers/CampaignModule/ProfilePage'
 import CampaignConditionGroupPage from './containers/CampaignModule/MapViewPage'
 import CampaignMainPage from './containers/CampaignModule/CampaginPage'
 import CampaignPlaceDetailPage from './containers/CampaignModule/BadgeDetailPage'
+import CampaignUserBadgeList from './containers/CampaignModule/UserBadgeListPage'
 
 export function registerScreens(store, Provider, client) {
 
@@ -70,4 +71,5 @@ export function registerScreens(store, Provider, client) {
   Navigation.registerComponent(SCREEN.CAMPAIGN_CONDITION_GROUP_PAGE, () => CampaignConditionGroupPage, store, Provider, client)
   Navigation.registerComponent(SCREEN.CAMPAIGN_MAIN_PAGE, () => CampaignMainPage, store, Provider, client)
   Navigation.registerComponent(SCREEN.CAMPAIGN_BADGE_DETAIL_PAGE, () => CampaignPlaceDetailPage, store, Provider, client)
+  Navigation.registerComponent(SCREEN.CAMPAIGN_USER_BADGE_LIST_PAGE, () => CampaignUserBadgeList, store, Provider, client)
 }
