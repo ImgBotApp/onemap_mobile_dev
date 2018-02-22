@@ -163,7 +163,7 @@ class ProfileComponent extends Component {
           <Text style={[FONTSTYLE.Header, campaignStyles.pointText]}>{I18n.t('POINTS_STR')}</Text>
           {
             points == 0 ? 
-            <Text style={[FONTSTYLE.MostBig, campaignStyles.pointText]}> 0 </Text>
+            <Text style={[FONTSTYLE.MostBig, campaignStyles.pointText]}> { 0 + ''} </Text>
             : <Text style={[FONTSTYLE.MostBig, campaignStyles.pointText]}> { points } </Text>
           }
         </View>
@@ -243,7 +243,7 @@ class ProfileComponent extends Component {
                 <Text style={[FONTSTYLE.Regular, { color: DARK_GRAY_COLOR, marginTop: 5}]}>
                   {
                     this.state.totalPoints == 0 ? 
-                    <Text style={styles.points}>0</Text>
+                    <Text style={styles.points}>{0 + ''}</Text>
                     : <Text style={styles.points}>{' '}{ this.state.totalPoints ? this.state.totalPoints : '0' }{' '} </Text>
                   }
                   {'  '}{I18n.t('POINTS_STR')}

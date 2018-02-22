@@ -1,10 +1,12 @@
 //import liraries
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import PropType from 'prop-types'
 
 import { RED_COLOR, LIGHT_GRAY_COLOR, BLUE_COLOR, GREEN_COLOR, DARK_GRAY_COLOR } from '@theme/colors'
+import { GetBadgesByCampaign } from '../../../graphql/badge'
+import { getGrayImage } from '../../../global/cloudinary'
 import styles from './styles'
 // create a component
 class UserPageListPage extends Component {
@@ -21,7 +23,19 @@ class UserPageListPage extends Component {
       })
     })
 
+    this.state = {
+      badges: []
+    }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
+  }
+
+  componentWillMount() {
+    GetBadgesByCampaign(this.props.id, this.props.user.id)
+    .then(res => {
+      this.setState({
+        badges: res
+      })
+    })
   }
 
   onNavigatorEvent = (event) => {
@@ -33,11 +47,36 @@ class UserPageListPage extends Component {
     }
   }
 
+  getBadgeWithStatus(badge) {
+    if ( badge.receivedBy.length == 0 ) {
+      return getGrayImage(badge.iconUrl)
+    } else {
+      return badge.iconUrl
+    }
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text>UserPageListPage</Text>
+      
+      <View style={styles.Page}>
+      <ScrollView style={styles.container}>
+      <View style={styles.badgeContainer}>
+      {
+        this.state.badges.map((badge, index) => {
+          return (
+            <TouchableOpacity style={styles.badgeItem} key={index}>
+              <Image source={badge.iconUrl ? { uri: this.getBadgeWithStatus(badge) } : require('@assets/images/badge/badge.png')} style={styles.badgeImage}/>
+            </TouchableOpacity>
+          )
+        })
+      }
+      {
+        this.state.badges.length % 3 == 2 ? <View style={styles.badgeItem}></View> : null
+      }
       </View>
+      </ScrollView>
+      </View>
+      
     );
   }
 }

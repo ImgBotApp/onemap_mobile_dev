@@ -84,5 +84,5 @@ export function fetchThumbFromCloudinary(imageurl){
 }
 
 export function getGrayImage(imageUrl) {
-    return imageUrl.replace('/upload/', '/upload/e_grayscale/')
+    return fetchThumbFromCloudinary(imageUrl.replace('/upload/', '/upload/e_grayscale/'))
 }
