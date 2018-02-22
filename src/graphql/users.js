@@ -34,7 +34,10 @@ export const FILER_USERS = gql`
       AND: [
         {blockUsers_none: {
           id: $userId
-        }}
+        }},
+        {blockByUsers_none: {
+          id: $userId
+        }},
         {accountStatus: ENABLE},
         {
           OR: [
