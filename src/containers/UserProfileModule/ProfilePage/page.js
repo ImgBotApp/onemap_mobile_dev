@@ -157,7 +157,6 @@ class ProfileComponent extends Component {
 
   renderCampaignItem(campaign) {
     let mostBadges = this.getMostBadge(campaign)
-    console.log('most Badges', mostBadges)
     let points = mostBadges.points ? mostBadges.points : '0'
     return (
       <CardView cardElevation={1} cardMaxElevation={1} cornerRadius={5} style={campaignStyles.campaignItemCotainer}>
