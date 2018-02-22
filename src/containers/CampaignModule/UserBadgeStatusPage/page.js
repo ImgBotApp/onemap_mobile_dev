@@ -50,7 +50,7 @@ class UserBadgeStatusPage extends Component {
         </Text>
         <Text style={[FONTSTYLE.Regular, {color: LIGHT_GRAY_COLOR}]} numberOfLines={2} ellipsizeMode={'tail'}>
         {this.props.badge.receivedBy.length == 0 ? I18n.t('CAMPAIGN_BADGE_NOT_EARN') : 
-          moment(this.props.badge.receivedBy[0].updatedAt).format('You earn badge on DD MMMM YYYY')
+        'You have earn '+ moment(this.props.badge.receivedBy[0].updatedAt).format('DD MMMM YYYY')
         }</Text>
       </View>
     </View>
