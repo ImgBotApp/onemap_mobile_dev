@@ -21,6 +21,8 @@ query BadgeQuery($campaignId: ID!, $userId: ID!) {
       user {
         id
       }
+      createdAt
+      updatedAt
     }
   }
 }`

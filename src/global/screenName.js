@@ -34,3 +34,4 @@ export const CAMPAIGN_CONDITION_GROUP_PAGE = 'onemap.campaign_condition_group_pa
 export const CAMPAIGN_MAIN_PAGE = 'onemap.campaign_main_page'
 export const CAMPAIGN_BADGE_DETAIL_PAGE = 'onemap.compaign_detail_page'
 export const CAMPAIGN_USER_BADGE_LIST_PAGE = 'onemap.campaign_user_badge_list_page'
+export const CAMPAIGN_USER_BADGE_STATUS_PAGE = 'onemap.campaign_user_badge_status_page'
