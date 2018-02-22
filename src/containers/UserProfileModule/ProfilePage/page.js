@@ -16,7 +16,7 @@ import StoryBoard from '@components/StoryBoard'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
-import { SMALL_FONT_SIZE, APPFONTNAME } from '@theme/fonts';
+import FONTSTYLE, { SMALL_FONT_SIZE, APPFONTNAME } from '../../../theme/fonts';
 
 import { client } from '@root/main'
 import { GET_FOLLOWS } from '@graphql/userprofile';
@@ -139,6 +139,13 @@ class ProfileComponent extends Component {
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.bigName}>{this.state.displayName}</Text>
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.userId}>
                   {this.state.username}
+                </Text>
+                {/* User Points */}
+                <Text style={[FONTSTYLE.Regular, { color: DARK_GRAY_COLOR, marginTop: 5}]}>
+                  <Text style={styles.points}>
+                    750
+                  </Text>
+                  {'  '}{I18n.t('POINTS_STR')}
                 </Text>
               </View>
               <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={this.onEditProfile.bind(this)}>
