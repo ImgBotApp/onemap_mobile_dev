@@ -164,7 +164,7 @@ class ProfileComponent extends Component {
           {
             points == 0 ? 
             <Text style={[FONTSTYLE.MostBig, campaignStyles.pointText]}> 0 </Text>
-            : <Text style={[FONTSTYLE.MostBig, campaignStyles.pointText]}> { points } </Text>  
+            : <Text style={[FONTSTYLE.MostBig, campaignStyles.pointText]}> { points } </Text>
           }
         </View>
         <View style={ campaignStyles.badgeContainer}>
@@ -173,7 +173,7 @@ class ProfileComponent extends Component {
               return <Image key={index} source={{uri: fetchThumbFromCloudinary(badge.iconUrl)}} style={campaignStyles.badgeStyle}/>
             })
           }
-          <TouchableOpacity onPress={() => this.onNavigateUserBadgeList(campaign.id)}>
+          <TouchableOpacity onPress={() => this.onNavigateUserBadgeList(campaign)}>
             <Image source={require('@assets/images/badge/viewMore.png')} style={[campaignStyles.badgeStyle, { marginRight: 5}]}/>
           </TouchableOpacity>
         </View>
@@ -181,12 +181,17 @@ class ProfileComponent extends Component {
     )
   }
 
-  onNavigateUserBadgeList = (id) => {
+  onNavigateUserBadgeList = (campaign) => {
     this.props.navigator.push({
       screen: SCREEN.CAMPAIGN_USER_BADGE_LIST_PAGE,
       animated: true,
+      title: campaign.title,
+      navigatorStyle: {
+
+      },
       passProps: {
-        id: id
+        id: campaign.id,
+        title: campaign.title
       }
     })
   }

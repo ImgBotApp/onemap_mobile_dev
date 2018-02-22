@@ -116,6 +116,7 @@ export const GET_USER_REWARD_CAMPAIGN_BADGE = gql`
       }
     }) {
       id
+      title
       cities(filter: {
         badges_some: {
           receivedBy_some: {

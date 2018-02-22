@@ -43,7 +43,8 @@ class UserPageListPage extends Component {
 }
 
 UserPageListPage.propTypes = {
-  id: PropType.string
+  id: PropType.string,
+  title: PropType.string
 }
 
 UserPageListPage.navigatorButtons = {
