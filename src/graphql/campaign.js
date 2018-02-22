@@ -136,6 +136,7 @@ export const GET_USER_REWARD_CAMPAIGN_BADGE = gql`
           id
           iconUrl
           type
+          point
         }
       }
     }
