@@ -12,7 +12,7 @@ import AutoHeightImage from 'react-native-auto-height-image';
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import Collections from '@components/Collections'
 import StoryBoard from '@components/StoryBoard'
-
+import CardView from 'react-native-cardview'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
@@ -20,6 +20,7 @@ import FONTSTYLE, { SMALL_FONT_SIZE, APPFONTNAME } from '../../../theme/fonts';
 
 import { client } from '@root/main'
 import { GET_FOLLOWS } from '@graphql/userprofile';
+import campaignStyles from './campaingStyle'
 
 class ProfileComponent extends Component {
   static navigatorButtons = {
@@ -105,6 +106,22 @@ class ProfileComponent extends Component {
       animated: true,
     })
   }
+
+  renderCampagin() {
+    return (
+      <View style={styles.vCollections}>
+        <Text style={styles.collectionTitle}>{I18n.t('PROFILE_CAMPAIGN')}</Text>
+        <CardView cardElevation={1} cardMaxElevation={1} cornerRadius={5} style={campaignStyles.campaignItemCotainer}>
+          <View style={campaignStyles.PointContainer}>
+            <Text style={[FONTSTYLE.Header, campaignStyles.pointText]}>{I18n.t('POINTS_STR')}</Text>
+            <Text style={[FONTSTYLE.MostBig, campaignStyles.pointText]}>{'765'}</Text>
+          </View>
+          <View>
+          </View>
+        </CardView>
+      </View>
+    )
+  }
   render() {
     const { data: { loading, error, allStories }, GetFollowersList, follows, user } = this.props;
     if (loading) {
@@ -177,6 +194,8 @@ class ProfileComponent extends Component {
         <View style={styles.bioText}>
           <Text style={styles.bio} numberOfLines={2} ellipsizeMode={'tail'}>{this.state.bio}</Text>
         </View>
+        {/* Campaign Part */}
+        { this.renderCampagin () }
         {/* Collection Part */}
         <View style={styles.vCollections}>
           <Text style={styles.collectionTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
