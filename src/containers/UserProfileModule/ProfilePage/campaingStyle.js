@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import { getDeviceHeight, getDeviceWidth } from '@global'
 
 export default styles = StyleSheet.create({
@@ -12,7 +12,9 @@ export default styles = StyleSheet.create({
     alignItems: 'center'
   },
   PointContainer: {
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    height: getDeviceHeight(288),
+    marginBottom: Platform.OS == 'ios' ? 0 : 10    
   },
   pointText: {
     color: '#575858',
@@ -25,9 +27,11 @@ export default styles = StyleSheet.create({
     borderRadius: getDeviceWidth(84.5),
     borderColor: 'transparent',
     resizeMode: 'stretch',
-    marginRight: 5
+    marginRight: 5,
   },
   badgeContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    height: '100%',
+    alignItems: 'center',
   }
 })
