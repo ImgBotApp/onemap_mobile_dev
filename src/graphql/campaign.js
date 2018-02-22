@@ -104,3 +104,48 @@ export function getCampaignDetail(campaignId) {
   }).then(res => Promise.resolve(res.data))
   .then(res => res.Campaign)
 }
+
+
+export const GET_USER_REWARD_CAMPAIGN_BADGE = gql`
+  query CampaignQuery($userId: ID!) {
+    allCampaigns(filter: {
+      joinedBy_some: {
+        user: {
+          id: $userId
+        }
+      }
+    }) {
+      id
+      cities(filter: {
+        badges_some: {
+          receivedBy_some: {
+            user: {
+              id: $userId
+            }
+          }
+        }
+      }) {
+        id
+        badges(filter: {
+          receivedBy_some: {
+            user: {
+              id: $userId
+            }
+          }
+        }) {
+          id
+          iconUrl
+          type
+        }
+      }
+  }`
+
+export function getUserRewardCampaignBadge(userId) {
+  return client.query({
+    query: GET_USER_REWARD_CAMPAIGN_BADGE,
+    variables: {
+      userId: userId
+    }
+  }).then(res => Promise.resolve(res.data))
+  .then(res => res.allCampaigns)
+}
