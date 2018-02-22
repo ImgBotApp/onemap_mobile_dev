@@ -138,6 +138,7 @@ export const GET_USER_REWARD_CAMPAIGN_BADGE = gql`
           type
         }
       }
+    }
   }`
 
 export function getUserRewardCampaignBadge(userId) {

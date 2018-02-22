@@ -7,9 +7,6 @@ import styles from './styles'
 
 import { getDeviceHeight,getDeviceWidth } from '@global'
 import CircleImage from '@components/CircleImage'
-import TitleImage from '@components/TitledImage'
-import AutoHeightImage from 'react-native-auto-height-image';
-import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import Collections from '@components/Collections'
 import StoryBoard from '@components/StoryBoard'
 import CardView from 'react-native-cardview'
@@ -107,6 +104,10 @@ class ProfileComponent extends Component {
     })
   }
 
+  getBadgeToShow() {
+    
+  }
+
   renderCampagin() {
     return (
       <View style={styles.vCollections}>
@@ -117,6 +118,7 @@ class ProfileComponent extends Component {
             <Text style={[FONTSTYLE.MostBig, campaignStyles.pointText]}>{'765'}</Text>
           </View>
           <View>
+
           </View>
         </CardView>
       </View>
