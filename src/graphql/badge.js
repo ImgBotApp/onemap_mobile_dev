@@ -96,7 +96,7 @@ query BadgeQuery($badgeId: ID!, $userId: ID!) {
     point
     type
     description
-    places {
+    place {
       id
       placeName
       pictureURL
