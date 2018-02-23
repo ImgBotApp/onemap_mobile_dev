@@ -115,17 +115,17 @@ class PlaceDetailPage extends Component {
               </View>
               <FlatList 
                 keyExtractor={(item, index) => index}
-                data={this.state.detail.places.pictureURL ? this.state.detail.places.pictureURL : []}
+                data={this.state.detail.place.pictureURL ? this.state.detail.place.pictureURL : []}
                 style={styles.placeDetail}
                 horizontal
                 renderItem={({ item }) => (
                   <Image source={{uri: fetchThumbFromCloudinary(item)}} style={styles.placeImage} />
                 )}
               />
-              <Text style={[FontStyle.SubContent, styles.PlaceDetailCardPlaceName]} numberOfLines={2}>{this.state.detail.places.placeName}</Text>
+              <Text style={[FontStyle.SubContent, styles.PlaceDetailCardPlaceName]} numberOfLines={2}>{this.state.detail.place.placeName}</Text>
               <View style={styles.SperateBar}></View>
-              <Text style={[FontStyle.SubTitle, styles.placeDescription]}>{this.state.detail.places.description}</Text>
-              <TouchableOpacity onPress={() => this.onVisitPlaceProfile(this.state.detail.places.id)}
+              <Text style={[FontStyle.SubTitle, styles.placeDescription]}>{this.state.detail.place.description}</Text>
+              <TouchableOpacity onPress={() => this.onVisitPlaceProfile(this.state.detail.place.id)}
                 style={{width: '30%'}}
               >
                 <Text style={[FontStyle.SubTitle, styles.placeMore]}>{I18n.t('PROFILE_VIEW_MORE')}</Text>

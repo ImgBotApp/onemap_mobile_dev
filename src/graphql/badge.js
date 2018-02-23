@@ -13,6 +13,7 @@ query BadgeQuery($campaignId: ID!, $userId: ID!) {
     id
     iconUrl
     type
+    title
     receivedBy(filter: {
       user: {
         id: $userId
@@ -21,6 +22,8 @@ query BadgeQuery($campaignId: ID!, $userId: ID!) {
       user {
         id
       }
+      createdAt
+      updatedAt
     }
   }
 }`
@@ -93,7 +96,7 @@ query BadgeQuery($badgeId: ID!, $userId: ID!) {
     point
     type
     description
-    places {
+    place {
       id
       placeName
       pictureURL

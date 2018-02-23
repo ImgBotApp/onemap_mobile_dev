@@ -25,7 +25,7 @@ class SuggestPlace extends Component {
             this.props.images && this.props.images.map((item, index) => {
               return (
                 // <CardView cardElevation={1} cardMaxElevation={1} cornerRadius={5} style={styles.ImageCard} key={index}>
-                  <Image source={{ uri: fetchThumbFromCloudinary(item)}} style={styles.ItemImage} />
+                  <Image source={{ uri: fetchThumbFromCloudinary(item)}} style={styles.ItemImage} key={index}/>
                 // </CardView>
               )
             })

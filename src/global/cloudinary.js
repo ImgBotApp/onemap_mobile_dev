@@ -83,6 +83,10 @@ export function fetchThumbFromCloudinary(imageurl){
     return fetchurl+imageurl.replace('?','%3F');
 }
 
-export function getGrayImage(imageUrl) {
-    return imageUrl.replace('/upload/', '/upload/e_grayscale/')
+export function getGrayImage(imageUrl, thumbnail=true) {
+    if (thumbnail) {
+        return fetchThumbFromCloudinary(imageUrl.replace('/upload/', '/upload/e_grayscale/'))
+    } else {
+        return imageUrl.replace('/upload/', '/upload/e_grayscale/')
+    }
 }
