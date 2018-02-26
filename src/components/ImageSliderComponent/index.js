@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, Button, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, Button, Platform,ActivityIndicator } from 'react-native';
 import ImageSliderView from 'react-native-image-slider';
 import PropTypes from 'prop-types';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -12,7 +12,8 @@ import Orientation from 'react-native-orientation';
 import { getMediaTypeFromURL } from '@global/const';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('screen');
-
+import { fetchImageFromCloudinary } from '@global/cloudinary'
+import FastImage from 'react-native-fast-image'
 // create a component
 class ImageSlider extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class ImageSlider extends Component {
       sliderWidth: viewportWidth,
       sliderHeight: viewportHeight,
       itemWidth: viewportWidth,
+      ortMode:"PORTRAIT"
     };
   }
   onPress() {
@@ -63,6 +65,7 @@ class ImageSlider extends Component {
 
   onlayoutOrientation(orientation) {
     let dim = Dimensions.get('screen');
+    this.setState({ortMode:orientation});
     if (orientation != 'LANDSCAPE') {
       this.setState({
         sliderWidth: Math.min(dim.width, dim.height),
@@ -88,6 +91,7 @@ class ImageSlider extends Component {
         parallax={false}
         parallaxProps={parallaxProps}
         slider1ActiveSlide={this.state.slider1ActiveSlide}
+        ortMode = {this.state.ortMode}
       />
     );
   }
@@ -146,9 +150,14 @@ class SliderEntry extends Component {
     parallax: PropTypes.bool,
     parallaxProps: PropTypes.object,
   };
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading:true,
+    };
+  }
   get image() {
-    const { data: { uri }, parallax, parallaxProps, even } = this.props;
+    const { data: { uri }, parallax, parallaxProps, even,ortMode } = this.props;
 
     if (getMediaTypeFromURL(uri)) {
       return (
@@ -159,7 +168,7 @@ class SliderEntry extends Component {
     else {
       return parallax ? (
         <ParallaxImage
-          source={{ uri: uri }}
+          source={{ uri: fetchImageFromCloudinary(uri, ortMode=="LANDSCAPE"?1920:1080) }}
           containerStyle={[styles.imageContainer, even ? styles.imageContainerEven : {}]}
           style={styles.image}
           parallaxFactor={0.35}
@@ -168,10 +177,12 @@ class SliderEntry extends Component {
           {...parallaxProps}
         />
       ) : (
-          <Image
-            source={{ uri: uri }}
-            style={styles.image}
-          />
+          <FastImage
+              source={{ uri: fetchImageFromCloudinary(uri, 1920),priority: FastImage.priority.high}}
+              style={styles.image}
+              resizeMode={FastImage.resizeMode.contain}
+              onLoad = {()=> this.setState({loading:false})}
+            />
         );
     }
   }
@@ -186,7 +197,8 @@ class SliderEntry extends Component {
       >
         <View style={[styles.imageContainer, even ? styles.imageContainerEven : {}]}>
           {this.image}
-          <View style={[styles.radiusMask, even ? styles.radiusMaskEven : {}]} />
+          
+          {this.state.loading && <ActivityIndicator style={styles.image} size="large" color="#dddddd" />}
         </View>
       </TouchableOpacity>
     );

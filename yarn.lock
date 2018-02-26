@@ -3979,6 +3979,12 @@ react-native-easy-toast@^1.0.9:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-fast-image@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-2.2.5.tgz#dd0eaee24446a9546a2edce04ddbd60b3a4c547c"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-fbsdk@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-native-fbsdk/-/react-native-fbsdk-0.7.0.tgz#263dfe5845205de7b80efb0f18ed5c1ded025291"
