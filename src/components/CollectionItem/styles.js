@@ -18,6 +18,14 @@ const styles = StyleSheet.create({
   collection: {
     width: getDeviceWidth(305),
     height: getDeviceWidth(305)
+  },
+  lock: {
+    position: 'absolute',
+    resizeMode: 'contain',
+    width: 8,
+    height: 10,
+    top: getDeviceWidth(50),
+    right: getDeviceWidth(50),
   }
 });
 

@@ -1,11 +1,11 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator,Platform } from 'react-native';
+import { fetchThumbFromCloudinary } from '@global/cloudinary'
+import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, Platform } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import styles from './styles'
 
 import { getDeviceHeight,getDeviceWidth } from '@global'
-import { fetchThumbFromCloudinary } from '@global/cloudinary'
 import CircleImage from '@components/CircleImage'
 import Collections from '@components/Collections'
 import StoryBoard from '@components/StoryBoard'
@@ -73,8 +73,7 @@ class ProfileComponent extends Component {
     client.query({
       query: GET_FOLLOWS,
       variables: {
-        userId: this.props.user.id,
-        blockUsersIds: []
+        userId: this.props.user.id
       }
     }).then(({ data }) => {
       this.props.saveUserFollows(data.User.follows);
@@ -255,7 +254,7 @@ class ProfileComponent extends Component {
                 </View>
               </TouchableOpacity>
             </View>
-            <View style={[styles.spec,{height:getDeviceWidth(342)}]}>
+            <View style={[styles.spec, { height: getDeviceWidth(342) }]}>
               <TouchableOpacity style={styles.spec} onPress={this.onFollowSetting}>
                 <Text style={styles.specFont}>{I18n.t('PROFILE_FOLLOWING')}</Text>
                 <Text style={styles.spec_val_Font}>{follow_cnt}</Text>
@@ -335,11 +334,13 @@ class ProfileComponent extends Component {
       }
     })
   }
-  onStoryItem = place => {
+  onStoryItem = story => {
     this.props.navigator.push({
       screen: SCREEN.PLACE_PROFILE_PAGE,
       title: 'My Stories',
-      passProps: { place },
+      passProps: {
+        place: story.place
+      },
       navigatorbuttons: {
         rightButtons: [
           {

@@ -1,12 +1,14 @@
 import { StyleSheet } from 'react-native'
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
+import { BACKGROUNDCOLOR } from '@theme/colors';
 
 const itemWidth = 335;
 
 const styles = StyleSheet.create({
   main: {
-    // alignItems: 'center'
+    flex: 1,
+    backgroundColor: BACKGROUNDCOLOR
   },
   firstContainer: {
     alignItems: 'center',
@@ -17,7 +19,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
-    width: getDeviceWidth(itemWidth * 4 + 2),
+    width: getDeviceWidth((itemWidth + 1) * 4),
     alignSelf: 'center',
     marginTop: getDeviceHeight(20)
   },
@@ -27,7 +29,7 @@ const styles = StyleSheet.create({
   },
   collection: {
     width: getDeviceWidth(293),
-    height: getDeviceHeight(293)
+    height: getDeviceWidth(293)
   }
 });
 
