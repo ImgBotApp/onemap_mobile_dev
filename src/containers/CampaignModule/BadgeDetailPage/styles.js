@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   placeDetailContainer: {
-    width: getDeviceWidth(1236),
+    width: getDeviceWidth(1267),
   },
   placeDetail: {
     marginTop: getDeviceWidth(63),
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   },
   RuleContainerItem: {
     paddingBottom: Platform.OS == 'ios' ? 10 : 20,
-    width: getDeviceWidth(1236),
+    width: getDeviceWidth(1267),
   }
 });
 

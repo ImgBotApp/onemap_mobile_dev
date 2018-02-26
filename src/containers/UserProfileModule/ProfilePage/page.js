@@ -239,7 +239,7 @@ class ProfileComponent extends Component {
                   {this.state.username}
                 </Text>
                 {/* User Points */}
-                <Text style={[FONTSTYLE.Regular, { color: DARK_GRAY_COLOR, marginTop: 5}]}>
+                <Text style={[FONTSTYLE.Regular, { color: DARK_GRAY_COLOR, marginTop: 5,lineHeight:16,alignItems:'center'}]}>
                   {
                     this.state.totalPoints == 0 ? 
                     <Text style={styles.points}>{0 + ''}</Text>

@@ -383,7 +383,7 @@ class FeedPage extends PureComponent {
         <FlatList
           keyExtractor={(item, index) => index}
           style={{ width: '100%', height: '100%' }}
-          data={[...this.state.suggestUsers, ...this.state.campaigns, ...this.state.items]}
+          data={[...this.state.suggestUsers, ...this.state.campaigns]}
           renderItem={this._renderItem.bind(this)}
           onEndReached={() => this.onEndReached()}
           refreshing={this.props.getStoriesPaginated.networkStatus === 4}
