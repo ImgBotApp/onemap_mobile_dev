@@ -15,6 +15,7 @@ export default {
   POINTS_STR      : "Points",
   GENDER_MAILE_STR: "male",
   GENDER_FEMALE_STR: "female",
+  BADGE_STR: 'Badge',
   GENDER_NOT_SAY_STR: "I would prefer not to say",
   MALE: "male",
   FEMALE: "female",
@@ -142,6 +143,20 @@ export default {
   USERPROFILE_USER_REQUSET_MODIFICATION: "Request to be modification",
   USERPROFILE_TERMS: "Terms",
 
+
+  // Camapgin Module
+  CAMPAIGN_PROFILE_TITLE: 'Campaign Profile',
+  CAMPAIGN_MAP_VIEW: 'MapView',
+  CAMPAIGN_EVENT_VIEW: 'Events',
+  CAMPAIGN_BADGE_VIEW: 'Badge',
+  CAMPAGIN_ALL_BADGES: 'All Badges',
+  CAMPAIGN_SUUGESTED_PLACE: 'Suggested place',
+  CAMPAIGN_BADGE: 'Badges',
+  CAMPAIGN_BADGE_DETAIL: 'Badge Detail',
+  CAMPAGIN_RULES: 'How to get badge',
+  CAMPAIGN_JOINED: 'Joined',
+  CAMPAIGN_DISTANCE: 'Destination',
+  CAMPAIGN_BADGE_NOT_EARN: 'You have no earn this badge yet',
   // Report
   REPORT_ONEMAP_TITLE: "Report this profile",
   REPORT_ONEMAP_DESCRIPTION1: "Contain Hate speech or Promo graphic in nature.",

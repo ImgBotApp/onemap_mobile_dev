@@ -16,19 +16,28 @@ import TitleImage from '@components/TitledImage'
 
 import styles from './style'
 import I18n from '@language'
-import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
-import DFonts, { SMALL_FONT_SIZE } from '@theme/fonts';
+import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '@theme/colors'
+import DFonts, { SMALL_FONT_SIZE } from '@theme/fonts'
 
 import * as SCREEN from '@global/screenName'
-import { clone } from '@global';
-const STORIES_PER_PAGE = 8;
+import { clone } from '@global'
+const PLACES_PER_PAGE = 8;
+const STORIES_PER_PAGE = 8
 
 import { client } from '@root/main'
-import { graphql } from "react-apollo";
+import { graphql } from "react-apollo"
 
 import { GET_MY_COLLECTIONS } from '@graphql/collections'
-
+import { getCampaignByUser } from '../../../graphql/campaign'
+import PropTypes from 'prop-types'
+// create a component
 class FeedPage extends PureComponent {
+  static propTypes = {
+    users: PropTypes.shape({
+      id: PropTypes.string,
+      username: PropTypes.string
+    })
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -42,6 +51,7 @@ class FeedPage extends PureComponent {
         type: 'users',
         data: []
       },
+      campaigns: [],
       refreshing: false,
       selectedCollections: [],
       loading: true
@@ -51,6 +61,16 @@ class FeedPage extends PureComponent {
   }
   componentWillMount() {
     this.getMyCollections();
+    getCampaignByUser(this.props.user.id)
+    .then(res => {
+      const campaigns = res.map(item => ({
+        ...item,
+        type: 'campaign'
+      }))
+      this.setState({
+        campaigns
+      })
+    })
   }
   componentWillReceiveProps(nextProps) {
     const { getSuggestUsers, getStoriesPaginated } = nextProps;
@@ -237,12 +257,20 @@ class FeedPage extends PureComponent {
   }
 
   onVisitProfile = (CampaignId) => {
+    this.props.navigator.push({
+      screen: SCREEN.CAMPAIGN_PROFILE_PAGE,
+      title: I18n.t('CAMPAIGN_PROFILE_TITLE'),
+      animated: true,
+      passProps: {
+        campaignId: CampaignId
+      }
+    })
   }
 
   _renderFeedCampaign(data) {
     return (
       <View style={styles.feedItem}>
-        <FeedCampaign data={data} onVisitProfile={this.onVisitProfile.bind(this)} />
+        <FeedCampaign data={data} onVisitProfile={CampaignId => this.onVisitProfile(CampaignId)} />
       </View>
     )
   }
@@ -355,7 +383,7 @@ class FeedPage extends PureComponent {
         <FlatList
           keyExtractor={(item, index) => index}
           style={{ width: '100%', height: '100%' }}
-          data={[...this.state.suggestUsers, ...this.state.items]}
+          data={[...this.state.suggestUsers, ...this.state.campaigns]}
           renderItem={this._renderItem.bind(this)}
           onEndReached={() => this.onEndReached()}
           refreshing={this.props.getStoriesPaginated.networkStatus === 4}

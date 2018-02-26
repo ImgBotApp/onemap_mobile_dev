@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 
 import { getDeviceWidth, getDeviceHeight } from '@global'
 import { BLUE_COLOR, DARK_GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../theme/colors';
@@ -12,9 +12,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: getDeviceWidth(45)
   },
+  CardContainer: {
+    marginRight: Platform.OS == 'ios' ? 0 : 8,
+    marginBottom: Platform.OS == 'ios' ? 0 : 10
+  },
   visitProfile: {
     width: getDeviceWidth(391),
-    height: getDeviceHeight(85),
+    height: getDeviceWidth(85),
     borderRadius: 5,
     borderColor: BLUE_COLOR,
     borderWidth: 1,
@@ -31,7 +35,8 @@ const styles = StyleSheet.create({
     height: getDeviceWidth(127),
     borderRadius: getDeviceWidth(63),
     borderColor: 'transparent',
-    borderWidth: 1
+    borderWidth: 1,
+    resizeMode: 'cover'
   },
   campaignInfo: {
     justifyContent: 'space-between',
@@ -39,7 +44,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: BIG_FONT_SIZE,
-    color: DARK_GRAY_COLOR
+    color: DARK_GRAY_COLOR,
+    width:  getDeviceWidth(600)
   },
   campaign: {
     fontSize: SMALL_FONT_SIZE,
@@ -51,16 +57,16 @@ const styles = StyleSheet.create({
     fontFamily: APPFONTNAME.Regular
   },
   descriptionText: {
-    marginTop: getDeviceHeight(50)
+    marginTop: getDeviceWidth(50)
   },
   additionalText: {
     fontSize: SMALL_FONT_SIZE,
     color: BLUE_COLOR
   },
   image: {
-    marginTop: getDeviceHeight(40),
+    marginTop: getDeviceWidth(40),
     width: '100%',
-    height: getDeviceHeight(367),
+    height: getDeviceWidth(367),
     borderRadius: 5,
     borderColor: 'transparent',
     borderWidth: 1
