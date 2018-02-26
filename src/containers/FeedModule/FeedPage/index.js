@@ -1,7 +1,9 @@
 import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import { GET_SUGGEST_USERS } from '@graphql/userprofile'
-import { ADD_COLLECTION_TO_PLACE, REMOVE_COLLECTION_FROM_PLACE } from '@graphql/places';
+import { PLACES_PAGINATED, REMOVE_COLLECTION_FROM_PLACE } from "@graphql/places";
+import { GET_CAMPAIGN_BY_USER } from '../../../graphql/campaign'
+import { ADD_COLLECTION_TO_PLACE } from '@graphql/places';
 import { FEED_STORIES_PAGINATED } from '@graphql/stories'
 import { saveCollections, placeUpdated } from '@reducers/app/actions'
 import page from './page'
@@ -60,5 +62,16 @@ export default compose(
   }),
   graphql(REMOVE_COLLECTION_FROM_PLACE, {
     name: 'removeCollectionFromPlace'
+  }),
+  graphql(GET_CAMPAIGN_BY_USER, {
+    name: 'getMyCampaign',
+    options: (props) => {
+      const { user: { id } } = props
+      return {
+        variables: {
+          userId: id
+        }
+      }
+    }
   }),
 )(page)

@@ -26,3 +26,12 @@ export const USER_PHONE_EDIT = 'onemap.user_phone_edit_page'
 export const USER_FOLLOW_PAGE = 'onemap.user_follower_page'
 export const COLLECTIONS_PAGE = 'onemap.user_collections_page'
 export const BLOCKED_USER_PAGE = 'onemap.blocked_user_page'
+
+// Camapagin Module
+
+export const CAMPAIGN_PROFILE_PAGE = 'onemap.campaign_profile_page'
+export const CAMPAIGN_CONDITION_GROUP_PAGE = 'onemap.campaign_condition_group_page'
+export const CAMPAIGN_MAIN_PAGE = 'onemap.campaign_main_page'
+export const CAMPAIGN_BADGE_DETAIL_PAGE = 'onemap.compaign_detail_page'
+export const CAMPAIGN_USER_BADGE_LIST_PAGE = 'onemap.campaign_user_badge_list_page'
+export const CAMPAIGN_USER_BADGE_STATUS_PAGE = 'onemap.campaign_user_badge_status_page'

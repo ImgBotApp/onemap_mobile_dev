@@ -138,6 +138,10 @@ const styles = StyleSheet.create({
     fontFamily: APPFONTNAME.Regular,
     fontSize: 12,
     textAlign: 'left'
+  },
+  points: {
+    backgroundColor: '#45c6f1',
+    color: 'white'
   }
 });
 

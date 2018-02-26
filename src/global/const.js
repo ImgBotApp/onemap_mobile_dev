@@ -2,6 +2,10 @@
 export const DESIGN_WIDTH = 1440
 export const DESIGN_HEIGHT = 2542
 
+export const LATITUDE = 14.431182
+export const LONGITUDE = 100.904650
+export const LATITUDE_DELTA = 0.0922
+export const LONGITUDE_DELTA = 0.0555929
 
 export const ACCOUNT_MODE = {
   create: 'createAccount',
@@ -50,7 +54,7 @@ export function getImageFromVideoURL(videourl) {
 export function convertImageToThumbURL(url){
   //https://lh3.googleusercontent.com/p/AF1QipPYcHqGh5yfPkVAN6PPQGobh079i_sN5hW24nRh=s300
   let result = url;
-  
+
   if (url) {
     let splitUrl = url.split('/');
     if (splitUrl && splitUrl.length > 2) {
