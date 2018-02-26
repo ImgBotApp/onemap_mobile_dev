@@ -2002,7 +2002,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.writingfuture.onemap1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.writingfuture.onemap;
 				PRODUCT_NAME = OneMapFinal;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

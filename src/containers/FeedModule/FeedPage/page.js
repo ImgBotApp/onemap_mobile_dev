@@ -10,7 +10,7 @@ import Orientation from 'react-native-orientation';
 import SuggestUser from '@components/SuggestUser'
 import FeedItem from '@components/FeedItem'
 import FeedEvent from '@components/FeedEvent'
-import FeedCampaign from '../../../components/FeedCampaign'
+import FeedCampaign from '@components/FeedCampaign'
 import SuggestPlace from '@components/SuggestPlace'
 import TitleImage from '@components/TitledImage'
 
@@ -19,7 +19,7 @@ import I18n from '@language'
 import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '@theme/colors'
 import DFonts, { SMALL_FONT_SIZE } from '@theme/fonts'
 
-import * as SCREEN from '../../../global/screenName'
+import * as SCREEN from '@global/screenName'
 import { clone } from '@global'
 const PLACES_PER_PAGE = 8;
 const STORIES_PER_PAGE = 8

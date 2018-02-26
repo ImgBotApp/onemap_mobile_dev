@@ -96,10 +96,10 @@ def enableProguardInReleaseBuilds = false
 android {
     signingConfigs {
         debug {
-            keyAlias 'onemap'
-            keyPassword 'onemap'
-            storeFile file('/Volumes/Work/Work/ReactNative/onemap_mobile_dev/onemap.keystore')
-            storePassword 'onemap'
+            keyAlias 'android'
+            keyPassword 'android'
+            storeFile file('D:/20171124/onemap_mobile_dev/android/keystores/debug.keystore')
+            storePassword 'android'
         }
         release {
             if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
