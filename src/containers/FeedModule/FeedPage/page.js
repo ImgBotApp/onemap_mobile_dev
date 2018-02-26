@@ -31,7 +31,7 @@ import { GET_MY_COLLECTIONS } from '@graphql/collections'
 import { getCampaignByUser } from '../../../graphql/campaign'
 import PropTypes from 'prop-types'
 // create a component
-class FeedPage extends Component {
+class FeedPage extends PureComponent {
   static propTypes = {
     users: PropTypes.shape({
       id: PropTypes.string,
