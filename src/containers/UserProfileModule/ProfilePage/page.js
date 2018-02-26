@@ -199,7 +199,7 @@ class ProfileComponent extends Component {
     return (
       <View style={styles.vCollections}>
         <Text style={styles.collectionTitle}>{I18n.t('PROFILE_CAMPAIGN')}</Text>
-        { this.state.campaigns.length && this.renderCampaignItem(this.state.campaigns[0]) }
+        { this.state.campaigns.length > 0 && this.renderCampaignItem(this.state.campaigns[0]) }
       </View>
     )
   }
@@ -278,7 +278,7 @@ class ProfileComponent extends Component {
           <Text style={styles.bio} numberOfLines={2} ellipsizeMode={'tail'}>{this.state.bio}</Text>
         </View>
         {/* Campaign Part */}
-        { this.renderCampagin () }
+        { this.renderCampagin() }
         {/* Collection Part */}
         <View style={styles.vCollections}>
           <Text style={styles.collectionTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
