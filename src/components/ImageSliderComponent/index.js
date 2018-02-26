@@ -123,6 +123,9 @@ class ImageSlider extends Component {
           autoplayDelay={500}
           autoplayInterval={3000}
           onSnapToItem={(index) => this._onSnapToItem(index)}
+          removeClippedSubviews={false}
+          useScrollView = {true}
+          initialNumToRender = {this.props.firstItem+1}
         />
         <Pagination
           dotsLength={this.props.data.length}
