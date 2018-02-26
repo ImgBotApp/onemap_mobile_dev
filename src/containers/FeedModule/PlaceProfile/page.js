@@ -31,6 +31,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import geolib from 'geolib';
 
+import ActionDialog from '@components/ActionDialog'
 import CircleImage from '@components/CircleImage'
 import LoadingSpinner from '@components/LoadingSpinner'
 import ImageSliderComponent from '@components/ImageSliderComponent'
@@ -73,24 +74,7 @@ const options = ['Cancel', 'Photo', 'Video']
 const title = 'Select Media Type'
 
 class PlaceProfile extends PureComponent {
-  static navigatorButtons = {
-    leftButtons: [
-      {
-        title: '',
-        id: 'backButton',
-        buttonColor: DARK_GRAY_COLOR,
-        disableIconTint: true
-      }
-    ],
-    // rightButtons: [
-    //   {
-    //     title: '',
-    //     buttonColor: DARK_GRAY_COLOR,
-    //     id: 'more',
-    //     disableIconTint: true
-    //   }
-    // ]
-  };
+
   constructor(props) {
     super(props)
     Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
@@ -102,15 +86,16 @@ class PlaceProfile extends PureComponent {
         }]
       })
     })
-    // Ionicons.getImageSource('ios-more', 35, DARK_GRAY_COLOR).then(icon => {
-    //   props.navigator.setButtons({
-    //     rightButtons: [{
-    //       icon,
-    //       id: 'more',
-    //       disableIconTint: true
-    //     }]
-    //   })
-    // })
+    Ionicons.getImageSource('ios-more', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        rightButtons: [{
+          icon,
+          id: 'more',
+          disableIconTint: true
+        }]
+      })
+    })
+
     if (props.place) {
       this.props.navigator.setTitle({ title: props.place.placeName });
     }
@@ -146,7 +131,7 @@ class PlaceProfile extends PureComponent {
       selectedMediaType: ''
     }
     this.loading = false;
-    this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     this.handlePress = this.handlePress.bind(this)
     this.showActionSheet = this.showActionSheet.bind(this)
   }
@@ -308,13 +293,16 @@ class PlaceProfile extends PureComponent {
       client.resetStore();
     });
   }
-  onNaviagtorEvent(event) {
+  onNavigatorEvent(event) {
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'backButton') {
         if (this.state.storyUpdated) {
           this.saveStory();
         }
         this.props.navigator.pop()
+      } else if (event.id == 'more') {
+        this.setState({ reportType: 'place' });
+        this.reportActionSheet.show();
       }
     }
   }
@@ -965,13 +953,28 @@ class PlaceProfile extends PureComponent {
   _renderCommentStory({ item, index }) {
     return (
       <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-        <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => this.onPressUserProfile(item.createdBy)}>
-          <CircleImage style={styles.storyWriterImage} uri={item.createdBy.photoURL} radius={getDeviceWidth(67)} />
-          <View style={styles.userDescription}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.storyWriterName]}>{item.createdBy.displayName}</Text>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.commentDate]}>{formattedTimeDiffString(item.updatedAt)}</Text>
-          </View>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 10 }}>
+          <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => this.onPressUserProfile(item.createdBy)}>
+            <CircleImage style={styles.storyWriterImage} uri={item.createdBy.photoURL} radius={getDeviceWidth(67)} />
+            <View style={styles.userDescription}>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.storyWriterName]}>{item.createdBy.displayName}</Text>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.commentDate]}>{formattedTimeDiffString(item.updatedAt)}</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {
+            this.setState({ reportType: 'story' });
+            this.reportStoryId = item.id;
+            setTimeout(() => {
+              this.reportActionSheet.show();
+            });
+          }}>
+            <Ionicons
+              color={DARK_GRAY_COLOR}
+              name='ios-more'
+              size={35}
+            />
+          </TouchableOpacity>
+        </View>
         <OptimizedFlatList
           keyExtractor={(item, index) => index}
           style={[styles.imageFlatList, { marginTop: 10 }]}
@@ -1000,6 +1003,30 @@ class PlaceProfile extends PureComponent {
     }
   }
 
+  onReport = reason => {
+    if (this.state.reportType === 'place') {
+      this.props.reportPlace({
+        variables: {
+          placeId: this.state.placeData.id,
+          reason,
+          userId: this.props.user.id
+        }
+      }).then(({ data }) => {
+        alert(I18n.t('REPORT_THANKS'));
+      }).catch(err => alert(err));
+    } else {
+      this.props.reportStory({
+        variables: {
+          storyId: this.reportStoryId,
+          reason,
+          userId: this.props.user.id
+        }
+      }).then(({ data }) => {
+        alert(I18n.t('REPORT_THANKS'));
+      }).catch(err => alert(err));
+    }
+  }
+
   onEndReached() {
     const { getFollowingStoriesPaginated } = this.props;
     if (!getFollowingStoriesPaginated.loading) {
@@ -1018,6 +1045,7 @@ class PlaceProfile extends PureComponent {
       });
     }
   }
+
   render() {
     return (
       <View style={styles.container}>
@@ -1053,6 +1081,7 @@ class PlaceProfile extends PureComponent {
 
         {this.renderSliderShow()}
         {this.renderCollectionModal()}
+
         <ActionSheet
           ref={o => this.ActionSheet = o}
           title={title}
@@ -1061,7 +1090,6 @@ class PlaceProfile extends PureComponent {
           destructiveButtonIndex={DESTRUCTIVE_INDEX}
           onPress={this.handlePress}
         />
-
         <Modal style={styles.modalMediaView} backdrop={true} position={'center'}
           isOpen={this.state.isOpenImagePicker}
           onClosed={() => this.setState({ isOpenImagePicker: false })}
@@ -1085,6 +1113,21 @@ class PlaceProfile extends PureComponent {
             </TouchableOpacity>
           </View>
         </Modal>
+
+        <ActionSheet
+          ref={o => this.reportActionSheet = o}
+          title={'Select Action'}
+          options={['Cancel', this.state.reportType === 'place' ? I18n.t('REPORT_PLACE_TITLE') : I18n.t('REPORT_STORY_TITLE')]}
+          cancelButtonIndex={CANCEL_INDEX}
+          destructiveButtonIndex={DESTRUCTIVE_INDEX}
+          onPress={(index) => index && this.refs.actionDialog.show()}
+        />
+        <ActionDialog
+          ref={'actionDialog'}
+          type={this.state.reportType}
+          onConfirm={this.onReport}
+        />
+
         {this.state.imageUploading && <LoadingSpinner />}
       </View>
     );
