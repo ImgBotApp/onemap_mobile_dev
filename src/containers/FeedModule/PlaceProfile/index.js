@@ -3,6 +3,7 @@ import { compose, graphql } from 'react-apollo'
 import { CHECK_IN_PLACE } from '@graphql/checkin';
 import { CREATE_KEYWORD, DELETE_KEYWORD } from "@graphql/keywords";
 import { ADD_COLLECTION_TO_PLACE, REMOVE_COLLECTION_FROM_PLACE, LIKE_PLACE, UNLIKE_PLACE } from "@graphql/places";
+import { REPORT_PLACE, REPORT_STORY } from "@graphql/report";
 import { CREATE_STORY, UPDATE_STORY, FOLLOWING_STORIES_PAGINATED } from "@graphql/stories";
 
 import { saveUserInfo } from '@reducers/user/actions'
@@ -39,6 +40,8 @@ export default compose(
   graphql(DELETE_KEYWORD, { name: 'deleteKeyword' }),
   graphql(CREATE_STORY, { name: 'createStory' }),
   graphql(UPDATE_STORY, { name: 'updateStory' }),
+  graphql(REPORT_PLACE, { name: 'reportPlace' }),
+  graphql(REPORT_STORY, { name: 'reportStory' }),
   graphql(FOLLOWING_STORIES_PAGINATED, {
     name: 'getFollowingStoriesPaginated',
     options: (props) => {

@@ -1,9 +1,11 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList, Image, Platform } from 'react-native';
+import ActionSheet from 'react-native-actionsheet'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import AutoHeightImage from 'react-native-auto-height-image';
+import ActionDialog from '@components/ActionDialog'
 import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import CampaignList from '@components/CampaignList'
 import Collections from '@components/Collections'
@@ -20,17 +22,10 @@ import DFonts from '@theme/fonts'
 import { client } from '@root/main'
 import { GET_ONEMAPPER_PROFILE } from '@graphql/userprofile'
 
+const CANCEL_INDEX = 0
+const DESTRUCTIVE_INDEX = 4
+
 class ProfilePage extends Component {
-  static navigatorButtons = {
-    leftButtons: [
-      {
-        title: '',
-        id: 'backButton',
-        buttonColor: DARK_GRAY_COLOR,
-        disableIconTint: true
-      }
-    ]
-  };
 
   constructor(props) {
     super(props);
@@ -40,6 +35,15 @@ class ProfilePage extends Component {
         leftButtons: [{
           icon,
           id: 'backButton',
+          disableIconTint: true
+        }]
+      })
+    })
+    Ionicons.getImageSource('ios-more', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        rightButtons: [{
+          icon,
+          id: 'more',
           disableIconTint: true
         }]
       })
@@ -63,6 +67,8 @@ class ProfilePage extends Component {
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'backButton') {
         this.props.navigator.pop({})
+      } else if (event.id == 'more') {
+        this.reportActionSheet.show();
       }
     }
   }
@@ -152,85 +158,111 @@ class ProfilePage extends Component {
     });
   }
 
+  onReport = reason => {
+    this.props.reportProfile({
+      variables: {
+        onemapId: this.state.user.id,
+        reason,
+        userId: this.props.user.id
+      }
+    }).then(({ data }) => {
+      alert(I18n.t('REPORT_THANKS'));
+    }).catch(err => alert(err));
+  }
 
   render() {
     const { user, collections, stories, campaigns } = this.state;
     const followed = this.props.follows && this.props.follows.map(item => item.id).includes(user.id);
 
     return (
-      <ScrollView style={styles.container}>
-        {/* user information */}
-        <View style={styles.userInformationContainer}>
-          <View style={styles.userInformation}>
-            <View style={{ flexDirection: 'row' }}>
-              <CircleImage uri={user.photoURL} style={styles.userImage} radius={getDeviceWidth(171)} />
-              {user.accountVerification === 'YES' && <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage} />}
-            </View>
-            <View style={styles.userInfo}>
-              <View>
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.userName}>{user.displayName}</Text>
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.userId}>{user.username}</Text>
+      <View style={styles.container}>
+        <ScrollView>
+          {/* user information */}
+          <View style={styles.userInformationContainer}>
+            <View style={styles.userInformation}>
+              <View style={{ flexDirection: 'row' }}>
+                <CircleImage uri={user.photoURL} style={styles.userImage} radius={getDeviceWidth(171)} />
+                {user.accountVerification === 'YES' && <Image source={require('@assets/images/profileCircle.png')} style={styles.checkImage} />}
               </View>
-              <TouchableOpacity onPress={() => this.onFollow(!followed)}>
-                <View style={styles.FollowingButton}>
-                  <Text style={[DFonts.Regular, styles.FollowingText]}>{followed ? I18n.t('UNFOLLOW') : I18n.t('FEED_FOLLOW')}</Text>
+              <View style={styles.userInfo}>
+                <View>
+                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.userName}>{user.displayName}</Text>
+                  <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.userId}>{user.username}</Text>
                 </View>
-              </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.onFollow(!followed)}>
+                  <View style={styles.FollowingButton}>
+                    <Text style={[DFonts.Regular, styles.FollowingText]}>{followed ? I18n.t('UNFOLLOW') : I18n.t('FEED_FOLLOW')}</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.propertyContainer}>
+              <View style={styles.propertyView}>
+                <Text style={[DFonts.Regular, styles.pText]}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWED')}</Text>
+                <Entypo name="user" size={17} color={followed ? BLUE_COLOR : 'white'} />
+              </View>
+              <View style={styles.propertyView}>
+                <Text style={[DFonts.Regular, styles.pText]}>
+                  {I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWERS')}
+                </Text>
+                <Text style={[DFonts.Regular, styles.p_val_Text]}>{calculateCount(user.followers)}</Text>
+              </View>
+              <View style={styles.propertyView}>
+                <Text style={[DFonts.Regular, styles.pText]}>
+                  {I18n.t('FEED_FOLLOWER_PROFILE_VISITED')}
+                </Text>
+                <Text style={[DFonts.Regular, styles.p_val_Text]}>{calculateCount(user.checked)}</Text>
+              </View>
             </View>
           </View>
-          <View style={styles.propertyContainer}>
-            <View style={styles.propertyView}>
-              <Text style={[DFonts.Regular, styles.pText]}>{I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWED')}</Text>
-              <Entypo name="user" size={17} color={followed ? BLUE_COLOR : 'white'} />
-            </View>
-            <View style={styles.propertyView}>
-              <Text style={[DFonts.Regular, styles.pText]}>
-                {I18n.t('FEED_FOLLOWER_PROFILE_FOLLOWERS')}
-              </Text>
-              <Text style={[DFonts.Regular, styles.p_val_Text]}>{calculateCount(user.followers)}</Text>
-            </View>
-            <View style={styles.propertyView}>
-              <Text style={[DFonts.Regular, styles.pText]}>
-                {I18n.t('FEED_FOLLOWER_PROFILE_VISITED')}
-              </Text>
-              <Text style={[DFonts.Regular, styles.p_val_Text]}>{calculateCount(user.checked)}</Text>
-            </View>
-          </View>
-        </View>
-        <View>
-          <Text style={[DFonts.Regular, styles.about]}>{user.bio}</Text>
-        </View>
-        {/* Campaign list */}
-        {campaigns.length > 0 &&
           <View>
-            <Text style={[DFonts.Title, styles.collectionText]}>{I18n.t('PROFILE_CAMPAIGN')}</Text>
-          </View>}
-        {campaigns.length > 0 &&
+            <Text style={[DFonts.Regular, styles.about]}>{user.bio}</Text>
+          </View>
+          {/* Campaign list */}
+          {campaigns.length > 0 &&
+            <View>
+              <Text style={[DFonts.Title, styles.collectionText]}>{I18n.t('PROFILE_CAMPAIGN')}</Text>
+            </View>}
+          {campaigns.length > 0 &&
+            <View style={styles.collectionContainer}>
+              <CampaignList data={campaigns} onViewMore={this.onCampaignPress.bind(this)} />
+            </View>}
+          {/* Collection list */}
+          <View>
+            <Text style={[DFonts.Title, styles.collectionText]}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
+          </View>
           <View style={styles.collectionContainer}>
-            <CampaignList data={campaigns} onViewMore={this.onCampaignPress.bind(this)} />
-          </View>}
-        {/* Collection list */}
-        <View>
-          <Text style={[DFonts.Title, styles.collectionText]}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>
-        </View>
-        <View style={styles.collectionContainer}>
-          <Collections
-            collections={collections}
-            onViewItem={this.onViewCollectionItem}
-            onViewAll={this.onViewCollectionsAll}
-            onViewStories={this.onViewStories}
-          />
-        </View>
-        {/* Story board */}
-        <View style={{ marginBottom: 15 }}>
-          <Text style={[DFonts.Title, styles.StoryText]}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
-          <StoryBoard
-            style={styles.StoryContainer}
-            data={stories}
-            onPressItem={this.onStoryItem.bind(this)}
-          />
-        </View>
-      </ScrollView>
+            <Collections
+              collections={collections}
+              onViewItem={this.onViewCollectionItem}
+              onViewAll={this.onViewCollectionsAll}
+              onViewStories={this.onViewStories}
+            />
+          </View>
+          {/* Story board */}
+          <View style={{ marginBottom: 15 }}>
+            <Text style={[DFonts.Title, styles.StoryText]}>{I18n.t('PROFILE_STORY_TITLE')}</Text>
+            <StoryBoard
+              style={styles.StoryContainer}
+              data={stories}
+              onPressItem={this.onStoryItem.bind(this)}
+            />
+          </View>
+        </ScrollView>
+        <ActionSheet
+          ref={o => this.reportActionSheet = o}
+          title={'Select Action'}
+          options={['Cancel', I18n.t('REPORT_ONEMAP_TITLE')]}
+          cancelButtonIndex={CANCEL_INDEX}
+          destructiveButtonIndex={DESTRUCTIVE_INDEX}
+          onPress={(index) => index && this.refs.actionDialog.show()}
+        />
+        <ActionDialog
+          ref={'actionDialog'}
+          type={'onemap'}
+          onConfirm={this.onReport}
+        />
+      </View>
     );
   }
 }
