@@ -18,13 +18,20 @@ import FastImage from 'react-native-fast-image'
 class ImageSlider extends Component {
   constructor(props) {
     super(props);
+    let buffer = [];
+    const len = props.data.length;
+
+    for(var i=0; i< len;i++)
+      buffer.push(this.props.data[(props.firstItem+i) % len]);
+    
     this.state = {
-      slider1ActiveSlide: props.firstItem,
+      slider1ActiveSlide: 0,
       slider1Ref: null,
       sliderWidth: viewportWidth,
       sliderHeight: viewportHeight,
       itemWidth: viewportWidth,
-      ortMode:"PORTRAIT"
+      ortMode:"PORTRAIT",
+      imageData:buffer
     };
   }
   onPress() {
@@ -105,13 +112,13 @@ class ImageSlider extends Component {
       <View style={styles.container} supportedOrientations={['portrait', 'landscape']} onLayout={this._onLayout.bind(this)}>
         <Carousel
           ref={(c) => { if (!this.state.slider1Ref) { this.setState({ slider1Ref: c }); } }}
-          data={this.props.data}
+          data={this.state.imageData}
           renderItem={this._renderItemWithParallax.bind(this)}
           sliderWidth={this.state.sliderWidth}
           sliderHeight={this.state.sliderHeight}
           itemWidth={this.state.itemWidth}
           hasParallaxImages={true}
-          firstItem={this.props.firstItem}
+          firstItem={0}
           inactiveSlideScale={1}
           inactiveSlideOpacity={0.7}
           enableMomentum={false}
@@ -123,9 +130,11 @@ class ImageSlider extends Component {
           autoplayDelay={500}
           autoplayInterval={3000}
           onSnapToItem={(index) => this._onSnapToItem(index)}
-          removeClippedSubviews={false}
-          useScrollView = {true}
-          initialNumToRender = {this.props.firstItem+1}
+          lockScrollWhileSnapping = {true}
+          //removeClippedSubviews={false}
+          //useScrollView = {true}
+          //initialNumToRender = {this.props.firstItem+1}
+          //getItemLayout={(data, index) => ({offset: viewportWidth * index, length: viewportWidth, index})}
         />
         <Pagination
           dotsLength={this.props.data.length}
