@@ -70,7 +70,8 @@ const styles = StyleSheet.create({
   },
   placeMore: {
     // marginLeft: getDeviceWidth(60),
-    color: '#007aff'
+    color: '#007aff',
+    marginBottom:5
   },
   RuleContainer: {
     marginTop: getDeviceWidth(98),
