@@ -8,6 +8,8 @@ import { DARK_GRAY_COLOR } from '@theme/colors';
 import DFonts from '@theme/fonts';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { getFormattedDistanceString } from '@global/const';
+import openMap,{ createOpenLink } from 'react-native-open-maps';
+
 const data = {
   map: {
     latitude: 37.78825,
@@ -64,6 +66,12 @@ class MapDetailPage extends Component {
       }
     }
   }
+  openDeviceMap(){
+    openMap({ 
+            latitude: this.props.map.latitude, 
+            longitude: this.props.map.longitude,
+            provider: Platform.OS=='android'?'google':'apple'});
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -95,10 +103,10 @@ class MapDetailPage extends Component {
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.distvalueText}>{this.getDistance()}</Text>
           </View>
           <View style = {styles.buttonGroup}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>this.openDeviceMap()}>
               <Image source={require('@assets/google/google1.png')} style={styles.googleBtn} />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>this.openDeviceMap()}>
               <Image source={require('@assets/google/google2.png')} style={styles.googleBtn} />
             </TouchableOpacity>
           </View>
