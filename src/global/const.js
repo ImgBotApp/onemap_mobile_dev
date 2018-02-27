@@ -107,4 +107,9 @@ export function convertImageToThumbURL(url){
   }
   return result;
 }
-
+export function getFormattedDistanceString(distance){
+  if(distance < 1000)
+    return distance+" m";
+  distance /= 1000
+  return distance.toFixed(1)+" km";
+}
