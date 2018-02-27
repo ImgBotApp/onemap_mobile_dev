@@ -44,6 +44,12 @@ export const FEED_STORIES_PAGINATED = gql`
         username
         photoURL
       }
+      likedByUser {
+        id
+        user {
+          id
+        }
+      }
       pictureURL
       place {
         id

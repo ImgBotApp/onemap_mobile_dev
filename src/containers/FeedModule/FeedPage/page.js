@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component, PureComponent } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView, Vibration } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modalbox';
@@ -101,6 +101,7 @@ class FeedPage extends PureComponent {
           let graphcoolData = getStoriesPaginated.allStories.filter(story => story.place).map(story => {
             return {
               id: story.place.id,
+              storyId: story.id,
               type: 'item',
               createdBy: {
                 id: story.createdBy.id,
@@ -108,6 +109,7 @@ class FeedPage extends PureComponent {
                 username: story.createdBy.username,
                 photoURL: story.createdBy.photoURL,
               },
+              likedByUser: story.likedByUser,
               updated: new Date(story.updatedAt),
               placeName: story.place.placeName,
               images: story.pictureURL ? story.pictureURL.map(uri => { return { uri } }) : [],
@@ -182,6 +184,33 @@ class FeedPage extends PureComponent {
       client.resetStore();
     });
   }
+  likeStory(liked, item, index = -1) {
+    if (liked) {
+      Vibration.vibrate(200);
+      this.props.likeStory({
+        variables: {
+          storyId: item.storyId,
+          userId: this.props.user.id,
+          lat: 0,
+          lng: 0
+        }
+      }).then(({ data }) => {
+        client.resetStore().then(() => {
+          this.onRefresh();
+        });
+      }).catch(err => console.log(err));
+    } else {
+      this.props.unlikeStory({
+        variables: {
+          id: item.likedByUser.filter(item => item.user.id === this.props.user.id)[0].id
+        }
+      }).then(({ data }) => {
+        client.resetStore().then(() => {
+          this.onRefresh();
+        });
+      }).catch(err => console.log(err));
+    }
+  }
   closeSuggest() {
     this.setState({
       suggestFlag: false
@@ -243,6 +272,8 @@ class FeedPage extends PureComponent {
           onPress={place => this.onPressUserProfile(place.createdBy)}
           onBookMarker={() => this.onBookMarker(data, index)}
           onPlace={() => this.onPlace(data, index)}
+          likeStory={(liked) => this.likeStory(liked, data, index)}
+          userId={this.props.user.id}
         />
       </View>
     )

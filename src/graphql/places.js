@@ -73,6 +73,12 @@ export const GET_PLACE_PROFILE = gql`
           displayName
           photoURL
         }
+        likedByUser {
+          id
+          user {
+            id
+          }
+        }
         pictureURL
         updatedAt
       }

@@ -1,22 +1,22 @@
 import { gql } from 'react-apollo'
 
-export const LIKE_PLACE = gql`
+export const LIKE_STORY = gql`
   mutation (
-    $placeId: ID!,
+    $storyId: ID!,
     $userId: ID!,
     $lat: Float,
     $lng: Float
   ) {
-    createHeartPlace(
+    createLikeStory(
       locationLat: $lat
       locationLong: $lng
-      placeId: $placeId
+      storyId: $storyId
       userId: $userId
     ) {
       id
-      place {
+      story {
         id
-        heartedByUser {
+        likedByUser {
           id
           user {
             id
@@ -27,11 +27,11 @@ export const LIKE_PLACE = gql`
   }
 `
 
-export const UNLIKE_PLACE = gql`
+export const UNLIKE_STORY = gql`
   mutation (
     $id: ID!
   ) {
-    deleteHeartPlace(
+    deleteLikeStory(
       id: $id
     ) {
       id
