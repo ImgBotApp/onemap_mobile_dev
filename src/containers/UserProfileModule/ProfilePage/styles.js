@@ -1,9 +1,9 @@
-import { StyleSheet,Platform } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import * as GLOBAL from '@global'
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
 import { DARK_GRAY_COLOR, LIGHT_GRAY_COLOR } from '../../../theme/colors';
-import { SMALL_FONT_SIZE,NORMAL_FONT_SIZE,BIG_FONT_SIZE,APPFONTNAME } from '../../../theme/fonts';
+import { SMALL_FONT_SIZE, NORMAL_FONT_SIZE, BIG_FONT_SIZE, APPFONTNAME } from '../../../theme/fonts';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -35,14 +35,14 @@ const styles = StyleSheet.create({
   nameView: {
     paddingHorizontal: getDeviceWidth(48),
     justifyContent: 'space-between',
-    width:getDeviceWidth(720)
+    width: getDeviceWidth(720)
   },
   bigName: {
     fontFamily: APPFONTNAME.Bold,
     fontSize: BIG_FONT_SIZE,
-    lineHeight:BIG_FONT_SIZE+2,
+    lineHeight: BIG_FONT_SIZE + 2,
     color: DARK_GRAY_COLOR,
-    marginBottom:getDeviceHeight(20)
+    marginBottom: getDeviceHeight(20)
   },
   userId: {
     fontFamily: APPFONTNAME.Regular,
@@ -80,13 +80,13 @@ const styles = StyleSheet.create({
     fontFamily: APPFONTNAME.Regular,
     fontSize: SMALL_FONT_SIZE,
     color: DARK_GRAY_COLOR,
-    lineHeight:SMALL_FONT_SIZE+2
+    lineHeight: SMALL_FONT_SIZE + 2
   },
-  spec_val_Font:{
+  spec_val_Font: {
     fontFamily: APPFONTNAME.Regular,
     fontSize: BIG_FONT_SIZE,
     color: DARK_GRAY_COLOR,
-    lineHeight:BIG_FONT_SIZE,
+    lineHeight: BIG_FONT_SIZE,
   },
   vCollections: {
     marginTop: getDeviceHeight(110),
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   },
   points: {
     backgroundColor: '#45c6f1',
-    color: 'white'
+    color: DARK_GRAY_COLOR
   }
 });
 

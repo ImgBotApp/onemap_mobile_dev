@@ -28,6 +28,7 @@ import TagInput from 'react-native-tag-input';
 import Foundation from 'react-native-vector-icons/Foundation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import FontAwesomeIcons from 'react-native-vector-icons/FontAwesome'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import geolib from 'geolib';
 
@@ -115,6 +116,10 @@ class PlaceProfile extends PureComponent {
         story: '',
         title: ''
       },
+      oneMapperStory: {
+        story: '',
+        title: ''
+      },
       sliderShow: false,
       collectionModal: false,
       storyImages: [
@@ -177,8 +182,8 @@ class PlaceProfile extends PureComponent {
         this.lastChecked = myLastChecked[myLastChecked.length - 1].createdAt;
       }
 
-      const myStories = data.stories.filter(item => item.createdBy.id === this.props.user.id);
-      this.oneMapperStory = data.stories.filter(item => item.createdBy.id === this.props.oneMapperId)[0];
+      const myStory = data.stories.filter(item => item.createdBy.id === this.props.user.id)[0];
+      const oneMapperStory = data.stories.filter(item => item.createdBy.id === this.props.oneMapperId)[0];
 
       if (this.props.user.location) {
         this.state.distance = geolib.getDistance(this.props.user.location, {
@@ -209,14 +214,15 @@ class PlaceProfile extends PureComponent {
             website: data.website,
             openingHours: [data.openingHrs]
           },
-          heartedIds: data.usersLike.map(item => item.id),
+          heartedIds: data.heartedByUser,
           checkIns: data.checkIns,
           collectionIds: this.props.place && this.props.place.collectionIds ? this.props.place.collectionIds : data.collections.map(item => item.id),
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
           bookmark: this.isBookmarked(data.collections),
         },
-        myStory: myStories.length ? myStories[0] : this.state.myStory,
-        storyImages: myStories.length ? [...myStories[0].pictureURL.map(item => ({ uri: item })), ...this.state.storyImages] : this.state.storyImages,
+        myStory: myStory ? myStory : this.state.myStory,
+        oneMapperStory: oneMapperStory ? oneMapperStory : this.state.oneMapperStory,
+        storyImages: myStory ? [...myStory.pictureURL.map(item => ({ uri: item })), ...this.state.storyImages] : this.state.storyImages,
       });
     }).catch(err => alert(err));
   }
@@ -368,25 +374,26 @@ class PlaceProfile extends PureComponent {
       Vibration.vibrate();
       this.props.likePlace({
         variables: {
-          id: placeData.id,
-          userId: this.props.user.id
+          placeId: placeData.id,
+          userId: this.props.user.id,
+          lat: 0,
+          lng: 0
         }
       }).then(({ data }) => {
-        placeData.heartedIds = data.addToUserLikePlace.likePlacesPlace.usersLike.map(item => item.id);
+        placeData.heartedIds = data.createHeartPlace.place.heartedByUser;
         this.setState({ placeData });
         client.resetStore();
-      }).catch(err => alert(err));
+      }).catch(err => console.log(err));
     } else {
       this.props.unlikePlace({
         variables: {
-          id: placeData.id,
-          userId: this.props.user.id
+          id: placeData.heartedIds.filter(item => item.user.id === this.props.user.id)[0].id
         }
       }).then(({ data }) => {
-        placeData.heartedIds = data.removeFromUserLikePlace.likePlacesPlace.usersLike.map(item => item.id);
+        placeData.heartedIds = placeData.heartedIds.filter(item => item.id !== data.deleteHeartPlace.id);
         this.setState({ placeData });
         client.resetStore();
-      }).catch(err => alert(err));
+      }).catch(err => console.log(err));
     }
   }
 
@@ -522,7 +529,7 @@ class PlaceProfile extends PureComponent {
   }
 
   renderInterest() {
-    const liked = this.state.placeData.heartedIds.includes(this.props.user.id);
+    const liked = this.state.placeData.heartedIds && this.state.placeData.heartedIds.map(item => item.user.id).includes(this.props.user.id);
     const checkable = (this.state.distance && this.state.distance < 500) && (!this.lastChecked || getTimeDiff(new Date(this.lastChecked), new Date()) > 20/* * 60*/);
     return (
       <View style={styles.interestContainer}>
@@ -943,6 +950,7 @@ class PlaceProfile extends PureComponent {
   }
 
   _renderCommentStory({ item, index }) {
+    const liked = item.likedByUser.map(item => item.user.id).includes(this.props.user.id);
     return (
       <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 10 }}>
@@ -974,10 +982,55 @@ class PlaceProfile extends PureComponent {
           data={item.pictureURL}
           renderItem={({ index }) => this._renderItem(item.pictureURL.map(url => ({ uri: url })), index)}
         />
-        <Text style={[DFonts.Title, styles.commentTitle]}>{item.title}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={[DFonts.Title, styles.commentTitle, { flex: 1 }]}>{item.title}</Text>
+          <Text style={[DFonts.SubTitle, styles.commentDescription]}>{item.likedByUser.length + ' '}</Text>
+          <TouchableOpacity onPress={() => this.likeStory(!liked, item, index)}>
+            <FontAwesomeIcons
+              color={'#f9c33d'}
+              name={liked ? 'star' : 'star-o'}
+              size={25}
+            />
+          </TouchableOpacity>
+        </View>
         <Text style={[DFonts.SubTitle, styles.commentDescription]}>{item.story}</Text>
       </CardView>
     )
+  }
+  likeStory(liked, item, index = -1) {
+    if (liked) {
+      Vibration.vibrate(200);
+      this.props.likeStory({
+        variables: {
+          storyId: item.id,
+          userId: this.props.user.id,
+          lat: 0,
+          lng: 0
+        }
+      }).then(({ data }) => {
+        client.resetStore().then(() => {
+          if (index < 0) {
+            this.setState({ oneMapperStory: { ...this.state.oneMapperStory, likedByUser: data.createLikeStory.story.likedByUser } });
+          } else {
+            this.props.getFollowingStoriesPaginated.refetch();
+          }
+        });
+      }).catch(err => console.log(err));
+    } else {
+      this.props.unlikeStory({
+        variables: {
+          id: item.likedByUser.filter(item => item.user.id === this.props.user.id)[0].id
+        }
+      }).then(({ data }) => {
+        client.resetStore().then(() => {
+          if (index < 0) {
+            this.setState({ oneMapperStory: { ...this.state.oneMapperStory, likedByUser: this.state.oneMapperStory.likedByUser.filter(item => item.id !== data.deleteLikeStory.id) } });
+          } else {
+            this.props.getFollowingStoriesPaginated.refetch();
+          }
+        });
+      }).catch(err => console.log(err));
+    }
   }
 
   onPressUserProfile(userInfo) {
@@ -1060,7 +1113,7 @@ class PlaceProfile extends PureComponent {
           </View>
           <View style={[styles.WriteStory, { marginBottom: 15 }]}>
             {/* onemapper story */}
-            {this.oneMapperStory && this._renderCommentStory({ item: this.oneMapperStory })}
+            {this.state.oneMapperStory.id && this._renderCommentStory({ item: this.state.oneMapperStory })}
             {/* following stories */}
             <OptimizedFlatList
               keyExtractor={(item, index) => index}
