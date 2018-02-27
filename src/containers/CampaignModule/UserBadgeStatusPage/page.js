@@ -43,10 +43,10 @@ class UserBadgeStatusPage extends Component {
 
   renderDetailPart() {
     return <View style={styles.detailContainer}>
-      <Image style={styles.detailImage} source={require('@assets/images/badge/badge.png')}/>
+      <Image style={styles.detailImage} source={this.props.badge.city.campaign.iconUrl ? {uri: this.props.badge.city.campaign.iconUrl} :require('@assets/images/badge/badge.png')}/>
       <View style={styles.detailPart}>
         <Text style={[FONTSTYLE.Header, {color: LIGHT_GRAY_COLOR}]} numberOfLines={2} ellipsizeMode={'tail'}>
-          {this.props.badge.title}
+          {this.props.badge.city.campaign.title}
         </Text>
         <Text style={[FONTSTYLE.Regular, {color: LIGHT_GRAY_COLOR}]} numberOfLines={2} ellipsizeMode={'tail'}>
         {this.props.badge.receivedBy.length == 0 ? I18n.t('CAMPAIGN_BADGE_NOT_EARN') : 
@@ -86,7 +86,13 @@ UserBadgeStatusPage.propTypes = {
       updatedAt: PropType.string,
     })),
     type: PropType.string,
-    title: PropType.string
+    title: PropType.string,
+    city: PropType.shape({
+      campaign: PropType.shape({
+        iconUrl: PropType.string,
+        title: PropType.string
+      })
+    })
   })
 }
 

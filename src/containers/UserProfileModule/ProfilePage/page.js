@@ -19,6 +19,7 @@ import { client } from '@root/main'
 import { GET_FOLLOWS } from '@graphql/userprofile';
 // related with  Camapagin Module
 import campaignStyles from './campaingStyle'
+import { fetchThumbFromCloudinary } from '@global/cloudinary'
 import { getUserRewardCampaignBadge } from '../../../graphql/campaign'
 class ProfileComponent extends Component {
   static navigatorButtons = {
@@ -155,7 +156,7 @@ class ProfileComponent extends Component {
 
   renderCampaignItem(campaign) {
     let mostBadges = this.getMostBadge(campaign)
-    let points = mostBadges.points 
+    let points = mostBadges.points
     return (
       <CardView cardElevation={1} cardMaxElevation={1} cornerRadius={5} style={campaignStyles.campaignItemCotainer}>
         <View style={campaignStyles.PointContainer}>
