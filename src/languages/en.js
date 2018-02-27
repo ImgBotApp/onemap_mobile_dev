@@ -128,7 +128,7 @@ export default {
   PLACE_OPENHOUR: "Opening hours",
   PLACE_HEARTED: "Hearted",
   PLACE_CHECK_IN: "Check-ins",
-  PLACE_BOOKMARK: "Added to Collection",
+  PLACE_BOOKMARK: "Added to Collections",
   PLACE_KEYWORDS: "Place Keywords",
   PLACE_KEYWORD_DONE: "Done",
   PLACE_WRITE_STORY: "My Story",

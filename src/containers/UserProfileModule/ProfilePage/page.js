@@ -1,8 +1,8 @@
 //import liraries
 import React, { Component } from 'react';
-import { fetchThumbFromCloudinary } from '@global/cloudinary'
 import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, Platform } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './styles'
 
 import { getDeviceHeight, getDeviceWidth } from '@global'
@@ -195,7 +195,7 @@ class ProfileComponent extends Component {
     return (
       <View style={styles.vCollections}>
         <Text style={styles.collectionTitle}>{I18n.t('PROFILE_CAMPAIGN')}</Text>
-        {this.renderCampaignItem(this.state.campaigns[0])}
+        { this.state.campaigns.length > 0 && this.renderCampaignItem(this.state.campaigns[0]) }
       </View>
     )
   }

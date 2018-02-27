@@ -79,7 +79,7 @@ class PlaceDetailPage extends Component {
           cornerRadius={5}
           style={styles.CardBadgeImage}
           >
-        <Image source={ this.state.detail.iconUrl ? { uri: this.state.detail.iconUrl} : require('@assets/images/badge/badge.png')}  style={styles.detailImage}/>
+        <Image source={ this.state.detail.iconUrl ? { uri: fetchThumbFromCloudinary(this.state.detail.iconUrl)} : require('@assets/images/badge/badge.png')}  style={styles.detailImage}/>
         </CardView>
         <View style={styles.detailContainer}>
           <View style={{justifyContent: 'space-between'}}>

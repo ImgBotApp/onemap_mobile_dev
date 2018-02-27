@@ -16,16 +16,16 @@ import TitleImage from '@components/TitledImage'
 
 import styles from './style'
 import I18n from '@language'
-import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '@theme/colors'
-import DFonts, { SMALL_FONT_SIZE } from '@theme/fonts'
+import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
+import DFonts, { SMALL_FONT_SIZE } from '@theme/fonts';
 
 import * as SCREEN from '@global/screenName'
-import { clone } from '@global'
+import { clone } from '@global';
 const PLACES_PER_PAGE = 8;
-const STORIES_PER_PAGE = 8
+const STORIES_PER_PAGE = 8;
 
 import { client } from '@root/main'
-import { graphql } from "react-apollo"
+import { graphql } from "react-apollo";
 
 import { GET_MY_COLLECTIONS } from '@graphql/collections'
 import { getCampaignByUser } from '@graphql/campaign'

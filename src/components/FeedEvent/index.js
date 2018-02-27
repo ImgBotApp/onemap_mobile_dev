@@ -6,6 +6,7 @@ import styles from './styles'
 
 import { formattedTimeDiffString } from '@global'
 import DFonts from '@theme/fonts'
+import { fetchThumbFromCloudinary } from '@global/cloudinary'
 // create a component
 class FeedEvent extends Component {
   render() {
@@ -15,7 +16,7 @@ class FeedEvent extends Component {
         <View style={{justifyContent: 'space-between'}}>
           {/* User information */}
           <View style={{flexDirection:'row'}}>
-            <Image source={{uri: this.props.data.user.uri}} style={styles.userImage} />
+            <Image source={{uri: this.props.data.user.uri?fetchThumbFromCloudinary(this.props.data.user.uri):''}} style={styles.userImage} />
             <View style={styles.userInfo}>
               <Text style={[styles.userName,DFonts.Regular]}>{this.props.data.user.name}</Text>
               <Text style={[styles.update, DFonts.Regular]}>{formattedTimeDiffString(this.props.data.user.updated)}</Text>
@@ -29,7 +30,7 @@ class FeedEvent extends Component {
             </TouchableOpacity>
           </View>
         </View>
-        <Image source={{uri: this.props.data.placeUrl}} style={styles.eventImage} />
+        <Image source={{uri: this.props.data.placeUrl?fetchThumbFromCloudinary(this.props.data.placeUrl):''}} style={styles.eventImage} />
         </View>
       </CardView>
     );

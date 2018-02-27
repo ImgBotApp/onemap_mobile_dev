@@ -431,10 +431,6 @@ class PlaceProfile extends PureComponent {
     return (
       <View style={styles.titleContainer}>
         <Text style={[DFonts.Title, styles.titleText]}>{this.state.placeData.title}</Text>
-        <TouchableOpacity onPress={this.onBookMarker}>
-          <MaterialCommunityIcons name={this.state.placeData.bookmark ? "bookmark" : "bookmark-outline"} size={30}
-            color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} style={{ marginTop: 3 }} />
-        </TouchableOpacity>
       </View>
     )
   }
@@ -494,7 +490,6 @@ class PlaceProfile extends PureComponent {
           </MapView>
         </View>
       </TouchableOpacity>
-
     )
   }
 
@@ -538,36 +533,33 @@ class PlaceProfile extends PureComponent {
     const checkable = (this.state.distance && this.state.distance < 500) && (!this.lastChecked || getTimeDiff(new Date(this.lastChecked), new Date()) > 20/* * 60*/);
     return (
       <View style={styles.interestContainer}>
-        <View style={styles.interestInformation}>
-          <View style={styles.interestItem}>
-            <Foundation name="heart" size={15} color={RED_COLOR} />
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
-          </View>
-          <View style={styles.interestItem}>
-            <Foundation name="marker" size={15} color={BLUE_COLOR} />
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.checkIns.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
-          </View>
-          <View style={styles.interestItem}>
-            <Foundation name="bookmark" size={15} color={RED_COLOR} />
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
-          </View>
-        </View>
         <View style={styles.serparate}></View>
         <View style={styles.buttonInterest}>
-          <TouchableOpacity onPress={() => this.onHeartClick(!liked)}>
-            <Foundation name="heart" size={35} color={liked ? RED_COLOR : LIGHT_GRAY_COLOR} />
-          </TouchableOpacity>
-          <TouchableOpacity disabled={!checkable} onPress={this.onCheckInClick.bind(this)}>
-            <Foundation name="marker" size={35} color={checkable ? BLUE_COLOR : LIGHT_GRAY_COLOR} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.onShareClick.bind(this)}>
-            <Foundation name="share" size={35} color={GREEN_COLOR} />
-          </TouchableOpacity>
+          <View style={[styles.itemInterest,{flex:0.3}]}>
+            <TouchableOpacity onPress={() => this.onHeartClick(!liked)}>
+              <Image source={liked?require('@assets/images/icon/heart.png'):require('@assets/images/icon/heart_inactive.png')} style={styles.actionBtn} />
+            </TouchableOpacity>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestLabel}>{I18n.t('PLACE_HEARTED')}</Text>
+          </View>
+          <View style={[styles.itemInterest,{flex:0.3}]}>
+            <TouchableOpacity disabled={!checkable} onPress={this.onCheckInClick.bind(this)}>
+              <Image source={checkable?require('@assets/images/icon/check-in.png'):require('@assets/images/icon/check-in_inactive.png')} style={styles.actionBtn} />
+            </TouchableOpacity>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.checkIns.length)}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestLabel}>{I18n.t('PLACE_CHECK_IN')}</Text>
+          </View>
+          <View style={[styles.itemInterest,{flex:0.4}]}>
+            <TouchableOpacity onPress={this.onBookMarker}>
+              <Image source={this.state.placeData.bookmark?require('@assets/images/icon/bookmark.png'):require('@assets/images/icon/bookmark_inactive.png')} style={styles.actionBtn} />
+            </TouchableOpacity>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestLabel}>{I18n.t('PLACE_BOOKMARK')}</Text>
+          </View>
         </View>
       </View >
     )
   }
-
   renderSliderShow() {
     return (
       <Overlay visible={this.state.sliderShow} closeOnTouchOutside animationType="zoomIn"

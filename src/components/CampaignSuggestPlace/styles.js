@@ -5,7 +5,7 @@ import { getDeviceWidth } from '@global'
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#efeeee',
-    width: getDeviceWidth(761),
+    width: getDeviceWidth(811),
     minHeight:  getDeviceWidth(457),
     marginLeft: Platform.OS == 'ios' ? 0 : -5
   },
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   DetailPart: {
     marginTop: getDeviceWidth(39),
-    marginLeft: getDeviceWidth(50),
+    marginLeft: getDeviceWidth(20),
     marginBottom: 10,
     flexDirection: 'row',
     justifyContent: 'center'

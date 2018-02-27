@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
   },
   image: {
       ...StyleSheet.absoluteFillObject,
-      resizeMode: 'contain',
       borderRadius: 0,
       borderTopLeftRadius: 0,
       borderTopRightRadius: 0
@@ -56,14 +55,13 @@ const styles = StyleSheet.create({
   // image's border radius is buggy on ios; let's hack it!
   radiusMask: {
       position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      height: 0,
-      backgroundColor: 'white'
+      alignItems:'center',
+      justifyContent:'center'
   },
   radiusMaskEven: {
-      backgroundColor: 'grey'
+      backgroundColor: 'grey',
+      alignItems:'center',
+      justifyContent:'center'
   },
 });
 

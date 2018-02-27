@@ -140,23 +140,37 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%'
   },
+  interestLabel: {
+    color: LIGHT_GRAY_COLOR,
+    fontSize: NORMAL_FONT_SIZE - 1,
+    fontFamily: APPFONTNAME.Regular
+  },
   interestText: {
     color: LIGHT_GRAY_COLOR,
     fontSize: NORMAL_FONT_SIZE - 1,
-    marginLeft: getDeviceWidth(20),
-    fontFamily: APPFONTNAME.Regular
+    fontFamily: APPFONTNAME.Regular,
+    marginTop:15
   },
   serparate: {
     width: '100%',
     borderWidth: 1,
     borderColor: LIGHT_GRAY_COLOR,
-    marginTop: getDeviceHeight(89)
   },
   buttonInterest: {
     marginTop: getDeviceHeight(89),
-    width: getDeviceWidth(662),
+    width: getDeviceWidth(1267),
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    flex:1
+  },
+  itemInterest:{
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  actionBtn:{
+    resizeMode:'contain',
+    width:25,
+    height:25
   },
   keyWords: {
     marginLeft: getDeviceWidth(76),
@@ -326,7 +340,8 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: BIG_FONT_SIZE,
     width: '100%',
-  }
+  },
+  
 });
 
 export default styles
