@@ -28,9 +28,9 @@ import { client } from '@root/main'
 import { graphql } from "react-apollo"
 
 import { GET_MY_COLLECTIONS } from '@graphql/collections'
-import { getCampaignByUser } from '../../../graphql/campaign'
+import { getCampaignByUser } from '@graphql/campaign'
 import PropTypes from 'prop-types'
-// create a component
+
 class FeedPage extends PureComponent {
   static propTypes = {
     users: PropTypes.shape({
@@ -62,15 +62,15 @@ class FeedPage extends PureComponent {
   componentWillMount() {
     this.getMyCollections();
     getCampaignByUser(this.props.user.id)
-    .then(res => {
-      const campaigns = res.map(item => ({
-        ...item,
-        type: 'campaign'
-      }))
-      this.setState({
-        campaigns
+      .then(res => {
+        const campaigns = res.map(item => ({
+          ...item,
+          type: 'campaign'
+        }))
+        this.setState({
+          campaigns
+        })
       })
-    })
   }
   componentWillReceiveProps(nextProps) {
     const { getSuggestUsers, getStoriesPaginated } = nextProps;
@@ -383,7 +383,7 @@ class FeedPage extends PureComponent {
         <FlatList
           keyExtractor={(item, index) => index}
           style={{ width: '100%', height: '100%' }}
-          data={[...this.state.suggestUsers, ...this.state.campaigns]}
+          data={[...this.state.suggestUsers, ...this.state.campaigns, ...this.state.items]}
           renderItem={this._renderItem.bind(this)}
           onEndReached={() => this.onEndReached()}
           refreshing={this.props.getStoriesPaginated.networkStatus === 4}
