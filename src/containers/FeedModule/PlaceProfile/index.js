@@ -1,8 +1,9 @@
 import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import { CHECK_IN_PLACE } from '@graphql/checkin';
+import { LIKE_PLACE, UNLIKE_PLACE } from "@graphql/heartplace";
 import { CREATE_KEYWORD, DELETE_KEYWORD } from "@graphql/keywords";
-import { ADD_COLLECTION_TO_PLACE, REMOVE_COLLECTION_FROM_PLACE, LIKE_PLACE, UNLIKE_PLACE } from "@graphql/places";
+import { ADD_COLLECTION_TO_PLACE, REMOVE_COLLECTION_FROM_PLACE } from "@graphql/places";
 import { REPORT_PLACE, REPORT_STORY } from "@graphql/report";
 import { CREATE_STORY, UPDATE_STORY, FOLLOWING_STORIES_PAGINATED } from "@graphql/stories";
 

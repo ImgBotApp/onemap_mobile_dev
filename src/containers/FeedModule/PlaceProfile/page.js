@@ -209,7 +209,7 @@ class PlaceProfile extends PureComponent {
             website: data.website,
             openingHours: [data.openingHrs]
           },
-          heartedIds: data.usersLike.map(item => item.id),
+          heartedIds: data.heartedByUser,
           checkIns: data.checkIns,
           collectionIds: this.props.place && this.props.place.collectionIds ? this.props.place.collectionIds : data.collections.map(item => item.id),
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
@@ -368,22 +368,23 @@ class PlaceProfile extends PureComponent {
       Vibration.vibrate();
       this.props.likePlace({
         variables: {
-          id: placeData.id,
-          userId: this.props.user.id
+          placeId: placeData.id,
+          userId: this.props.user.id,
+          lat: 0,
+          lng: 0
         }
       }).then(({ data }) => {
-        placeData.heartedIds = data.addToUserLikePlace.likePlacesPlace.usersLike.map(item => item.id);
+        placeData.heartedIds = data.createHeartPlace.place.heartedByUser;
         this.setState({ placeData });
         client.resetStore();
       }).catch(err => alert(err));
     } else {
       this.props.unlikePlace({
         variables: {
-          id: placeData.id,
-          userId: this.props.user.id
+          id: placeData.heartedIds.filter(item => item.user.id === this.props.user.id)[0].id
         }
       }).then(({ data }) => {
-        placeData.heartedIds = data.removeFromUserLikePlace.likePlacesPlace.usersLike.map(item => item.id);
+        placeData.heartedIds = placeData.heartedIds.filter(item => item.id !== data.deleteHeartPlace.id);
         this.setState({ placeData });
         client.resetStore();
       }).catch(err => alert(err));
@@ -527,7 +528,7 @@ class PlaceProfile extends PureComponent {
   }
 
   renderInterest() {
-    const liked = this.state.placeData.heartedIds.includes(this.props.user.id);
+    const liked = this.state.placeData.heartedIds && this.state.placeData.heartedIds.map(item => item.user.id).includes(this.props.user.id);
     const checkable = (this.state.distance && this.state.distance < 500) && (!this.lastChecked || getTimeDiff(new Date(this.lastChecked), new Date()) > 20/* * 60*/);
     return (
       <View style={styles.interestContainer}>
