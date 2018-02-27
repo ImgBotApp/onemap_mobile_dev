@@ -434,6 +434,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTOrientation;
 		};
+		A0A86C462045AC3700B85F8C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5EA92E038B2146BDB364E8A1 /* FastImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A287971D1DE0C0A60081BDFA;
+			remoteInfo = FastImage;
+		};
 		ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
@@ -1000,6 +1007,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		A0A86C432045AC3700B85F8C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A0A86C472045AC3700B85F8C /* libFastImage.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		ADBDB9201DFEBF0600ED6528 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1201,6 +1216,10 @@
 				{
 					ProductGroup = 8426B7CF200298E100C7E6EA /* Products */;
 					ProjectRef = B5FD02804E1444E691DC59B3 /* AirMaps.xcodeproj */;
+				},
+				{
+					ProductGroup = A0A86C432045AC3700B85F8C /* Products */;
+					ProjectRef = 5EA92E038B2146BDB364E8A1 /* FastImage.xcodeproj */;
 				},
 				{
 					ProductGroup = D23E3C30201262ED0018B570 /* Products */;
@@ -1637,6 +1656,13 @@
 			fileType = archive.ar;
 			path = libRCTOrientation.a;
 			remoteRef = 84F71616200F7D7C003B5A10 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A0A86C472045AC3700B85F8C /* libFastImage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFastImage.a;
+			remoteRef = A0A86C462045AC3700B85F8C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */ = {

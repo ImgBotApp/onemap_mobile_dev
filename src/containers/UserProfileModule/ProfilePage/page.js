@@ -19,6 +19,7 @@ import { client } from '@root/main'
 import { GET_FOLLOWS } from '@graphql/userprofile';
 // related with  Camapagin Module
 import campaignStyles from './campaingStyle'
+import { fetchThumbFromCloudinary } from '@global/cloudinary'
 import { getUserRewardCampaignBadge } from '@graphql/campaign'
 class ProfileComponent extends Component {
   static navigatorButtons = {

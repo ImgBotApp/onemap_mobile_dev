@@ -14,6 +14,12 @@ query BadgeQuery($campaignId: ID!, $userId: ID!) {
     iconUrl
     type
     title
+    city {
+      campaign {
+        title
+        iconUrl
+      }
+    }
     receivedBy(filter: {
       user: {
         id: $userId
