@@ -1,26 +1,25 @@
 //import liraries
 import React, { Component } from 'react';
+import { fetchThumbFromCloudinary } from '@global/cloudinary'
 import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, Platform } from 'react-native';
-import EvilIcons from 'react-native-vector-icons/EvilIcons'
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import styles from './styles'
 
-import { getDeviceHeight, getDeviceWidth } from '@global'
+import { getDeviceHeight,getDeviceWidth } from '@global'
 import CircleImage from '@components/CircleImage'
-import TitleImage from '@components/TitledImage'
-import AutoHeightImage from 'react-native-auto-height-image';
-import AutoHeightTitledImage from '@components/AutoHeightTitledImage'
 import Collections from '@components/Collections'
 import StoryBoard from '@components/StoryBoard'
-
+import CardView from 'react-native-cardview'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
-import { SMALL_FONT_SIZE, APPFONTNAME } from '@theme/fonts';
+import FONTSTYLE, { SMALL_FONT_SIZE, APPFONTNAME } from '../../../theme/fonts';
 
 import { client } from '@root/main'
 import { GET_FOLLOWS } from '@graphql/userprofile';
-
+// related with  Camapagin Module
+import campaignStyles from './campaingStyle'
+import { getUserRewardCampaignBadge } from '../../../graphql/campaign'
 class ProfileComponent extends Component {
   static navigatorButtons = {
     rightButtons: [
@@ -45,11 +44,21 @@ class ProfileComponent extends Component {
     this.state = {
       ...props.user,
       displayName: props.user.displayName || props.user.firstName + " " + props.user.lastName,
+      campaigns: [],
+      totalPoints: 0
     }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
   componentWillMount() {
-    this.getMyFollows();
+    getUserRewardCampaignBadge(this.props.user.id)
+    .then(res => {
+      this.setState({
+        campaigns: res
+      }, () => {
+        this.getMyTotalPoints()
+      })
+    })
+    this.getMyFollows();    
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.user != this.props.user) {
@@ -104,6 +113,96 @@ class ProfileComponent extends Component {
       animated: true,
     })
   }
+
+  getMyTotalPoints() {
+    let totalPoints = this.state.campaigns.reduce(function(current, item) {
+      let result = current
+      for (let i = 0; i<item.cities.length; i++) {
+        let city = item.cities[i]
+        for (let j =0 ; j<city.badges.length; j++) {
+          let badge = city.badges[j]
+          result = result + badge.point
+        }
+      }
+      return result
+    }, 0)
+    this.setState({
+      totalPoints: totalPoints
+    })
+  }
+
+  getMostBadge(campaign) {
+    let cities = campaign.cities
+    let points = 0
+    let result = cities.reduce(function(current, item) {
+      let result = [...current]
+      if ( current.length > 1) {
+        for (let j =0; j<item.badges.length; j++) {
+          points = points + item.badges[j].point
+        }
+        return result
+      } 
+      for (let i = 0; i<item.badges.length; i++) {
+        points = points + item.badges[i].point
+        if (current.indexOf(item.badges[i]) == -1 ) {
+          result.push(item.badges[i])
+        }
+      }
+      return result
+    }, [])
+    return { result, points }
+  }
+
+  renderCampaignItem(campaign) {
+    let mostBadges = this.getMostBadge(campaign)
+    let points = mostBadges.points 
+    return (
+      <CardView cardElevation={1} cardMaxElevation={1} cornerRadius={5} style={campaignStyles.campaignItemCotainer}>
+        <View style={campaignStyles.PointContainer}>
+          <Text style={[FONTSTYLE.Header, campaignStyles.pointText]}>{I18n.t('POINTS_STR')}</Text>
+          {
+            points == 0 ? 
+            <Text style={[FONTSTYLE.MostBig, campaignStyles.pointText]}> { 0 + ''} </Text>
+            : <Text style={[FONTSTYLE.MostBig, campaignStyles.pointText]}> { points } </Text>
+          }
+        </View>
+        <View style={ campaignStyles.badgeContainer}>
+          {
+            mostBadges.result.map((badge, index) => {
+              return <Image key={index} source={{uri: fetchThumbFromCloudinary(badge.iconUrl)}} style={campaignStyles.badgeStyle}/>
+            })
+          }
+          <TouchableOpacity onPress={() => this.onNavigateUserBadgeList(campaign)}>
+            <Image source={require('@assets/images/badge/viewMore.png')} style={[campaignStyles.badgeStyle, { marginRight: 5}]}/>
+          </TouchableOpacity>
+        </View>
+      </CardView>
+    )
+  }
+
+  onNavigateUserBadgeList = (campaign) => {
+    this.props.navigator.push({
+      screen: SCREEN.CAMPAIGN_USER_BADGE_LIST_PAGE,
+      animated: true,
+      title: campaign.title,
+      navigatorStyle: {
+
+      },
+      passProps: {
+        id: campaign.id,
+        title: campaign.title
+      }
+    })
+  }
+
+  renderCampagin() {
+    return (
+      <View style={styles.vCollections}>
+        <Text style={styles.collectionTitle}>{I18n.t('PROFILE_CAMPAIGN')}</Text>
+        { this.state.campaigns.length && this.renderCampaignItem(this.state.campaigns[0]) }
+      </View>
+    )
+  }
   render() {
     const { data: { loading, error, allStories }, GetFollowersList, follows, user } = this.props;
     if (loading) {
@@ -139,6 +238,15 @@ class ProfileComponent extends Component {
                 <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.userId}>
                   {this.state.username}
                 </Text>
+                {/* User Points */}
+                <Text style={[FONTSTYLE.Regular, { color: DARK_GRAY_COLOR, marginTop: 5}]}>
+                  {
+                    this.state.totalPoints == 0 ? 
+                    <Text style={styles.points}>{0 + ''}</Text>
+                    : <Text style={styles.points}>{' '}{ this.state.totalPoints ? this.state.totalPoints : '0' }{' '} </Text>
+                  }
+                  {'  '}{I18n.t('POINTS_STR')}
+                </Text>
               </View>
               <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={this.onEditProfile.bind(this)}>
                 <View style={styles.editProfileContainer}>
@@ -169,6 +277,8 @@ class ProfileComponent extends Component {
         <View style={styles.bioText}>
           <Text style={styles.bio} numberOfLines={2} ellipsizeMode={'tail'}>{this.state.bio}</Text>
         </View>
+        {/* Campaign Part */}
+        { this.renderCampagin () }
         {/* Collection Part */}
         <View style={styles.vCollections}>
           <Text style={styles.collectionTitle}>{I18n.t('PROFILE_COLLECTION_TITLE')}</Text>

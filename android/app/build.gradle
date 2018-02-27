@@ -113,7 +113,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
     defaultConfig {
-        applicationId "com.writingfuture.onemap"
+        applicationId "com.writingfuture.onemap123"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 2

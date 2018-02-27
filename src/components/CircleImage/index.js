@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, Text, Image } from 'react-native';
 import styles from './styles'
 import { fetchThumbFromCloudinary } from '@global/cloudinary';
+import PropTypes from 'prop-types'
 
 // create a component
 class CircleImage extends Component {
@@ -27,7 +28,10 @@ class CircleImage extends Component {
   }
 }
 
-// define your styles
+CircleImage.propTypes = {
+  uri: PropTypes.string,
+  radius: PropTypes.number
+}
 
 
 //make this component available to the app
