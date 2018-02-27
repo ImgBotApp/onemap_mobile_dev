@@ -110,9 +110,6 @@ query getUserStories(
         status
         placeOwner
       }
-      usersLike {
-        id
-      }
       createdBy {
         id
         username

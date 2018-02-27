@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, Button, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image, Button, Platform,ActivityIndicator } from 'react-native';
 import ImageSliderView from 'react-native-image-slider';
 import PropTypes from 'prop-types';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -12,17 +12,26 @@ import Orientation from 'react-native-orientation';
 import { getMediaTypeFromURL } from '@global/const';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('screen');
-
+import { fetchImageFromCloudinary } from '@global/cloudinary'
+import FastImage from 'react-native-fast-image'
 // create a component
 class ImageSlider extends Component {
   constructor(props) {
     super(props);
+    let buffer = [];
+    const len = props.data.length;
+
+    for(var i=0; i< len;i++)
+      buffer.push(this.props.data[(props.firstItem+i) % len]);
+    
     this.state = {
-      slider1ActiveSlide: props.firstItem,
+      slider1ActiveSlide: 0,
       slider1Ref: null,
       sliderWidth: viewportWidth,
       sliderHeight: viewportHeight,
       itemWidth: viewportWidth,
+      ortMode:"PORTRAIT",
+      imageData:buffer
     };
   }
   onPress() {
@@ -63,6 +72,7 @@ class ImageSlider extends Component {
 
   onlayoutOrientation(orientation) {
     let dim = Dimensions.get('screen');
+    this.setState({ortMode:orientation});
     if (orientation != 'LANDSCAPE') {
       this.setState({
         sliderWidth: Math.min(dim.width, dim.height),
@@ -88,6 +98,7 @@ class ImageSlider extends Component {
         parallax={false}
         parallaxProps={parallaxProps}
         slider1ActiveSlide={this.state.slider1ActiveSlide}
+        ortMode = {this.state.ortMode}
       />
     );
   }
@@ -101,13 +112,13 @@ class ImageSlider extends Component {
       <View style={styles.container} supportedOrientations={['portrait', 'landscape']} onLayout={this._onLayout.bind(this)}>
         <Carousel
           ref={(c) => { if (!this.state.slider1Ref) { this.setState({ slider1Ref: c }); } }}
-          data={this.props.data}
+          data={this.state.imageData}
           renderItem={this._renderItemWithParallax.bind(this)}
           sliderWidth={this.state.sliderWidth}
           sliderHeight={this.state.sliderHeight}
           itemWidth={this.state.itemWidth}
           hasParallaxImages={true}
-          firstItem={this.props.firstItem}
+          firstItem={0}
           inactiveSlideScale={1}
           inactiveSlideOpacity={0.7}
           enableMomentum={false}
@@ -119,6 +130,11 @@ class ImageSlider extends Component {
           autoplayDelay={500}
           autoplayInterval={3000}
           onSnapToItem={(index) => this._onSnapToItem(index)}
+          lockScrollWhileSnapping = {true}
+          //removeClippedSubviews={false}
+          //useScrollView = {true}
+          //initialNumToRender = {this.props.firstItem+1}
+          //getItemLayout={(data, index) => ({offset: viewportWidth * index, length: viewportWidth, index})}
         />
         <Pagination
           dotsLength={this.props.data.length}
@@ -146,9 +162,14 @@ class SliderEntry extends Component {
     parallax: PropTypes.bool,
     parallaxProps: PropTypes.object,
   };
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading:true,
+    };
+  }
   get image() {
-    const { data: { uri }, parallax, parallaxProps, even } = this.props;
+    const { data: { uri }, parallax, parallaxProps, even,ortMode } = this.props;
 
     if (getMediaTypeFromURL(uri)) {
       return (
@@ -159,7 +180,7 @@ class SliderEntry extends Component {
     else {
       return parallax ? (
         <ParallaxImage
-          source={{ uri: uri }}
+          source={{ uri: fetchImageFromCloudinary(uri, ortMode=="LANDSCAPE"?1920:1080) }}
           containerStyle={[styles.imageContainer, even ? styles.imageContainerEven : {}]}
           style={styles.image}
           parallaxFactor={0.35}
@@ -168,10 +189,12 @@ class SliderEntry extends Component {
           {...parallaxProps}
         />
       ) : (
-          <Image
-            source={{ uri: uri }}
-            style={styles.image}
-          />
+          <FastImage
+              source={{ uri: fetchImageFromCloudinary(uri, 1920),priority: FastImage.priority.high}}
+              style={styles.image}
+              resizeMode={FastImage.resizeMode.contain}
+              onLoad = {()=> this.setState({loading:false})}
+            />
         );
     }
   }
@@ -186,7 +209,8 @@ class SliderEntry extends Component {
       >
         <View style={[styles.imageContainer, even ? styles.imageContainerEven : {}]}>
           {this.image}
-          <View style={[styles.radiusMask, even ? styles.radiusMaskEven : {}]} />
+          
+          {this.state.loading && <ActivityIndicator style={styles.image} size="large" color="#dddddd" />}
         </View>
       </TouchableOpacity>
     );

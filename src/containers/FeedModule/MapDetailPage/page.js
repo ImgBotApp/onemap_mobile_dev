@@ -1,13 +1,13 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, Platform } from 'react-native';
+import { View, Text, StyleSheet, Image, Platform,TouchableOpacity } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import styles from './style'
 import { DARK_GRAY_COLOR } from '@theme/colors';
 import DFonts from '@theme/fonts';
 import Ionicons from 'react-native-vector-icons/Ionicons'
-
+import { getFormattedDistanceString } from '@global/const';
 const data = {
   map: {
     latitude: 37.78825,
@@ -30,6 +30,9 @@ class MapDetailPage extends Component {
       }
     ]
   };
+  static navigatorStyle = {
+    tabBarHidden: true
+  };
   constructor(props) {
     super(props)
     Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
@@ -43,7 +46,17 @@ class MapDetailPage extends Component {
     })
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
-
+  getDistance(){
+    if(this.props.user.location)
+    {
+      const dist =geolib.getDistance(
+                    this.props.user.location,
+                    this.props.map
+                );
+      console.log("---distance:"+dist);
+      return getFormattedDistanceString(dist);
+    }else return "0 m";
+  }
   onNavigatorEvent(event) {
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'backButton') {
@@ -54,8 +67,6 @@ class MapDetailPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.titleText]}>{this.props.title}</Text>
-        <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.addressText]}>{this.props.address}</Text>
         <View style={styles.mapView}>
           <MapView
             provider={PROVIDER_GOOGLE}
@@ -73,6 +84,24 @@ class MapDetailPage extends Component {
               )}
             </MapView.Marker>
           </MapView>
+        </View>
+        <View style={styles.titleContainer}>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.titleText]}>{this.props.title}</Text>
+          <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.addressText]}>{this.props.address}</Text>
+        </View>
+        <View style={styles.statusContainer}>
+          <View style={styles.status}>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.distText}>{'Distance'}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.distvalueText}>{this.getDistance()}</Text>
+          </View>
+          <View style = {styles.buttonGroup}>
+            <TouchableOpacity>
+              <Image source={require('@assets/google/google1.png')} style={styles.googleBtn} />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Image source={require('@assets/google/google2.png')} style={styles.googleBtn} />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );

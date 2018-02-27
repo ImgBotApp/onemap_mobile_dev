@@ -113,7 +113,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
     defaultConfig {
-        applicationId "com.writingfuture.onemap123"
+        applicationId "com.writingfuture.onemap"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 2
@@ -168,7 +168,7 @@ dependencies {
     compile project(':react-native-google-places')
     compile project(':react-native-fbsdk')
     compile project(':react-native-cardview')
-    compile project(':react-native-multi-image-selector')
+    compile project(':react-native-fast-image')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.react:react-native:+'

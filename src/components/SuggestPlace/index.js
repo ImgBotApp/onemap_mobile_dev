@@ -6,6 +6,7 @@ import CardView from 'react-native-cardview'
 import styles from './styles'
 import I18n from '@language'
 import DFonts from '@theme/fonts'
+import { fetchThumbFromCloudinary } from '@global/cloudinary';
 // create a component
 class SuggestPlace extends Component {
   render() {
@@ -23,7 +24,7 @@ class SuggestPlace extends Component {
               </TouchableOpacity>
             </View>
           </View>
-          <Image source={{uri: this.props.data.uri}} style={styles.image} />
+          <Image source={{uri: this.props.data.uri?fetchThumbFromCloudinary(this.props.data.uri):''}} style={styles.image} />
         </View>
       </CardView>
     );
