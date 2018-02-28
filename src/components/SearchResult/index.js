@@ -52,7 +52,6 @@ class SearchResult extends Component {
 
       const autocompleteURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=" + query + "&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius + "&key=" + PLACES_APIKEY;
 
-      console.log("~~~~~~~~~~~~~~~~~~~ " + query);
       fetch(autocompleteURL, {
         method: 'GET',
         'Access-Control-Allow-Origin': '*',
@@ -161,7 +160,10 @@ class SearchResult extends Component {
     return (
       <TouchableOpacity onPress={() => this.props.onKeywordItem(item)}>
         <View style={styles.item}>
-          <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
+          <View>
+            <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
+            {item.createdBy.photoURL&&<CircleImage style={styles.avatarImage} uri={item.createdBy.photoURL} radius={getDeviceWidth(44)} />}
+          </View>
           <View style={styles.infomation}>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.name]}>{item.placeName}</Text>
             <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.following]}>{item.address}</Text>

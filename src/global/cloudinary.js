@@ -80,11 +80,11 @@ export function uploadMedia(videoData, tag) {
 
 export function fetchThumbFromCloudinary(imageurl){
     const fetchurl= 'http://res.cloudinary.com/'+cloud_name+'/image/fetch/w_'+THUMB_SIZE+',g_face,c_fill/';
-    return fetchurl+imageurl.replace('?','%3F');
+    return fetchurl+encodeURIComponent(imageurl);
 }
 export function fetchImageFromCloudinary(imageurl,width){
     const fetchurl= 'http://res.cloudinary.com/'+cloud_name+'/image/fetch/w_'+width+',g_face,c_fill/';
-    return fetchurl+imageurl.replace('?','%3F');
+    return fetchurl+encodeURIComponent(imageurl);
 }
 export function getGrayImage(imageUrl, thumbnail=true) {
     if (thumbnail) {
