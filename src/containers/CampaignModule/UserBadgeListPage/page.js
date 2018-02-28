@@ -83,6 +83,7 @@ class UserPageListPage extends Component {
   }
 
   onNavigateBadgeStatusPage = (badge) => {
+    console.log('Badge : ', badge)
     this.props.navigator.push({
       screen: SCREEN.CAMPAIGN_USER_BADGE_STATUS_PAGE,
       title: I18n.t('BADGE_STR'),

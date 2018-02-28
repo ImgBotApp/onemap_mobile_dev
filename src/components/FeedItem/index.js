@@ -2,17 +2,17 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import CardView from 'react-native-cardview'
+import { OptimizedFlatList } from 'react-native-optimized-flatlist';
+import FontAwesomeIcons from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import CircleImage from '@components/CircleImage'
 import ViewMoreText from '@components/ViewMoreText';
-import styles from './styles'
-import DFonts from '@theme/fonts'
-import { RED_COLOR, LIGHT_GRAY_COLOR } from '@theme/colors';
 import { getDeviceWidth, getDeviceHeight, formattedTimeDiffString } from '@global'
-import { getImageFromVideoURL, getMediaTypeFromURL } from '@global/const';
 import { fetchThumbFromCloudinary } from '@global/cloudinary';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { OptimizedFlatList } from 'react-native-optimized-flatlist'
+import { getImageFromVideoURL, getMediaTypeFromURL } from '@global/const';
+import { RED_COLOR, LIGHT_GRAY_COLOR } from '@theme/colors';
+import DFonts from '@theme/fonts'
+import styles from './styles'
 
 // create a component
 class FeedItem extends Component {
@@ -33,6 +33,8 @@ class FeedItem extends Component {
     this.props.onPlace();
   }
   render() {
+    const { bookmark, createdBy, description, images, likedByUser, likeStory, placeName, title } = this.props.data;
+    const liked = likedByUser.map(item => item.user.id).includes(this.props.userId);
     return (
       <CardView style={styles.container} cardElevation={2} cardMaxElevation={2} cornerRadius={5}>
         {/* user information */}
@@ -52,7 +54,7 @@ class FeedItem extends Component {
               color={this.props.data.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} style={{ width: 40, textAlign: 'center', alignSelf: 'flex-start' }} />
           </TouchableOpacity>
         </View>
-        {/* Feed Title */}
+        {/* Place Title */}
         <TouchableOpacity onPress={this.onPressItem}>
           <Text style={[DFonts.Title, styles.feedTitle]}>{this.props.data.placeName}</Text>
         </TouchableOpacity>
@@ -69,7 +71,7 @@ class FeedItem extends Component {
                   {
                     getMediaTypeFromURL(item.uri) ?
                       (
-                        <Icon name="play-circle-outline" style={styles.playButton} />
+                        <MaterialCommunityIcons name="play-circle-outline" style={styles.playButton} />
                       ) : null
                   }
                 </TouchableOpacity>
@@ -77,15 +79,23 @@ class FeedItem extends Component {
             )}
           />
         </View>
-        {/* Place Title */}
-        <View>
-          <Text style={[DFonts.SubContent, styles.placeTitle]}>{this.props.data.title}</Text>
+        {/* Story Title */}
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: getDeviceHeight(50) }}>
+          <Text style={[DFonts.SubContent, styles.placeTitle, { flex: 1 }]}>{this.props.data.title}</Text>
+          <Text style={[DFonts.SubTitle, styles.description]}>{likedByUser.length + ' '}</Text>
+          <TouchableOpacity onPress={() => this.props.likeStory(!liked)}>
+            <FontAwesomeIcons
+              color={'#f9c33d'}
+              name={liked ? 'star' : 'star-o'}
+              size={25}
+            />
+          </TouchableOpacity>
         </View>
         {/* Border Bar */}
         {!!this.props.data.description &&
           <View style={styles.separate} />
         }
-        {/* Description */}
+        {/* Story Description */}
         {!!this.props.data.description &&
           <View style={styles.descriptionText}>
             <ViewMoreText

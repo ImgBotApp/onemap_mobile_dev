@@ -44,9 +44,6 @@ export const GET_PLACE_PROFILE = gql`
       line
       openingHrs
       pictureURL
-      _usersLikeMeta {
-        count
-      }
       keywords {
         id
         createdBy {
@@ -76,6 +73,12 @@ export const GET_PLACE_PROFILE = gql`
           displayName
           photoURL
         }
+        likedByUser {
+          id
+          user {
+            id
+          }
+        }
         pictureURL
         updatedAt
       }
@@ -86,8 +89,11 @@ export const GET_PLACE_PROFILE = gql`
           id
         }
       }
-      usersLike {
+      heartedByUser {
         id
+        user {
+          id
+        }
       }
       collections {
         id
@@ -198,44 +204,6 @@ export const REMOVE_COLLECTION_FROM_PLACE = gql`
       collectionsIds: $collectionIds
     ) {
       id
-    }
-  }
-`
-
-export const LIKE_PLACE = gql`
-  mutation (
-    $id: ID!,
-    $userId: ID!
-  ) {
-    addToUserLikePlace(
-      likePlacesPlaceId: $id,
-      usersLikeUserId: $userId
-    ) {
-      likePlacesPlace {
-        id
-        usersLike {
-          id
-        }
-      }
-    }
-  }
-`
-
-export const UNLIKE_PLACE = gql`
-  mutation (
-    $id: ID!,
-    $userId: ID!
-  ) {
-    removeFromUserLikePlace(
-      likePlacesPlaceId: $id,
-      usersLikeUserId: $userId
-    ) {
-      likePlacesPlace {
-        id
-        usersLike {
-          id
-        }
-      }
     }
   }
 `

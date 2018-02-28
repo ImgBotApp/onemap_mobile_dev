@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
     marginRight: getDeviceWidth(30),
   },
   placeTitle: {
-    marginTop: getDeviceHeight(50),
     color: LIGHT_GRAY_COLOR,
   },
   separate: {
