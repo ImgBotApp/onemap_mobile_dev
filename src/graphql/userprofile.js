@@ -27,6 +27,7 @@ export const GET_PROFILE = gql`
       registrationDate
       group
       accountStatus
+      playerId
       follows {
         id
       }
