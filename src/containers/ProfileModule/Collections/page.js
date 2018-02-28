@@ -279,7 +279,6 @@ class Collections extends Component {
       </View>
     )
   }
-
   _renderMapView() {
     return (
       <View style={styles.mapView}>
@@ -292,6 +291,8 @@ class Collections extends Component {
           clusterTextColor='white'
           clusterBorderColor='#fff'
           clusterBorderWidth={0}
+          onLayout={() => {if(this.map)this.map._root.fitToElements(true)}}
+          ref={ref => { this.map = ref }}
         >
           {this.state.places.map((item, index) =>
             <Marker

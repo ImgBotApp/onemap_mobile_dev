@@ -243,9 +243,7 @@ class LoginPage extends Component {
       // navigatorButtons: {}
     })
   }
-  onTestUser() {
-
-  }
+  
   render() {
     return (
       <View style={styles.container}>
