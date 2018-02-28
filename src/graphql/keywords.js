@@ -12,6 +12,7 @@ export const GET_FILTER_KEYWORDS = gql`
         createdAt
         createdBy {
           id
+          photoURL
         }
         updatedAt
         description
