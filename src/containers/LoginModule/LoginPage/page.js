@@ -16,7 +16,7 @@ import { EXIST_FACEBOOK_USER } from '@graphql/users'
 import Orientation from 'react-native-orientation';
 import { APPFONTNAME } from '@theme/fonts';
 import Permissions from 'react-native-permissions'
-
+import OneSignal from 'react-native-onesignal'
 const { GraphRequest, GraphRequestManager, AccessToken } = FBSDK
 
 // create a component
@@ -25,9 +25,24 @@ class LoginPage extends Component {
     super(props)
     this.state = {
       id: '',
-      loading: false
+      loading: false,
+      playerId: ''
     }
     Orientation.lockToPortrait();
+  }
+
+  componentWillMount() {
+    OneSignal.addEventListener('ids', this.onIds)
+  }
+
+  componentWillUnmount() {
+    OneSignal.removeEventListener('ids', this.onIds)
+  }
+
+  onIds(device) {
+    this.setState({
+      playerId: device.playerId
+    })
   }
   componentDidMount() {
     if (Platform.OS == 'android')
