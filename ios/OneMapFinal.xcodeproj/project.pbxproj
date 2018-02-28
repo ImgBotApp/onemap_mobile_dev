@@ -2029,7 +2029,7 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/AirMaps/**",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
-					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
+					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -2078,7 +2078,7 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/AirMaps/**",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
-					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
+					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

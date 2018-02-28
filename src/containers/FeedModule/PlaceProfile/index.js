@@ -16,6 +16,7 @@ const STORIES_PER_PAGE = 8;
 function mapStateToProps(state) {
   return {
     user: state.User,
+    settings: state.app.settings,
     collections: state.app.collections
   }
 }

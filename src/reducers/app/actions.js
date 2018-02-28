@@ -13,6 +13,13 @@ export function changeAppRoot(root) {
   }
 }
 
+export function saveSettings(settings) {
+  return {
+    type: types.SETTINGS,
+    settings
+  }
+}
+
 export function saveCollections(collections) {
   return {
     type: types.STORE_COLLECTIONS,
