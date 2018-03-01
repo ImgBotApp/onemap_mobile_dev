@@ -12,6 +12,7 @@ import { registerScreens } from './registerScreens'
 
 import { AsyncStorage } from 'react-native'
 import { GET_PROFILE } from './graphql/userprofile';
+import { GET_SETTINGS } from './graphql/setting';
 import { APP_USER_KEY } from './global/const'
 
 import { composeWithDevTools } from 'redux-devtools-extension'
@@ -57,6 +58,7 @@ var SearchIcon;
 export default class App {
   constructor() {
     Orientation.lockToPortrait();
+    this.getSettings();
     this._fbAuth();
   }
   setAppRoot(root) {
@@ -87,6 +89,18 @@ export default class App {
       }).catch((error) => {
         reject(error);
       }).done();
+    });
+  }
+  getSettings() {
+    client.query({
+      query: GET_SETTINGS
+    }).then(({ data }) => {
+      store.dispatch(
+        appActions.saveSettings(data.allSettings.map(item => ({
+          name: item.name,
+          value: item.value
+        })))
+      );
     });
   }
   _fbAuth(root) {

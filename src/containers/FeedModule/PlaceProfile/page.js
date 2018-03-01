@@ -950,7 +950,7 @@ class PlaceProfile extends PureComponent {
   }
 
   _renderCommentStory({ item, index }) {
-    const liked = item.likedByUser.map(item => item.user.id).includes(this.props.user.id);
+    const liked = item.likedByUser && item.likedByUser.map(item => item.user.id).includes(this.props.user.id);
     return (
       <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 10 }}>
