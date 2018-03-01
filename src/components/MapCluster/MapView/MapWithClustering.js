@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import MapView from 'react-native-maps';
 import { width as w , height as h } from 'react-native-dimension';
+import { Dimensions } from 'react-native'
 import CustomMarker from './CustomMarker';
 import SuperCluster from 'supercluster';
 import geoViewport from '@mapbox/geo-viewport';
 
-const height = h(100);
-const width = w(100);
+//const height = h(100);
+//const width = w(100);
+const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
+
 const divideBy = 7;
 
 export default class MapWithClustering extends Component {
