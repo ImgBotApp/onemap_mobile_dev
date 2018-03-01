@@ -247,6 +247,7 @@ const styles = StyleSheet.create({
   },
   commentDescription: {
     fontSize: NORMAL_FONT_SIZE,
+    marginRight:3
   },
   collectionModal: {
     height: getDeviceHeight(704),

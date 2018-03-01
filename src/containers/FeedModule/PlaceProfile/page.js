@@ -950,7 +950,7 @@ class PlaceProfile extends PureComponent {
   }
 
   _renderCommentStory({ item, index }) {
-    const liked = item.likedByUser.map(item => item.user.id).includes(this.props.user.id);
+    const liked = item.likedByUser && item.likedByUser.map(item => item.user.id).includes(this.props.user.id);
     return (
       <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 10 }}>
@@ -984,7 +984,7 @@ class PlaceProfile extends PureComponent {
         />
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={[DFonts.Title, styles.commentTitle, { flex: 1 }]}>{item.title}</Text>
-          <Text style={[DFonts.SubTitle, styles.commentDescription]}>{item.likedByUser.length + ' '}</Text>
+          <Text style={[DFonts.SubTitle, styles.commentDescription]}>{item.likedByUser?item.likedByUser.length:0}</Text>
           <TouchableOpacity onPress={() => this.likeStory(!liked, item, index)}>
             <FontAwesomeIcons
               color={'#f9c33d'}
