@@ -8,6 +8,7 @@ import I18n from '@language'
 import DFonts from '@theme/fonts'
 import PropTypes from 'prop-types'
 import FontStyle from '../../theme/fonts'
+import { fetchThumbFromCloudinary } from '@global/cloudinary';
 /**
  * Props Event
  * 
@@ -36,7 +37,7 @@ class FeedCampaign extends Component {
         <View style={styles.CardContainer}>
         <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row' }}>
-            <Image source={{ uri: this.props.data.iconUrl }} style={styles.markImage} />
+            <Image source={{ uri: this.props.data.iconUrl?fetchThumbFromCloudinary(this.props.data.iconUrl):'' }} style={styles.markImage} />
             <View style={styles.campaignInfo}>
               <Text style={[FontStyle.Title, styles.title]} numberOfLines={1}>{this.props.data.title}</Text>
               <Text style={[FontStyle.SubTitle, styles.campaign]}>{this.props.data.subtitle}</Text>
@@ -57,7 +58,7 @@ class FeedCampaign extends Component {
             {this.props.data.description}
           </ViewMoreText>
         </View>
-        <Image source={{ uri: this.props.data.pictureUrl.length && this.props.data.pictureUrl[0] }} style={styles.image} />
+        <Image source={{ uri: this.props.data.pictureUrl.length && this.props.data.pictureUrl[0]?fetchThumbFromCloudinary(this.props.data.pictureUrl[0]):'' }} style={styles.image} />
         </View>
       </CardView>
     );

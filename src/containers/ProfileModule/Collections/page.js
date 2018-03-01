@@ -199,14 +199,16 @@ class Collections extends Component {
       screen: SCREEN.PLACE_PROFILE_PAGE,
       animated: true,
       passProps: {
-        place
+        place,
+        oneMapperId: this.props.userId
       }
     })
   }
   onRemovePlace(data) {
+    if (!this.props.collection) return;
     Alert.alert(
       data.item.address,
-      'Do you want to remove this place?',
+      'Do you want to remove this place from ' + this.props.collection.name + '?',
       [
         { text: 'OK', onPress: () => this.deletePlace(data) },
         { text: 'Cancel', style: 'cancel' }
@@ -214,14 +216,14 @@ class Collections extends Component {
     )
   }
   deletePlace(data) {
-    let places = clone(this.state.places);
-    places.splice(data.index, 1);
     this.props.removePlace({
       variables: {
         id: this.props.collection.id,
-        placeIds: places.map((item) => item.id)
+        placeId: data.item.id
       }
     }).then(collections => {
+      let places = clone(this.state.places);
+      places.splice(data.index, 1);
       this.setState({ places });
       this.props.placeUpdated(true);
     }).catch(err => alert(err));
@@ -315,7 +317,8 @@ class Collections extends Component {
       screen: SCREEN.PLACE_PROFILE_PAGE,
       animated: true,
       passProps: {
-        place
+        place,
+        oneMapperId: this.props.userId
       }
     });
 
@@ -351,15 +354,4 @@ class Collections extends Component {
   }
 }
 
-/*
-const ComponentWithQueries = graphql(GET_COLLECTION_WITH_PLACES, {
-  options: (props) => ({
-    variables: {
-      collectionId: props.collection.id,
-    }
-  })
-})
-  (Collections);
-*/
-//make this component available to the app
 export default Collections;

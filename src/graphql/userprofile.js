@@ -219,18 +219,21 @@ export const GET_FOLLOWERS = gql`
  * Get followers incloud counter
  */
 export const GET_FOLLOWS = gql`
-  query GetFollows (
-      $userId: ID!,
-      $skip: Int,
-      $first: Int,
-      $blockUsersIds: [ID!]!
-    ) {
+  query GetFollows ($userId: ID!, $skip: Int, $first: Int) {
     User(id: $userId) {
       id
-      _followsMeta {
+      _followsMeta(filter: {
+        blockUsers_none: {
+          id: $userId
+        }
+      }) {
         count
       }
-      follows(first: $first, skip: $skip, filter: {id_not_in: $blockUsersIds}) {
+      follows(first: $first, skip: $skip, filter: {
+        blockUsers_none: {
+          id: $userId
+        }
+      }) {
         id
         email
         username
@@ -261,20 +264,22 @@ export const GET_FOLLOWS = gql`
  * @return [User]
  */
 export const GET_SUGGEST_USERS = gql`
-  query ListSuggestUser(
-    $first: Int,
-    $skip: Int,
-    $currentUserId: ID!,
-    $currentUserFollowsIds: [ID!]!, #Array of ID, extracted from GetFollowersAndBlockedIds.User.follows
-    $currentUserBlockByUsersIds: [ID!]! #Array of ID, extracted from GetFollowersAndBlockedIds.User.blockByUsers
-  ) {
+  query ListSuggestUser($first: Int, $skip: Int, $currentUserId: ID!) {
     allUsers(first: $first, skip: $skip, filter: {
       AND: [
         { accountStatus: ENABLE },
         { isSuggest: true },
         { id_not: $currentUserId }, #remove self from list
-        { id_not_in: $currentUserFollowsIds },
-        { id_not_in: $currentUserBlockByUsersIds },
+        {
+          followers_none: {
+            id: $currentUserId
+          }
+        },
+        {
+          blockUsers_none: {
+            id: $currentUserId
+          }
+        }
       ]
     }) {
       id

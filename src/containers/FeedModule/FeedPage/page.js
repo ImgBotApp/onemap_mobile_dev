@@ -10,29 +10,28 @@ import Orientation from 'react-native-orientation';
 import SuggestUser from '@components/SuggestUser'
 import FeedItem from '@components/FeedItem'
 import FeedEvent from '@components/FeedEvent'
-import FeedCampaign from '../../../components/FeedCampaign'
+import FeedCampaign from '@components/FeedCampaign'
 import SuggestPlace from '@components/SuggestPlace'
 import TitleImage from '@components/TitledImage'
 
 import styles from './style'
 import I18n from '@language'
-import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '@theme/colors'
-import DFonts, { SMALL_FONT_SIZE } from '@theme/fonts'
+import { LIGHT_GRAY_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
+import DFonts, { SMALL_FONT_SIZE } from '@theme/fonts';
 
-import * as SCREEN from '../../../global/screenName'
-import { clone } from '@global'
+import * as SCREEN from '@global/screenName'
+import { clone } from '@global';
 const PLACES_PER_PAGE = 8;
-const STORIES_PER_PAGE = 8
+const STORIES_PER_PAGE = 8;
 
 import { client } from '@root/main'
-import { graphql } from "react-apollo"
+import { graphql } from "react-apollo";
 
-import { GET_SUGGEST_USERS } from '@graphql/userprofile'
 import { GET_MY_COLLECTIONS } from '@graphql/collections'
-import { getCampaignByUser } from '../../../graphql/campaign'
+import { getCampaignByUser } from '@graphql/campaign'
 import PropTypes from 'prop-types'
 // create a component
-class FeedPage extends Component {
+class FeedPage extends PureComponent {
   static propTypes = {
     users: PropTypes.shape({
       id: PropTypes.string,
@@ -99,7 +98,7 @@ class FeedPage extends Component {
       }
       if (getStoriesPaginated.allStories) {
         if (getStoriesPaginated.allStories != this.props.getStoriesPaginated.allStories || this.state.loading) {
-          let graphcoolData = getStoriesPaginated.allStories.map((story) => {
+          let graphcoolData = getStoriesPaginated.allStories.filter(story => story.place).map(story => {
             return {
               id: story.place.id,
               type: 'item',
@@ -321,7 +320,11 @@ class FeedPage extends Component {
       screen: SCREEN.PLACE_PROFILE_PAGE,
       animated: true,
       passProps: {
-        place: data,
+        place: {
+          id: data.id,
+          placeName: data.placeName
+        },
+        oneMapperId: data.createdBy.id !== this.props.user.id ? data.createdBy.id : '',
         onPlaceUpdate: place => this.onPlaceUpdate(place, index),
       }
     })

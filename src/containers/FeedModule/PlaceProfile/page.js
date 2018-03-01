@@ -29,7 +29,9 @@ import Foundation from 'react-native-vector-icons/Foundation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import geolib from 'geolib';
 
+import ActionDialog from '@components/ActionDialog'
 import CircleImage from '@components/CircleImage'
 import LoadingSpinner from '@components/LoadingSpinner'
 import ImageSliderComponent from '@components/ImageSliderComponent'
@@ -52,6 +54,8 @@ import { GET_PLACE_PROFILE } from '@graphql/places'
 import styles from './styles'
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
 
+const STORIES_PER_PAGE = 8;
+
 const imagePickerOptions = {
   title: 'Take Media',
   takePhotoButtonTitle: 'Take Camera...',
@@ -70,24 +74,7 @@ const options = ['Cancel', 'Photo', 'Video']
 const title = 'Select Media Type'
 
 class PlaceProfile extends PureComponent {
-  static navigatorButtons = {
-    leftButtons: [
-      {
-        title: '',
-        id: 'backButton',
-        buttonColor: DARK_GRAY_COLOR,
-        disableIconTint: true
-      }
-    ],
-    // rightButtons: [
-    //   {
-    //     title: '',
-    //     buttonColor: DARK_GRAY_COLOR,
-    //     id: 'more',
-    //     disableIconTint: true
-    //   }
-    // ]
-  };
+
   constructor(props) {
     super(props)
     Ionicons.getImageSource('ios-arrow-round-back', 35, DARK_GRAY_COLOR).then(icon => {
@@ -99,15 +86,16 @@ class PlaceProfile extends PureComponent {
         }]
       })
     })
-    // Ionicons.getImageSource('ios-more', 35, DARK_GRAY_COLOR).then(icon => {
-    //   props.navigator.setButtons({
-    //     rightButtons: [{
-    //       icon,
-    //       id: 'more',
-    //       disableIconTint: true
-    //     }]
-    //   })
-    // })
+    Ionicons.getImageSource('ios-more', 35, DARK_GRAY_COLOR).then(icon => {
+      props.navigator.setButtons({
+        rightButtons: [{
+          icon,
+          id: 'more',
+          disableIconTint: true
+        }]
+      })
+    })
+
     if (props.place) {
       this.props.navigator.setTitle({ title: props.place.placeName });
     }
@@ -120,8 +108,7 @@ class PlaceProfile extends PureComponent {
         heartedIds: [],
         checkIns: [],
         collectionIds: [],
-        keywords: [],
-        comments: [],
+        keywords: []
       },
       keywordText: '',
       myStory: {
@@ -140,11 +127,11 @@ class PlaceProfile extends PureComponent {
       selectedCard: 0,
       imageUploading: false,
       storyUpdated: false,
-      isOpenImagePicker:false,
-      selectedMediaType:''
+      isOpenImagePicker: false,
+      selectedMediaType: ''
     }
     this.loading = false;
-    this.props.navigator.setOnNavigatorEvent(this.onNaviagtorEvent.bind(this));
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     this.handlePress = this.handlePress.bind(this)
     this.showActionSheet = this.showActionSheet.bind(this)
   }
@@ -156,6 +143,14 @@ class PlaceProfile extends PureComponent {
 
   componentWillUnmount() {
     this.keyboardDidHideListener.remove();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { location } = nextProps.user;
+    if (this.state.placeData.locationLat && location && (!this.props.user.location || location.latitude !== this.props.user.location.latitude || location.longitude !== this.props.user.location.longitude)) {
+      const distance = geolib.getDistance(location, this.state.placeData.map);
+      this.setState({ distance });
+    }
   }
 
   _keyboardDidHide = () => {
@@ -170,16 +165,28 @@ class PlaceProfile extends PureComponent {
       variables: {
         id: this.props.place.id,
         userId: this.props.user.id,
-        createdById: this.props.place.createdBy.id 
+        oneMapperId: this.props.oneMapperId
       }
     }).then((place) => {
       let data = place.data.Place;
 
       this.props.navigator.setTitle({ title: data.placeName });
 
+      const myLastChecked = data.checkIns.filter(item => item.user.id === this.props.user.id);
+      if (myLastChecked.length) {
+        this.lastChecked = myLastChecked[myLastChecked.length - 1].createdAt;
+      }
+
       const myStories = data.stories.filter(item => item.createdBy.id === this.props.user.id);
-      const ownerStories = data.stories.filter(item => item.createdBy.id === data.createdBy.id);
-      const otherStories = data.stories.filter(item => !myStories.includes(item) && !ownerStories.includes(item));
+      this.oneMapperStory = data.stories.filter(item => item.createdBy.id === this.props.oneMapperId)[0];
+
+      if (this.props.user.location) {
+        this.state.distance = geolib.getDistance(this.props.user.location, {
+          latitude: data.locationLat,
+          longitude: data.locationLong
+        });
+      }
+
       this.setState({
         placeData: {
           id: data.id,
@@ -206,16 +213,11 @@ class PlaceProfile extends PureComponent {
           checkIns: data.checkIns,
           collectionIds: this.props.place && this.props.place.collectionIds ? this.props.place.collectionIds : data.collections.map(item => item.id),
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
-          comments: [...ownerStories, ...otherStories],
           bookmark: this.isBookmarked(data.collections),
         },
         myStory: myStories.length ? myStories[0] : this.state.myStory,
-        storyImages: myStories.length ? [...myStories[0].pictureURL.map(item => ({ uri: item })), ...this.state.storyImages] : this.state.storyImages
+        storyImages: myStories.length ? [...myStories[0].pictureURL.map(item => ({ uri: item })), ...this.state.storyImages] : this.state.storyImages,
       });
-      const myLastChecked = data.checkIns.filter(item => item.user.id === this.props.user.id);
-      if (myLastChecked.length) {
-        this.lastChecked = myLastChecked[myLastChecked.length - 1].createdAt;
-      }
     }).catch(err => alert(err));
   }
 
@@ -291,13 +293,16 @@ class PlaceProfile extends PureComponent {
       client.resetStore();
     });
   }
-  onNaviagtorEvent(event) {
+  onNavigatorEvent(event) {
     if (event.type == 'NavBarButtonPress') {
       if (event.id == 'backButton') {
         if (this.state.storyUpdated) {
           this.saveStory();
         }
         this.props.navigator.pop()
+      } else if (event.id == 'more') {
+        this.setState({ reportType: 'place' });
+        this.reportActionSheet.show();
       }
     }
   }
@@ -310,14 +315,13 @@ class PlaceProfile extends PureComponent {
       title: I18n.t('COLLECTION_CREATE_NEW'),
     })
   }
-  _renderItem(data, index) {
+  _renderItem(data, index, editable) {
     const item = data[index];
     if (item && item.type === 'add') {
       return (
-        <TouchableOpacity onPress={()=>
-          {
-            this.setState({isOpenImagePicker:true})
-          }
+        <TouchableOpacity onPress={() => {
+          this.setState({ isOpenImagePicker: true })
+        }
         }>
           <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
             <Image source={require('@assets/images/blankImage.png')} style={styles.imageItem} />
@@ -329,7 +333,7 @@ class PlaceProfile extends PureComponent {
       <CardView style={styles.imageItemContainer} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
         <TouchableOpacity
           onPress={() => this.setState({ sliderShow: true, selectedMediaData: data.filter(item => item.type !== 'add'), selectedCard: index })}
-          onLongPress={() => this.deleteImageFromStory(index)}
+          onLongPress={() => editable && this.deleteImageFromStory(index)}
         >
           <Image source={{ uri: fetchThumbFromCloudinary(getImageFromVideoURL(item.uri)) }} style={styles.imageItem} />
           {
@@ -360,31 +364,33 @@ class PlaceProfile extends PureComponent {
 
   onHeartClick(hearted) {
     let placeData = clone(this.state.placeData);
-    let hearts = placeData.heartedIds;
     if (hearted) {
       Vibration.vibrate();
-      hearts.push(this.props.user.id);
+      this.props.likePlace({
+        variables: {
+          id: placeData.id,
+          userId: this.props.user.id
+        }
+      }).then(({ data }) => {
+        placeData.heartedIds = data.addToUserLikePlace.likePlacesPlace.usersLike.map(item => item.id);
+        this.setState({ placeData });
+        client.resetStore();
+      }).catch(err => alert(err));
     } else {
-      const index = hearts.indexOf(this.props.user.id);
-      hearts.splice(index, 1);
+      this.props.unlikePlace({
+        variables: {
+          id: placeData.id,
+          userId: this.props.user.id
+        }
+      }).then(({ data }) => {
+        placeData.heartedIds = data.removeFromUserLikePlace.likePlacesPlace.usersLike.map(item => item.id);
+        this.setState({ placeData });
+        client.resetStore();
+      }).catch(err => alert(err));
     }
-
-    this.props.likePlace({
-      variables: {
-        id: placeData.id,
-        heartedIds: hearts
-      }
-    }).then(({ data }) => {
-      this.setState({ placeData });
-      client.resetStore();
-    }).catch(err => alert(err));
   }
 
   onCheckInClick() {
-    if (this.lastChecked && (getTimeDiff(new Date(this.lastChecked), new Date()) < 20/* 60*/)) {// 20 min
-      alert('You have to wait 20 min after last check-in');
-      return;
-    }
     Vibration.vibrate();
     let placeData = this.state.placeData;
     this.props.checkInPlace({
@@ -418,10 +424,6 @@ class PlaceProfile extends PureComponent {
     return (
       <View style={styles.titleContainer}>
         <Text style={[DFonts.Title, styles.titleText]}>{this.state.placeData.title}</Text>
-        <TouchableOpacity onPress={this.onBookMarker}>
-          <MaterialCommunityIcons name={this.state.placeData.bookmark ? "bookmark" : "bookmark-outline"} size={30}
-            color={this.state.placeData.bookmark ? RED_COLOR : LIGHT_GRAY_COLOR} style={{marginTop:3}}/>
-        </TouchableOpacity>
       </View>
     )
   }
@@ -457,36 +459,35 @@ class PlaceProfile extends PureComponent {
 
   renderMapView() {
     return (
-        <TouchableOpacity style={styles.mapView} onPress={this.goMapDetail.bind(this)}>
-          <View style={styles.mapWrapper}>
-            <MapView
-              provider={PROVIDER_GOOGLE}
-              style={styles.map}
-              initialRegion={this.state.placeData.map}
-              region={this.state.placeData.map}
-              scrollEnabled={false}
-            >
-              {
-                this.state.placeData.map ? (
-                  <MapView.Marker
-                    title={this.state.placeData.title}
-                    coordinate={this.state.placeData.map}
-                    image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
-                  >
-                    {Platform.OS === 'ios' && (
-                      <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
-                    )}
-                  </MapView.Marker>) : null
-              }
-            </MapView>
-          </View>
-        </TouchableOpacity>
-     
+      <TouchableOpacity style={styles.mapView} onPress={this.goMapDetail.bind(this)}>
+        <View style={styles.mapWrapper}>
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            style={styles.map}
+            initialRegion={this.state.placeData.map}
+            region={this.state.placeData.map}
+            scrollEnabled={false}
+          >
+            {
+              this.state.placeData.map ? (
+                <MapView.Marker
+                  title={this.state.placeData.title}
+                  coordinate={this.state.placeData.map}
+                  image={Platform.OS == 'android' ? require('@assets/images/map_pin.png') : null}
+                >
+                  {Platform.OS === 'ios' && (
+                    <Image source={require('@assets/images/map_pin.png')} style={styles.mapmarker} />
+                  )}
+                </MapView.Marker>) : null
+            }
+          </MapView>
+        </View>
+      </TouchableOpacity>
     )
   }
 
   renderInfo() {
-    return(
+    return (
       <View style={styles.informationContainer}>
         <View style={styles.informationLabel}>
           <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.informationText}>
@@ -522,38 +523,36 @@ class PlaceProfile extends PureComponent {
 
   renderInterest() {
     const liked = this.state.placeData.heartedIds.includes(this.props.user.id);
+    const checkable = (this.state.distance && this.state.distance < 500) && (!this.lastChecked || getTimeDiff(new Date(this.lastChecked), new Date()) > 20/* * 60*/);
     return (
       <View style={styles.interestContainer}>
-        <View style={styles.interestInformation}>
-          <View style={[styles.interestItem,{flex:0.25}]}>
-            <Foundation name="heart" size={15} color={RED_COLOR} />
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}{' '}{I18n.t('PLACE_HEARTED')}</Text>
-          </View>
-          <View style={[styles.interestItem,{flex:0.25}]}>
-            <Foundation name="marker" size={15} color={BLUE_COLOR} />
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.checkIns.length)}{' '}{I18n.t('PLACE_CHECK_IN')}</Text>
-          </View>
-          <View style={[styles.interestItem,{flex:0.5}]}>
-            <Foundation name="bookmark" size={15} color={RED_COLOR} />
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}{' '}{I18n.t('PLACE_BOOKMARK')}</Text>
-          </View>
-        </View>
         <View style={styles.serparate}></View>
         <View style={styles.buttonInterest}>
-          <TouchableOpacity onPress={() => this.onHeartClick(!liked)}>
-            <Foundation name="heart" size={35} color={liked ? RED_COLOR : LIGHT_GRAY_COLOR} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.onCheckInClick.bind(this)}>
-            <Foundation name="marker" size={35} color={BLUE_COLOR} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.onShareClick.bind(this)}>
-            <Foundation name="share" size={35} color={GREEN_COLOR} />
-          </TouchableOpacity>
+          <View style={[styles.itemInterest,{flex:0.3}]}>
+            <TouchableOpacity onPress={() => this.onHeartClick(!liked)}>
+              <Image source={liked?require('@assets/images/icon/heart.png'):require('@assets/images/icon/heart_inactive.png')} style={styles.actionBtn} />
+            </TouchableOpacity>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestLabel}>{I18n.t('PLACE_HEARTED')}</Text>
+          </View>
+          <View style={[styles.itemInterest,{flex:0.3}]}>
+            <TouchableOpacity disabled={!checkable} onPress={this.onCheckInClick.bind(this)}>
+              <Image source={checkable?require('@assets/images/icon/check-in.png'):require('@assets/images/icon/check-in_inactive.png')} style={styles.actionBtn} />
+            </TouchableOpacity>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.checkIns.length)}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestLabel}>{I18n.t('PLACE_CHECK_IN')}</Text>
+          </View>
+          <View style={[styles.itemInterest,{flex:0.4}]}>
+            <TouchableOpacity onPress={this.onBookMarker}>
+              <Image source={this.state.placeData.bookmark?require('@assets/images/icon/bookmark.png'):require('@assets/images/icon/bookmark_inactive.png')} style={styles.actionBtn} />
+            </TouchableOpacity>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestLabel}>{I18n.t('PLACE_BOOKMARK')}</Text>
+          </View>
         </View>
       </View >
     )
   }
-
   renderSliderShow() {
     return (
       <Overlay visible={this.state.sliderShow} closeOnTouchOutside animationType="zoomIn"
@@ -725,8 +724,8 @@ class PlaceProfile extends PureComponent {
           {
             this.state.storyImages.length && this.state.storyImages[0].type === 'add' ?
               (
-                <TouchableOpacity onPress={()=>{
-                  this.setState({isOpenImagePicker:true})
+                <TouchableOpacity onPress={() => {
+                  this.setState({ isOpenImagePicker: true })
                 }}>
                   <Image style={styles.myImages} source={require('@assets/images/blankImage.png')} />
                   {/* {this.state.imageUploading && <LoadingSpinner />} */}
@@ -737,7 +736,7 @@ class PlaceProfile extends PureComponent {
                   horizontal
                   style={styles.myImages}
                   data={this.state.storyImages}
-                  renderItem={({ index }) => this._renderItem(this.state.storyImages, index)}
+                  renderItem={({ index }) => this._renderItem(this.state.storyImages, index, true)}
                 />
               )
           }
@@ -761,7 +760,7 @@ class PlaceProfile extends PureComponent {
     )
   }
   showActionSheet() {
-    this.setState({isOpenImagePicker:false});
+    this.setState({ isOpenImagePicker: false });
     this.ActionSheet.show()
   }
 
@@ -770,32 +769,31 @@ class PlaceProfile extends PureComponent {
       selected: i
     })
     if (i == 2) {
-      this.setState({selectedMediaType:'video'});
+      this.setState({ selectedMediaType: 'video' });
       this.addMediaToStory(true);
     }
     else if (i == 1) {
-      this.setState({selectedMediaType:'photo'});
+      this.setState({ selectedMediaType: 'photo' });
       this.addMediaToStory(true);
     }
   }
   async addMediaToStory(isFromCamera) {
-    if(this.state.imageUploading)
+    if (this.state.imageUploading)
       return;
 
-    this.setState({isOpenImagePicker:false});
-    
+    this.setState({ isOpenImagePicker: false });
+
     let uploadedURLS = [];
-          
-    if(isFromCamera)
-    {
+
+    if (isFromCamera) {
       //this.state.selectedMediaType
-      console.log("Take Media Mode"+this.state.selectedMediaType);
+      console.log("Take Media Mode" + this.state.selectedMediaType);
       ImagePicker.launchCamera({
-        mediaType:this.state.selectedMediaType,
+        mediaType: this.state.selectedMediaType,
         maxWidth: MAXWIDTH,
         maxHeight: MAXHEIGHT,
       }, (response) => {
-        
+
         if (response.didCancel) {
           console.log('User cancelled image picker');
           Promise.resolve();
@@ -828,61 +826,58 @@ class PlaceProfile extends PureComponent {
         }
       });
     }
-    else{//image picker
-        ImageCropPicker.openPicker({
-          width: MAXWIDTH,
-          height: MAXHEIGHT,
-          cropping: false,
-          includeBase64: true,
-          includeExif: true,
-          multiple:true,
-          maxFiles:10
-        }).then(imageArray => {
-          if(imageArray && !this.state.imageUploading)
-          {
-            this.setState({ imageUploading: true });
-            return Promise.all(
-              imageArray.map(imgData =>
-                {
-                  ////mime =='image/jpeg', 'video/mp4'
-                  if(imgData.mime && imgData.mime.substring(0,5)=='image')
-                  {
-                    return uploadImage(imgData.data, '#avatar').then(url => {
-                      if (url)
-                        uploadedURLS.push(url);
-                    })
-                  }else if(imgData.mime && imgData.mime.substring(0,5)=='video'){
-                    return uploadMedia({uri:imgData.path}, '#storyVideo').then(url => {
-                        if (url)
-                          uploadedURLS.push(url);
-                      }
-                    );
-                  }
-                  return null;
+    else {//image picker
+      ImageCropPicker.openPicker({
+        width: MAXWIDTH,
+        height: MAXHEIGHT,
+        cropping: false,
+        includeBase64: true,
+        includeExif: true,
+        multiple: true,
+        maxFiles: 10
+      }).then(imageArray => {
+        if (imageArray && !this.state.imageUploading) {
+          this.setState({ imageUploading: true });
+          return Promise.all(
+            imageArray.map(imgData => {
+              ////mime =='image/jpeg', 'video/mp4'
+              if (imgData.mime && imgData.mime.substring(0, 5) == 'image') {
+                return uploadImage(imgData.data, '#avatar').then(url => {
+                  if (url)
+                    uploadedURLS.push(url);
+                })
+              } else if (imgData.mime && imgData.mime.substring(0, 5) == 'video') {
+                return uploadMedia({ uri: imgData.path }, '#storyVideo').then(url => {
+                  if (url)
+                    uploadedURLS.push(url);
                 }
-              )
-            );
-          }
-          else Promise.resolve();
-        }).then(() => {
-          this.setState({ imageUploading: false });
-          if(uploadedURLS.length > 0)
-            this.updateStoryImages(uploadedURLS);
-          Promise.resolve();
-        }, err => { 
-          Promise.resolve();
-          this.setState({ imageUploading: false }) 
-        }).catch(e=> { Promise.resolve(); });
-      }
-    
+                );
+              }
+              return null;
+            }
+            )
+          );
+        }
+        else Promise.resolve();
+      }).then(() => {
+        this.setState({ imageUploading: false });
+        if (uploadedURLS.length > 0)
+          this.updateStoryImages(uploadedURLS);
+        Promise.resolve();
+      }, err => {
+        Promise.resolve();
+        this.setState({ imageUploading: false })
+      }).catch(e => { Promise.resolve(); });
+    }
+
   }
-  updateStoryImages(imageArray){
-    if(!imageArray)
+  updateStoryImages(imageArray) {
+    if (!imageArray)
       return;
 
     let storyImages = clone(this.state.storyImages);
     storyImages.pop();
-    imageArray.forEach(image=>{storyImages.push({ 'uri': image })});
+    imageArray.forEach(image => { storyImages.push({ 'uri': image }) });
     storyImages.push({ type: 'add' });
     this.setState({ storyImages });
     this.saveStory();
@@ -947,31 +942,100 @@ class PlaceProfile extends PureComponent {
     }
   }
 
-  _renderCommentStory() {
-    return this.state.placeData.comments
-      .filter(comment => comment.createdBy.id !== this.props.user.id)
-      .map((dataItem, index) => {
-        return (
-          <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
-            <View style={{ flexDirection: 'row' }}>
-              <CircleImage style={styles.storyWriterImage} uri={dataItem.createdBy.photoURL} radius={getDeviceWidth(67)} />
-              <View style={styles.userDescription}>
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.storyWriterName]}>{dataItem.createdBy.displayName}</Text>
-                <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.commentDate]}>{formattedTimeDiffString(dataItem.updatedAt)}</Text>
-              </View>
+  _renderCommentStory({ item, index }) {
+    return (
+      <CardView key={index} style={styles.writeStoryMain} cardElevation={3} cardMaxElevation={3} cornerRadius={5}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 10 }}>
+          <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => this.onPressUserProfile(item.createdBy)}>
+            <CircleImage style={styles.storyWriterImage} uri={item.createdBy.photoURL} radius={getDeviceWidth(67)} />
+            <View style={styles.userDescription}>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.storyWriterName]}>{item.createdBy.displayName}</Text>
+              <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.commentDate]}>{formattedTimeDiffString(item.updatedAt)}</Text>
             </View>
-            <OptimizedFlatList
-              keyExtractor={(item, index) => index}
-              style={[styles.imageFlatList, { marginTop: 10 }]}
-              horizontal
-              data={dataItem.pictureURL}
-              renderItem={({ index }) => this._renderItem(dataItem.pictureURL.map(item => ({ uri: item })), index)}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {
+            this.setState({ reportType: 'story' });
+            this.reportStoryId = item.id;
+            setTimeout(() => {
+              this.reportActionSheet.show();
+            });
+          }}>
+            <Ionicons
+              color={DARK_GRAY_COLOR}
+              name='ios-more'
+              size={35}
             />
-            <Text style={[DFonts.Title, styles.commentTitle]}>{dataItem.title}</Text>
-            <Text style={[DFonts.SubTitle, styles.commentDescription]}>{dataItem.story}</Text>
-          </CardView>
-        )
+          </TouchableOpacity>
+        </View>
+        <OptimizedFlatList
+          keyExtractor={(item, index) => index}
+          style={[styles.imageFlatList, { marginTop: 10 }]}
+          horizontal
+          data={item.pictureURL}
+          renderItem={({ index }) => this._renderItem(item.pictureURL.map(url => ({ uri: url })), index)}
+        />
+        <Text style={[DFonts.Title, styles.commentTitle]}>{item.title}</Text>
+        <Text style={[DFonts.SubTitle, styles.commentDescription]}>{item.story}</Text>
+      </CardView>
+    )
+  }
+
+  onPressUserProfile(userInfo) {
+    if (userInfo.id === this.props.user.id) {
+      this.props.navigator.switchToTab({ tabIndex: 2 });
+    } else {
+      this.props.navigator.push({
+        screen: SCREEN.USERS_PROFILE_PAGE,
+        title: I18n.t('PROFILE_PAGE_TITLE'),
+        animated: true,
+        passProps: {
+          userInfo
+        }
       })
+    }
+  }
+
+  onReport = reason => {
+    if (this.state.reportType === 'place') {
+      this.props.reportPlace({
+        variables: {
+          placeId: this.state.placeData.id,
+          reason,
+          userId: this.props.user.id
+        }
+      }).then(({ data }) => {
+        alert(I18n.t('REPORT_THANKS'));
+      }).catch(err => alert(err));
+    } else {
+      this.props.reportStory({
+        variables: {
+          storyId: this.reportStoryId,
+          reason,
+          userId: this.props.user.id
+        }
+      }).then(({ data }) => {
+        alert(I18n.t('REPORT_THANKS'));
+      }).catch(err => alert(err));
+    }
+  }
+
+  onEndReached() {
+    const { getFollowingStoriesPaginated } = this.props;
+    if (!getFollowingStoriesPaginated.loading) {
+      getFollowingStoriesPaginated.fetchMore({
+        variables: {
+          skip: getFollowingStoriesPaginated.allStories.length + STORIES_PER_PAGE,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult || fetchMoreResult.allStories.length === 0) {
+            return previousResult;
+          }
+          return {
+            allStories: previousResult.allStories.concat(fetchMoreResult.allStories),
+          };
+        }
+      });
+    }
   }
 
   render() {
@@ -989,19 +1053,27 @@ class PlaceProfile extends PureComponent {
           {this.renderInfo()}
           {this.renderInterest()}
           {this.renderKeywords()}
-          {/* my stories */}
+          {/* my story */}
           <View style={styles.WriteStory}>
             <Text style={[DFonts.Title, styles.writeStoryTitle]}>{I18n.t('PLACE_WRITE_STORY')}</Text>
             {this._renderWriteStory()}
           </View>
-          {/* other stories */}
           <View style={[styles.WriteStory, { marginBottom: 15 }]}>
-            {this._renderCommentStory()}
+            {/* onemapper story */}
+            {this.oneMapperStory && this._renderCommentStory({ item: this.oneMapperStory })}
+            {/* following stories */}
+            <OptimizedFlatList
+              keyExtractor={(item, index) => index}
+              data={this.props.getFollowingStoriesPaginated.allStories}
+              renderItem={data => this._renderCommentStory(data)}
+              onEndReached={() => this.onEndReached()}
+            />
           </View>
         </KeyboardAwareScrollView>
 
         {this.renderSliderShow()}
         {this.renderCollectionModal()}
+
         <ActionSheet
           ref={o => this.ActionSheet = o}
           title={title}
@@ -1010,7 +1082,6 @@ class PlaceProfile extends PureComponent {
           destructiveButtonIndex={DESTRUCTIVE_INDEX}
           onPress={this.handlePress}
         />
-
         <Modal style={styles.modalMediaView} backdrop={true} position={'center'}
           isOpen={this.state.isOpenImagePicker}
           onClosed={() => this.setState({ isOpenImagePicker: false })}
@@ -1024,16 +1095,31 @@ class PlaceProfile extends PureComponent {
             </TouchableOpacity>
           </View>
           <View style={styles.modalItem}>
-            <TouchableOpacity style={styles.modalButton} onPress={()=>this.addMediaToStory(false)}>
+            <TouchableOpacity style={styles.modalButton} onPress={() => this.addMediaToStory(false)}>
               <Text style={styles.buttonStr}>{'Choose from Library...'}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.modalItem}>
-            <TouchableOpacity style={styles.modalButton} onPress={()=>this.setState({ isOpenImagePicker: false })}>
+            <TouchableOpacity style={styles.modalButton} onPress={() => this.setState({ isOpenImagePicker: false })}>
               <Text style={styles.cancelStr}>{'Cancel'}</Text>
             </TouchableOpacity>
           </View>
         </Modal>
+
+        <ActionSheet
+          ref={o => this.reportActionSheet = o}
+          title={'Select Action'}
+          options={['Cancel', this.state.reportType === 'place' ? I18n.t('REPORT_PLACE_TITLE') : I18n.t('REPORT_STORY_TITLE')]}
+          cancelButtonIndex={CANCEL_INDEX}
+          destructiveButtonIndex={DESTRUCTIVE_INDEX}
+          onPress={(index) => index && this.refs.actionDialog.show()}
+        />
+        <ActionDialog
+          ref={'actionDialog'}
+          type={this.state.reportType}
+          onConfirm={this.onReport}
+        />
+
         {this.state.imageUploading && <LoadingSpinner />}
       </View>
     );

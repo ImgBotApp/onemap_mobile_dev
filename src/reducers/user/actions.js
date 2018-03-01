@@ -19,3 +19,10 @@ export function saveUserInfo(userInfo) {
     userInfo
   }
 }
+
+export function saveLocation(location) {
+  return {
+    type: types.STORE_LOCATION_INFO,
+    location
+  }
+}

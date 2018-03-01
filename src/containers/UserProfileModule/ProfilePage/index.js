@@ -2,7 +2,7 @@ import page from './page'
 import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import { GET_USER_STORIES } from '@graphql/stories'
-import { GET_FOLLOWERS, GET_FOLLOWS } from '@graphql/userprofile'
+import { GET_FOLLOWERS } from '@graphql/userprofile'
 
 import { saveUserFollows } from '@reducers/app/actions'
 
@@ -46,19 +46,5 @@ export default compose(
         }
       },
     }
-  ),
-  // graphql(//used
-  //   GET_FOLLOWS, {
-  //     name: 'GetFollowingList',
-  //     options(props) {
-  //       const { user: { id } } = props
-  //       return {
-  //         variables: {
-  //           userId: id,
-  //           blockUsersIds: [],
-  //         },
-  //       }
-  //     },
-  //   }
-  // )
+  )
 )(page)

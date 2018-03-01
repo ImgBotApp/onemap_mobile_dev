@@ -16,6 +16,7 @@
 		096F05F4195643E3855170D2 /* Comfortaa-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F5C5C4D681F4C5D946ACCED /* Comfortaa-Light.ttf */; };
 		0F27EC5C7B54482C887358AD /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3F44E95111B2413AAFB37BC3 /* Octicons.ttf */; };
 		0F40ADF38935444A87DA2599 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 694E56FBE83A4310B17880CD /* Foundation.ttf */; };
+		121EA3F873D141F99FDEF3C6 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D883B1D4C9184300BF25D333 /* libFastImage.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -433,6 +434,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTOrientation;
 		};
+		A0A86C462045AC3700B85F8C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5EA92E038B2146BDB364E8A1 /* FastImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A287971D1DE0C0A60081BDFA;
+			remoteInfo = FastImage;
+		};
 		ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
@@ -490,6 +498,7 @@
 		3D7A5DF8397F007F137A2D0D /* Pods-OneMapFinal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneMapFinal.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OneMapFinal/Pods-OneMapFinal.debug.xcconfig"; sourceTree = "<group>"; };
 		3F44E95111B2413AAFB37BC3 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
+		5EA92E038B2146BDB364E8A1 /* FastImage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = FastImage.xcodeproj; path = "../node_modules/react-native-fast-image/ios/FastImage.xcodeproj"; sourceTree = "<group>"; };
 		5FF0AE75313849B7BA7284F5 /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
 		694E56FBE83A4310B17880CD /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		6CB73DCCBF604CD4B04BC9A2 /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comfortaa-Bold.ttf"; path = "../assets/fonts/Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
@@ -564,6 +573,7 @@
 		D2DBCA5820108EEB001D3571 /* libreact-native-google-maps.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-google-maps.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D63AE679ED894D0ABD9EB8ED /* libRCTFBSDK.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTFBSDK.a; sourceTree = "<group>"; };
 		D6C236315EC94CBD8CDEA8F6 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
+		D883B1D4C9184300BF25D333 /* libFastImage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libFastImage.a; sourceTree = "<group>"; };
 		F0108B3728804CCEA028240D /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		F19634409E2D44E2AFE4459B /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
 		F5B69B160AF840CFB6567F52 /* libRNGooglePlaces.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGooglePlaces.a; sourceTree = "<group>"; };
@@ -612,6 +622,7 @@
 				8426B86F20029C6000C7E6EA /* FBSDKCoreKit.framework in Frameworks */,
 				8426B86E20029C6000C7E6EA /* Bolts.framework in Frameworks */,
 				9F18667299A2F9F9D2AF9679 /* libPods-OneMapFinal.a in Frameworks */,
+				121EA3F873D141F99FDEF3C6 /* libFastImage.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -846,6 +857,7 @@
 				CF5BDE37135F4521943ED424 /* ReactNativeNavigation.xcodeproj */,
 				F0108B3728804CCEA028240D /* RNVectorIcons.xcodeproj */,
 				B444D09081234875949D94EE /* imageCropPicker.xcodeproj */,
+				5EA92E038B2146BDB364E8A1 /* FastImage.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -908,6 +920,7 @@
 				075E9CBDA95249C48747AF8C /* libReactNativeNavigation.a */,
 				D6C236315EC94CBD8CDEA8F6 /* libRNVectorIcons.a */,
 				1CD08342BA1E4EC39F756D79 /* libimageCropPicker.a */,
+				D883B1D4C9184300BF25D333 /* libFastImage.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -990,6 +1003,14 @@
 			isa = PBXGroup;
 			children = (
 				84F71617200F7D7C003B5A10 /* libRCTOrientation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A0A86C432045AC3700B85F8C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A0A86C472045AC3700B85F8C /* libFastImage.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1195,6 +1216,10 @@
 				{
 					ProductGroup = 8426B7CF200298E100C7E6EA /* Products */;
 					ProjectRef = B5FD02804E1444E691DC59B3 /* AirMaps.xcodeproj */;
+				},
+				{
+					ProductGroup = A0A86C432045AC3700B85F8C /* Products */;
+					ProjectRef = 5EA92E038B2146BDB364E8A1 /* FastImage.xcodeproj */;
 				},
 				{
 					ProductGroup = D23E3C30201262ED0018B570 /* Products */;
@@ -1633,6 +1658,13 @@
 			remoteRef = 84F71616200F7D7C003B5A10 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		A0A86C472045AC3700B85F8C /* libFastImage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFastImage.a;
+			remoteRef = A0A86C462045AC3700B85F8C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1892,12 +1924,14 @@
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
 				);
 				INFOPLIST_FILE = OneMapFinalTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1935,12 +1969,14 @@
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
 				);
 				INFOPLIST_FILE = OneMapFinalTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1993,6 +2029,7 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/AirMaps/**",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -2002,7 +2039,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.writingfuture.onemap1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.writingfuture.onemap;
 				PRODUCT_NAME = OneMapFinal;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2041,6 +2078,7 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/AirMaps/**",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -2050,7 +2088,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.writingfuture.onemap1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.writingfuture.onemap;
 				PRODUCT_NAME = OneMapFinal;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2081,11 +2119,13 @@
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
 				);
 				INFOPLIST_FILE = "OneMapFinal-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2132,11 +2172,13 @@
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)..\node_modules\neact-native-fast-imageiosFastImage/**",
 				);
 				INFOPLIST_FILE = "OneMapFinal-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2185,6 +2227,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.OneMapFinal-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2209,6 +2252,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

@@ -241,12 +241,13 @@ class ProfileCreatePage extends Component {
       this.refs.gender.focus()
       return false
     }
+    /*
     if (this.state.bio == '') {
       this.onShowMessage('Please input bio')
       this.refs.bio.focus()
       return false
     }
-
+    */
     var subnames = this.state.displayName.split(' ');
     var lastname = '';
     for (var i = 1; i < subnames.length; i++)
