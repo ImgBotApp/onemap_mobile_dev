@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import CardView from 'react-native-cardview'
 import CircleImage from '@components/CircleImage'
+import PropType from 'prop-types'
 
 import styles from './style'
 import I18n from '@language'
@@ -31,7 +32,7 @@ class SuggestUser extends Component {
           </View>
           <View style={{ alignItems: 'center' }}>
             <Text style={[DFonts.SubTitle, styles.suggest]}>{I18n.t('FEED_SUGGESTED_BY_ONEMAP')}</Text>
-            <TouchableOpacity onPress={this.props.onPress}>
+            <TouchableOpacity onPress={() => this.props.onFollow()}>
               <View style={styles.followButton}>
                 <Text style={[DFonts.Title, styles.followText]}>{I18n.t('FEED_FOLLOW')}</Text>
               </View>
@@ -44,7 +45,10 @@ class SuggestUser extends Component {
   }
 }
 
-
+SuggestUser.propTypes = {
+  onPress: PropType.func,
+  onFollow: PropType.func
+}
 
 //make this component available to the app
 export default SuggestUser;
