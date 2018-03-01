@@ -39,7 +39,7 @@ class LoginPage extends Component {
     OneSignal.removeEventListener('ids', this.onIds)
   }
 
-  onIds(device) {
+  onIds = (device) => {
     this.setState({
       playerId: device.playerId
     })
