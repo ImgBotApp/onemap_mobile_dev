@@ -16,7 +16,7 @@ import { EXIST_FACEBOOK_USER } from '@graphql/users'
 import Orientation from 'react-native-orientation';
 import { APPFONTNAME } from '@theme/fonts';
 import Permissions from 'react-native-permissions'
-import OneSignal from 'react-native-onesignal'
+
 const { GraphRequest, GraphRequestManager, AccessToken } = FBSDK
 
 // create a component
@@ -31,19 +31,7 @@ class LoginPage extends Component {
     Orientation.lockToPortrait();
   }
 
-  componentWillMount() {
-    OneSignal.addEventListener('ids', this.onIds)
-  }
-
-  componentWillUnmount() {
-    OneSignal.removeEventListener('ids', this.onIds)
-  }
-
-  onIds = (device) => {
-    this.setState({
-      playerId: device.playerId
-    })
-  }
+  
   componentDidMount() {
     if (Platform.OS == 'android')
       this.requestLocationPermissionForAndroid();
@@ -94,7 +82,7 @@ class LoginPage extends Component {
       }).then((user) => {
         var data = user.data.User
 
-        if (data.displayName) {
+        if (data.playerId) {
 
           // wheter to sync with facebook or not
           // this.props.updateUser({
@@ -125,7 +113,8 @@ class LoginPage extends Component {
             username: data.username,
             accountVerification: data.accountVerification,
             checkIns: data.checkIns.map(item => item.id),
-            blockByUsers: data.blockByUsers
+            blockByUsers: data.blockByUsers,
+            playerId: data.playerId
           });
           this.props.saveUserFollows(data.follows);
           AsyncStorage.setItem(APP_USER_KEY, JSON.stringify({
@@ -140,7 +129,7 @@ class LoginPage extends Component {
               mode: ACCOUNT_MODE.facebook,
               info: {
                 ...result,
-                userId: this.state.id
+                userId: this.state.id,
               }
             },
             animated: true,
@@ -186,7 +175,8 @@ class LoginPage extends Component {
               username: data.username,
               accountVerification: data.accountVerification,
               checkIns: data.checkIns.map(item => item.id),
-              blockByUsers: data.blockByUsers
+              blockByUsers: data.blockByUsers,
+              playerId: data.playerId
             });
             this.props.saveUserFollows(data.follows);
             this.props.login();
