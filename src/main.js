@@ -121,7 +121,8 @@ export default class App {
                   username: data.username,
                   accountVerification: data.accountVerification,
                   checkIns: data.checkIns.map(item => item.id),
-                  blockByUsers: data.blockByUsers
+                  blockByUsers: data.blockByUsers,
+                  playerId: data.playerId
                 })
               );
               store.dispatch(
