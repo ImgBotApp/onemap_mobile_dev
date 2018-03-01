@@ -59,6 +59,7 @@ export const UPDATE_PROFILE = gql`
     $lastName: String
     $birthdate: String
     $photoURL: String
+    $playerId: String
     $registrationDate: String
     $mobileVerification: Boolean
     $mobile: String
@@ -83,6 +84,7 @@ export const UPDATE_PROFILE = gql`
       mobile: $mobile
       gender: $gender
       group:$group
+      playerId: $playerId
     ) {
       id
       firstName
@@ -93,6 +95,7 @@ export const UPDATE_PROFILE = gql`
       registrationDate
       country
       city
+      playerId
       group
     }
   }
