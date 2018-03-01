@@ -19,6 +19,8 @@ import * as SCREEN from '@global/screenName'
 import { BLUE_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import DFonts from '@theme/fonts'
 
+import { sendSingleNotification } from '../../../apis/onesignal'
+
 import { client } from '@root/main'
 import { GET_ONEMAPPER_PROFILE } from '@graphql/userprofile'
 

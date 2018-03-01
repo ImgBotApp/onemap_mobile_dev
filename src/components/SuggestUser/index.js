@@ -32,7 +32,7 @@ class SuggestUser extends Component {
           </View>
           <View style={{ alignItems: 'center' }}>
             <Text style={[DFonts.SubTitle, styles.suggest]}>{I18n.t('FEED_SUGGESTED_BY_ONEMAP')}</Text>
-            <TouchableOpacity onPress={() => this.props.onFollow()}>
+            <TouchableOpacity onPress={() => this.props.onPress()}>
               <View style={styles.followButton}>
                 <Text style={[DFonts.Title, styles.followText]}>{I18n.t('FEED_FOLLOW')}</Text>
               </View>
