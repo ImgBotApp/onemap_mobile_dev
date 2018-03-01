@@ -1,21 +1,6 @@
 //import liraries
 import React, { Component, PureComponent } from 'react';
-import {
-  Alert,
-  Animated,
-  FlatList,
-  Keyboard,
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Vibration,
-  View
-} from 'react-native';
-
+import { Alert, Animated, FlatList, Keyboard, Image, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, Vibration, View } from 'react-native'
 import CardView from 'react-native-cardview';
 import ImagePicker from 'react-native-image-picker';
 import ImageCropPicker from 'react-native-image-crop-picker'
@@ -55,6 +40,7 @@ import { GET_PLACE_PROFILE } from '@graphql/places'
 import styles from './styles'
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
 
+import { sendSingleNotification } from '../../../apis/onesignal'
 const STORIES_PER_PAGE = 8;
 
 const imagePickerOptions = {
@@ -535,23 +521,23 @@ class PlaceProfile extends PureComponent {
       <View style={styles.interestContainer}>
         <View style={styles.serparate}></View>
         <View style={styles.buttonInterest}>
-          <View style={[styles.itemInterest,{flex:0.3}]}>
+          <View style={[styles.itemInterest, { flex: 0.3 }]}>
             <TouchableOpacity onPress={() => this.onHeartClick(!liked)}>
-              <Image source={liked?require('@assets/images/icon/heart.png'):require('@assets/images/icon/heart_inactive.png')} style={styles.actionBtn} />
+              <Image source={liked ? require('@assets/images/icon/heart.png') : require('@assets/images/icon/heart_inactive.png')} style={styles.actionBtn} />
             </TouchableOpacity>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}</Text>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestLabel}>{I18n.t('PLACE_HEARTED')}</Text>
           </View>
-          <View style={[styles.itemInterest,{flex:0.3}]}>
+          <View style={[styles.itemInterest, { flex: 0.3 }]}>
             <TouchableOpacity disabled={!checkable} onPress={this.onCheckInClick.bind(this)}>
-              <Image source={checkable?require('@assets/images/icon/check-in.png'):require('@assets/images/icon/check-in_inactive.png')} style={styles.actionBtn} />
+              <Image source={checkable ? require('@assets/images/icon/check-in.png') : require('@assets/images/icon/check-in_inactive.png')} style={styles.actionBtn} />
             </TouchableOpacity>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.checkIns.length)}</Text>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestLabel}>{I18n.t('PLACE_CHECK_IN')}</Text>
           </View>
-          <View style={[styles.itemInterest,{flex:0.4}]}>
+          <View style={[styles.itemInterest, { flex: 0.4 }]}>
             <TouchableOpacity onPress={this.onBookMarker}>
-              <Image source={this.state.placeData.bookmark?require('@assets/images/icon/bookmark.png'):require('@assets/images/icon/bookmark_inactive.png')} style={styles.actionBtn} />
+              <Image source={this.state.placeData.bookmark ? require('@assets/images/icon/bookmark.png') : require('@assets/images/icon/bookmark_inactive.png')} style={styles.actionBtn} />
             </TouchableOpacity>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}</Text>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestLabel}>{I18n.t('PLACE_BOOKMARK')}</Text>
@@ -1009,6 +995,13 @@ class PlaceProfile extends PureComponent {
           lng: 0
         }
       }).then(({ data }) => {
+        sendSingleNotification({en: `${this.props.user.username} likes on your story`}, item.createdBy.playerId, {
+          type: 'LIKE',
+          aImg: item.createdBy.photoURL,
+          aName: item.createdBy.username,
+          sImg: item.pictureURL.length > 0 ? item.pictureURL[0]: null,
+          date: new Date().toISOString()
+        })
         client.resetStore().then(() => {
           if (index < 0) {
             this.setState({ oneMapperStory: { ...this.state.oneMapperStory, likedByUser: data.createLikeStory.story.likedByUser } });
@@ -1023,6 +1016,13 @@ class PlaceProfile extends PureComponent {
           id: item.likedByUser.filter(item => item.user.id === this.props.user.id)[0].id
         }
       }).then(({ data }) => {
+        sendSingleNotification({en: `${this.props.user.username} unlikes on your story`}, item.createdBy.playerId, {
+          type: 'UNLIKE',
+          aImg: item.createdBy.photoURL,
+          aName: item.createdBy.username,
+          sImg: item.pictureURL.length > 0 ? item.pictureURL[0]: null,
+          date: new Date().toISOString()
+        })
         client.resetStore().then(() => {
           if (index < 0) {
             this.setState({ oneMapperStory: { ...this.state.oneMapperStory, likedByUser: this.state.oneMapperStory.likedByUser.filter(item => item.id !== data.deleteLikeStory.id) } });

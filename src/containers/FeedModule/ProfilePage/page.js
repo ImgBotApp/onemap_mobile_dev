@@ -97,13 +97,25 @@ class ProfilePage extends Component {
       followsIds.push(this.state.user.id);
       sendSingleNotification({
         en: `${this.props.user.username} Follows You`
-      }, this.state.user.playerId)
+      }, this.state.user.playerId, {
+        type: 'FOLLOW',
+        aImg: this.props.user.photoURL,
+        aName: this.props.user.username,
+        sImg: null,
+        date: new Date().toISOString()
+      })
     } else {
       const index = followsIds.indexOf(this.state.user.id);
       followsIds.splice(index, 1)
       sendSingleNotification({
         en: `${this.props.user.username} Unfollows You`
-      }, this.state.user.playerId)
+      }, this.state.user.playerId, {
+        type: 'UNFOLLOW',
+        aImg: this.props.user.photoURL,
+        aName: this.props.user.username,
+        sImg: null,
+        date: new Date().toISOString()
+      })
     }
 
     this.props.followUser({
