@@ -984,7 +984,7 @@ class PlaceProfile extends PureComponent {
         />
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={[DFonts.Title, styles.commentTitle, { flex: 1 }]}>{item.title}</Text>
-          <Text style={[DFonts.SubTitle, styles.commentDescription]}>{item.likedByUser?item.likedByUser.length:0 + ' '}</Text>
+          <Text style={[DFonts.SubTitle, styles.commentDescription]}>{item.likedByUser?item.likedByUser.length:0}</Text>
           <TouchableOpacity onPress={() => this.likeStory(!liked, item, index)}>
             <FontAwesomeIcons
               color={'#f9c33d'}
