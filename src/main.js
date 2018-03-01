@@ -47,7 +47,7 @@ registerScreens(store, ApolloProvider, { client });
 
 import EntypoIcons from 'react-native-vector-icons/Entypo'
 import FeatherIcons from 'react-native-vector-icons/Feather'
-
+import IonicIcons from 'react-native-vector-icons/Ionicons'
 import { FEED_LIST_SCREEN } from './global/screenName';
 import { DARK_GRAY_COLOR } from './theme/colors';
 
@@ -55,7 +55,7 @@ var HomeIcon;
 var UserIcon;
 var SettingIcon;
 var SearchIcon;
-
+var NotificationIcon;
 export default class App {
   constructor() {
     Orientation.lockToPortrait();
@@ -79,12 +79,14 @@ export default class App {
         EntypoIcons.getImageSource('home', 26),
         EntypoIcons.getImageSource('user', 26),
         FeatherIcons.getImageSource('settings', 24),
-        FeatherIcons.getImageSource('search', 24)
+        FeatherIcons.getImageSource('search', 24),
+        IonicIcons.getImageSource('md-notifications', 34)
       ]).then((values) => {
         HomeIcon = values[0];
         UserIcon = values[1];
         SettingIcon = values[2];
         SearchIcon = values[3];
+        NotificationIcon = values[4]
         resolve(true)
       }).catch((error) => {
         reject(error);
@@ -184,6 +186,15 @@ export default class App {
                 icon: SearchIcon,
                 navigatorStyle: {
                   navBarHidden: true
+                }
+              },
+              {
+                title: 'Notification',
+                screen: SCREEN.NOTIFICATION_PAGE,
+                icon: NotificationIcon,
+                navigatorStyle: {
+                  navBarTextFontFamily: APPFONTNAME.Bold,
+                  navBarTextColor: DARK_GRAY_COLOR
                 }
               },
               {
