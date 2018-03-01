@@ -148,6 +148,7 @@ query GetOneMapperProfile($userId: ID!) {
         id
         displayName
         photoURL
+        playerId
       }
       updatedAt
     }
@@ -181,6 +182,7 @@ export const UPDATE_USER = gql`#unused
       registrationDate
       country
       city
+      playerId
     }
   }
 `
@@ -200,6 +202,7 @@ export const GET_FOLLOWERS = gql`
         id
         email
         username
+        playerId
         firstName
         lastName
         displayName
@@ -242,6 +245,7 @@ export const GET_FOLLOWS = gql`
         id
         email
         username
+        playerId
         firstName
         lastName
         displayName
@@ -293,6 +297,7 @@ export const GET_SUGGEST_USERS = gql`
       lastName
       displayName
       photoURL
+      playerId
     }
   }
 `
@@ -314,6 +319,7 @@ export const GET_BLOCKUSRS = gql`
         id
         email
         username
+        playerId
         firstName
         lastName
         displayName
@@ -358,6 +364,7 @@ export const FOLLOW_USER = gql`
         mobileVerification
         city
         country
+        playerId
         photoURL
         loginMethod
         registrationDate

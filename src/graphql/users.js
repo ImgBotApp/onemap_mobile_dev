@@ -49,6 +49,7 @@ export const FILER_USERS = gql`
     }) {
       id
       username
+      playerId
       displayName
       photoURL
       accountVerification

@@ -95,9 +95,15 @@ class ProfilePage extends Component {
     let followsIds = clone(this.props.follows.map(item => item.id));
     if (willFollow) {
       followsIds.push(this.state.user.id);
+      sendSingleNotification({
+        en: `${this.props.user.username} Follows You`
+      }, this.state.user.playerId)
     } else {
       const index = followsIds.indexOf(this.state.user.id);
-      followsIds.splice(index, 1);
+      followsIds.splice(index, 1)
+      sendSingleNotification({
+        en: `${this.props.user.username} Unfollows You`
+      }, this.state.user.playerId)
     }
 
     this.props.followUser({

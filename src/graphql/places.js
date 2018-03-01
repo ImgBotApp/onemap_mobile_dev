@@ -12,6 +12,7 @@ export const GET_ALL_PLACES = gql`
       createdBy {
         id
         username
+        playerId
         photoURL
       }
     }

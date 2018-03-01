@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
-
+import OneSignal from 'react-native-onesignal'
 import { Navigation } from 'react-native-navigation'
 import Orientation from 'react-native-orientation'
 import thunk from 'redux-thunk'
@@ -40,6 +40,8 @@ export const client = new ApolloClient({
   cache: new InMemoryCache()
 })
 
+
+OneSignal.inFocusDisplaying(0)
 
 registerScreens(store, ApolloProvider, { client });
 

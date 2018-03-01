@@ -3,6 +3,7 @@ import { ONESIGNAL_APP_ID, ONESIGNAL_REST_API } from '../global/onesignal'
 const ONESIGNAL_HOST = 'https://onesignal.com'
 
 export function sendSingleNotification(contents, playerId) {
+  console.log('PlayerId: ', playerId)
   var headers = {
     'Content-Type': 'application/json; charset=utf-8',
     'Authorization': `Basic ${ONESIGNAL_REST_API}`
@@ -15,12 +16,13 @@ export function sendSingleNotification(contents, playerId) {
   }
 
   var options = {
+    port: 443,
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data)
   }
 
-  let apiEndPoint = `${ONESIGNAL_HOST}/api/v1/notification`
+  let apiEndPoint = `${ONESIGNAL_HOST}/api/v1/notifications`
 
   return fetch(apiEndPoint, options)
   .then(res => {

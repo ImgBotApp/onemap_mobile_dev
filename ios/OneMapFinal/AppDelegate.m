@@ -31,7 +31,7 @@
   // Production
   self.oneSignal = [[RCTOneSignal alloc] initWithLaunchOptions:launchOptions
                                                          appId:@"e4c57b9b-01f1-4b1d-9afb-76e99d4ee040"
-                                                      settings:@{kOSSettingsKeyAutoPrompt: @false, kOSSettingsKeyInFocusDisplayOption: @"OSNotificationDisplayTypeNone"}];
+                                                      settings:@{kOSSettingsKeyAutoPrompt: @true, kOSSettingsKeyInFocusDisplayOption: @"OSNotificationDisplayTypeNone"}];
   [GMSServices provideAPIKey:@"AIzaSyCh4lQ5nws8zdF-07vpWj6EoWSC6Y_tyQc"];
   [GMSPlacesClient provideAPIKey:@"AIzaSyCh4lQ5nws8zdF-07vpWj6EoWSC6Y_tyQc"];
 

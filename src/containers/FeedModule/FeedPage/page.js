@@ -90,6 +90,7 @@ class FeedPage extends PureComponent {
                   username: user.username,
                   displayName: user.displayName,
                   photoURL: user.photoURL,
+                  playerId: user.playerId
                 }
               })
             }] : []
@@ -108,6 +109,7 @@ class FeedPage extends PureComponent {
                 displayName: story.createdBy.displayName,
                 username: story.createdBy.username,
                 photoURL: story.createdBy.photoURL,
+                playerId: story.createdBy.playerId
               },
               likedByUser: story.likedByUser,
               updated: new Date(story.updatedAt),
@@ -344,6 +346,7 @@ class FeedPage extends PureComponent {
         }
       })
     }
+    console.log('userInfo', userInfo)
   }
 
   onPlace(data, index) {
