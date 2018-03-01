@@ -19,6 +19,7 @@ export const EXIST_FACEBOOK_USER = gql`
       gender
       photoURL
       displayName
+      playerId
       loginMethod
       registrationDate
       country

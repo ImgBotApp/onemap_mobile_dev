@@ -998,6 +998,7 @@ class PlaceProfile extends PureComponent {
     )
   }
   likeStory(liked, item, index = -1) {
+    console.log('Like Story on Page profile', liked, item, index)
     if (liked) {
       Vibration.vibrate(200);
       this.props.likeStory({

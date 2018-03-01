@@ -206,6 +206,7 @@ export const GET_FOLLOWERS = gql`
         firstName
         lastName
         displayName
+        playerId
         bio
         gender
         birthdate
@@ -249,6 +250,7 @@ export const GET_FOLLOWS = gql`
         firstName
         lastName
         displayName
+        playerId
         bio
         gender
         birthdate

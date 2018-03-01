@@ -221,7 +221,7 @@ class FeedPage extends PureComponent {
       }).then(({ data }) => {
         sendSingleNotification({
           en: `${this.props.user.username} unlikes your Story`
-        }, item.createdBy.playerId, , {
+        }, item.createdBy.playerId, {
           type: 'UNLIKE',
           aImg: item.createdBy.photoURL,
           aName: item.createdBy.username,

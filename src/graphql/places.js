@@ -72,6 +72,7 @@ export const GET_PLACE_PROFILE = gql`
         createdBy {
           id
           displayName
+          playerId
           photoURL
         }
         likedByUser {
