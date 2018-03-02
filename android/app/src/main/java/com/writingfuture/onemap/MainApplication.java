@@ -5,6 +5,8 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import cl.json.RNSharePackage;
+
+import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.github.yamill.orientation.OrientationPackage;
@@ -58,6 +60,7 @@ public class MainApplication extends NavigationApplication implements ReactAppli
             new MapsPackage(),
             new ImagePickerPackage(),
             new RNI18nPackage(),
+            new ReactNativeOneSignalPackage(),
             new RNGooglePlacesPackage(),
             new FBSDKPackage(mCallbackManager),
             new RNCardViewPackage()
