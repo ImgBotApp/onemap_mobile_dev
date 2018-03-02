@@ -377,8 +377,8 @@ class PlaceProfile extends PureComponent {
         variables: {
           placeId: placeData.id,
           userId: this.props.user.id,
-          lat: 0,
-          lng: 0
+          lat: this.props.user.location ? this.props.user.location.latitude : 0,
+          lng: this.props.user.location ? this.props.user.location.longitude : 0
         }
       }).then(({ data }) => {
         placeData.heartedIds = data.createHeartPlace.place.heartedByUser;
@@ -405,8 +405,8 @@ class PlaceProfile extends PureComponent {
       variables: {
         placeId: placeData.id,
         userId: this.props.user.id,
-        lat: 0,
-        lng: 0
+        lat: this.props.user.location ? this.props.user.location.latitude : 0,
+        lng: this.props.user.location ? this.props.user.location.longitude : 0
       }
     }).then(({ data }) => {
       let checks = clone(placeData.checkIns);
@@ -1008,8 +1008,8 @@ class PlaceProfile extends PureComponent {
         variables: {
           storyId: item.id,
           userId: this.props.user.id,
-          lat: 0,
-          lng: 0
+          lat: this.props.user.location ? this.props.user.location.latitude : 0,
+          lng: this.props.user.location ? this.props.user.location.longitude : 0
         }
       }).then(({ data }) => {
         client.resetStore().then(() => {
