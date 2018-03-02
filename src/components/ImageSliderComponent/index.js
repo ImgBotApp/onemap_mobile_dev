@@ -27,6 +27,17 @@ class ImageSlider extends Component {
       ortMode:"PORTRAIT",
       imageData:props.data
     };
+    this.onBackgroundFetchImages();
+  }
+  async onBackgroundFetchImages(){
+    if(this.state.imageData)
+    {
+      const filterImages = this.state.imageData.filter(item => !getMediaTypeFromURL(item.uri));
+      const images = filterImages.map(item =>{
+        return {uri:fetchImageFromCloudinary(item.uri, 1920)};
+      });
+      FastImage.preload(images);
+    }
   }
   onPress() {
     this.props.onPress();
@@ -83,7 +94,7 @@ class ImageSlider extends Component {
     }
     //this.forceUpdate()
   }
-
+  
   _renderItemWithParallax({ item, index }, parallaxProps) {
     return (
       <SliderEntry
@@ -97,7 +108,8 @@ class ImageSlider extends Component {
     );
   }
   _onSnapToItem(index) {
-    this.setState({ slider1ActiveSlide: index });
+    //this.setState({ slider1ActiveSlide: index });
+    this.state.slider1ActiveSlide = index;
     this.forceUpdate();
   }
   render() {
