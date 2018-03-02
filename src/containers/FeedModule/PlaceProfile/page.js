@@ -219,7 +219,8 @@ class PlaceProfile extends PureComponent {
           collectionIds: this.props.place && this.props.place.collectionIds ? this.props.place.collectionIds : data.collections.map(item => item.id),
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
           bookmark: this.isBookmarked(data.collections),
-          proximityCheckinDistance: data.proximityCheckinDistance
+          proximityCheckinDistance: data.proximityCheckinDistance,
+          badges: data.badges
         },
         myStory: myStory ? myStory : this.state.myStory,
         oneMapperStory: oneMapperStory ? oneMapperStory : this.state.oneMapperStory,
@@ -401,12 +402,17 @@ class PlaceProfile extends PureComponent {
   onCheckInClick() {
     Vibration.vibrate();
     let placeData = this.state.placeData;
+    let badgePointsSum = 0;
+    placeData.badges.forEach(item => {
+      badgePointsSum += item.point;
+    });
     this.props.checkInPlace({
       variables: {
         placeId: placeData.id,
         userId: this.props.user.id,
         lat: this.props.user.location ? this.props.user.location.latitude : 0,
-        lng: this.props.user.location ? this.props.user.location.longitude : 0
+        lng: this.props.user.location ? this.props.user.location.longitude : 0,
+        point: badgePointsSum ? badgePointsSum : parseInt(this.props.settings.defaultCheckinPoint)
       }
     }).then(({ data }) => {
       let checks = clone(placeData.checkIns);

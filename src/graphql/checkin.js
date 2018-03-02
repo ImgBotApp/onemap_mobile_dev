@@ -6,12 +6,14 @@ export const CHECK_IN_PLACE = gql`
     $userId: ID!
     $lat: Float!
     $lng: Float!
+    $point: Int
   ) {
     createCheckIn(
       locationLat: $lat
       locationLong: $lng
       placeId: $placeId
       userId: $userId
+      point: $point
     ) {
       id
       createdAt
