@@ -204,10 +204,12 @@ class FeedPage extends PureComponent {
           en: `${this.props.user.username} likes your Story`
         }, item.createdBy.playerId, {
           type: 'LIKE',
-          aImg: item.createdBy.photoURL,
-          aName: item.createdBy.username,
+          aImg: this.props.user.photoURL,
+          aName: this.props.user.username,
           sImg: item.images.length > 1 ? item.images[0] : null,
-          date: new Date().toISOString()
+          date: new Date().toISOString(),
+          userId: this.props.user.id,
+          storyId: item.storyId
         })
         client.resetStore().then(() => {
           this.onRefresh();
@@ -223,10 +225,12 @@ class FeedPage extends PureComponent {
           en: `${this.props.user.username} unlikes your Story`
         }, item.createdBy.playerId, {
           type: 'UNLIKE',
-          aImg: item.createdBy.photoURL,
-          aName: item.createdBy.username,
+          aImg: this.props.user.photoURL,
+          aName: this.props.user.username,
           sImg: item.images.length > 1 ? item.images[0] : null,
-          date: new Date().toISOString()
+          date: new Date().toISOString(),
+          userId: this.props.user.id,
+          storyId: item.storyId
         })
         client.resetStore().then(() => {
           this.onRefresh();

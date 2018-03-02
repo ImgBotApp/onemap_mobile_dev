@@ -175,7 +175,7 @@ export default {
   // Notification 
   NOTIFICATION_ACTIVITY: 'Activity',
   NOTIFICATION_LIKE: 'Like your Story',
-  NOTIFICATION_UNLIKE: 'Unlike your Store',
+  NOTIFICATION_UNLIKE: 'Unlike your Story',
   NOTIFICATION_FOLLOW: 'Start following You',
   NOTIFICATION_UNFOLLOW: 'Start unfollowing You'
 }

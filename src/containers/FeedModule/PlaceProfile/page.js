@@ -997,10 +997,12 @@ class PlaceProfile extends PureComponent {
       }).then(({ data }) => {
         sendSingleNotification({en: `${this.props.user.username} likes on your story`}, item.createdBy.playerId, {
           type: 'LIKE',
-          aImg: item.createdBy.photoURL,
-          aName: item.createdBy.username,
+          aImg: this.props.user.photoURL,
+          aName: this.props.user.username,
           sImg: item.pictureURL.length > 0 ? item.pictureURL[0]: null,
-          date: new Date().toISOString()
+          date: new Date().toISOString(),
+          userId: this.props.user.id,
+          storyId: item.id
         })
         client.resetStore().then(() => {
           if (index < 0) {
@@ -1018,10 +1020,12 @@ class PlaceProfile extends PureComponent {
       }).then(({ data }) => {
         sendSingleNotification({en: `${this.props.user.username} unlikes on your story`}, item.createdBy.playerId, {
           type: 'UNLIKE',
-          aImg: item.createdBy.photoURL,
-          aName: item.createdBy.username,
+          aImg: this.props.user.photoURL,
+          aName: this.props.user.username,
           sImg: item.pictureURL.length > 0 ? item.pictureURL[0]: null,
-          date: new Date().toISOString()
+          date: new Date().toISOString(),
+          userId: this.props.user.id,
+          storyId: item.id
         })
         client.resetStore().then(() => {
           if (index < 0) {

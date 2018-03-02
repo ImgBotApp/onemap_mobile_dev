@@ -102,7 +102,8 @@ class ProfilePage extends Component {
         aImg: this.props.user.photoURL,
         aName: this.props.user.username,
         sImg: null,
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
+        userId: this.props.user.id
       })
     } else {
       const index = followsIds.indexOf(this.state.user.id);
@@ -114,7 +115,8 @@ class ProfilePage extends Component {
         aImg: this.props.user.photoURL,
         aName: this.props.user.username,
         sImg: null,
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
+        userId: this.props.user.id
       })
     }
 

@@ -7,7 +7,10 @@ const styles = StyleSheet.create({
     width: getDeviceWidth(1318),
     height: getDeviceHeight(275),
     padding: getDeviceWidth(34),
-    justifyContent: 'space-between'
+    alignSelf: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    marginTop: 15
   },
   sImg: {
     width: getDeviceWidth(204),
@@ -17,7 +20,7 @@ const styles = StyleSheet.create({
     width: getDeviceWidth(119),
     height: getDeviceWidth(119),
     borderWidth: 1,
-    borderRadius: '50%',
+    borderRadius: getDeviceWidth(59),
     borderColor: 'transparent'
   },
   accountInformation: {

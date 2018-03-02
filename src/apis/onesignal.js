@@ -17,6 +17,8 @@ const ONESIGNAL_HOST = 'https://onesignal.com'
  *    aName: String; account Profile Name
  *    sImg: String; Story Image if its type is 'Like' or 'unLike',
  *    date: String; ISO Date String
+ *    userId: String; account User Id on DB
+ *    storyId: String; Story Id on DB
  * }
 */
 

@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import CardView from 'react-native-cardview'
 import PropType from 'prop-types'
 import moment from 'moment'
@@ -11,6 +11,7 @@ import THEME from '../../theme/fonts'
 class NotificationItem extends Component {
   render() {
     return (
+      <TouchableOpacity onPress={() => this.props.onPress()}>
       <CardView style={[styles.container, { backgroundColor: this.getBackgroundColor() }]} 
         cardElevation={2}
         cardMaxElevation={2}
@@ -31,9 +32,12 @@ class NotificationItem extends Component {
           </View>
         </View>
         <View style={{justifyContent: 'center'}}>
-          <Image source={{uri: sImg}} style={styles.sImg}/>
+        {
+          this.props.sImg ? <Image source={this.props.sImg} style={styles.sImg}/> : null
+        }  
         </View>
       </CardView>
+      </TouchableOpacity>
     );
   }
 
@@ -67,11 +71,12 @@ class NotificationItem extends Component {
 
 NotificationItem.propTypes = {
   readAt: PropType.string,
-  sImg: PropType.string,
+  sImg: PropType.object,
   type: PropType.string,
   aImg: PropType.string,
   aName: PropType.string,
-  _createdAt: PropType.string
+  _createdAt: PropType.string,
+  onPress: PropType.func
 }
 //make this component available to the app
 export default NotificationItem;
