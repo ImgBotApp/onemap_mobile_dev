@@ -89,7 +89,6 @@ class SearchResult extends Component {
               });
             }
           }
-          console.log("----- auto:"+this.state.isAutoComplete+" query:"+this.state.prevQuery+" length:"+placeData.length+" next:"+responseData.next_page_token);
           this.state.nextToken = responseData.next_page_token?responseData.next_page_token:null;
           this.setState({ autoplaces: placeData});
           if(this.props.keyword != this.state.prevQuery)
@@ -142,11 +141,9 @@ class SearchResult extends Component {
     }
   }
   onEndReached() {
-    console.log("---------!!!! onEndReached:"+this.state.nextToken+" len:"+this.state.autoplaces.length);
     if(this.state.nextToken && this.state.placeSearchURL&&this.state.autoplaces.length >= 19)
     {
       const fetchurl = this.state.placeSearchURL+"&pagetoken="+this.state.nextToken;
-      console.log("-----****** readmore:"+fetchurl);
       
       this.state.nextToken = null;
       fetch(fetchurl, {
@@ -164,12 +161,11 @@ class SearchResult extends Component {
             });
           }
 
-          console.log("--------------:readmore length:"+responseData.results.length);
           this.state.nextToken = responseData.next_page_token;
           this.setState({ autoplaces: [...this.state.autoplaces,...placeData]});
         })
         .catch((error) => {
-          console.log("-------------------:error"+error);
+          
         });
     }
   }
@@ -221,10 +217,7 @@ class SearchResult extends Component {
     return (
       <TouchableOpacity onPress={() => this.props.onKeywordItem(item)}>
         <View style={styles.item}>
-          <View>
-            <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
-            {item.createdBy.photoURL&&<CircleImage style={styles.avatarImage} uri={item.createdBy.photoURL} radius={getDeviceWidth(44)} />}
-          </View>
+          <CircleImage style={styles.profileImage} uri={item.createdBy.photoURL} radius={getDeviceWidth(88)} />
           <View style={styles.infomation}>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.name]}>{item.placeName}</Text>
             <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.following]}>{item.address}</Text>

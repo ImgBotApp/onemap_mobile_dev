@@ -101,13 +101,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginBottom: 5,
   },
-  avatarImage: {
-    position:'absolute',
-    alignSelf:'center',
-    width: getDeviceWidth(88),
-    height: getDeviceHeight(88),
-    top:getDeviceHeight(18),
-  }
+  
 });
 
 
