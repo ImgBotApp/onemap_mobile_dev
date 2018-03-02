@@ -1,13 +1,17 @@
 import { StyleSheet } from 'react-native'
 
+import { getDeviceHeight, getDeviceWidth } from '../../../global'
 // define your styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#2c3e50',
+    backgroundColor: '#eeeded'
   },
+  activity: {
+    color: '#585958',
+    marginLeft: getDeviceWidth(71),
+    marginTop: getDeviceHeight(75)
+  }
 });
 
 export default styles
