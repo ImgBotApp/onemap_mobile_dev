@@ -139,7 +139,7 @@ class ImageSlider extends Component {
           lockScrollWhileSnapping = {true}
           removeClippedSubviews={true}
           //useScrollView = {true}
-          initialNumToRender = {this.props.firstItem+1}
+          initialNumToRender = {this.props.data.length}
           //getItemLayout={(data, index) => ({offset: viewportWidth * index, length: viewportWidth, index})}
           apparitionDelay={0}
         />
