@@ -99,6 +99,16 @@ export const GET_PLACE_PROFILE = gql`
         id
       }
       proximityCheckinDistance
+      badges(filter: {
+        receivedBy_some: {
+          user: {
+            id: $userId
+          }
+        }
+      }) {
+        id
+        point
+      }
     }
   }
 `
