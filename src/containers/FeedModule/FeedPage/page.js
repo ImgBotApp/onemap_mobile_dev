@@ -209,7 +209,8 @@ class FeedPage extends PureComponent {
           sImg: item.images.length > 1 ? item.images[0] : null,
           date: new Date().toISOString(),
           userId: this.props.user.id,
-          storyId: item.storyId
+          storyId: item.id,
+          storyName: item.title
         })
         client.resetStore().then(() => {
           this.onRefresh();
@@ -230,7 +231,8 @@ class FeedPage extends PureComponent {
           sImg: item.images.length > 1 ? item.images[0] : null,
           date: new Date().toISOString(),
           userId: this.props.user.id,
-          storyId: item.storyId
+          storyId: item.id,
+          storyName: item.title
         })
         client.resetStore().then(() => {
           this.onRefresh();

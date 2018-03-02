@@ -19,6 +19,7 @@ const ONESIGNAL_HOST = 'https://onesignal.com'
  *    date: String; ISO Date String
  *    userId: String; account User Id on DB
  *    storyId: String; Story Id on DB
+ *    storyName: String; Story name on DB
  * }
 */
 

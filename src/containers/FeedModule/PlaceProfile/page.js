@@ -1002,7 +1002,8 @@ class PlaceProfile extends PureComponent {
           sImg: item.pictureURL.length > 0 ? item.pictureURL[0]: null,
           date: new Date().toISOString(),
           userId: this.props.user.id,
-          storyId: item.id
+          storyId: this.props.place.id,
+          storyName: this.props.place.placeName
         })
         client.resetStore().then(() => {
           if (index < 0) {
@@ -1025,7 +1026,8 @@ class PlaceProfile extends PureComponent {
           sImg: item.pictureURL.length > 0 ? item.pictureURL[0]: null,
           date: new Date().toISOString(),
           userId: this.props.user.id,
-          storyId: item.id
+          storyId: this.props.place.id,
+          storyName: this.props.place.placeName
         })
         client.resetStore().then(() => {
           if (index < 0) {

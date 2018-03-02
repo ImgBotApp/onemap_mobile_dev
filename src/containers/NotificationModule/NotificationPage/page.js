@@ -70,7 +70,18 @@ class NotificationPage extends Component {
     switch (item.type) {
       case 'LIKE':
       case 'UNLIKE':
-        return
+        return this.props.navigator.push({
+          screen: SCREEN.PLACE_PROFILE_PAGE,
+          animated: true,
+          passProps: {
+            place: {
+              id: item.storyId,
+              placeName: item.storyName
+            },
+            oneMapperId: '',
+            onPlaceUpdate: place => {},
+          }
+        })
       case 'FOLLOW':
       case 'UNFOLLOW':
         return getProfile(item.userId)
