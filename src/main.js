@@ -95,11 +95,12 @@ export default class App {
     client.query({
       query: GET_SETTINGS
     }).then(({ data }) => {
+      let settings = {};
+      data.allSettings.forEach(item => {
+        settings[item.name] = item.value;
+      });
       store.dispatch(
-        appActions.saveSettings(data.allSettings.map(item => ({
-          name: item.name,
-          value: item.value
-        })))
+        appActions.saveSettings(settings)
       );
     });
   }
