@@ -89,16 +89,19 @@ query BadgeQuery($badgeId: ID!, $userId: ID!) {
     iconUrl
     title
     subtitle
-    receivedBy(filter: {
+    receivedBy(orderBy: createdAt_DESC, filter: {
       user:{
         id: $userId
       }
     }) {
       id
+      createdAt
     }
     distance
     startDate
     endDate
+    locationLat
+    locationLong
     point
     type
     description

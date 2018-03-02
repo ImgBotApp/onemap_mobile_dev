@@ -109,8 +109,9 @@ class LoginPage extends Component {
             displayName: data.displayName,
             username: data.username,
             accountVerification: data.accountVerification,
-            checkIns: data.checkIns.map(item => item.id),
-            blockByUsers: data.blockByUsers
+            blockByUsers: data.blockByUsers,
+            checkIns: data.checkIns,
+            receivedBadge: data.receivedBadge,
           });
           this.props.saveUserFollows(data.follows);
           AsyncStorage.setItem(APP_USER_KEY, JSON.stringify({
@@ -170,8 +171,9 @@ class LoginPage extends Component {
               displayName: data.displayName,
               username: data.username,
               accountVerification: data.accountVerification,
-              checkIns: data.checkIns.map(item => item.id),
-              blockByUsers: data.blockByUsers
+              blockByUsers: data.blockByUsers,
+              checkIns: data.checkIns,
+              receivedBadge: data.receivedBadge,
             });
             this.props.saveUserFollows(data.follows);
             this.props.login();
