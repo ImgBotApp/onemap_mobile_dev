@@ -216,11 +216,12 @@ class PlaceProfile extends PureComponent {
           },
           heartedIds: data.heartedByUser,
           checkIns: data.checkIns,
+          receivedBadge: data.receivedBadge,
           collectionIds: this.props.place && this.props.place.collectionIds ? this.props.place.collectionIds : data.collections.map(item => item.id),
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
           bookmark: this.isBookmarked(data.collections),
           proximityCheckinDistance: data.proximityCheckinDistance,
-          badges: data.badges
+          point: data.point
         },
         myStory: myStory ? myStory : this.state.myStory,
         oneMapperStory: oneMapperStory ? oneMapperStory : this.state.oneMapperStory,
@@ -402,17 +403,13 @@ class PlaceProfile extends PureComponent {
   onCheckInClick() {
     Vibration.vibrate();
     let placeData = this.state.placeData;
-    let badgePointsSum = 0;
-    placeData.badges.forEach(item => {
-      badgePointsSum += item.point;
-    });
     this.props.checkInPlace({
       variables: {
         placeId: placeData.id,
         userId: this.props.user.id,
         lat: this.props.user.location ? this.props.user.location.latitude : 0,
         lng: this.props.user.location ? this.props.user.location.longitude : 0,
-        point: badgePointsSum ? badgePointsSum : parseInt(this.props.settings.defaultCheckinPoint)
+        point: placeData.point ? placeData.point : parseInt(this.props.settings.defaultCheckinPoint)
       }
     }).then(({ data }) => {
       let checks = clone(placeData.checkIns);
@@ -420,7 +417,7 @@ class PlaceProfile extends PureComponent {
       this.setState({ placeData: { ...placeData, checkIns: checks } });
       this.lastChecked = data.createCheckIn.createdAt;
       client.resetStore();
-      this.props.saveUserInfo({ ...this.props.user, checkIns: [...this.props.user.checkIns, data.createCheckIn.id] });
+      this.props.saveUserInfo({ ...this.props.user, checkIns: [...this.props.user.checkIns, data.createCheckIn] });
     }).catch(err => alert(err));
   }
 

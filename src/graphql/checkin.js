@@ -17,6 +17,25 @@ export const CHECK_IN_PLACE = gql`
     ) {
       id
       createdAt
+      point
+    }
+  }
+`
+
+export const RECEIVE_BADGE = gql`
+  mutation (
+    $badgeId: ID!
+    $userId: ID!
+    $point: Int
+  ) {
+    createReceiveBadge(
+      badgeId: $badgeId
+      userId: $userId
+      point: $point
+    ) {
+      id
+      createdAt
+      point
     }
   }
 `
