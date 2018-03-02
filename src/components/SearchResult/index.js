@@ -24,7 +24,10 @@ class SearchResult extends Component {
       users: [],
       loading: false,
       prevQuery: null,
-      forceRefresh: false
+      forceRefresh: false,
+      isAutoComplete:false,
+      placeSearchURL:'',
+      nextToken:null
     };
   }
   componentWillMount() {
@@ -43,28 +46,54 @@ class SearchResult extends Component {
     this.setState({ loading: true });
 
     if ((this.props.isAuto && this.state.page == 'Places' && this.state.prevQuery != queryWords) || this.state.forceRefresh) {
-      this.setState({ prevQuery: queryWords, forceRefresh: false });
+      this.state.prevQuery=queryWords; 
+      this.state.forceRefresh = false;
       const radius = 10000;
       const language = 'en';
       const query = queryWords.replace(/\s/g, "+");
 
       if (this.props.coordinate == null) return;
 
-      const autocompleteURL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=" + query + "&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius + "&key=" + PLACES_APIKEY;
+      this.state.isAutoComplete = query.length == 1 ? true:false;
+      
+      let url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=";
+      if(!this.state.isAutoComplete)
+        url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=";
 
-      fetch(autocompleteURL, {
+      const fetchURL = url + query + "&location=" + this.props.coordinate.latitude + "," + this.props.coordinate.longitude + "&radius=" + radius + "&key=" + PLACES_APIKEY;
+      this.state.placeSearchURL = fetchURL;
+
+      fetch(fetchURL, {
         method: 'GET',
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
       })
         .then((response) => response.json())
         .then((responseData) => {
-
+          let placeData = [];
           this.setState({ loading: false })
-          if (responseData.predictions)
-            this.setState({
-              autoplaces: responseData.predictions
-            })
+          if(this.state.isAutoComplete)
+          {
+            if (responseData.predictions)
+            {
+              placeData = responseData.predictions.map(item => {
+                return ({place_id:item.place_id,title:item.structured_formatting.main_text,subtitle:item.structured_formatting.secondary_text});
+              });
+            }
+          }
+          else{
+            if(responseData.results)
+            {
+              placeData = responseData.results.map(item => {
+                return ({place_id:item.place_id,title:item.name,subtitle:item.formatted_address});
+              });
+            }
+          }
+          console.log("----- auto:"+this.state.isAutoComplete+" query:"+this.state.prevQuery+" length:"+placeData.length+" next:"+responseData.next_page_token);
+          this.state.nextToken = responseData.next_page_token?responseData.next_page_token:null;
+          this.setState({ autoplaces: placeData});
+          if(this.props.keyword != this.state.prevQuery)
+            this.onTextSearchPlace();
         })
         .catch((error) => {
           this.setState({ loading: false })
@@ -112,6 +141,38 @@ class SearchResult extends Component {
       }
     }
   }
+  onEndReached() {
+    console.log("---------!!!! onEndReached:"+this.state.nextToken+" len:"+this.state.autoplaces.length);
+    if(this.state.nextToken && this.state.placeSearchURL&&this.state.autoplaces.length >= 19)
+    {
+      const fetchurl = this.state.placeSearchURL+"&pagetoken="+this.state.nextToken;
+      console.log("-----****** readmore:"+fetchurl);
+      
+      this.state.nextToken = null;
+      fetch(fetchurl, {
+        method: 'GET',
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          let placeData = [];
+          if(responseData.results)
+          {
+            placeData = responseData.results.map(item => {
+              return ({place_id:item.place_id,title:item.name,subtitle:item.formatted_address});
+            });
+          }
+
+          console.log("--------------:readmore length:"+responseData.results.length);
+          this.state.nextToken = responseData.next_page_token;
+          this.setState({ autoplaces: [...this.state.autoplaces,...placeData]});
+        })
+        .catch((error) => {
+          console.log("-------------------:error"+error);
+        });
+    }
+  }
   _renderTabHeader(text) {
     return (
       <Text name={text} style={[DFonts.Title, styles.TabText]} selectedIconStyle={styles.TabSelected} selectedStyle={styles.TabSelectedText}>{text}</Text>
@@ -138,8 +199,8 @@ class SearchResult extends Component {
         <View style={styles.item}>
           <Image source={require('@assets/images/marker.png')} style={styles.placeImage} />
           <View style={styles.infomation}>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.name]}>{item.structured_formatting.main_text}</Text>
-            <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.following]}>{item.structured_formatting.secondary_text}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={[DFonts.Title, styles.name]}>{item.title}</Text>
+            <Text numberOfLines={2} ellipsizeMode={'tail'} style={[DFonts.SubTitle, styles.subtitle]}>{item.subtitle}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -216,6 +277,8 @@ class SearchResult extends Component {
         style={styles.scrollView}
         data={this.state.autoplaces}
         renderItem={({ item }) => this._onPlaceItem(item)}
+        onEndReachedThreshold={0.5}
+        onEndReached={() => this.onEndReached()}
       />
 
     )
@@ -247,7 +310,7 @@ class SearchResult extends Component {
   selectTabBar(el) {
     this.setState({ page: el.props.name })
     if (el.props.name == 'Places') {
-      this.setState({ forceRefresh: true });
+      this.state.forceRefresh = true;
       this.onTextSearchPlace();
     }
   }
