@@ -200,7 +200,7 @@ class SliderEntry extends Component {
   }
 
   render() {
-    const { even, parallaxProps } = this.props;
+    const { data: { uri },even, parallaxProps } = this.props;
     return (
       <TouchableOpacity
         activeOpacity={1}
@@ -210,7 +210,7 @@ class SliderEntry extends Component {
         <View style={[styles.imageContainer, even ? styles.imageContainerEven : {}]}>
           {this.image}
           
-          {this.state.loading && <ActivityIndicator style={styles.image} size="large" color="#dddddd" />}
+          {this.state.loading && !getMediaTypeFromURL(uri) && <ActivityIndicator style={styles.image} size="large" color="#dddddd" />}
         </View>
       </TouchableOpacity>
     );
