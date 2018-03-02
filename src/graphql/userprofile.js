@@ -1,4 +1,5 @@
 import { gql } from 'react-apollo'
+import { client } from '@root/main'
 
 /**
  * View User profile
@@ -40,6 +41,16 @@ export const GET_PROFILE = gql`
     }
   }
 `
+
+export function getProfile(userId) {
+  return client.query({
+    query: GET_PROFILE,
+    variables: {
+      userId: userId
+    }
+  }).then(res => Promise.resolve(res.data))
+  .then(res => res.User)
+}
 
 /**
  * Edit Profile
@@ -108,6 +119,7 @@ export const UPDATE_PROFILE = gql`
 export const GET_ONEMAPPER_PROFILE = gql`
 query GetOneMapperProfile($userId: ID!) {
   User(id: $userId) {
+    id
     bio
     _followersMeta {
       count

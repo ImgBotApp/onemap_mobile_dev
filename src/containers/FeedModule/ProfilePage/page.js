@@ -82,6 +82,7 @@ class ProfilePage extends Component {
         userId: this.state.user.id
       }
     }).then(({ data: { User } }) => {
+      console.log('user info', User)
       let user = this.state.user;
       user.bio = User.bio;
       user.followers = User._followersMeta.count;
