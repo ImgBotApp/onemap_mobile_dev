@@ -1,11 +1,12 @@
 //import liraries
-import React, { Component, PureComponent } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView, Vibration } from 'react-native';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import IonIcons from 'react-native-vector-icons/Ionicons';
-import Modal from 'react-native-modalbox';
+import React, { Component, PureComponent } from 'react'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, ScrollView, Vibration } from 'react-native'
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
+import IonIcons from 'react-native-vector-icons/Ionicons'
+import Modal from 'react-native-modalbox'
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
-import Orientation from 'react-native-orientation';
+import Orientation from 'react-native-orientation'
+import PropTypes from 'prop-types'
 
 import SuggestUser from '@components/SuggestUser'
 import FeedItem from '@components/FeedItem'
@@ -26,10 +27,11 @@ const STORIES_PER_PAGE = 8;
 
 import { client } from '@root/main'
 import { graphql } from "react-apollo";
-
+import { CREATE_NOTIFICATION } from '../../../graphql/notification'
 import { GET_MY_COLLECTIONS } from '@graphql/collections'
 import { getCampaignByUser } from '@graphql/campaign'
-import PropTypes from 'prop-types'
+
+import { sendSingleNotification } from '../../../apis/onesignal'
 
 class FeedPage extends PureComponent {
   static propTypes = {
@@ -90,6 +92,7 @@ class FeedPage extends PureComponent {
                   username: user.username,
                   displayName: user.displayName,
                   photoURL: user.photoURL,
+                  playerId: user.playerId
                 }
               })
             }] : []
@@ -108,6 +111,7 @@ class FeedPage extends PureComponent {
                 displayName: story.createdBy.displayName,
                 username: story.createdBy.username,
                 photoURL: story.createdBy.photoURL,
+                playerId: story.createdBy.playerId
               },
               likedByUser: story.likedByUser,
               updated: new Date(story.updatedAt),
@@ -185,6 +189,7 @@ class FeedPage extends PureComponent {
     });
   }
   likeStory(liked, item, index = -1) {
+    console.log('Like Data: ', liked, item, index)
     if (liked) {
       Vibration.vibrate(200);
       this.props.likeStory({
@@ -195,6 +200,34 @@ class FeedPage extends PureComponent {
           lng: this.props.user.location ? this.props.user.location.longitude : 0
         }
       }).then(({ data }) => {
+        client.mutate({
+          mutation: CREATE_NOTIFICATION,
+          variables: {
+            actor: this.props.user.id,
+            receiver: item.createdBy.id,
+            story: item.id,
+            type: 'LIKE',
+            updatedAt: new Date().toISOString()
+          }
+        }).then(res => Promise.resolve(res.data))
+          .then(res => Promise.resolve(res.createNotification))
+          .then(res => {
+            sendSingleNotification({
+              en: `${this.props.user.username} likes your Story`
+            }, item.createdBy.playerId, {
+                type: 'LIKE',
+                aImg: this.props.user.photoURL,
+                aName: this.props.user.username,
+                sImg: item.images.length > 1 ? item.images[0] : null,
+                date: new Date().toISOString(),
+                userId: this.props.user.id,
+                storyId: item.id,
+                storyName: item.title,
+                receiverId: item.createdBy.id,
+                id: res.id
+              })
+          })
+
         client.resetStore().then(() => {
           this.onRefresh();
         });
@@ -205,6 +238,34 @@ class FeedPage extends PureComponent {
           id: item.likedByUser.filter(item => item.user.id === this.props.user.id)[0].id
         }
       }).then(({ data }) => {
+        client.mutate({
+          mutation: CREATE_NOTIFICATION,
+          variables: {
+            actor: this.props.user.id,
+            receiver: item.createdBy.id,
+            story: item.id,
+            type: 'UNLIKE',
+            updatedAt: new Date().toISOString()
+          }
+        }).then(res => Promise.resolve(res.data))
+          .then(res => Promise.resolve(res.createNotification))
+          .then(res => {
+            sendSingleNotification({
+              en: `${this.props.user.username} unlikes your Story`
+            }, item.createdBy.playerId, {
+                type: 'UNLIKE',
+                aImg: this.props.user.photoURL,
+                aName: this.props.user.username,
+                sImg: item.images.length > 1 ? item.images[0] : null,
+                date: new Date().toISOString(),
+                userId: this.props.user.id,
+                storyId: item.id,
+                storyName: item.title,
+                receiverId: item.createdBy.id,
+                id: res.id
+              })
+          })
+
         client.resetStore().then(() => {
           this.onRefresh();
         });
@@ -344,6 +405,7 @@ class FeedPage extends PureComponent {
         }
       })
     }
+    console.log('userInfo', userInfo)
   }
 
   onPlace(data, index) {

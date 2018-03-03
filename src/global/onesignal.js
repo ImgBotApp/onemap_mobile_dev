@@ -1,0 +1,2 @@
+export const ONESIGNAL_APP_ID = 'e4c57b9b-01f1-4b1d-9afb-76e99d4ee040'
+export const ONESIGNAL_REST_API = 'ODc0ZTI0MWMtODg1OS00YjE3LWExZWUtNWNmMzFhYWRlZjhh'

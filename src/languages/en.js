@@ -171,4 +171,11 @@ export default {
   REPORT_STORY_DESCRIPTION2: "This story contain Hate speech or nudity.",
   REPORT_PLACE_CONFIRM: "Are you sure to report this story?",
   REPORT_THANKS: "Thank you for your information",
+
+  // Notification 
+  NOTIFICATION_ACTIVITY: 'Activity',
+  NOTIFICATION_LIKE: 'Like your Story',
+  NOTIFICATION_UNLIKE: 'Unlike your Story',
+  NOTIFICATION_FOLLOW: 'Start following You',
+  NOTIFICATION_UNFOLLOW: 'Start unfollowing You'
 }

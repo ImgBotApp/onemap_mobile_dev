@@ -42,6 +42,7 @@ export const FEED_STORIES_PAGINATED = gql`
         id
         displayName
         username
+        playerId
         photoURL
       }
       likedByUser {
@@ -125,6 +126,7 @@ query getUserStories(
       createdBy {
         id
         username
+        playerId
         lastName
         firstName
       }
@@ -250,6 +252,7 @@ query FollowingStories($first: Int!, $skip: Int!, $id: ID!, $userId: ID!, $oneMa
       id
       displayName
       username
+      playerId
       photoURL
     }
     pictureURL

@@ -35,3 +35,7 @@ export const CAMPAIGN_MAIN_PAGE = 'onemap.campaign_main_page'
 export const CAMPAIGN_BADGE_DETAIL_PAGE = 'onemap.compaign_detail_page'
 export const CAMPAIGN_USER_BADGE_LIST_PAGE = 'onemap.campaign_user_badge_list_page'
 export const CAMPAIGN_USER_BADGE_STATUS_PAGE = 'onemap.campaign_user_badge_status_page'
+
+// Notification Module
+
+export const NOTIFICATION_PAGE = 'onemap.notification_page'

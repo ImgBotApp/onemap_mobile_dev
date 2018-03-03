@@ -19,6 +19,7 @@ export const GET_CAMPAIGN_BY_USER = gql`
         id
         username
         photoURL
+        playerId
       }
     }
   }`
@@ -35,6 +36,7 @@ export const GET_CAMPAIGN_BY_USER = gql`
       partner {
         id
         username
+        playerId
         photoURL
       }
     }
@@ -84,6 +86,7 @@ query CampaignQuery($campaignId:  ID!) {
     partner {
       id
       username
+      playerId
       photoURL
       _followersMeta {
         count

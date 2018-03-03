@@ -19,6 +19,7 @@ export const EXIST_FACEBOOK_USER = gql`
       gender
       photoURL
       displayName
+      playerId
       loginMethod
       registrationDate
       country
@@ -49,6 +50,7 @@ export const FILER_USERS = gql`
     }) {
       id
       username
+      playerId
       displayName
       photoURL
       accountVerification

@@ -12,6 +12,7 @@ export const GET_ALL_PLACES = gql`
       createdBy {
         id
         username
+        playerId
         photoURL
       }
     }
@@ -71,6 +72,7 @@ export const GET_PLACE_PROFILE = gql`
         createdBy {
           id
           displayName
+          playerId
           photoURL
         }
         likedByUser {

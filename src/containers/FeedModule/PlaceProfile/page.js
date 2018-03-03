@@ -1,21 +1,6 @@
 //import liraries
 import React, { Component, PureComponent } from 'react';
-import {
-  Alert,
-  Animated,
-  FlatList,
-  Keyboard,
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Vibration,
-  View
-} from 'react-native';
-
+import { Alert, Animated, FlatList, Keyboard, Image, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, Vibration, View } from 'react-native'
 import CardView from 'react-native-cardview';
 import ImagePicker from 'react-native-image-picker';
 import ImageCropPicker from 'react-native-image-crop-picker'
@@ -51,10 +36,11 @@ import ActionSheet from 'react-native-actionsheet'
 
 import { GET_KEYWORD } from '@graphql/keywords'
 import { GET_PLACE_PROFILE } from '@graphql/places'
-
+import { CREATE_NOTIFICATION } from '../../../graphql/notification'
 import styles from './styles'
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
 
+import { sendSingleNotification } from '../../../apis/onesignal'
 const STORIES_PER_PAGE = 8;
 
 const imagePickerOptions = {
@@ -1005,6 +991,7 @@ class PlaceProfile extends PureComponent {
     )
   }
   likeStory(liked, item, index = -1) {
+    console.log('Like Story on Page profile', liked, item, index)
     if (liked) {
       Vibration.vibrate(200);
       this.props.likeStory({
@@ -1015,6 +1002,31 @@ class PlaceProfile extends PureComponent {
           lng: this.props.user.location ? this.props.user.location.longitude : 0
         }
       }).then(({ data }) => {
+        client.mutate({
+          mutation: CREATE_NOTIFICATION,
+          variables: {
+            actor: this.props.user.id,
+            receiver: item.createdBy.id,
+            story: this.props.place.id,
+            type: 'LIKE',
+            updatedAt: new Date().toISOString()
+          }
+        }).then(res => Promise.resolve(res.data))
+          .then(res => Promise.resolve(res.createNotification))
+          .then(res => {
+            sendSingleNotification({ en: `${this.props.user.username} likes on your story` }, item.createdBy.playerId, {
+              type: 'LIKE',
+              aImg: this.props.user.photoURL,
+              aName: this.props.user.username,
+              sImg: item.pictureURL.length > 0 ? item.pictureURL[0] : null,
+              date: new Date().toISOString(),
+              userId: this.props.user.id,
+              storyId: this.props.place.id,
+              storyName: this.props.place.placeName,
+              receiverId: item.createdBy.id,
+              id: res.id
+            })
+          })
         client.resetStore().then(() => {
           if (index < 0) {
             this.setState({ oneMapperStory: { ...this.state.oneMapperStory, likedByUser: data.createLikeStory.story.likedByUser } });
@@ -1029,6 +1041,30 @@ class PlaceProfile extends PureComponent {
           id: item.likedByUser.filter(item => item.user.id === this.props.user.id)[0].id
         }
       }).then(({ data }) => {
+        client.mutate({
+          mutation: CREATE_NOTIFICATION,
+          variables: {
+            actor: this.props.user.id,
+            receiver: item.createdBy.id,
+            story: this.props.place.id,
+            type: 'UNLIKE',
+            updatedAt: new Date().toISOString()
+          }
+        }).then(res => Promise.resolve(res.data))
+          .then(res => Promise.resolve(res.createNotification))
+          .then(res => {
+            sendSingleNotification({ en: `${this.props.user.username} unlikes on your story` }, item.createdBy.playerId, {
+              type: 'UNLIKE',
+              aImg: this.props.user.photoURL,
+              aName: this.props.user.username,
+              sImg: item.pictureURL.length > 0 ? item.pictureURL[0] : null,
+              date: new Date().toISOString(),
+              userId: this.props.user.id,
+              storyId: this.props.place.id,
+              storyName: this.props.place.placeName,
+              receiverId: item.createdBy.id
+            })
+          })
         client.resetStore().then(() => {
           if (index < 0) {
             this.setState({ oneMapperStory: { ...this.state.oneMapperStory, likedByUser: this.state.oneMapperStory.likedByUser.filter(item => item.id !== data.deleteLikeStory.id) } });
