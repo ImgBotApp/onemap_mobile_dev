@@ -8,7 +8,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Dropdown } from 'react-native-material-dropdown';
 import Toast, { DURATION } from 'react-native-easy-toast'
 import CircleImage from '@components/CircleImage'
-
 import styles from './styles'
 import I18n from '@language'
 import { ACCOUNT_MODE, APP_USER_KEY } from '@global/const'
@@ -28,6 +27,8 @@ import ActionSheet from 'react-native-actionsheet'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import OneSignal from 'react-native-onesignal'
+
 import PhoneInput from 'react-native-phone-input'
 import LoadingSpinner from '@components/LoadingSpinner'
 import { uploadImage } from '@global/cloudinary';
@@ -94,11 +95,28 @@ class ProfileCreatePage extends Component {
       success: false,
       userId: this.props.info.userId || '',
       processing: false,
+      playerId: ''
     }
 
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
     this.handlePress = this.handlePress.bind(this)
     this.showActionSheet = this.showActionSheet.bind(this)
+  }
+
+  componentWillMount() {
+    OneSignal.addEventListener('ids', this.onIds)
+    this.onChangeUserName(this.state.username);
+    
+  }
+
+  componentWillUnmount() {
+    OneSignal.removeEventListener('ids', this.onIds)
+  }
+
+  onIds = (device) => {
+    this.setState({
+      playerId: device.userId
+    })
   }
 
   onNavigatorEvent(event) {
@@ -130,6 +148,7 @@ class ProfileCreatePage extends Component {
               country: this.state.country,
               bio: this.state.bio,
               username: this.state.username,
+              playerId: this.state.playerId,
               group: 'USER'
             }
           }).then(result => {
@@ -155,6 +174,7 @@ class ProfileCreatePage extends Component {
                 registrationDate: new Date().toLocaleDateString(),
                 mobileVerification: false,
                 mobile: "iPhone",
+                playerId: this.state.playerId,
                 gender: this.state.gender.toUpperCase(),
                 checkIns: [],
                 blockByUsers: []
@@ -183,11 +203,6 @@ class ProfileCreatePage extends Component {
     })
   }
 
-  componentWillMount() {
-    // this.props.navigation.setParams({submitProfile: $this.submitProfile})
-    this.onChangeUserName(this.state.username);
-
-  }
   _showDatePicker = () => {
     this.setState({ isDateTimePickerVisible: true })
     Keyboard.dismiss()

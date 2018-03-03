@@ -54,6 +54,7 @@
 		84A8824F200FD0A200D809ED /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F71617200F7D7C003B5A10 /* libRCTOrientation.a */; };
 		90A333F21A3C49748C9983A8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22790D010FC445B89202A198 /* FontAwesome.ttf */; };
 		9F18667299A2F9F9D2AF9679 /* libPods-OneMapFinal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DC52AAC7D86D803DFFC0FD /* libPods-OneMapFinal.a */; };
+		A03398EC2047567200A4CDC0 /* libRCTOneSignal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A03398EB2047566200A4CDC0 /* libRCTOneSignal.a */; };
 		A49C34FBF8B8461BAAD9F578 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91A21A0C319F4291AEDA13BA /* Ionicons.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B4DB861647A64FBA8740158B /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C87BBA57A94A4E0EBE582EC1 /* MaterialIcons.ttf */; };
@@ -434,6 +435,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTOrientation;
 		};
+		A03398EA2047566200A4CDC0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A03398E62047566200A4CDC0 /* RCTOneSignal.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3245CDED1BFEE35C00EABF68;
+			remoteInfo = RCTOneSignal;
+		};
 		A0A86C462045AC3700B85F8C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5EA92E038B2146BDB364E8A1 /* FastImage.xcodeproj */;
@@ -520,6 +528,7 @@
 		90AF79317F26460BA96C455C /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		91A21A0C319F4291AEDA13BA /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		96D7535801464E0B823537E1 /* libRNCardView.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCardView.a; sourceTree = "<group>"; };
+		A03398E62047566200A4CDC0 /* RCTOneSignal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTOneSignal.xcodeproj; path = "../node_modules/react-native-onesignal/ios/RCTOneSignal.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B30CD1DA368D405FBFCCD715 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		B444D09081234875949D94EE /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
@@ -592,6 +601,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A03398EC2047567200A4CDC0 /* libRCTOneSignal.a in Frameworks */,
 				D287880720173DE60096D5BD /* libReactNativePermissions.a in Frameworks */,
 				D2C24F682015E1B2007B9D14 /* libimageCropPicker.a in Frameworks */,
 				D2C24F672015E19A007B9D14 /* libRNVectorIcons.a in Frameworks */,
@@ -832,6 +842,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				A03398E62047566200A4CDC0 /* RCTOneSignal.xcodeproj */,
 				841BD1EE201AC87B006FBC13 /* RNShare.xcodeproj */,
 				D28787D120173DD40096D5BD /* ReactNativePermissions.xcodeproj */,
 				84925E55200F82F6001FC858 /* RCTVideo.xcodeproj */,
@@ -1003,6 +1014,14 @@
 			isa = PBXGroup;
 			children = (
 				84F71617200F7D7C003B5A10 /* libRCTOrientation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A03398E72047566200A4CDC0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A03398EB2047566200A4CDC0 /* libRCTOneSignal.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1182,6 +1201,9 @@
 						DevelopmentTeam = GVXQ56F8Z7;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Keychain = {
 								enabled = 1;
 							};
@@ -1256,6 +1278,10 @@
 				{
 					ProductGroup = 00C302D41ABCB9D200DB3ED1 /* Products */;
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
+				},
+				{
+					ProductGroup = A03398E72047566200A4CDC0 /* Products */;
+					ProjectRef = A03398E62047566200A4CDC0 /* RCTOneSignal.xcodeproj */;
 				},
 				{
 					ProductGroup = 84F71605200F7D7C003B5A10 /* Products */;
@@ -1658,6 +1684,13 @@
 			remoteRef = 84F71616200F7D7C003B5A10 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		A03398EB2047566200A4CDC0 /* libRCTOneSignal.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTOneSignal.a;
+			remoteRef = A03398EA2047566200A4CDC0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		A0A86C472045AC3700B85F8C /* libFastImage.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2029,6 +2062,7 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/AirMaps/**",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;
@@ -2078,6 +2112,7 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/AirMaps/**",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
 				);
 				INFOPLIST_FILE = OneMapFinal/Info.plist;

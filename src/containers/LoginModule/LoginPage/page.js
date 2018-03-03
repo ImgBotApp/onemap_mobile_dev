@@ -25,10 +25,13 @@ class LoginPage extends Component {
     super(props)
     this.state = {
       id: '',
-      loading: false
+      loading: false,
+      playerId: ''
     }
     Orientation.lockToPortrait();
   }
+
+  
   componentDidMount() {
     if (Platform.OS == 'android')
       this.requestLocationPermissionForAndroid();
@@ -79,7 +82,7 @@ class LoginPage extends Component {
       }).then((user) => {
         var data = user.data.User
 
-        if (data.displayName) {
+        if (data.playerId) {
 
           // wheter to sync with facebook or not
           // this.props.updateUser({
@@ -126,7 +129,7 @@ class LoginPage extends Component {
               mode: ACCOUNT_MODE.facebook,
               info: {
                 ...result,
-                userId: this.state.id
+                userId: this.state.id,
               }
             },
             animated: true,

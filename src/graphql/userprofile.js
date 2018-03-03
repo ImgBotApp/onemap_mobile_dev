@@ -1,4 +1,5 @@
 import { gql } from 'react-apollo'
+import { client } from '@root/main'
 
 /**
  * View User profile
@@ -27,6 +28,7 @@ export const GET_PROFILE = gql`
       registrationDate
       group
       accountStatus
+      playerId
       follows {
         id
       }
@@ -44,6 +46,16 @@ export const GET_PROFILE = gql`
     }
   }
 `
+
+export function getProfile(userId) {
+  return client.query({
+    query: GET_PROFILE,
+    variables: {
+      userId: userId
+    }
+  }).then(res => Promise.resolve(res.data))
+  .then(res => res.User)
+}
 
 /**
  * Edit Profile
@@ -63,6 +75,7 @@ export const UPDATE_PROFILE = gql`
     $lastName: String
     $birthdate: String
     $photoURL: String
+    $playerId: String
     $registrationDate: String
     $mobileVerification: Boolean
     $mobile: String
@@ -87,6 +100,7 @@ export const UPDATE_PROFILE = gql`
       mobile: $mobile
       gender: $gender
       group:$group
+      playerId: $playerId
     ) {
       id
       firstName
@@ -97,6 +111,7 @@ export const UPDATE_PROFILE = gql`
       registrationDate
       country
       city
+      playerId
       group
     }
   }
@@ -109,6 +124,7 @@ export const UPDATE_PROFILE = gql`
 export const GET_ONEMAPPER_PROFILE = gql`
 query GetOneMapperProfile($userId: ID!) {
   User(id: $userId) {
+    id
     bio
     _followersMeta {
       count
@@ -129,6 +145,7 @@ query GetOneMapperProfile($userId: ID!) {
       pictureURL
       privacy
     }
+    playerId
     stories {
       id
       title
@@ -148,6 +165,7 @@ query GetOneMapperProfile($userId: ID!) {
         id
         displayName
         photoURL
+        playerId
       }
       updatedAt
     }
@@ -181,6 +199,7 @@ export const UPDATE_USER = gql`#unused
       registrationDate
       country
       city
+      playerId
     }
   }
 `
@@ -200,9 +219,11 @@ export const GET_FOLLOWERS = gql`
         id
         email
         username
+        playerId
         firstName
         lastName
         displayName
+        playerId
         bio
         gender
         birthdate
@@ -242,9 +263,11 @@ export const GET_FOLLOWS = gql`
         id
         email
         username
+        playerId
         firstName
         lastName
         displayName
+        playerId
         bio
         gender
         birthdate
@@ -293,6 +316,7 @@ export const GET_SUGGEST_USERS = gql`
       lastName
       displayName
       photoURL
+      playerId
     }
   }
 `
@@ -314,6 +338,7 @@ export const GET_BLOCKUSRS = gql`
         id
         email
         username
+        playerId
         firstName
         lastName
         displayName
@@ -358,6 +383,7 @@ export const FOLLOW_USER = gql`
         mobileVerification
         city
         country
+        playerId
         photoURL
         loginMethod
         registrationDate

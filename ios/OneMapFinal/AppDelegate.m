@@ -14,21 +14,24 @@
 #import "RCCManager.h"
 #import "Orientation.h"
 #import <AVFoundation/AVFoundation.h>
-
 @import GoogleMaps;
 @import GooglePlaces;
 @import GooglePlacePicker;
 
 @implementation AppDelegate
-
+@synthesize oneSignal = _oneSignal;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [[FBSDKApplicationDelegate sharedInstance] application:application
-                           didFinishLaunchingWithOptions:launchOptions];
+  self.oneSignal = [[RCTOneSignal alloc] initWithLaunchOptions:launchOptions
+     appId:@"YOUR_ONESIGNAL_APP_ID"
+  settings:@{kOSSettingsKeyAutoPrompt: @false}];
   // Development
   // [GMSServices provideAPIKey:@"AIzaSyAat5w4Pk7FTXOR1ZPcuavjwjIbiP-JBGU"];
   // [GMSPlacesClient provideAPIKey:@"AIzaSyAat5w4Pk7FTXOR1ZPcuavjwjIbiP-JBGU"];
   // Production
+  self.oneSignal = [[RCTOneSignal alloc] initWithLaunchOptions:launchOptions
+                                                         appId:@"e4c57b9b-01f1-4b1d-9afb-76e99d4ee040"
+                                                      settings:@{kOSSettingsKeyAutoPrompt: @true, kOSSettingsKeyInFocusDisplayOption: @"OSNotificationDisplayTypeNone"}];
   [GMSServices provideAPIKey:@"AIzaSyCh4lQ5nws8zdF-07vpWj6EoWSC6Y_tyQc"];
   [GMSPlacesClient provideAPIKey:@"AIzaSyCh4lQ5nws8zdF-07vpWj6EoWSC6Y_tyQc"];
 
