@@ -3,6 +3,7 @@ import { compose, graphql } from 'react-apollo'
 import { REPORT_PROFILE } from "@graphql/report";
 import { FOLLOW_USER } from "@graphql/userprofile";
 import { saveUserFollows } from '@reducers/app/actions'
+import { CREATE_NOTIFICATION } from '../../../graphql/notification'
 import page from './page'
 
 function mapStateToProps(state) {
@@ -27,4 +28,5 @@ export default compose(
   ),
   graphql(FOLLOW_USER, { name: 'followUser' }),
   graphql(REPORT_PROFILE, { name: 'reportProfile' }),
+  
 )(page)

@@ -10,6 +10,8 @@ import I18n from '@language'
 import FONT from '../../../theme/fonts'
 import * as SCREEN from '../../../global/screenName'
 import { getProfile } from '../../../graphql/userprofile'
+import { READ_NOTIFICATION, getUserNotification } from '../../../graphql/notification'
+import { client } from '@root/main'
 // create a component
 class NotificationPage extends Component {
   constructor(props) {
@@ -22,6 +24,25 @@ class NotificationPage extends Component {
 
   componentWillMount() {
     OneSignal.addEventListener('received', this.onReceived);
+
+    getUserNotification(this.props.user.id)
+    .then(res => {
+      let data = res.map(item => {
+        return {
+          type: item.type,
+          sImg: item.place && item.place.pictureURLlength > 0 ? item.place.pictureURL[0] : null,
+          aImg: item.actor.photoURL,
+          aName: item.actor.username,
+          readAt: item.readAt,
+          storyId: item.place.id,
+          userId: item.actor.id
+        }
+      })
+
+      this.setState({
+        notifications: data
+      })
+    })
   }
 
   componentWillUnmount() {
@@ -66,6 +87,15 @@ class NotificationPage extends Component {
     notifications[index].readAt = new Date().toISOString()
     this.setState({
       notifications: notifications
+    })
+    client.mutate({
+      mutation: READ_NOTIFICATION,
+      variables: {
+        id: item.id,
+        readAt: new Date().toISOString()
+      }
+    }).then(res => {
+
     })
     switch (item.type) {
       case 'LIKE':

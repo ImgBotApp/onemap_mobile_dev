@@ -18,6 +18,7 @@ import { getDeviceWidth, getDeviceHeight, calculateCount, clone } from '@global'
 import * as SCREEN from '@global/screenName'
 import { BLUE_COLOR, DARK_GRAY_COLOR } from '@theme/colors';
 import DFonts from '@theme/fonts'
+import { CREATE_NOTIFICATION } from '../../../graphql/notification'
 
 import { sendSingleNotification } from '../../../apis/onesignal'
 
@@ -96,29 +97,59 @@ class ProfilePage extends Component {
     let followsIds = clone(this.props.follows.map(item => item.id));
     if (willFollow) {
       followsIds.push(this.state.user.id);
-      sendSingleNotification({
-        en: `${this.props.user.username} Follows You`
-      }, this.state.user.playerId, {
-        type: 'FOLLOW',
-        aImg: this.props.user.photoURL,
-        aName: this.props.user.username,
-        sImg: null,
-        date: new Date().toISOString(),
-        userId: this.props.user.id
-      })
+      client.mutate({
+        mutation: CREATE_NOTIFICATION,
+        variables: {
+          actor: this.props.user.id,
+          receiver: this.state.user.id,
+          story: null,
+          type: 'FOLLOW',
+          updateAt: new Date().toISOString()
+        }
+      }).then(res => Promise.resolve(res.data))
+        .then(res => Promise.resolve(res.createNotification))
+        .then(res => {
+          sendSingleNotification({
+            en: `${this.props.user.username} Follows You`
+          }, this.state.user.playerId, {
+              type: 'FOLLOW',
+              aImg: this.props.user.photoURL,
+              aName: this.props.user.username,
+              sImg: null,
+              date: new Date().toISOString(),
+              userId: this.props.user.id,
+              receiverId: this.state.user.id,
+              id: res.id
+            })
+        })
     } else {
       const index = followsIds.indexOf(this.state.user.id);
       followsIds.splice(index, 1)
-      sendSingleNotification({
-        en: `${this.props.user.username} Unfollows You`
-      }, this.state.user.playerId, {
-        type: 'UNFOLLOW',
-        aImg: this.props.user.photoURL,
-        aName: this.props.user.username,
-        sImg: null,
-        date: new Date().toISOString(),
-        userId: this.props.user.id
-      })
+      client.mutate({
+        mutation: CREATE_NOTIFICATION,
+        variables: {
+          actor: this.props.user.id,
+          receiver: this.state.user.id,
+          story: null,
+          type: 'UNFOLLOW',
+          updateAt: new Date().toISOString()          
+        }
+      }).then(res => Promise.resolve(res.data))
+        .then(res => Promise.resolve(res.createNotification))
+        .then(res => {
+          sendSingleNotification({
+            en: `${this.props.user.username} Unfollows You`
+          }, this.state.user.playerId, {
+              type: 'UNFOLLOW',
+              aImg: this.props.user.photoURL,
+              aName: this.props.user.username,
+              sImg: null,
+              date: new Date().toISOString(),
+              userId: this.props.user.id,
+              receiverId: this.state.user.id,
+              id: res.id
+            })
+        })
     }
 
     this.props.followUser({

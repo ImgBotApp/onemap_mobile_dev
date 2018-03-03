@@ -27,7 +27,7 @@ const STORIES_PER_PAGE = 8;
 
 import { client } from '@root/main'
 import { graphql } from "react-apollo";
-
+import { CREATE_NOTIFICATION } from '../../../graphql/notification'
 import { GET_MY_COLLECTIONS } from '@graphql/collections'
 import { getCampaignByUser } from '@graphql/campaign'
 
@@ -200,18 +200,34 @@ class FeedPage extends PureComponent {
           lng: 0
         }
       }).then(({ data }) => {
-        sendSingleNotification({
-          en: `${this.props.user.username} likes your Story`
-        }, item.createdBy.playerId, {
-          type: 'LIKE',
-          aImg: this.props.user.photoURL,
-          aName: this.props.user.username,
-          sImg: item.images.length > 1 ? item.images[0] : null,
-          date: new Date().toISOString(),
-          userId: this.props.user.id,
-          storyId: item.id,
-          storyName: item.title
-        })
+        client.mutate({
+          mutation: CREATE_NOTIFICATION,
+          variables: {
+            actor: this.props.user.id,
+            receiver: item.createdBy.id,
+            story: item.id,
+            type: 'LIKE',
+            updatedAt: new Date().toISOString()
+          }
+        }).then(res => Promise.resolve(res.data))
+          .then(res => Promise.resolve(res.createNotification))
+          .then(res => {
+            sendSingleNotification({
+              en: `${this.props.user.username} likes your Story`
+            }, item.createdBy.playerId, {
+                type: 'LIKE',
+                aImg: this.props.user.photoURL,
+                aName: this.props.user.username,
+                sImg: item.images.length > 1 ? item.images[0] : null,
+                date: new Date().toISOString(),
+                userId: this.props.user.id,
+                storyId: item.id,
+                storyName: item.title,
+                receiverId: item.createdBy.id,
+                id: res.id
+              })
+          })
+
         client.resetStore().then(() => {
           this.onRefresh();
         });
@@ -222,18 +238,34 @@ class FeedPage extends PureComponent {
           id: item.likedByUser.filter(item => item.user.id === this.props.user.id)[0].id
         }
       }).then(({ data }) => {
-        sendSingleNotification({
-          en: `${this.props.user.username} unlikes your Story`
-        }, item.createdBy.playerId, {
-          type: 'UNLIKE',
-          aImg: this.props.user.photoURL,
-          aName: this.props.user.username,
-          sImg: item.images.length > 1 ? item.images[0] : null,
-          date: new Date().toISOString(),
-          userId: this.props.user.id,
-          storyId: item.id,
-          storyName: item.title
-        })
+        client.mutate({
+          mutation: CREATE_NOTIFICATION,
+          variables: {
+            actor: this.props.user.id,
+            receiver: item.createdBy.id,
+            story: item.id,
+            type: 'UNLIKE',
+            updatedAt: new Date().toISOString()
+          }
+        }).then(res => Promise.resolve(res.data))
+          .then(res => Promise.resolve(res.createNotification))
+          .then(res => {
+            sendSingleNotification({
+              en: `${this.props.user.username} unlikes your Story`
+            }, item.createdBy.playerId, {
+                type: 'UNLIKE',
+                aImg: this.props.user.photoURL,
+                aName: this.props.user.username,
+                sImg: item.images.length > 1 ? item.images[0] : null,
+                date: new Date().toISOString(),
+                userId: this.props.user.id,
+                storyId: item.id,
+                storyName: item.title,
+                receiverId: item.createdBy.id,
+                id: res.id
+              })
+          })
+
         client.resetStore().then(() => {
           this.onRefresh();
         });

@@ -2,6 +2,9 @@ import { ONESIGNAL_APP_ID, ONESIGNAL_REST_API } from '../global/onesignal'
 
 const ONESIGNAL_HOST = 'https://onesignal.com'
 
+import { client } from '@root/main'
+import { CREATE_NOTIFICATION } from '../graphql/notification'
+
 /**
  * send Push Notification to Single User
  * @param {*} contents description of Push Notification
@@ -20,11 +23,13 @@ const ONESIGNAL_HOST = 'https://onesignal.com'
  *    userId: String; account User Id on DB
  *    storyId: String; Story Id on DB
  *    storyName: String; Story name on DB
+ *    receiverId: Stringl account User Id on DB,
+ *    id: Notification id on DB
  * }
 */
 
 export function sendSingleNotification(contents, playerId, data) {
-  console.log('PlayerId: ', playerId)
+  console.log('PlayerId: ', data)
   var headers = {
     'Content-Type': 'application/json; charset=utf-8',
     'Authorization': `Basic ${ONESIGNAL_REST_API}`
@@ -48,9 +53,18 @@ export function sendSingleNotification(contents, playerId, data) {
 
   let apiEndPoint = `${ONESIGNAL_HOST}/api/v1/notifications`
 
-  return fetch(apiEndPoint, options)
-  .then(res => {
-    console.log('Notification result', res)
-    return Promise.resolve(res.json())
-  })
+  // client.mutate({
+  //   mutation: CREATE_NOTIFICATION,
+  //   variables: {
+  //     actor: data.data.userId,
+  //     story: data.data.storyId,
+  //     type: data.data.type,
+  //     updateAt: new Date().toISOString()
+  //   }
+  // }).then(res => console.log(res))
+  // return fetch(apiEndPoint, options)
+  // .then(res => {
+  //   console.log('Notification result', res)
+  //   return Promise.resolve(res.json())
+  // })
 }
