@@ -13,6 +13,10 @@ export default function app(state = initialState, action = {}) {
       return state.merge({
         root: action.root
       });
+    case types.SETTINGS:
+      return state.merge({
+        settings: action.settings
+      });
     case types.STORE_COLLECTIONS:
       return state.merge({
         collections: action.collections
@@ -27,7 +31,7 @@ export default function app(state = initialState, action = {}) {
       });
     case types.STORE_USER_FOLLOWERS:
       return state.merge({
-        follows: action.followers
+        followers: action.followers
       });
     default:
       return state;

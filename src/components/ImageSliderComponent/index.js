@@ -18,21 +18,26 @@ import FastImage from 'react-native-fast-image'
 class ImageSlider extends Component {
   constructor(props) {
     super(props);
-    let buffer = [];
-    const len = props.data.length;
-
-    for(var i=0; i< len;i++)
-      buffer.push(this.props.data[(props.firstItem+i) % len]);
-    
     this.state = {
-      slider1ActiveSlide: 0,
+      slider1ActiveSlide: props.firstItem,
       slider1Ref: null,
       sliderWidth: viewportWidth,
       sliderHeight: viewportHeight,
       itemWidth: viewportWidth,
       ortMode:"PORTRAIT",
-      imageData:buffer
+      imageData:props.data
     };
+    this.onBackgroundFetchImages();
+  }
+  async onBackgroundFetchImages(){
+    if(this.state.imageData)
+    {
+      const filterImages = this.state.imageData.filter(item => !getMediaTypeFromURL(item.uri));
+      const images = filterImages.map(item =>{
+        return {uri:fetchImageFromCloudinary(item.uri, 1920)};
+      });
+      FastImage.preload(images);
+    }
   }
   onPress() {
     this.props.onPress();
@@ -89,7 +94,7 @@ class ImageSlider extends Component {
     }
     //this.forceUpdate()
   }
-
+  
   _renderItemWithParallax({ item, index }, parallaxProps) {
     return (
       <SliderEntry
@@ -103,7 +108,8 @@ class ImageSlider extends Component {
     );
   }
   _onSnapToItem(index) {
-    this.setState({ slider1ActiveSlide: index });
+    //this.setState({ slider1ActiveSlide: index });
+    this.state.slider1ActiveSlide = index;
     this.forceUpdate();
   }
   render() {
@@ -112,13 +118,13 @@ class ImageSlider extends Component {
       <View style={styles.container} supportedOrientations={['portrait', 'landscape']} onLayout={this._onLayout.bind(this)}>
         <Carousel
           ref={(c) => { if (!this.state.slider1Ref) { this.setState({ slider1Ref: c }); } }}
-          data={this.state.imageData}
+          data={this.props.data}
           renderItem={this._renderItemWithParallax.bind(this)}
           sliderWidth={this.state.sliderWidth}
           sliderHeight={this.state.sliderHeight}
           itemWidth={this.state.itemWidth}
           hasParallaxImages={true}
-          firstItem={0}
+          firstItem={this.props.firstItem}
           inactiveSlideScale={1}
           inactiveSlideOpacity={0.7}
           enableMomentum={false}
@@ -131,10 +137,11 @@ class ImageSlider extends Component {
           autoplayInterval={3000}
           onSnapToItem={(index) => this._onSnapToItem(index)}
           lockScrollWhileSnapping = {true}
-          //removeClippedSubviews={false}
+          removeClippedSubviews={true}
           //useScrollView = {true}
-          //initialNumToRender = {this.props.firstItem+1}
+          initialNumToRender = {this.props.data.length}
           //getItemLayout={(data, index) => ({offset: viewportWidth * index, length: viewportWidth, index})}
+          apparitionDelay={0}
         />
         <Pagination
           dotsLength={this.props.data.length}
@@ -200,7 +207,7 @@ class SliderEntry extends Component {
   }
 
   render() {
-    const { even, parallaxProps } = this.props;
+    const { data: { uri },even, parallaxProps,slider1ActiveSlide } = this.props;
     return (
       <TouchableOpacity
         activeOpacity={1}
@@ -208,9 +215,8 @@ class SliderEntry extends Component {
       //onPress={() => { alert(`You've clicked `); }}
       >
         <View style={[styles.imageContainer, even ? styles.imageContainerEven : {}]}>
-          {this.image}
-          
-          {this.state.loading && <ActivityIndicator style={styles.image} size="large" color="#dddddd" />}
+          { Math.abs(slider1ActiveSlide-even) <= 2 && this.image }
+          { this.state.loading && !getMediaTypeFromURL(uri) && <ActivityIndicator style={styles.image} size="large" color="#dddddd" /> }
         </View>
       </TouchableOpacity>
     );

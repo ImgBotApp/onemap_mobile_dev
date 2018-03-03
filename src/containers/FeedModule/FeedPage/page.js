@@ -282,7 +282,7 @@ class FeedPage extends PureComponent {
   }
   onEndReached() {
     const { getStoriesPaginated } = this.props;
-    if (!getStoriesPaginated.loading) {
+    if (getStoriesPaginated && !getStoriesPaginated.loading) {
       getStoriesPaginated.fetchMore({
         variables: {
           skip: getStoriesPaginated.allStories.length + STORIES_PER_PAGE,

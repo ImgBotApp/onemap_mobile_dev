@@ -263,6 +263,8 @@ class SearchPage extends Component {
                         showsCompass={true}
                         loadingEnabled={true}
                         showsBuildings={true}
+                        onLayout={() => {if(this.map)this.map.fitToElements(true)}}
+                        ref={ref => { this.map = ref }}
                       >
                         {this.state.nearByPlacesPin.map((marker, key) => (
                           <Marker

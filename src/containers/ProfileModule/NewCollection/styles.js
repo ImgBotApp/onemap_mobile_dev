@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
   collectionInput: {
     marginTop: getDeviceHeight(76),
-    height: Platform.OS === 'android' ? getDeviceHeight(140) : getDeviceHeight(120),
+    //height: Platform.OS === 'android' ? getDeviceHeight(140) : getDeviceHeight(120),
     paddingLeft: getDeviceWidth(59),
     backgroundColor: '#e9e8ea'
   },
