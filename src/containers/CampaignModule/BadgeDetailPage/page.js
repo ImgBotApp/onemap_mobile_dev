@@ -4,11 +4,12 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import CardView from 'react-native-cardview'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import geolib from 'geolib';
 import { GetBadgeDetail } from '@graphql/badge'
 import { GetPlaceByCondition, GetRulesByCondition, GetConditionDetail } from '@graphql/condition'
 import { getPlaceDetail } from '@graphql/places'
 import SuggestPlaceItem from '@components/CampaignSuggestPlace'
-import { getTimeDiff } from '@global'
+import { getTimeDiff, formattedDistance } from '@global'
 import { fetchThumbFromCloudinary } from '@global/cloudinary'
 import * as SCREEN from '@global/screenName'
 import I18n from '@language'
@@ -34,6 +35,12 @@ class PlaceDetailPage extends Component {
       place: {},
       rules: {},
       detail: props.detail
+    };
+    if (props.user.location) {
+      this.state.distance = geolib.getDistance(props.user.location, {
+        latitude: props.detail.locationLat,
+        longitude: props.detail.locationLong
+      });
     }
     if (props.detail.receivedBy.length) {
       this.lastChecked = props.detail.receivedBy[0].createdAt;
@@ -43,6 +50,17 @@ class PlaceDetailPage extends Component {
 
   componentWillMount() {
     // this.FetchPlaceDetail()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { location } = nextProps.user;
+    if (this.state.detail.locationLat && location && (!this.props.user.location || location.latitude !== this.props.user.location.latitude || location.longitude !== this.props.user.location.longitude)) {
+      const distance = geolib.getDistance(location, {
+        latitude: this.state.detail.locationLat,
+        longitude: this.state.detail.locationLong
+      });
+      this.setState({ distance });
+    }
   }
 
   FetchPlaceDetail = () => {
@@ -140,11 +158,8 @@ class PlaceDetailPage extends Component {
             <Text style={[FontStyle.Title, styles.detailName]}>{detail.title}</Text>
             <View style={styles.PlaceDetailCardDestinationContainer}>
               <Text style={[FontStyle.SubTitle, styles.PlaceDetailCardDestinationText]}>
-                {I18n.t('CAMPAIGN_DISTANCE')}{' '}
-                {'100'}{'km'}
-                {'('}
-                {'30min'}
-                {')'}
+                {I18n.t('CAMPAIGN_DISTANCE') + ' ' + formattedDistance(this.state.distance)}
+                {' ('}{'30min'}{')'}
               </Text>
               <TouchableOpacity disabled={!checkable} style={[styles.PlaceDetailCardCheckIn, { borderColor: checkable ? '#007aff' : LIGHT_GRAY_COLOR }]} onPress={this.onCheckIn}>
                 <Text style={[FontStyle.SubTitle, { color: checkable ? '#007aff' : LIGHT_GRAY_COLOR }]}>{I18n.t('FEED_CHECK_IN')}</Text>

@@ -85,6 +85,12 @@ export function calculateCount(count) {
   return ret;
 }
 
+export function formattedDistance(distance) {
+  if (!distance) return '0km';
+  if (distance > 1000) return (distance / 1000.0).toFixed(2) + 'km';
+  else return distance + 'm';
+}
+
 export function clone(obj) {
   if (obj === null || typeof obj !== 'object') return obj;
   let copy = obj.constructor();
