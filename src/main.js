@@ -28,7 +28,7 @@ import * as SCREEN from './global/screenName'
 import { APPFONTNAME } from '@theme/fonts';
 
 const httpLink = new HttpLink({
-  uri: 'https://api.graph.cool/simple/v1/' + (__DEV__ ?
+  uri: 'https://api.graph.cool/simple/v1/' + (true ?
     // Development
     'cjb30vkvv434c0146sjjn4d4w'
     :
@@ -95,11 +95,12 @@ export default class App {
     client.query({
       query: GET_SETTINGS
     }).then(({ data }) => {
+      let settings = {};
+      data.allSettings.forEach(item => {
+        settings[item.name] = item.value;
+      });
       store.dispatch(
-        appActions.saveSettings(data.allSettings.map(item => ({
-          name: item.name,
-          value: item.value
-        })))
+        appActions.saveSettings(settings)
       );
     });
   }
@@ -134,8 +135,9 @@ export default class App {
                   displayName: data.displayName,
                   username: data.username,
                   accountVerification: data.accountVerification,
-                  checkIns: data.checkIns.map(item => item.id),
-                  blockByUsers: data.blockByUsers
+                  blockByUsers: data.blockByUsers,
+                  checkIns: data.checkIns,
+                  receivedBadge: data.receivedBadge
                 })
               );
               store.dispatch(

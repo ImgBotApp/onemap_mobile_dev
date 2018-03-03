@@ -85,9 +85,8 @@ class SearchPage extends Component {
         this.setGeoPositionEvent();
       }
     })
-    //this.setGeoPositionEvent();
   }
-  async requestLocationPermissionForIOS() {
+  async requestLocationPermissionForIOS() {//unused
     try {
       Permissions.check('location').then(response => {
         if (response != 'authorized') {
@@ -106,7 +105,7 @@ class SearchPage extends Component {
       console.warn(err)
     }
   }
-  async requestLocationPermissionForAndroid() {
+  async requestLocationPermissionForAndroid() {//unused
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -140,19 +139,22 @@ class SearchPage extends Component {
           this.updateMapView();
         }
       },
-      (error) => console.log(error),
+      (error) => alert(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 }
     );
 
     if (!this.watchID) {
-      this.watchID = navigator.geolocation.watchPosition((position) => {
-        if (position.coords) {
-          console.log("watch position:" + position.coords.latitude);
-          this.setState({ myPosition: position.coords });
-          this.props.saveLocation(position.coords);
-          this.updateMapView();
-        }
-      }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 });
+      this.watchID = navigator.geolocation.watchPosition(
+        (position) => {
+          if (position.coords) {
+            console.log("watch position:" + position.coords.latitude);
+            this.setState({ myPosition: position.coords });
+            this.props.saveLocation(position.coords);
+            this.updateMapView();
+          }
+        },
+        (error) => console.log(error.message),
+        { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 0.1 });
     }
   }
   updateMapView() {
@@ -263,7 +265,7 @@ class SearchPage extends Component {
                         showsCompass={true}
                         loadingEnabled={true}
                         showsBuildings={true}
-                        onLayout={() => {if(this.map)this.map.fitToElements(true)}}
+                        onLayout={() => { if (this.map) this.map.fitToElements(true) }}
                         ref={ref => { this.map = ref }}
                       >
                         {this.state.nearByPlacesPin.map((marker, key) => (

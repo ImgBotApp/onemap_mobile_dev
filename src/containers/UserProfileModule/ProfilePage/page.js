@@ -47,7 +47,7 @@ class ProfileComponent extends Component {
       displayName: props.user.displayName || props.user.firstName + " " + props.user.lastName,
       campaigns: [],
       totalPoints: 0
-    }
+    };
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
   componentWillMount() {
@@ -155,13 +155,19 @@ class ProfileComponent extends Component {
   }
 
   renderCampaignItem(campaign) {
-    let mostBadges = this.getMostBadge(campaign)
-    let points = mostBadges.points
+    let mostBadges = this.getMostBadge(campaign);
+    let points = mostBadges.points;
+
+    let totalBadgePoints = 0;
+    this.props.user.receivedBadge.forEach(item => {
+      totalBadgePoints += item.point;
+    });
+
     return (
       <CardView cardElevation={1} cardMaxElevation={1} cornerRadius={5} style={campaignStyles.campaignItemCotainer}>
         <View style={campaignStyles.PointContainer}>
           <Text style={[FONTSTYLE.Header, campaignStyles.pointText]}>{I18n.t('POINTS_STR')}</Text>
-          <Text style={[FONTSTYLE.MostBig, campaignStyles.pointText]}>{' ' + points + ' '}</Text>
+          <Text style={[FONTSTYLE.MostBig, campaignStyles.pointText]}>{' ' + totalBadgePoints + ' '}</Text>
         </View>
         <View style={campaignStyles.badgeContainer}>
           {
@@ -196,7 +202,7 @@ class ProfileComponent extends Component {
     return (
       <View style={styles.vCollections}>
         <Text style={styles.collectionTitle}>{I18n.t('PROFILE_CAMPAIGN')}</Text>
-        { this.state.campaigns.length > 0 && this.renderCampaignItem(this.state.campaigns[0]) }
+        {this.state.campaigns.length > 0 && this.renderCampaignItem(this.state.campaigns[0])}
       </View>
     )
   }
@@ -219,6 +225,14 @@ class ProfileComponent extends Component {
 
     const checked_cnt = user.checkIns.length;
 
+    let totalBadgePoints = 0, totalPlacePoints = 0;
+    this.props.user.receivedBadge.forEach(item => {
+      totalBadgePoints += item.point;
+    });
+    this.props.user.checkIns.forEach(item => {
+      totalPlacePoints += item.point;
+    });
+
     return (
       <ScrollView style={styles.container}>
         <View style={styles.infoView}>
@@ -238,7 +252,7 @@ class ProfileComponent extends Component {
                 {/* User Points */}
                 <View style={{ flexDirection: 'row', marginTop: 5 }}>
                   <Text style={[FONTSTYLE.Regular, styles.points]}>
-                    {' ' + this.state.totalPoints + ' '}
+                    {' ' + (totalBadgePoints + totalPlacePoints) + ' '}
                   </Text>
                   <Text style={[FONTSTYLE.Regular, { color: DARK_GRAY_COLOR }]}>
                     {' ' + I18n.t('POINTS_STR')}
