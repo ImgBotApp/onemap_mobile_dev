@@ -202,9 +202,12 @@ class PlaceProfile extends PureComponent {
           },
           heartedIds: data.heartedByUser,
           checkIns: data.checkIns,
+          receivedBadge: data.receivedBadge,
           collectionIds: this.props.place && this.props.place.collectionIds ? this.props.place.collectionIds : data.collections.map(item => item.id),
           keywords: data.keywords && data.keywords.filter(item => item.createdBy.id === this.props.user.id),
           bookmark: this.isBookmarked(data.collections),
+          proximityCheckinDistance: data.proximityCheckinDistance,
+          point: data.point
         },
         myStory: myStory ? myStory : this.state.myStory,
         oneMapperStory: oneMapperStory ? oneMapperStory : this.state.oneMapperStory,
@@ -362,8 +365,8 @@ class PlaceProfile extends PureComponent {
         variables: {
           placeId: placeData.id,
           userId: this.props.user.id,
-          lat: 0,
-          lng: 0
+          lat: this.props.user.location ? this.props.user.location.latitude : 0,
+          lng: this.props.user.location ? this.props.user.location.longitude : 0
         }
       }).then(({ data }) => {
         placeData.heartedIds = data.createHeartPlace.place.heartedByUser;
@@ -390,8 +393,9 @@ class PlaceProfile extends PureComponent {
       variables: {
         placeId: placeData.id,
         userId: this.props.user.id,
-        lat: 0,
-        lng: 0
+        lat: this.props.user.location ? this.props.user.location.latitude : 0,
+        lng: this.props.user.location ? this.props.user.location.longitude : 0,
+        point: placeData.point ? placeData.point : parseInt(this.props.settings.defaultCheckinPoint)
       }
     }).then(({ data }) => {
       let checks = clone(placeData.checkIns);
@@ -399,7 +403,7 @@ class PlaceProfile extends PureComponent {
       this.setState({ placeData: { ...placeData, checkIns: checks } });
       this.lastChecked = data.createCheckIn.createdAt;
       client.resetStore();
-      this.props.saveUserInfo({ ...this.props.user, checkIns: [...this.props.user.checkIns, data.createCheckIn.id] });
+      this.props.saveUserInfo({ ...this.props.user, checkIns: [...this.props.user.checkIns, data.createCheckIn] });
     }).catch(err => alert(err));
   }
 
@@ -515,8 +519,11 @@ class PlaceProfile extends PureComponent {
   }
 
   renderInterest() {
-    const liked = this.state.placeData.heartedIds && this.state.placeData.heartedIds.map(item => item.user.id).includes(this.props.user.id);
-    const checkable = (this.state.distance && this.state.distance < 500) && (!this.lastChecked || getTimeDiff(new Date(this.lastChecked), new Date()) > 20/* * 60*/);
+    const { placeData } = this.state;
+    const { settings } = this.props;
+    const maxDistance = placeData.proximityCheckinDistance ? placeData.proximityCheckinDistance : settings.defaultProximityCheckinDistance;
+    const liked = placeData.heartedIds && placeData.heartedIds.map(item => item.user.id).includes(this.props.user.id);
+    const checkable = (this.state.distance && this.state.distance < maxDistance) && (!this.lastChecked || getTimeDiff(new Date(this.lastChecked), new Date()) > settings.checkinDelay/* * 60*/);
     return (
       <View style={styles.interestContainer}>
         <View style={styles.serparate}></View>
@@ -525,21 +532,21 @@ class PlaceProfile extends PureComponent {
             <TouchableOpacity onPress={() => this.onHeartClick(!liked)}>
               <Image source={liked ? require('@assets/images/icon/heart.png') : require('@assets/images/icon/heart_inactive.png')} style={styles.actionBtn} />
             </TouchableOpacity>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.heartedIds.length)}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(placeData.heartedIds.length)}</Text>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestLabel}>{I18n.t('PLACE_HEARTED')}</Text>
           </View>
           <View style={[styles.itemInterest, { flex: 0.3 }]}>
             <TouchableOpacity disabled={!checkable} onPress={this.onCheckInClick.bind(this)}>
               <Image source={checkable ? require('@assets/images/icon/check-in.png') : require('@assets/images/icon/check-in_inactive.png')} style={styles.actionBtn} />
             </TouchableOpacity>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.checkIns.length)}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(placeData.checkIns.length)}</Text>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestLabel}>{I18n.t('PLACE_CHECK_IN')}</Text>
           </View>
           <View style={[styles.itemInterest, { flex: 0.4 }]}>
             <TouchableOpacity onPress={this.onBookMarker}>
-              <Image source={this.state.placeData.bookmark ? require('@assets/images/icon/bookmark.png') : require('@assets/images/icon/bookmark_inactive.png')} style={styles.actionBtn} />
+              <Image source={placeData.bookmark ? require('@assets/images/icon/bookmark.png') : require('@assets/images/icon/bookmark_inactive.png')} style={styles.actionBtn} />
             </TouchableOpacity>
-            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(this.state.placeData.collectionIds.length)}</Text>
+            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestText}>{calculateCount(placeData.collectionIds.length)}</Text>
             <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.interestLabel}>{I18n.t('PLACE_BOOKMARK')}</Text>
           </View>
         </View>
@@ -970,7 +977,7 @@ class PlaceProfile extends PureComponent {
         />
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={[DFonts.Title, styles.commentTitle, { flex: 1 }]}>{item.title}</Text>
-          <Text style={[DFonts.SubTitle, styles.commentDescription]}>{item.likedByUser?item.likedByUser.length:0}</Text>
+          <Text style={[DFonts.SubTitle, styles.commentDescription]}>{item.likedByUser ? item.likedByUser.length : 0}</Text>
           <TouchableOpacity onPress={() => this.likeStory(!liked, item, index)}>
             <FontAwesomeIcons
               color={'#f9c33d'}
@@ -991,8 +998,8 @@ class PlaceProfile extends PureComponent {
         variables: {
           storyId: item.id,
           userId: this.props.user.id,
-          lat: 0,
-          lng: 0
+          lat: this.props.user.location ? this.props.user.location.latitude : 0,
+          lng: this.props.user.location ? this.props.user.location.longitude : 0
         }
       }).then(({ data }) => {
         client.mutate({

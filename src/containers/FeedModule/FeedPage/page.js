@@ -196,8 +196,8 @@ class FeedPage extends PureComponent {
         variables: {
           storyId: item.storyId,
           userId: this.props.user.id,
-          lat: 0,
-          lng: 0
+          lat: this.props.user.location ? this.props.user.location.latitude : 0,
+          lng: this.props.user.location ? this.props.user.location.longitude : 0
         }
       }).then(({ data }) => {
         client.mutate({

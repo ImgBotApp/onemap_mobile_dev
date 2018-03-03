@@ -32,11 +32,16 @@ export const GET_PROFILE = gql`
       follows {
         id
       }
-      checkIns {
-        id
-      }
       blockByUsers {
         id
+      }
+      checkIns {
+        id
+        point
+      }
+      receivedBadge {
+        id
+        point
       }
     }
   }

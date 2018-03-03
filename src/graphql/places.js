@@ -100,6 +100,8 @@ export const GET_PLACE_PROFILE = gql`
       collections {
         id
       }
+      proximityCheckinDistance
+      point
     }
   }
 `
