@@ -65,5 +65,5 @@ export function getUserNotification(userId) {
       userId: userId
     }
   }).then(res => Promise.resolve(res.data))
-  .then(res => Promiser.resolve(res.allNotifications))
+  .then(res => Promise.resolve(res.allNotifications))
 }
