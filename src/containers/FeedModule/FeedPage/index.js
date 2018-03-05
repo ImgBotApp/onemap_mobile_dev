@@ -6,7 +6,6 @@ import { GET_CAMPAIGN_BY_USER } from '@graphql/campaign';
 import { LIKE_STORY, UNLIKE_STORY } from "@graphql/likestory";
 import { ADD_COLLECTION_TO_PLACE } from '@graphql/places';
 import { FEED_STORIES_PAGINATED } from '@graphql/stories';
-import { CREATE_NOTIFICATION } from '../../../graphql/notification'
 import { saveCollections, placeUpdated } from '@reducers/app/actions'
 import page from './page'
 

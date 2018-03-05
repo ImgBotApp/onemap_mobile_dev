@@ -52,7 +52,7 @@ export function sendSingleNotification(contents, playerId, data) {
   }
 
   let apiEndPoint = `${ONESIGNAL_HOST}/api/v1/notifications`
-
+  fetch(apiEndPoint, options)
   // client.mutate({
   //   mutation: CREATE_NOTIFICATION,
   //   variables: {

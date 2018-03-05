@@ -36,7 +36,7 @@ import ActionSheet from 'react-native-actionsheet'
 
 import { GET_KEYWORD } from '@graphql/keywords'
 import { GET_PLACE_PROFILE } from '@graphql/places'
-import { CREATE_NOTIFICATION } from '../../../graphql/notification'
+import { CREATE_NOTIFICATION } from '@graphql/notification'
 import styles from './styles'
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
 
