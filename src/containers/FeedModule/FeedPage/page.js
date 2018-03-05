@@ -200,76 +200,75 @@ class FeedPage extends PureComponent {
           lng: this.props.user.location ? this.props.user.location.longitude : 0
         }
       }).then(({ data }) => {
-        client.mutate({
+        return client.mutate({
           mutation: CREATE_NOTIFICATION,
           variables: {
             actor: this.props.user.id,
             receiver: item.createdBy.id,
             story: item.id,
             type: 'LIKE',
-            updatedAt: new Date().toISOString()
+            updateAt: new Date().toISOString()
           }
-        }).then(res => Promise.resolve(res.data))
-          .then(res => Promise.resolve(res.createNotification))
-          .then(res => {
-            sendSingleNotification({
-              en: `${this.props.user.username} likes your Story`
-            }, item.createdBy.playerId, {
-                type: 'LIKE',
-                aImg: this.props.user.photoURL,
-                aName: this.props.user.username,
-                sImg: item.images.length > 1 ? item.images[0] : null,
-                date: new Date().toISOString(),
-                userId: this.props.user.id,
-                storyId: item.id,
-                storyName: item.title,
-                receiverId: item.createdBy.id,
-                id: res.id
-              })
-          })
-
-        client.resetStore().then(() => {
-          this.onRefresh();
         });
-      }).catch(err => console.log(err));
+      }).then(res => Promise.resolve(res.data))
+      .then(res => Promise.resolve(res.createNotification))
+      .then(res => {
+          sendSingleNotification({
+            en: `${this.props.user.username} likes your Story`
+          }, item.createdBy.playerId, {
+              type: 'LIKE',
+              aImg: this.props.user.photoURL,
+              aName: this.props.user.username,
+              sImg: item.images.length > 1 ? item.images[0] : null,
+              date: new Date().toISOString(),
+              userId: this.props.user.id,
+              storyId: item.id,
+              storyName: item.title,
+              receiverId: item.createdBy.id,
+              id: res.id
+            })
+          client.resetStore().then(() => {
+              this.onRefresh();
+          })
+        }).catch(err => alert(err));
     } else {
       this.props.unlikeStory({
         variables: {
           id: item.likedByUser.filter(item => item.user.id === this.props.user.id)[0].id
         }
       }).then(({ data }) => {
-        client.mutate({
+        return client.mutate({
           mutation: CREATE_NOTIFICATION,
           variables: {
             actor: this.props.user.id,
             receiver: item.createdBy.id,
             story: item.id,
             type: 'UNLIKE',
-            updatedAt: new Date().toISOString()
+            updateAt: new Date().toISOString()
           }
-        }).then(res => Promise.resolve(res.data))
-          .then(res => Promise.resolve(res.createNotification))
-          .then(res => {
-            sendSingleNotification({
-              en: `${this.props.user.username} unlikes your Story`
-            }, item.createdBy.playerId, {
-                type: 'UNLIKE',
-                aImg: this.props.user.photoURL,
-                aName: this.props.user.username,
-                sImg: item.images.length > 1 ? item.images[0] : null,
-                date: new Date().toISOString(),
-                userId: this.props.user.id,
-                storyId: item.id,
-                storyName: item.title,
-                receiverId: item.createdBy.id,
-                id: res.id
-              })
+        })
+      })
+      .then(res => Promise.resolve(res.data))
+      .then(res => Promise.resolve(res.createNotification))
+      .then(res => {
+        sendSingleNotification({
+          en: `${this.props.user.username} unlikes your Story`
+        }, item.createdBy.playerId, {
+            type: 'UNLIKE',
+            aImg: this.props.user.photoURL,
+            aName: this.props.user.username,
+            sImg: item.images.length > 1 ? item.images[0] : null,
+            date: new Date().toISOString(),
+            userId: this.props.user.id,
+            storyId: item.id,
+            storyName: item.title,
+            receiverId: item.createdBy.id,
+            id: res.id
           })
-
-        client.resetStore().then(() => {
-          this.onRefresh();
-        });
-      }).catch(err => console.log(err));
+          client.resetStore().then(() => {
+            this.onRefresh();
+          });
+        }).catch(err => alert(err));
     }
   }
   closeSuggest() {
