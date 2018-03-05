@@ -34,7 +34,7 @@ class FeedItem extends Component {
   }
   render() {
     const { bookmark, createdBy, description, images, likedByUser, likeStory, placeName, title } = this.props.data;
-    const liked = likedByUser && likedByUser.map(item => item.user.id).includes(this.props.userId);
+    const liked = likedByUser && likedByUser.map(item => item.user && item.user.id).includes(this.props.userId);
     return (
       <CardView style={styles.container} cardElevation={2} cardMaxElevation={2} cornerRadius={5}>
         {/* user information */}

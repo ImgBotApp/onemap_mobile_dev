@@ -159,9 +159,11 @@ class ProfileComponent extends Component {
     let points = mostBadges.points;
 
     let totalBadgePoints = 0;
-    this.props.user.receivedBadge.forEach(item => {
-      totalBadgePoints += item.point;
-    });
+    if (this.props.user.receivedBadge) {
+      this.props.user.receivedBadge.forEach(item => {
+        totalBadgePoints += item.point;
+      });
+    }
 
     return (
       <CardView cardElevation={1} cardMaxElevation={1} cornerRadius={5} style={campaignStyles.campaignItemCotainer}>
@@ -226,12 +228,16 @@ class ProfileComponent extends Component {
     const checked_cnt = user.checkIns.length;
 
     let totalBadgePoints = 0, totalPlacePoints = 0;
-    this.props.user.receivedBadge.forEach(item => {
-      totalBadgePoints += item.point;
-    });
-    this.props.user.checkIns.forEach(item => {
-      totalPlacePoints += item.point;
-    });
+    if (this.props.user.receivedBadge) {
+      this.props.user.receivedBadge.forEach(item => {
+        totalBadgePoints += item.point;
+      });
+    }
+    if (this.props.user.checkIns) {
+      this.props.user.checkIns.forEach(item => {
+        totalPlacePoints += item.point;
+      });
+    }
 
     return (
       <ScrollView style={styles.container}>
