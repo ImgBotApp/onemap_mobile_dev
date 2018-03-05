@@ -1,16 +1,15 @@
-import { graphql } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 
 import { login, saveUserInfo } from '@reducers/user/actions'
 import { saveUserFollows } from '@reducers/app/actions'
 
-import Page from './page'
+import page from './page'
 
 import {
   AUTHENTICATE_FACEBOOK_USER,
-  EXIST_FACEBOOK_USER
+  ADD_PUSH_TOKEN
 } from '@graphql/users'
-import { UPDATE_PROFILE } from '@graphql/userprofile';
 
 function mapStateToProps(state) {
   return {
@@ -32,8 +31,12 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-let container = graphql(AUTHENTICATE_FACEBOOK_USER, { name: 'FacebookLogin' })(Page);
-container = graphql(UPDATE_PROFILE, { name: 'updateUser' })(container);
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  graphql(AUTHENTICATE_FACEBOOK_USER, { name: 'FacebookLogin' }),
+  graphql(ADD_PUSH_TOKEN, { name: 'addPushToken' }),
 
-//make this component available to the app
-export default connect(mapStateToProps, mapDispatchToProps)(container);
+)(page)

@@ -13,7 +13,7 @@ import { registerScreens } from './registerScreens'
 import { AsyncStorage } from 'react-native'
 import { GET_PROFILE } from './graphql/userprofile';
 import { GET_SETTINGS } from './graphql/setting';
-import { APP_USER_KEY } from './global/const'
+import { APP_USER_KEY, PUSH_TOKEN } from './global/const'
 
 import { composeWithDevTools } from 'redux-devtools-extension'
 
@@ -33,7 +33,7 @@ const httpLink = new HttpLink({
     'cjb30vkvv434c0146sjjn4d4w'
     :
     // Production
-    'cjb30vkvv434c0146sjjn4d4w'    
+    'cjb30vkvv434c0146sjjn4d4w'
     // 'cjctwe3gj19zb01051chfehqy'
   )
 })
@@ -58,6 +58,7 @@ var UserIcon;
 var SettingIcon;
 var SearchIcon;
 var NotificationIcon;
+
 export default class App {
   constructor() {
     Orientation.lockToPortrait();
@@ -120,10 +121,10 @@ export default class App {
             variables: {
               userId: val.id
             }
-          }).then((user) => {
-            var data = user.data.User
-            if (data.username) {
-
+          }).then(async (user) => {
+            let data = user.data.User;
+            const playerId = await AsyncStorage.getItem(PUSH_TOKEN);
+            if (data.username && data.playerId && data.playerId.includes(playerId)) {
               store.dispatch(
                 userActions.saveUserInfo({
                   id: data.id,

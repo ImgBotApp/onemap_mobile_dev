@@ -10,7 +10,7 @@ export const AUTHENTICATE_FACEBOOK_USER = gql`
   }
 `
 
-export const EXIST_FACEBOOK_USER = gql`
+export const EXIST_FACEBOOK_USER = gql`#unused
   query UserQuery($id: ID!) {
     User(id: $id) {
       id
@@ -25,6 +25,15 @@ export const EXIST_FACEBOOK_USER = gql`
       country
       city
       facebookUserId
+    }
+  }
+`
+
+export const ADD_PUSH_TOKEN = gql`
+  mutation AddPushToken($id: ID!, $playerId: String!) {
+    updateUser(id: $id, playerId: [$playerId]) {
+      id
+      playerId
     }
   }
 `

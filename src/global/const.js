@@ -14,6 +14,7 @@ export const ACCOUNT_MODE = {
 }
 
 export const APP_USER_KEY = 'onemap.user.id'
+export const PUSH_TOKEN = 'onemap.user.push_token'
 export const PLACES_APIKEY = 'AIzaSyAfeysdEjFq8v3wfPs7RIv8AHIcOkyGw_s'
 
 export const EMPTY_IMG = 'https://res.cloudinary.com/dioiayg1a/image/upload/c_crop,h_2002,w_1044/v1512299405/dcdpw5a8hp9cdadvagsm.jpg';

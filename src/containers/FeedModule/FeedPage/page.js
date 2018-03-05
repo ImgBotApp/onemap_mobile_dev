@@ -211,24 +211,22 @@ class FeedPage extends PureComponent {
           }
         });
       }).then(res => Promise.resolve(res.data))
-      .then(res => Promise.resolve(res.createNotification))
-      .then(res => {
-          sendSingleNotification({
-            en: `${this.props.user.username} likes your Story`
-          }, item.createdBy.playerId, {
-              type: 'LIKE',
-              aImg: this.props.user.photoURL,
-              aName: this.props.user.username,
-              sImg: item.images.length > 1 ? item.images[0] : null,
-              date: new Date().toISOString(),
-              userId: this.props.user.id,
-              storyId: item.id,
-              storyName: item.title,
-              receiverId: item.createdBy.id,
-              id: res.id
-            })
+        .then(res => Promise.resolve(res.createNotification))
+        .then(res => {
+          sendSingleNotification({ en: `${this.props.user.username} likes your Story` }, item.createdBy.playerId, {
+            type: 'LIKE',
+            aImg: this.props.user.photoURL,
+            aName: this.props.user.username,
+            sImg: item.images.length > 1 ? item.images[0] : null,
+            date: new Date().toISOString(),
+            userId: this.props.user.id,
+            storyId: item.id,
+            storyName: item.title,
+            receiverId: item.createdBy.id,
+            id: res.id
+          });
           client.resetStore().then(() => {
-              this.onRefresh();
+            this.onRefresh();
           })
         }).catch(err => alert(err));
     } else {
@@ -248,12 +246,10 @@ class FeedPage extends PureComponent {
           }
         })
       })
-      .then(res => Promise.resolve(res.data))
-      .then(res => Promise.resolve(res.createNotification))
-      .then(res => {
-        sendSingleNotification({
-          en: `${this.props.user.username} unlikes your Story`
-        }, item.createdBy.playerId, {
+        .then(res => Promise.resolve(res.data))
+        .then(res => Promise.resolve(res.createNotification))
+        .then(res => {
+          sendSingleNotification({ en: `${this.props.user.username} unlikes your Story` }, item.createdBy.playerId, {
             type: 'UNLIKE',
             aImg: this.props.user.photoURL,
             aName: this.props.user.username,
@@ -264,7 +260,7 @@ class FeedPage extends PureComponent {
             storyName: item.title,
             receiverId: item.createdBy.id,
             id: res.id
-          })
+          });
           client.resetStore().then(() => {
             this.onRefresh();
           });

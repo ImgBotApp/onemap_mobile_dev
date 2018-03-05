@@ -1025,7 +1025,7 @@ class PlaceProfile extends PureComponent {
               storyName: this.props.place.placeName,
               receiverId: item.createdBy.id,
               id: res.id
-            })
+            });
           })
         client.resetStore().then(() => {
           if (index < 0) {
@@ -1063,7 +1063,7 @@ class PlaceProfile extends PureComponent {
               storyId: this.props.place.id,
               storyName: this.props.place.placeName,
               receiverId: item.createdBy.id
-            })
+            });
           })
         client.resetStore().then(() => {
           if (index < 0) {

@@ -8,7 +8,7 @@ import { CREATE_NOTIFICATION } from '../graphql/notification'
 /**
  * send Push Notification to Single User
  * @param {*} contents description of Push Notification
- * @param {*} playerId onesignal playerId
+ * @param {*} playerId onesignal playerIds
  * @param {*} data  for attachment
  */
 
@@ -29,7 +29,6 @@ import { CREATE_NOTIFICATION } from '../graphql/notification'
 */
 
 export function sendSingleNotification(contents, playerId, data) {
-  console.log('PlayerId: ', data)
   var headers = {
     'Content-Type': 'application/json; charset=utf-8',
     'Authorization': `Basic ${ONESIGNAL_REST_API}`
@@ -38,7 +37,7 @@ export function sendSingleNotification(contents, playerId, data) {
   var data = {
     app_id: ONESIGNAL_APP_ID,
     contents: contents,
-    include_player_ids: [playerId],
+    include_player_ids: playerId,
     ios_badgeType: 'Increase',
     ios_badgeCount: 1,
     data: data

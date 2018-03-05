@@ -10,7 +10,7 @@ import Toast, { DURATION } from 'react-native-easy-toast'
 import CircleImage from '@components/CircleImage'
 import styles from './styles'
 import I18n from '@language'
-import { ACCOUNT_MODE, APP_USER_KEY } from '@global/const'
+import { ACCOUNT_MODE, APP_USER_KEY, PUSH_TOKEN } from '@global/const'
 
 // Redux 
 import { connect } from 'react-redux'
@@ -27,7 +27,6 @@ import ActionSheet from 'react-native-actionsheet'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import OneSignal from 'react-native-onesignal'
 
 import PhoneInput from 'react-native-phone-input'
 import LoadingSpinner from '@components/LoadingSpinner'
@@ -95,28 +94,12 @@ class ProfileCreatePage extends Component {
       success: false,
       userId: this.props.info.userId || '',
       processing: false,
-      playerId: ''
+      playerId: []
     }
 
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
     this.handlePress = this.handlePress.bind(this)
     this.showActionSheet = this.showActionSheet.bind(this)
-  }
-
-  componentWillMount() {
-    OneSignal.addEventListener('ids', this.onIds)
-    this.onChangeUserName(this.state.username);
-    
-  }
-
-  componentWillUnmount() {
-    OneSignal.removeEventListener('ids', this.onIds)
-  }
-
-  onIds = (device) => {
-    this.setState({
-      playerId: device.userId
-    })
   }
 
   onNavigatorEvent(event) {
@@ -148,13 +131,12 @@ class ProfileCreatePage extends Component {
               country: this.state.country,
               bio: this.state.bio,
               username: this.state.username,
-              playerId: this.state.playerId,
+              playerId: [this.props.playerId],
               group: 'USER'
             }
           }).then(result => {
             this.setState({ processing: false });
-            if(result)
-            {
+            if (result) {
               this.setState({
                 success: true
               })
@@ -174,21 +156,22 @@ class ProfileCreatePage extends Component {
                 registrationDate: new Date().toLocaleDateString(),
                 mobileVerification: false,
                 mobile: "iPhone",
-                playerId: this.state.playerId,
+                playerId: [this.props.playerId],
                 gender: this.state.gender.toUpperCase(),
                 checkIns: [],
                 blockByUsers: []
               });
               AsyncStorage.setItem(APP_USER_KEY, JSON.stringify({
                 id: this.state.userId
-              }))
+              }));
+              AsyncStorage.setItem(PUSH_TOKEN, this.props.playerId);
               this.props.login();
             }
           }).catch(err => {
             Promise.resolve();
             const msg = err.message.toLowerCase();
-            if(msg.includes("username") && msg.includes("unique constraint"))
-              alert("The username "+this.state.username+" already exists. Please use a different username.");
+            if (msg.includes("username") && msg.includes("unique constraint"))
+              alert("The username " + this.state.username + " already exists. Please use a different username.");
             else alert(msg);
             this.setState({ processing: false });
           });

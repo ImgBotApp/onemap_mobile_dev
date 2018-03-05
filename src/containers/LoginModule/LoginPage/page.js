@@ -1,21 +1,21 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage, Platform, PermissionsAndroid } from 'react-native'
 import FBSDK, { LoginManager } from 'react-native-fbsdk'
+import OneSignal from 'react-native-onesignal'
+import Orientation from 'react-native-orientation';
+import Permissions from 'react-native-permissions'
 
 import RoundButton from '@components/RoundButton'
 import LoadingSpinner from '@components/LoadingSpinner'
 import * as SCREEN from '@global/screenName'
-import { ACCOUNT_MODE, APP_USER_KEY } from '@global/const'
+import { ACCOUNT_MODE, APP_USER_KEY, PUSH_TOKEN } from '@global/const'
 import I18n from '@language'
 import { DARK_GRAY_COLOR } from '@theme/colors';
 import styles from './styles'
 
 import { client } from '@root/main'
 import { GET_PROFILE } from '@graphql/userprofile';
-import { EXIST_FACEBOOK_USER } from '@graphql/users'
-import Orientation from 'react-native-orientation';
 import { APPFONTNAME } from '@theme/fonts';
-import Permissions from 'react-native-permissions'
 
 const { GraphRequest, GraphRequestManager, AccessToken } = FBSDK
 
@@ -31,7 +31,10 @@ class LoginPage extends Component {
     Orientation.lockToPortrait();
   }
 
-  
+  componentWillMount() {
+    OneSignal.addEventListener('ids', this.onIds);
+  }
+
   componentDidMount() {
     if (Platform.OS == 'android')
       this.requestLocationPermissionForAndroid();
@@ -47,6 +50,17 @@ class LoginPage extends Component {
       })
     }
   }
+
+  componentWillUnmount() {
+    OneSignal.removeEventListener('ids', this.onIds);
+  }
+
+  onIds = ({ userId }) => {
+    this.setState({
+      playerId: userId
+    })
+  }
+
   async requestLocationPermissionForAndroid() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -82,20 +96,17 @@ class LoginPage extends Component {
       }).then((user) => {
         var data = user.data.User
 
-        if (data.playerId) {
-
-          // wheter to sync with facebook or not
-          // this.props.updateUser({
-          //   variables: {
-          //     id: this.state.id,
-          //     first_name: result.first_name,
-          //     last_name: result.last_name,
-          //     gender: gender,
-          //     photoURL: result.picture.data.url,
-          //     displayName: result.first_name + " " + result.last_name,
-          //     registrationDate: new Date().toLocaleDateString()
-          //   }
-          // })
+        if (data && data.username) {
+          if (this.state.playerId && (!data.playerId || !data.playerId.includes(this.state.playerId))) {
+            this.props.addPushToken({
+              variables: {
+                id: this.state.id,
+                playerId: this.state.playerId
+              }
+            }).then(({ data }) => {
+              AsyncStorage.setItem(PUSH_TOKEN, this.state.playerId);
+            }).catch(err => alert(err.message));
+          }
 
           this.props.saveUserInfo({
             id: this.state.id,
@@ -130,7 +141,8 @@ class LoginPage extends Component {
               info: {
                 ...result,
                 userId: this.state.id,
-              }
+              },
+              playerId: this.state.playerId
             },
             animated: true,
             navigatorStyle: {
@@ -159,6 +171,17 @@ class LoginPage extends Component {
           this.setState({ loading: false })
           var data = user.data.User;
           if (data && data.username) {
+            if (this.state.playerId && (!data.playerId || !data.playerId.includes(this.state.playerId))) {
+              this.props.addPushToken({
+                variables: {
+                  id: data.id,
+                  playerId: this.state.playerId
+                }
+              }).then(({ data }) => {
+                AsyncStorage.setItem(PUSH_TOKEN, this.state.playerId);
+              }).catch(err => alert(err.message));
+            }
+
             this.props.saveUserInfo({
               id: data.id,
               createdAt: new Date().toLocaleDateString(),
@@ -180,8 +203,7 @@ class LoginPage extends Component {
             });
             this.props.saveUserFollows(data.follows);
             this.props.login();
-          }
-          else {//user doesn't exist, maybe admin removed your account
+          } else {//user doesn't exist, maybe admin removed your account
             this.doLogin();
           }
         })
@@ -235,7 +257,7 @@ class LoginPage extends Component {
       screen: SCREEN.PHONE_NUMBER_PAGE,
       title: 'Create Account',
       passProps: {
-        mode: ACCOUNT_MODE.create
+        mode: ACCOUNT_MODE.create,
       },
       animated: true,
       // animationType: 'fade',
@@ -248,7 +270,7 @@ class LoginPage extends Component {
       // navigatorButtons: {}
     })
   }
-  
+
   render() {
     return (
       <View style={styles.container}>

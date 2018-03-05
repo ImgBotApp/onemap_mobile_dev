@@ -109,18 +109,16 @@ class ProfilePage extends Component {
       }).then(res => Promise.resolve(res.data))
         .then(res => Promise.resolve(res.createNotification))
         .then(res => {
-          sendSingleNotification({
-            en: `${this.props.user.username} Follows You`
-          }, this.state.user.playerId, {
-              type: 'FOLLOW',
-              aImg: this.props.user.photoURL,
-              aName: this.props.user.username,
-              sImg: null,
-              date: new Date().toISOString(),
-              userId: this.props.user.id,
-              receiverId: this.state.user.id,
-              id: res.id
-            })
+          sendSingleNotification({ en: `${this.props.user.username} Follows You` }, this.state.user.playerId, {
+            type: 'FOLLOW',
+            aImg: this.props.user.photoURL,
+            aName: this.props.user.username,
+            sImg: null,
+            date: new Date().toISOString(),
+            userId: this.props.user.id,
+            receiverId: this.state.user.id,
+            id: res.id
+          });
         })
     } else {
       const index = followsIds.indexOf(this.state.user.id);
@@ -132,23 +130,21 @@ class ProfilePage extends Component {
           receiver: this.state.user.id,
           story: null,
           type: 'UNFOLLOW',
-          updateAt: new Date().toISOString()          
+          updateAt: new Date().toISOString()
         }
       }).then(res => Promise.resolve(res.data))
         .then(res => Promise.resolve(res.createNotification))
         .then(res => {
-          sendSingleNotification({
-            en: `${this.props.user.username} Unfollows You`
-          }, this.state.user.playerId, {
-              type: 'UNFOLLOW',
-              aImg: this.props.user.photoURL,
-              aName: this.props.user.username,
-              sImg: null,
-              date: new Date().toISOString(),
-              userId: this.props.user.id,
-              receiverId: this.state.user.id,
-              id: res.id
-            })
+          sendSingleNotification({ en: `${this.props.user.username} Unfollows You` }, this.state.user.playerId, {
+            type: 'UNFOLLOW',
+            aImg: this.props.user.photoURL,
+            aName: this.props.user.username,
+            sImg: null,
+            date: new Date().toISOString(),
+            userId: this.props.user.id,
+            receiverId: this.state.user.id,
+            id: res.id
+          });
         })
     }
 
