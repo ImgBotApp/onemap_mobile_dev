@@ -1,18 +1,15 @@
-//import liraries
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import OneSignal from 'react-native-onesignal'
-// import Component
-import Notification from '../../../components/NotificationItem'
-
-import styles from './styles'
+import Notification from '@components/NotificationItem'
+import { READ_NOTIFICATION, getUserNotification } from '@graphql/notification'
+import * as SCREEN from '@global/screenName'
+import { getProfile } from '@graphql/userprofile'
 import I18n from '@language'
-import FONT from '../../../theme/fonts'
-import * as SCREEN from '../../../global/screenName'
-import { getProfile } from '../../../graphql/userprofile'
-import { READ_NOTIFICATION, getUserNotification } from '../../../graphql/notification'
 import { client } from '@root/main'
-// create a component
+import FONT from '@theme/fonts'
+import styles from './styles'
+
 class NotificationPage extends Component {
   constructor(props) {
     super(props)
@@ -26,23 +23,24 @@ class NotificationPage extends Component {
     OneSignal.addEventListener('received', this.onReceived);
 
     getUserNotification(this.props.user.id)
-    .then(res => {
-      let data = res.map(item => {
-        return {
-          type: item.type,
-          sImg: item.place && item.place.pictureURLlength > 0 ? item.place.pictureURL[0] : null,
-          aImg: item.actor.photoURL,
-          aName: item.actor.username,
-          readAt: item.readAt,
-          storyId: item.place.id,
-          userId: item.actor.id
-        }
-      })
+      .then(res => {
+        let data = res.map(item => {
+          return {
+            id: item.id,
+            type: item.type,
+            sImg: item.place && item.place.pictureURLlength > 0 ? item.place.pictureURL[0] : null,
+            aImg: item.actor.photoURL,
+            aName: item.actor.username,
+            readAt: item.readAt,
+            storyId: item.place.id,
+            userId: item.actor.id
+          }
+        })
 
-      this.setState({
-        notifications: data
+        this.setState({
+          notifications: data
+        })
       })
-    })
   }
 
   componentWillUnmount() {
@@ -109,7 +107,7 @@ class NotificationPage extends Component {
               placeName: item.storyName
             },
             oneMapperId: '',
-            onPlaceUpdate: place => {},
+            onPlaceUpdate: place => { },
           }
         })
       case 'FOLLOW':
